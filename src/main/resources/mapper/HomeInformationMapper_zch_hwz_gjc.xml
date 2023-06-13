@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.HomeInformationMapper_zch_hwz_gjc">
+    <resultMap id="BaseResultMap" type="com.quickhome.entity.HomeInformation_zch_hwz_gjc">
+        <id column="homeId_zch_hwz_gjc" jdbcType="BIGINT" property="homeId_zch_hwz_gjc"/>
+        <result column="homeName_zch_hwz_gjc" property="homeName_zch_hwz_gjc"/>
+        <result column="homeType_zch_hwz_gjc" property="homeType_zch_hwz_gjc"/>
+        <result column="homeArea_zch_hwz_gjc" property="homeArea_zch_hwz_gjc"/>
+        <result column="homeDescribe_zch_hwz_gjc" property="homeDescribe_zch_hwz_gjc"/>
+        <result column="maxPerson_zch_hwz_gjc" property="maxPerson_zch_hwz_gjc"/>
+        <result column="homeFacilities_zch_hwz_gjc" property="homeFacilities_zch_hwz_gjc" />
+        <result column="homeDayRent_zch_hwz_gjc" property="homeDayRent_zch_hwz_gjc"/>
+        <result column="homeDeposit_zch_hwz_gjc" property="homeDeposit_zch_hwz_gjc"/>
+        <result column="homeState_zch_hwz_gjc" property="homeState_zch_hwz_gjc"/>
+        <result column="homeAddress_zch_hwz_gjc" property="homeAddress_zch_hwz_gjc"/>
+        <result column="homeInDate_zch_hwz_gjc" property="homeInDate_zch_hwz_gjc"/>
+        <result column="standby1_zch_hwz_gjc" property="standby1_zch_hwz_gjc"/>
+        <result column="standby2_zch_hwz_gjc" property="standby2_zch_hwz_gjc"/>
+        <result column="standby3_zch_hwz_gjc" property="standby3_zch_hwz_gjc"/>
+        <result column="visible_zch_hwz_gjc" property="visible_zch_hwz_gjc"/>
+    </resultMap>
+    <select id="getAllHomeInformation_zch_hwz_gjc" resultMap="BaseResultMap">
+        select * from QuickHome_zch_hwz_gjc.tab_homeInformation_zch_hwz_gjc;
+    </select>
+</mapper>
