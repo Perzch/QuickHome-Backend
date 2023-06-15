@@ -3,7 +3,7 @@ package com.quickhome.entity;
 import lombok.Data;
 
 @Data
-public class HomeImage_zch_hwz_gjc {
+public class HomeImage {
     private long imageId_zch_hwz_gjc;
     private long homeId_zch_hwz_gjc;
     private String imagePath_zch_hwz_gjc;
@@ -13,7 +13,7 @@ public class HomeImage_zch_hwz_gjc {
     private String standby3_zch_hwz_gjc;
     private int visible_zch_hwz_gjc;
 
-    public HomeImage_zch_hwz_gjc(long imageId_zch_hwz_gjc, long homeId_zch_hwz_gjc, String imagePath_zch_hwz_gjc, String inDateTime_zch_hwz_gjc, String standby1_zch_hwz_gjc, String standby2_zch_hwz_gjc, String standby3_zch_hwz_gjc, int visible_zch_hwz_gjc) {
+    public HomeImage(long imageId_zch_hwz_gjc, long homeId_zch_hwz_gjc, String imagePath_zch_hwz_gjc, String inDateTime_zch_hwz_gjc, String standby1_zch_hwz_gjc, String standby2_zch_hwz_gjc, String standby3_zch_hwz_gjc, int visible_zch_hwz_gjc) {
         this.imageId_zch_hwz_gjc = imageId_zch_hwz_gjc;
         this.homeId_zch_hwz_gjc = homeId_zch_hwz_gjc;
         this.imagePath_zch_hwz_gjc = imagePath_zch_hwz_gjc;
@@ -24,7 +24,7 @@ public class HomeImage_zch_hwz_gjc {
         this.visible_zch_hwz_gjc = visible_zch_hwz_gjc;
     }
 
-    public HomeImage_zch_hwz_gjc(long imageId_zch_hwz_gjc, long homeId_zch_hwz_gjc, String imagePath_zch_hwz_gjc, String inDateTime_zch_hwz_gjc) {
+    public HomeImage(long imageId_zch_hwz_gjc, long homeId_zch_hwz_gjc, String imagePath_zch_hwz_gjc, String inDateTime_zch_hwz_gjc) {
         this.imageId_zch_hwz_gjc = imageId_zch_hwz_gjc;
         this.homeId_zch_hwz_gjc = homeId_zch_hwz_gjc;
         this.imagePath_zch_hwz_gjc = imagePath_zch_hwz_gjc;
