@@ -133,7 +133,7 @@ CREATE TABLE tab_RCAMI_zch_hwz_gjc (
 	RCAMIInformation_zch_hwz_gjc VARCHAR ( 50 ),-- 信息内容
 	des_zch_hwz_gjc VARCHAR ( 50 ),-- 备注
 	workUserId_zch_hwz_gjc BIGINT,-- 维修管理员编号
-	comletion_zch_hwz_gjc VARCHAR ( 50 ),-- 完成情况
+	completion_zch_hwz_gjc VARCHAR ( 50 ),-- 完成情况
 	publisherId_zch_hwz_gjc BIGINT,-- 发布人员编号
 	homeId_zch_hwz_gjc BIGINT, -- 房屋信息编号
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
