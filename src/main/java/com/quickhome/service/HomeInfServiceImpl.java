@@ -17,4 +17,9 @@ public class HomeInfServiceImpl implements HomeInfService {
     public List<HomeInformation> getAllHomeInformation_zch_hwz_gjc() {
         return homeInformationMapper.getAllHomeInformation_zch_hwz_gjc();
     }
+
+    @Override
+    public HomeInformation getHomeInfByHomeId_zch_hwz_gjc(long homeId_zch_hwz_gjc) {
+        return homeInformationMapper.getHomeInfByHomeId_zch_hwz_gjc(homeId_zch_hwz_gjc);
+    }
 }

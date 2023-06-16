@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service("OrderServ")
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    OrderMapper order_zch_hwz_gjc;
+    OrderMapper orderMapper;
 
     @Override
     public int addOrder_zch_hwz_gjc(Order order) {
-        return order_zch_hwz_gjc.addOrder_zch_hwz_gjc(order);
+        return orderMapper.addOrder_zch_hwz_gjc(order);
     }
 }

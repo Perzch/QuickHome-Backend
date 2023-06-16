@@ -314,11 +314,11 @@ CREATE TABLE tab_order_zch_hwz_gjc (
 -- 表19: 司机信息表 
 DROP TABLE IF EXISTS tab_driverInfo_zch_hwz_gjc;
 CREATE TABLE tab_driverInfo_zch_hwz_gjc (
-driverID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 司机编号
-driverName_zch_hwz_gjc VARCHAR(50),   -- 司机姓名
-contactPhoneNumber_zch_hwz_gjc VARCHAR(50),-- 司机联系电话
-idNumber_zch_hwz_gjc VARCHAR(50),      -- 司机身份证号码
-licenseNumber_zch_hwz_gjc VARCHAR(50),      -- 司机驾驶证号码
+    driverID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 司机编号
+    driverName_zch_hwz_gjc VARCHAR(50),   -- 司机姓名
+    contactPhoneNumber_zch_hwz_gjc VARCHAR(50),-- 司机联系电话
+    idNumber_zch_hwz_gjc VARCHAR(50),      -- 司机身份证号码
+    licenseNumber_zch_hwz_gjc VARCHAR(50),      -- 司机驾驶证号码
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -343,12 +343,12 @@ CREATE TABLE tab_carInfo_zch_hwz_gjc (
 -- 表21: 预约表 
 DROP TABLE IF EXISTS tab_carReservation_zch_hwz_gjc;
 CREATE TABLE tab_carReservation_zch_hwz_gjc (
-reservationID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 预约编号
-driverID_zch_hwz_gjc BIGINT,  -- 外键,关联司机信息表 
-userId_zch_hwz_gjc BIGINT, -- 外键,关联用户信息表
-carID_zch_hwz_gjc BIGINT,   -- 外键,关联汽车信息表
-carReservationTime_zch_hwz_gjc DATETIME,   -- 客户预约时间
-reservationStatus_zch_hwz_gjc VARCHAR(10),   -- 预约状态:已预约/已完成/已取消
+    reservationID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 预约编号
+    driverID_zch_hwz_gjc BIGINT,  -- 外键,关联司机信息表
+    userId_zch_hwz_gjc BIGINT, -- 外键,关联用户信息表
+    carID_zch_hwz_gjc BIGINT,   -- 外键,关联汽车信息表
+    carReservationTime_zch_hwz_gjc DATETIME,   -- 客户预约时间
+    reservationStatus_zch_hwz_gjc VARCHAR(10),   -- 预约状态:已预约/已完成/已取消
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -358,13 +358,13 @@ reservationStatus_zch_hwz_gjc VARCHAR(10),   -- 预约状态:已预约/已完成
 -- 表22:行程记录表
 DROP TABLE IF EXISTS tab_tripRecord_zch_hwz_gjc;
 CREATE TABLE tab_tripRecord_zch_hwz_gjc(
-recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 记录编号
-reservationID_zch_hwz_gjc BIGINT, -- 外键,关联预约表
-startingPoint_zch_hwz_gjc VARCHAR(50),   -- 起点
-destination_zch_hwz_gjc VARCHAR(50),   -- 终点
-startingTime_zch_hwz_gjc DATETIME,  -- 出发时间 
-endTime_zch_hwz_gjc DATETIME,   -- 到达时间
-distanceTraveled_zch_hwz_gjc DOUBLE,   -- 此次行程公里数 
+    recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 记录编号
+    reservationID_zch_hwz_gjc BIGINT, -- 外键,关联预约表
+    startingPoint_zch_hwz_gjc VARCHAR(50),   -- 起点
+    destination_zch_hwz_gjc VARCHAR(50),   -- 终点
+    startingTime_zch_hwz_gjc DATETIME,  -- 出发时间
+    endTime_zch_hwz_gjc DATETIME,   -- 到达时间
+    distanceTraveled_zch_hwz_gjc DOUBLE,   -- 此次行程公里数
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -374,12 +374,12 @@ distanceTraveled_zch_hwz_gjc DOUBLE,   -- 此次行程公里数
 -- 表23: 智能设备表
 DROP TABLE IF EXISTS tab_smartDevice_zch_hwz_gjc;
 CREATE TABLE tab_smartDevice_zch_hwz_gjc(
-deviceID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 设备编号
-homeId_zch_hwz_gjc BIGINT,-- 房屋信息编号
-deviceName_zch_hwz_gjc VARCHAR(50),-- 设备名称
-deviceType_zch_hwz_gjc VARCHAR(20), -- 设备类型(灯/空调/电视等)
-brand_zch_hwz_gjc VARCHAR(50), -- 品牌
-price_zch_hwz_gjc DECIMAL(10,2), -- 价格
+    deviceID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 设备编号
+    homeId_zch_hwz_gjc BIGINT,-- 房屋信息编号
+    deviceName_zch_hwz_gjc VARCHAR(50),-- 设备名称
+    deviceType_zch_hwz_gjc VARCHAR(20), -- 设备类型(灯/空调/电视等)
+    brand_zch_hwz_gjc VARCHAR(50), -- 品牌
+    price_zch_hwz_gjc DECIMAL(10,2), -- 价格
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -389,10 +389,10 @@ price_zch_hwz_gjc DECIMAL(10,2), -- 价格
 -- 表24:设备状态表
 DROP TABLE IF EXISTS tab_deviceStatus_zch_hwz_gjc;
 CREATE TABLE tab_deviceStatus_zch_hwz_gjc(
-statusID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 状态编号
-deviceID_zch_hwz_gjc BIGINT,   -- 外键,关联智能设备表
-deviceStatus_zch_hwz_gjc VARCHAR(20), -- 设备状态(开启/关闭/待机等)
-updateTime_zch_hwz_gjc DATETIME, -- 状态更新时间
+    statusID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 状态编号
+    deviceID_zch_hwz_gjc BIGINT,   -- 外键,关联智能设备表
+    deviceStatus_zch_hwz_gjc VARCHAR(20), -- 设备状态(开启/关闭/待机等)
+    updateTime_zch_hwz_gjc DATETIME, -- 状态更新时间
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -400,14 +400,15 @@ updateTime_zch_hwz_gjc DATETIME, -- 状态更新时间
 ); 
 
 -- 表25: 设备控制记录表
+DROP TABLE IF EXISTS tab_deviceControlRecord_zch_hwz_gjc;
 CREATE TABLE tab_deviceControlRecord_zch_hwz_gjc ( 
-recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 记录编号 
-userID_zch_hwz_gjc BIGINT,   -- 外键,用户编号
-deviceID_zch_hwz_gjc BIGINT, -- 外键,关联智能设备表
-controlTime_zch_hwz_gjc DATETIME, -- 控制时间 
-controlType_zch_hwz_gjc VARCHAR(20),   -- 控制类型(开/关/调高/调低等) 
-controlContent_zch_hwz_gjc VARCHAR(50), -- 控制具体内容 
-deviceReservationTime_zch_hwz_gjc DATETIME, -- 预约控制时间
+    recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 记录编号
+    userID_zch_hwz_gjc BIGINT,   -- 外键,用户编号
+    deviceID_zch_hwz_gjc BIGINT, -- 外键,关联智能设备表
+    controlTime_zch_hwz_gjc DATETIME, -- 控制时间
+    controlType_zch_hwz_gjc VARCHAR(20),   -- 控制类型(开/关/调高/调低等)
+    controlContent_zch_hwz_gjc VARCHAR(50), -- 控制具体内容
+    deviceReservationTime_zch_hwz_gjc DATETIME, -- 预约控制时间
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -418,14 +419,14 @@ deviceReservationTime_zch_hwz_gjc DATETIME, -- 预约控制时间
 -- 表27: 汽车订单表
 DROP TABLE IF EXISTS tab_carOrder_zch_hwz_gjc;
 CREATE TABLE tab_carOrder_zch_hwz_gjc(
-orderID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,   -- 订单编号 
-userID_zch_hwz_gjc BIGINT,  -- 用户编号,外键关联用户表 
-carID_zch_hwz_gjc BIGINT,   -- 汽车编号,外键关联汽车表
-driverID_zch_hwz_gjc BIGINT, -- 司机编号,外键关联司机表
-orderTime_zch_hwz_gjc DATETIME, -- 订单下单时间
-orderStatus_zch_hwz_gjc VARCHAR(20), -- 订单状态(已预约/已完成/已取消) 
-orderAmount_zch_hwz_gjc DECIMAL(10,2), -- 订单总金额 
-tripRecordID_zch_hwz_gjc BIGINT,   -- 行程记录编号,外键关联行程记录表 
+    orderID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,   -- 订单编号
+    userID_zch_hwz_gjc BIGINT,  -- 用户编号,外键关联用户表
+    carID_zch_hwz_gjc BIGINT,   -- 汽车编号,外键关联汽车表
+    driverID_zch_hwz_gjc BIGINT, -- 司机编号,外键关联司机表
+    orderTime_zch_hwz_gjc DATETIME, -- 订单下单时间
+    orderStatus_zch_hwz_gjc VARCHAR(20), -- 订单状态(已预约/已完成/已取消)
+    orderAmount_zch_hwz_gjc DECIMAL(10,2), -- 订单总金额
+    tripRecordID_zch_hwz_gjc BIGINT,   -- 行程记录编号,外键关联行程记录表
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -436,10 +437,10 @@ tripRecordID_zch_hwz_gjc BIGINT,   -- 行程记录编号,外键关联行程记�
 -- 表28: 支付密码表
 DROP TABLE IF EXISTS tab_paymentPassword_zch_hwz_gjc;
 CREATE TABLE tab_paymentPassword_zch_hwz_gjc(
-passwordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 支付密码编号
-accountID_zch_hwz_gjc BIGINT,  -- 账号编号,外键关联账户表
-paymentPassword_zch_hwz_gjc VARCHAR(6), -- 支付密码
-setTime_zch_hwz_gjc DATETIME,   -- 设置支付密码时间   
+    passwordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT, -- 支付密码编号
+    accountID_zch_hwz_gjc BIGINT,  -- 账号编号,外键关联账户表
+    paymentPassword_zch_hwz_gjc VARCHAR(6), -- 支付密码
+    setTime_zch_hwz_gjc DATETIME,   -- 设置支付密码时间
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -462,16 +463,16 @@ CREATE TABLE tab_homeImage_zch_hwz_gjc (
 -- 表30 汽车使用情况表
 DROP TABLE IF EXISTS tab_carUseStatus_zch_hwz_gjc;
 CREATE TABLE tab_carUseStatus_zch_hwz_gjc(
-useStatusID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 使用情况编号
-carID_zch_hwz_gjc BIGINT,-- 汽车编号,外键关联汽车信息表
-useDate_zch_hwz_gjc DATE,-- 使用日期
-useStatus_zch_hwz_gjc VARCHAR(20),-- 使用状态(使用中/闲置/维修等)
-mileage_zch_hwz_gjc INT,-- 公里数
- oilVolume_zch_hwz_gjc INT,-- 油箱油量
-tireSituation_zch_hwz_gjc VARCHAR(100),-- 轮胎情况
-otherMaintenance_zch_hwz_gjc VARCHAR(200),-- 其他维护保养
-nextInspectionTime_zch_hwz_gjc DATE,-- 下次维修时间
-inspectRemark_zch_hwz_gjc VARCHAR(200),-- 维修备注
+    useStatusID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 使用情况编号
+    carID_zch_hwz_gjc BIGINT,-- 汽车编号,外键关联汽车信息表
+    useDate_zch_hwz_gjc DATE,-- 使用日期
+    useStatus_zch_hwz_gjc VARCHAR(20),-- 使用状态(使用中/闲置/维修等)
+    mileage_zch_hwz_gjc INT,-- 公里数
+    oilVolume_zch_hwz_gjc INT,-- 油箱油量
+    tireSituation_zch_hwz_gjc VARCHAR(100),-- 轮胎情况
+    otherMaintenance_zch_hwz_gjc VARCHAR(200),-- 其他维护保养
+    nextInspectionTime_zch_hwz_gjc DATE,-- 下次维修时间
+    inspectRemark_zch_hwz_gjc VARCHAR(200),-- 维修备注
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
@@ -481,12 +482,12 @@ inspectRemark_zch_hwz_gjc VARCHAR(200),-- 维修备注
 -- 表31 维修保洁绑定房屋表
 DROP TABLE IF EXISTS tab_adminHomeBinding_zch_hwz_gjc;
 CREATE TABLE tab_adminHomeBinding_zch_hwz_gjc(
-bindingID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 绑定编号
-managerID_zch_hwz_gjc BIGINT,-- 管理员编号,外键关联管理员表
-homeID_zch_hwz_gjc BIGINT,-- 房屋编号,外键关联房屋信息表
-bindingType_zch_hwz_gjc VARCHAR(20),-- 绑定类型(保洁/维修)
-bindingTime_zch_hwz_gjc DATETIME,-- 绑定时间
-bindingState_zch_hwz_gjc VARCHAR(20), -- 绑定状态(绑定中/解绑)
+    bindingID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 绑定编号
+    managerID_zch_hwz_gjc BIGINT,-- 管理员编号,外键关联管理员表
+    homeID_zch_hwz_gjc BIGINT,-- 房屋编号,外键关联房屋信息表
+    bindingType_zch_hwz_gjc VARCHAR(20),-- 绑定类型(保洁/维修)
+    bindingTime_zch_hwz_gjc DATETIME,-- 绑定时间
+    bindingState_zch_hwz_gjc VARCHAR(20), -- 绑定状态(绑定中/解绑)
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
