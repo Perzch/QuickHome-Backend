@@ -23,15 +23,14 @@ import java.util.Random;
 @RequestMapping("/Order")
 public class OrderController {
     @Autowired
-    OrderService orderService_;
+    private OrderService orderService_;
 
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
     @PostMapping("/addOrder")
     public ResponseEntity<Order> addOrder_zch_hwz_gjc(@RequestBody Order order, HttpServletRequest req) {
-        DynamicDoorPassword dynamicDoorPassword_zch_hwz_gjc=new DynamicDoorPassword();
-        order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(dynamicDoorPassword_zch_hwz_gjc.DynamicDoorPassword()));
-        order.setCreationTime_zch_hwz_gjc(new NowTime().getNowTime());//当前时间
+        order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(DynamicDoorPassword.dynamicDoorPassword()));
+        order.setCreationTime_zch_hwz_gjc(NowTime.getNowTime());//当前时间
         int x_zch_hwz_gjc = orderService_.addOrder_zch_hwz_gjc(order);
         System.out.println("成功添加了" + x_zch_hwz_gjc + "条订单");
         System.out.println(order);

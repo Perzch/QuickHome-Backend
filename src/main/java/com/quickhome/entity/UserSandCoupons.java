@@ -1,12 +1,14 @@
 package com.quickhome.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserSandCoupons {
     private long UACID_zch_hwz_gjc;
     private String condition_zch_hwz_gjc;

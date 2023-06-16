@@ -1,8 +1,9 @@
-package com.quickhome.service;
+package com.quickhome.service.impl;
 
 import com.quickhome.entity.User;
 import com.quickhome.entity.UserInformation;
 import com.quickhome.mapper.UserMapper;
+import com.quickhome.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

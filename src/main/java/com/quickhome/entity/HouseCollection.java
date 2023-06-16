@@ -1,14 +1,17 @@
 package com.quickhome.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class HouseCollection {
     private long hFavoriteRecordsId_zch_hwz_gjc;
     private long userId_zch_hwz_gjc;

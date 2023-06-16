@@ -1,6 +1,7 @@
 package com.quickhome.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class DeviceStatus {
     private long statusID_zch_hwz_gjc;
     private long deviceID_zch_hwz_gjc;

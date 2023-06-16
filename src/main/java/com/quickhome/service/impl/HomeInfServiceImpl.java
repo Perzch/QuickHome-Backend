@@ -1,7 +1,9 @@
-package com.quickhome.service;
+package com.quickhome.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.quickhome.mapper.HomeInformationMapper;
 import com.quickhome.entity.HomeInformation;
+import com.quickhome.service.HomeInfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class HomeInformationController {
 
     @Autowired
-    HomeInfService homeInfSer_zch_hwz_gjc;
+    private HomeInfService homeInfSer_zch_hwz_gjc;
 
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 

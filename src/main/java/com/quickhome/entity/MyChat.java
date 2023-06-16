@@ -1,6 +1,7 @@
 package com.quickhome.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MyChat {
     private long chatId_zch_hwz_gjc;
     private long messageReceive_zch_hwz_gjc;
