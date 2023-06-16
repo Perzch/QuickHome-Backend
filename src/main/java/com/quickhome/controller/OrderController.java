@@ -3,6 +3,7 @@ package com.quickhome.controller;
 import com.quickhome.entity.Order;
 import com.quickhome.service.OrderService;
 import com.quickhome.util.DynamicDoorPassword;
+import com.quickhome.util.NowTime;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,11 +31,7 @@ public class OrderController {
     public ResponseEntity<Order> addOrder_zch_hwz_gjc(@RequestBody Order order, HttpServletRequest req) {
         DynamicDoorPassword dynamicDoorPassword_zch_hwz_gjc=new DynamicDoorPassword();
         order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(dynamicDoorPassword_zch_hwz_gjc.DynamicDoorPassword()));
-        LocalDateTime now_zch_hwz_gjc = LocalDateTime.now();
-        DateTimeFormatter formatter_zch_hwz_gjc = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String creationTimeString_zch_hwz_gjc = now_zch_hwz_gjc.format(formatter_zch_hwz_gjc);
-        Date creationTime_zch_hwz_gjc = java.sql.Timestamp.valueOf(creationTimeString_zch_hwz_gjc);
-        order.setCreationTime_zch_hwz_gjc(creationTime_zch_hwz_gjc);
+        order.setCreationTime_zch_hwz_gjc(new NowTime().getNowTime());//当前时间
         int x_zch_hwz_gjc = orderService_.addOrder_zch_hwz_gjc(order);
         System.out.println("成功添加了" + x_zch_hwz_gjc + "条订单");
         System.out.println(order);
