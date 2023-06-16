@@ -3,6 +3,7 @@ package com.quickhome.controller;
 import com.quickhome.entity.Order;
 import com.quickhome.entity.User;
 import com.quickhome.entity.UserInformation;
+import com.quickhome.request.ResponseResult;
 import com.quickhome.service.OrderService;
 import com.quickhome.service.UserService;
 import com.quickhome.util.CreatAccount;
@@ -27,29 +28,24 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/insertUser")
-    public ResponseEntity<User> insertUser_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
+    public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
         user.setUserAccount_zch_hwz_gjc(String.valueOf(CreatAccount.creatAccount()));
         user.setUserInDate_zch_hwz_gjc(NowTime.getNowTime());//当前时间
         int x = userService.insertUser_zch_hwz_gjc(user);
         if(x==1) {
-            System.out.println("用户注册成功");
-            System.out.println(user);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(ResponseResult.ok(user));
         }else {
-            System.out.println("用户注册失败");
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(ResponseResult.of(100,"用户注册失败!"));
         }
     }
     @PostMapping("/insertUserInf")
-    public ResponseEntity<UserInformation> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,HttpServletRequest req){
+    public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,HttpServletRequest req){
         userInformation.setAuthenticationTime_zch_hwz_gjc(NowTime.getNowTime());//当前时间
         int flag=userService.insertUserInf_zch_hwz_gjc(userInformation);
-        if (flag==1){
-            System.out.println("用户信息插入成功");
-            return ResponseEntity.ok(userInformation);
-        }else {
-            System.out.println("用户信息插入失败");
-            return ResponseEntity.ok(userInformation);
+        if(flag == 1) {
+            return ResponseEntity.ok(ResponseResult.ok(userInformation));
+        } else {
+            return ResponseEntity.ok(ResponseResult.of(100,"用户信息注册失败!"));
         }
     }
 }

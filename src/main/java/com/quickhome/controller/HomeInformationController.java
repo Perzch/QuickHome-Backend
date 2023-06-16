@@ -2,6 +2,7 @@ package com.quickhome.controller;
 
 import com.quickhome.entity.HomeInformation;
 import com.quickhome.entity.Order;
+import com.quickhome.request.ResponseResult;
 import com.quickhome.service.HomeInfService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
@@ -26,14 +27,14 @@ public class HomeInformationController {
 
     @RequestMapping("/getAllHomeInf")
     @ResponseBody
-    public ResponseEntity<List<HomeInformation>> getAllHomeInf() {
+    public ResponseEntity<?> getAllHomeInf() {
         List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer_zch_hwz_gjc.getAllHomeInformation_zch_hwz_gjc();
-        return ResponseEntity.ok(allHomeInformationZchHwzGjc);
+        return ResponseEntity.ok(ResponseResult.ok(allHomeInformationZchHwzGjc));
     }
     @RequestMapping("/getHomeInfById")
     @ResponseBody
-    public HomeInformation getHomeInfById(@RequestBody HomeInformation home,HttpServletRequest req){
+    public ResponseEntity<?> getHomeInfById(@RequestBody HomeInformation home, HttpServletRequest req){
         home=homeInfSer_zch_hwz_gjc.getHomeInfByHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
-        return home;
+        return ResponseEntity.ok(ResponseResult.ok(home));
     }
 }
