@@ -20,20 +20,20 @@ import java.util.List;
 public class HomeInformationController {
 
     @Autowired
-    private HomeInfService homeInfSer_zch_hwz_gjc;
+    private HomeInfService homeInfSer;
 
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
     @RequestMapping("/getAllHomeInf")
     @ResponseBody
     public ResponseEntity<?> getAllHomeInf() {
-        List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer_zch_hwz_gjc.getAllHomeInformation_zch_hwz_gjc();
+        List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer.getAllHomeInformation_zch_hwz_gjc();
         return ResponseEntity.ok(ResponseResult.ok(allHomeInformationZchHwzGjc));
     }
     @RequestMapping("/getHomeInfById")
     @ResponseBody
     public ResponseEntity<?> getHomeInfById(@RequestBody HomeInformation home, HttpServletRequest req){
-        home=homeInfSer_zch_hwz_gjc.getHomeInfByHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+        home= homeInfSer.getHomeInfByHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
         return ResponseEntity.ok(ResponseResult.ok(home));
     }
 }

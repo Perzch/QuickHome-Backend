@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/Order")
 public class OrderController {
     @Autowired
-    private OrderService orderService_;
+    private OrderService orderService;
 
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
@@ -28,7 +28,7 @@ public class OrderController {
     public ResponseEntity<?> addOrder_zch_hwz_gjc(@RequestBody Order order, HttpServletRequest req) {
         order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(DynamicDoorPassword.dynamicDoorPassword()));
         order.setCreationTime_zch_hwz_gjc(NowTime.getNowTime());//当前时间
-        int x_zch_hwz_gjc = orderService_.addOrder_zch_hwz_gjc(order);
+        int x_zch_hwz_gjc = orderService.addOrder_zch_hwz_gjc(order);
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 }
