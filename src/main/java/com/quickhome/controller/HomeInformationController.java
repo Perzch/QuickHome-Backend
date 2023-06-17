@@ -1,7 +1,6 @@
 package com.quickhome.controller;
 
 import com.quickhome.entity.HomeInformation;
-import com.quickhome.entity.Order;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.HomeInfService;
 import jakarta.servlet.http.HttpServletRequest;

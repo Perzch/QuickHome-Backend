@@ -24,6 +24,6 @@
         select * from QuickHome_zch_hwz_gjc.tab_homeInformation_zch_hwz_gjc;
     </select>
     <select id="getHomeInfByHomeId_zch_hwz_gjc" parameterType="com.quickhome.entity.HomeInformation" resultMap="BaseResultMap">
-        select * from tab_homeinformation_zch_hwz_gjc where homeId_zch_hwz_gjc=#{homeId_zch_hwz_gjc};
+        select * from Quickhome_zch_hwz_gjc.tab_homeinformation_zch_hwz_gjc where homeId_zch_hwz_gjc=#{homeId_zch_hwz_gjc};
     </select>
 </mapper>

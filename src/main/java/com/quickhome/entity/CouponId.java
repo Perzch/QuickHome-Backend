@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class CouponId {
     private String couponName_zch_hwz_gjc;
     private String discountMethod_zch_hwz_gjc;
     private double discountIntensity_zch_hwz_gjc;
-    private double useThreshold_zch_hwz_gjc;
+    private BigDecimal useThreshold_zch_hwz_gjc;
     private String applicableScope_zch_hwz_gjc;
     private String discountInformation_zch_hwz_gjc;
     private Date earliestUseTime_zch_hwz_gjc;
@@ -26,7 +27,7 @@ public class CouponId {
     private String standby3_zch_hwz_gjc;
     private int visible_zch_hwz_gjc;
 
-    public CouponId(long couponId_zch_hwz_gjc, String couponName_zch_hwz_gjc, String discountMethod_zch_hwz_gjc, double discountIntensity_zch_hwz_gjc, double useThreshold_zch_hwz_gjc, String applicableScope_zch_hwz_gjc, String discountInformation_zch_hwz_gjc, Date earliestUseTime_zch_hwz_gjc, Date latestUseTime_zch_hwz_gjc) {
+    public CouponId(long couponId_zch_hwz_gjc, String couponName_zch_hwz_gjc, String discountMethod_zch_hwz_gjc, double discountIntensity_zch_hwz_gjc, BigDecimal useThreshold_zch_hwz_gjc, String applicableScope_zch_hwz_gjc, String discountInformation_zch_hwz_gjc, Date earliestUseTime_zch_hwz_gjc, Date latestUseTime_zch_hwz_gjc) {
         this.couponId_zch_hwz_gjc = couponId_zch_hwz_gjc;
         this.couponName_zch_hwz_gjc = couponName_zch_hwz_gjc;
         this.discountMethod_zch_hwz_gjc = discountMethod_zch_hwz_gjc;

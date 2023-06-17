@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserSandCoupons {
+public class UsersAndCoupons {
     private long UACID_zch_hwz_gjc;
     private String condition_zch_hwz_gjc;
     private long userId_zch_hwz_gjc;
@@ -19,7 +19,7 @@ public class UserSandCoupons {
     private String standby3_zch_hwz_gjc;
     private int visible_zch_hwz_gjc;
 
-    public UserSandCoupons(long UACID_zch_hwz_gjc, String condition_zch_hwz_gjc, long userId_zch_hwz_gjc, long couponId_zch_hwz_gjc) {
+    public UsersAndCoupons(long UACID_zch_hwz_gjc, String condition_zch_hwz_gjc, long userId_zch_hwz_gjc, long couponId_zch_hwz_gjc) {
         this.UACID_zch_hwz_gjc = UACID_zch_hwz_gjc;
         this.condition_zch_hwz_gjc = condition_zch_hwz_gjc;
         this.userId_zch_hwz_gjc = userId_zch_hwz_gjc;

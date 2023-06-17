@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -19,8 +20,8 @@ public class Order {
     private Date endTime_zch_hwz_gjc;
     private Date checkInTime_zch_hwz_gjc;
     private Date checkOutTime_zch_hwz_gjc;
-    private Double orderPayment_zch_hwz_gjc;
-    private Double orderDeposit_zch_hwz_gjc;
+    private BigDecimal orderPayment_zch_hwz_gjc;
+    private BigDecimal orderDeposit_zch_hwz_gjc;
     private String maintainStatus_zch_hwz_gjc;
     private String orderState_zch_hwz_gjc;
     private Long userId_zch_hwz_gjc;
@@ -29,7 +30,7 @@ public class Order {
     private String standby3_zch_hwz_gjc;
     private int visible_zch_hwz_gjc;
 
-    public Order(Long orderId_zch_hwz_gjc, Long homeId_zch_hwz_gjc, String dynamicDoorPassword_zch_hwz_gjc, Date creationTime_zch_hwz_gjc, Date endTime_zch_hwz_gjc, Date checkInTime_zch_hwz_gjc, Date checkOutTime_zch_hwz_gjc, Double orderPayment_zch_hwz_gjc, Double orderDeposit_zch_hwz_gjc, String maintainStatus_zch_hwz_gjc, String orderState_zch_hwz_gjc, Long userId_zch_hwz_gjc) {
+    public Order(Long orderId_zch_hwz_gjc, Long homeId_zch_hwz_gjc, String dynamicDoorPassword_zch_hwz_gjc, Date creationTime_zch_hwz_gjc, Date endTime_zch_hwz_gjc, Date checkInTime_zch_hwz_gjc, Date checkOutTime_zch_hwz_gjc, BigDecimal orderPayment_zch_hwz_gjc, BigDecimal orderDeposit_zch_hwz_gjc, String maintainStatus_zch_hwz_gjc, String orderState_zch_hwz_gjc, Long userId_zch_hwz_gjc) {
         this.orderId_zch_hwz_gjc = orderId_zch_hwz_gjc;
         this.homeId_zch_hwz_gjc = homeId_zch_hwz_gjc;
         DynamicDoorPassword_zch_hwz_gjc = dynamicDoorPassword_zch_hwz_gjc;

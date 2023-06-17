@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PayMentPassword {
+public class PaymentPassword {
     private long passwordID_zch_hwz_gjc;
     private long accountID_zch_hwz_gjc;
     private String paymentPassword_zch_hwz_gjc;
@@ -21,7 +21,7 @@ public class PayMentPassword {
     private String standby3_zch_hwz_gjc;
     private int visible_zch_hwz_gjc;
 
-    public PayMentPassword(long passwordID_zch_hwz_gjc, long accountID_zch_hwz_gjc, String paymentPassword_zch_hwz_gjc, Date setTime_zch_hwz_gjc) {
+    public PaymentPassword(long passwordID_zch_hwz_gjc, long accountID_zch_hwz_gjc, String paymentPassword_zch_hwz_gjc, Date setTime_zch_hwz_gjc) {
         this.passwordID_zch_hwz_gjc = passwordID_zch_hwz_gjc;
         this.accountID_zch_hwz_gjc = accountID_zch_hwz_gjc;
         this.paymentPassword_zch_hwz_gjc = paymentPassword_zch_hwz_gjc;
