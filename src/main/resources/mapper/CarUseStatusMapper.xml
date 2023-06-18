@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.CarUseStatusMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.CarUseStatus">
+            <id property="useStatusID_zch_hwz_gjc" column="useStatusID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="carID_zch_hwz_gjc" column="carID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="useDate_zch_hwz_gjc" column="useDate_zch_hwz_gjc" jdbcType="DATE"/>
+            <result property="useStatus_zch_hwz_gjc" column="useStatus_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="mileage_zch_hwz_gjc" column="mileage_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="oilVolume_zch_hwz_gjc" column="oilVolume_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="tireSituation_zch_hwz_gjc" column="tireSituation_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="otherMaintenance_zch_hwz_gjc" column="otherMaintenance_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="nextInspectionTime_zch_hwz_gjc" column="nextInspectionTime_zch_hwz_gjc" jdbcType="DATE"/>
+            <result property="inspectRemark_zch_hwz_gjc" column="inspectRemark_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        useStatusID_zch_hwz_gjc,carID_zch_hwz_gjc,useDate_zch_hwz_gjc,
+        useStatus_zch_hwz_gjc,mileage_zch_hwz_gjc,oilVolume_zch_hwz_gjc,
+        tireSituation_zch_hwz_gjc,otherMaintenance_zch_hwz_gjc,nextInspectionTime_zch_hwz_gjc,
+        inspectRemark_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
+        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+    </sql>
+</mapper>

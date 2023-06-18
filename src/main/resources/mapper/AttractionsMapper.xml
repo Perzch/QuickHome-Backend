@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.AttractionsMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.Attractions">
+            <id property="attractionsId_zch_hwz_gjc" column="attractionsId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="attractionsName_zch_hwz_gjc" column="attractionsName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="attractionInformation_zch_hwz_gjc" column="attractionInformation_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="openingTime_zch_hwz_gjc" column="openingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="closingTime_zch_hwz_gjc" column="closingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="attractionInDate_zch_hwz_gjc" column="attractionInDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        attractionsId_zch_hwz_gjc,attractionsName_zch_hwz_gjc,attractionInformation_zch_hwz_gjc,
+        openingTime_zch_hwz_gjc,closingTime_zch_hwz_gjc,attractionInDate_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>

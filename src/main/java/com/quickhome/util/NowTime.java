@@ -1,7 +1,5 @@
 package com.quickhome.util;
 
-import com.quickhome.entity.User;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;

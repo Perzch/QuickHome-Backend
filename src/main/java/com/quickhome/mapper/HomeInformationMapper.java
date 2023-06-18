@@ -1,10 +1,17 @@
 package com.quickhome.mapper;
 
-import com.quickhome.entity.HomeInformation;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.quickhome.domain.HomeInformation;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-public interface HomeInformationMapper {
-    List<HomeInformation> getAllHomeInformation_zch_hwz_gjc();
-    HomeInformation getHomeInfByHomeId_zch_hwz_gjc(long homeId_zch_hwz_gjc);
+/**
+* @author Perzch
+* @description 针对表【tab_homeInformation_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-17 19:42:29
+*/
+@Mapper
+public interface HomeInformationMapper extends BaseMapper<HomeInformation> {
+    List<HomeInformation> selectAll();
 }

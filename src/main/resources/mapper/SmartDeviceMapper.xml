@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.SmartDeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.SmartDevice">
+            <id property="deviceID_zch_hwz_gjc" column="deviceID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="deviceName_zch_hwz_gjc" column="deviceName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="deviceType_zch_hwz_gjc" column="deviceType_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="brand_zch_hwz_gjc" column="brand_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="price_zch_hwz_gjc" column="price_zch_hwz_gjc" jdbcType="DECIMAL"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        deviceID_zch_hwz_gjc,homeId_zch_hwz_gjc,deviceName_zch_hwz_gjc,
+        deviceType_zch_hwz_gjc,brand_zch_hwz_gjc,price_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>

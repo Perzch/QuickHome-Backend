@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.UserInformationMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.UserInformation">
+            <id property="UIId_zch_hwz_gjc" column="UIId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userGender_zch_hwz_gjc" column="userGender_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="userHeadId_zch_hwz_gjc" column="userHeadId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userBirthday_zch_hwz_gjc" column="userBirthday_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="userSignature_zch_hwz_gjc" column="userSignature_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="idCardType_zch_hwz_gjc" column="idCardType_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="idCardNumber_zch_hwz_gjc" column="idCardNumber_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="authenticationStatus_zch_hwz_gjc" column="authenticationStatus_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="authenticationTime_zch_hwz_gjc" column="authenticationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        UIId_zch_hwz_gjc,userId_zch_hwz_gjc,userGender_zch_hwz_gjc,
+        userHeadId_zch_hwz_gjc,userBirthday_zch_hwz_gjc,userSignature_zch_hwz_gjc,
+        idCardType_zch_hwz_gjc,idCardNumber_zch_hwz_gjc,authenticationStatus_zch_hwz_gjc,
+        authenticationTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
+        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+    </sql>
+</mapper>

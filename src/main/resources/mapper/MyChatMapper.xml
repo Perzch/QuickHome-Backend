@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.MyChatMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.MyChat">
+            <id property="chatId_zch_hwz_gjc" column="chatId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="messageReceive_zch_hwz_gjc" column="messageReceive_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="messageContent_zch_hwz_gjc" column="messageContent_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="messageSender_zch_hwz_gjc" column="messageSender_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="conversationDialogId_zch_hwz_gjc" column="conversationDialogId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="sendingTime_zch_hwz_gjc" column="sendingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        chatId_zch_hwz_gjc,messageReceive_zch_hwz_gjc,messageContent_zch_hwz_gjc,
+        messageSender_zch_hwz_gjc,conversationDialogId_zch_hwz_gjc,sendingTime_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>

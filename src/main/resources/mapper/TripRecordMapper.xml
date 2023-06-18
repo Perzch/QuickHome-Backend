@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.TripRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.TripRecord">
+            <id property="recordID_zch_hwz_gjc" column="recordID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="reservationID_zch_hwz_gjc" column="reservationID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="startingPoint_zch_hwz_gjc" column="startingPoint_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="destination_zch_hwz_gjc" column="destination_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="startingTime_zch_hwz_gjc" column="startingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="endTime_zch_hwz_gjc" column="endTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="distanceTraveled_zch_hwz_gjc" column="distanceTraveled_zch_hwz_gjc" jdbcType="DOUBLE"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        recordID_zch_hwz_gjc,reservationID_zch_hwz_gjc,startingPoint_zch_hwz_gjc,
+        destination_zch_hwz_gjc,startingTime_zch_hwz_gjc,endTime_zch_hwz_gjc,
+        distanceTraveled_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
+        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+    </sql>
+</mapper>

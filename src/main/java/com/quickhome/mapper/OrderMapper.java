@@ -1,8 +1,19 @@
 package com.quickhome.mapper;
 
-import com.quickhome.entity.Order;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.quickhome.domain.Order;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface OrderMapper {
-    int addOrder_zch_hwz_gjc(Order order);
-
+/**
+* @author Perzch
+* @description 针对表【tab_order_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-17 19:42:29
+* @Entity .domain.Order
+*/
+@Mapper
+public interface OrderMapper extends BaseMapper<Order> {
 }
+
+
+
+

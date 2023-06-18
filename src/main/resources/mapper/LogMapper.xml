@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.LogMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.Log">
+            <id property="logId_zch_hwz_gjc" column="logId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userPerformingId_zch_hwz_gjc" column="userPerformingId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="executionTime_zch_hwz_gjc" column="executionTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="executionContent_zch_hwz_gjc" column="executionContent_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="deviceId_zch_hwz_gjc" column="deviceId_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="executionPlace_zch_hwz_gjc" column="executionPlace_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        logId_zch_hwz_gjc,userPerformingId_zch_hwz_gjc,executionTime_zch_hwz_gjc,
+        executionContent_zch_hwz_gjc,deviceId_zch_hwz_gjc,executionPlace_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>
