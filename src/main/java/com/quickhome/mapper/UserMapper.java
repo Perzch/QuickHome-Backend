@@ -1,9 +1,20 @@
 package com.quickhome.mapper;
 
-import com.quickhome.entity.User;
-import com.quickhome.entity.UserInformation;
 
-public interface UserMapper {
-    int insertUser_zch_hwz_gjc(User user);
-    int insertUserInf_zch_hwz_gjc(UserInformation userInformation);
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.quickhome.domain.User;
+import com.quickhome.domain.UserInformation;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* @author Perzch
+* @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-17 19:42:29
+*/
+@Mapper
+public interface UserMapper extends BaseMapper<User> {
 }
+
+
+
+

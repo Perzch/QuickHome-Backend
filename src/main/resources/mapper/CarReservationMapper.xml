@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.CarReservationMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.CarReservation">
+            <id property="reservationID_zch_hwz_gjc" column="reservationID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="driverID_zch_hwz_gjc" column="driverID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="carID_zch_hwz_gjc" column="carID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="carReservationTime_zch_hwz_gjc" column="carReservationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="reservationStatus_zch_hwz_gjc" column="reservationStatus_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        reservationID_zch_hwz_gjc,driverID_zch_hwz_gjc,userId_zch_hwz_gjc,
+        carID_zch_hwz_gjc,carReservationTime_zch_hwz_gjc,reservationStatus_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>

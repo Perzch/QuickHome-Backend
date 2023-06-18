@@ -10,8 +10,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
-    map-underscore-to-camel-case: true
-
+    map-underscore-to-camel-case: false
 mybatis-plus:
-  mapper-locations: classpath:mapper/*/*.xml
-  type-aliases-package: com.quickhome.entity
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.quickhome.domain
+  configuration:
+    map-underscore-to-camel-case: false

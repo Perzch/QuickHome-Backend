@@ -1,9 +1,14 @@
 package com.quickhome.service;
 
-import com.quickhome.entity.User;
-import com.quickhome.entity.UserInformation;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.quickhome.domain.User;
+import com.quickhome.domain.UserInformation;
 
-public interface UserService {
-    int insertUser_zch_hwz_gjc(User user);
-    int insertUserInf_zch_hwz_gjc(UserInformation userInformation);
+/**
+* @author Perzch
+* @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service
+* @createDate 2023-06-17 19:42:29
+*/
+public interface UserService extends IService<User> {
+
 }

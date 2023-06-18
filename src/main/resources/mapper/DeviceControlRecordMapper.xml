@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.DeviceControlRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.DeviceControlRecord">
+            <id property="recordID_zch_hwz_gjc" column="recordID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="userID_zch_hwz_gjc" column="userID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="deviceID_zch_hwz_gjc" column="deviceID_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="controlTime_zch_hwz_gjc" column="controlTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="controlType_zch_hwz_gjc" column="controlType_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="controlContent_zch_hwz_gjc" column="controlContent_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="deviceReservationTime_zch_hwz_gjc" column="deviceReservationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        recordID_zch_hwz_gjc,userID_zch_hwz_gjc,deviceID_zch_hwz_gjc,
+        controlTime_zch_hwz_gjc,controlType_zch_hwz_gjc,controlContent_zch_hwz_gjc,
+        deviceReservationTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
+        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+    </sql>
+</mapper>

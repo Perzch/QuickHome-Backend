@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.CouponMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.Coupon">
+            <id property="couponId_zch_hwz_gjc" column="couponId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="couponName_zch_hwz_gjc" column="couponName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="discountMethod_zch_hwz_gjc" column="discountMethod_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="discountIntensity_zch_hwz_gjc" column="discountIntensity_zch_hwz_gjc" jdbcType="DOUBLE"/>
+            <result property="useThreshold_zch_hwz_gjc" column="useThreshold_zch_hwz_gjc" jdbcType="DOUBLE"/>
+            <result property="applicableScope_zch_hwz_gjc" column="applicableScope_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="discountInformation_zch_hwz_gjc" column="discountInformation_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="earliestUseTime_zch_hwz_gjc" column="earliestUseTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="latestUseTime_zch_hwz_gjc" column="latestUseTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        couponId_zch_hwz_gjc,couponName_zch_hwz_gjc,discountMethod_zch_hwz_gjc,
+        discountIntensity_zch_hwz_gjc,useThreshold_zch_hwz_gjc,applicableScope_zch_hwz_gjc,
+        discountInformation_zch_hwz_gjc,earliestUseTime_zch_hwz_gjc,latestUseTime_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+</mapper>

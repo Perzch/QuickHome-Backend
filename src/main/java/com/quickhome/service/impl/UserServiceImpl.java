@@ -1,24 +1,23 @@
 package com.quickhome.service.impl;
 
-import com.quickhome.entity.User;
-import com.quickhome.entity.UserInformation;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.quickhome.domain.User;
+import com.quickhome.domain.UserInformation;
 import com.quickhome.mapper.UserMapper;
 import com.quickhome.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("UserServ")
-public class UserServiceImpl implements UserService {
-    @Autowired
-    UserMapper userMapper;
-
-    @Override
-    public int insertUserInf_zch_hwz_gjc(UserInformation userInformation) {
-        return userMapper.insertUserInf_zch_hwz_gjc(userInformation);
-    }
-
-    @Override
-    public int insertUser_zch_hwz_gjc(User user) {
-        return userMapper.insertUser_zch_hwz_gjc(user);
-    }
+/**
+* @author Perzch
+* @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service实现
+* @createDate 2023-06-17 19:42:29
+*/
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, User>
+    implements UserService {
 }
+
+
+
+

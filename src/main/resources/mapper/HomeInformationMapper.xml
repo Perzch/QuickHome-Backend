@@ -1,29 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quickhome.mapper.HomeInformationMapper">
-    <resultMap id="BaseResultMap" type="com.quickhome.entity.HomeInformation">
-        <id column="homeId_zch_hwz_gjc" jdbcType="BIGINT" property="homeId_zch_hwz_gjc"/>
-        <result column="homeName_zch_hwz_gjc" property="homeName_zch_hwz_gjc"/>
-        <result column="homeType_zch_hwz_gjc" property="homeType_zch_hwz_gjc"/>
-        <result column="homeArea_zch_hwz_gjc" property="homeArea_zch_hwz_gjc"/>
-        <result column="homeDescribe_zch_hwz_gjc" property="homeDescribe_zch_hwz_gjc"/>
-        <result column="maxPerson_zch_hwz_gjc" property="maxPerson_zch_hwz_gjc"/>
-        <result column="homeFacilities_zch_hwz_gjc" property="homeFacilities_zch_hwz_gjc" />
-        <result column="homeDayRent_zch_hwz_gjc" property="homeDayRent_zch_hwz_gjc"/>
-        <result column="homeDeposit_zch_hwz_gjc" property="homeDeposit_zch_hwz_gjc"/>
-        <result column="homeState_zch_hwz_gjc" property="homeState_zch_hwz_gjc"/>
-        <result column="homeAddress_zch_hwz_gjc" property="homeAddress_zch_hwz_gjc"/>
-        <result column="homeInDate_zch_hwz_gjc" property="homeInDate_zch_hwz_gjc"/>
-        <result column="standby1_zch_hwz_gjc" property="standby1_zch_hwz_gjc"/>
-        <result column="standby2_zch_hwz_gjc" property="standby2_zch_hwz_gjc"/>
-        <result column="standby3_zch_hwz_gjc" property="standby3_zch_hwz_gjc"/>
-        <result column="visible_zch_hwz_gjc" property="visible_zch_hwz_gjc"/>
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.HomeInformation">
+            <id property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="homeName_zch_hwz_gjc" column="homeName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="homeType_zch_hwz_gjc" column="homeType_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="homeArea_zch_hwz_gjc" column="homeArea_zch_hwz_gjc" jdbcType="FLOAT"/>
+            <result property="homeDescribe_zch_hwz_gjc" column="homeDescribe_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="maxPerson_zch_hwz_gjc" column="maxPerson_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="homeFacilities_zch_hwz_gjc" column="homeFacilities_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="homeDayRent_zch_hwz_gjc" column="homeDayRent_zch_hwz_gjc" jdbcType="DOUBLE"/>
+            <result property="homeDeposit_zch_hwz_gjc" column="homeDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
+            <result property="homeState_zch_hwz_gjc" column="homeState_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="homeAddress_zch_hwz_gjc" column="homeAddress_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="homeInDate_zch_hwz_gjc" column="homeInDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
-    <select id="getAllHomeInformation_zch_hwz_gjc" resultMap="BaseResultMap">
-        select * from Quickhome_zch_hwz_gjc.tab_homeInformation_zch_hwz_gjc;
+
+    <sql id="Base_Column_List">
+        homeId_zch_hwz_gjc,homeName_zch_hwz_gjc,homeType_zch_hwz_gjc,
+        homeArea_zch_hwz_gjc,homeDescribe_zch_hwz_gjc,maxPerson_zch_hwz_gjc,
+        homeFacilities_zch_hwz_gjc,homeDayRent_zch_hwz_gjc,homeDeposit_zch_hwz_gjc,
+        homeState_zch_hwz_gjc,homeAddress_zch_hwz_gjc,homeInDate_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        visible_zch_hwz_gjc
+    </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tab_homeInformation_zch_hwz_gjc
     </select>
-    <select id="getHomeInfByHomeId_zch_hwz_gjc" parameterType="com.quickhome.entity.HomeInformation" resultMap="BaseResultMap">
-        select * from Quickhome_zch_hwz_gjc.tab_homeInformation_zch_hwz_gjc where homeId_zch_hwz_gjc=#{homeId_zch_hwz_gjc};
-    </select>
+
 </mapper>

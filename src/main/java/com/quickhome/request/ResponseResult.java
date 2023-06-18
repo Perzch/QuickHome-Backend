@@ -28,7 +28,6 @@ public class ResponseResult<T> {
      */
     private T data;
 
-
     public static ResponseResult<?> ok() {
         return new ResponseResult<>(200, "操作成功");
     }

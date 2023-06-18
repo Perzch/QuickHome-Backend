@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickhome.mapper.AttractionReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.AttractionReview">
+            <id property="attractionReviewId_zch_hwz_gjc" column="attractionReviewId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="comments_zch_hwz_gjc" column="comments_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="attractionsId_zch_hwz_gjc" column="attractionsId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="reviewTime_zch_hwz_gjc" column="reviewTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+            <result property="attractionLikeCount_zch_hwz_gjc" column="attractionLikeCount_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="attractionReviewRating_zch_hwz_gjc" column="attractionReviewRating_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="secondAttractionReviewId_zch_hwz_gjc" column="secondAttractionReviewId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        attractionReviewId_zch_hwz_gjc,comments_zch_hwz_gjc,userId_zch_hwz_gjc,
+        attractionsId_zch_hwz_gjc,reviewTime_zch_hwz_gjc,attractionLikeCount_zch_hwz_gjc,
+        attractionReviewRating_zch_hwz_gjc,secondAttractionReviewId_zch_hwz_gjc,standby1_zch_hwz_gjc,
+        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+    </sql>
+</mapper>
