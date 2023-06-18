@@ -37,7 +37,11 @@ public class ResponseResult<T> {
     }
 
     public static ResponseResult<?> error() {
-        return new ResponseResult<>(500, "操作失败");
+        return new ResponseResult<>(500, "服务器无响应!");
+    }
+
+    public static ResponseResult<?> error(String msg) {
+        return new ResponseResult<>(500, msg);
     }
 
     public static <T> ResponseResult<T> of(Integer code,String msg,T data) {
