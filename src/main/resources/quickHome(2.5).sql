@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS QuickHome_zch_hwz_gjc;
-CREATE DATABASE QuickHome_zch_hwz_gjc;
-USE QuickHome_zch_hwz_gjc;
+DROP DATABASE IF EXISTS Quickhome_zch_hwz_gjc;
+CREATE DATABASE Quickhome_zch_hwz_gjc;
+USE Quickhome_zch_hwz_gjc;
 
 -- 表1 用户表(tab_user_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_user_zch_hwz_gjc;

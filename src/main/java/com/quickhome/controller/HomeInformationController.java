@@ -27,7 +27,7 @@ public class HomeInformationController {
     @RequestMapping("/getAllHomeInf")
     @ResponseBody
     public ResponseEntity<?> getAllHomeInf() {
-        List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer.getAllHomeInformation_zch_hwz_gjc();
+        List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer.list();
         return ResponseEntity.ok(ResponseResult.ok(allHomeInformationZchHwzGjc));
     }
     @RequestMapping("/getHomeInfById")

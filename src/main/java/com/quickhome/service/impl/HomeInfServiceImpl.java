@@ -1,6 +1,7 @@
 package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.mapper.HomeInformationMapper;
 import com.quickhome.entity.HomeInformation;
 import com.quickhome.service.HomeInfService;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("homeInfServ")
-public class HomeInfServiceImpl implements HomeInfService {
+public class HomeInfServiceImpl extends ServiceImpl<HomeInformationMapper, HomeInformation> implements HomeInfService {
 
     @Autowired
     HomeInformationMapper homeInformationMapper;
