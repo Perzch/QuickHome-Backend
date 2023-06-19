@@ -8,6 +8,7 @@ import com.quickhome.service.UserInformationService;
 import com.quickhome.service.UserService;
 import com.quickhome.util.CreatAccount;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -61,25 +62,14 @@ public class UserController {
         }
     }
 
+    @SneakyThrows
     @RequestMapping("/userLogin")
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
-        System.out.println("3333333333");
-        try {
-            user = userService.userLogin(user);
-            System.out.println(user);
-            System.out.println("1111111111111");
-            if (user.getUserId_zch_hwz_gjc() != null) {
-                try {
-                    return ResponseEntity.ok(ResponseResult.ok(user));
-                }catch (Exception e){
-                    throw new RuntimeException(e);
-            }
-
-            } else {
-                return ResponseEntity.ok(ResponseResult.of(404, "未查询到相应账户!"));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        user = userService.userLogin(user);
+        if (user.getUserId_zch_hwz_gjc() != null) {
+                return ResponseEntity.ok(ResponseResult.ok(user));
+        } else {
+            return ResponseEntity.ok(ResponseResult.of(404, "未查询到相应账户!"));
         }
     }
 }

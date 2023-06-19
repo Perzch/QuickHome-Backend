@@ -155,8 +155,4 @@ public class User implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
-    public User getUser(){
-        return this;
-    }
 }

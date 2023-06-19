@@ -1,6 +1,7 @@
 package com.quickhome.exception;
 
 import com.quickhome.request.ResponseResult;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
+@Slf4j
 public final class GlobalExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<?> exceptionHandler(Exception e) {
+        log.error(e.getMessage());
         return ResponseEntity.ok(ResponseResult.error(e.getMessage()));
     }
 
     @ExceptionHandler(value = {BindValidationException.class})
     public ResponseEntity<?> exceptionHandler(BindValidationException e) {
+        log.error(e.getMessage());
         return ResponseEntity.ok(ResponseResult.error(e.getValidationErrors().getAllErrors().toString()));
     }
 
@@ -37,6 +41,7 @@ public final class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> parameterMissingExceptionHandler(MissingServletRequestParameterException e) {
+        log.error(e.getMessage());
         return ResponseEntity.ok(ResponseResult.of(403,e.getMessage()));
     }
 
@@ -48,6 +53,7 @@ public final class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
+        log.error(e.getMessage());
         return ResponseEntity.ok(ResponseResult.of(403,e.getMessage()));
     }
 
@@ -59,6 +65,7 @@ public final class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> parameterExceptionHandler(MethodArgumentNotValidException e) {
+        log.error(e.getMessage());
         // 获取异常信息
         BindingResult exceptions = e.getBindingResult();
         // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息

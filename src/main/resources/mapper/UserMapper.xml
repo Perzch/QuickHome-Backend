@@ -24,17 +24,17 @@
         userInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
         standby3_zch_hwz_gjc,visible_zch_hwz_gjc
     </sql>
-    <select id="getUserAccountByAccount_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultType="com.quickhome.domain.User">
+    <select id="getUserAccountByAccount_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
         select *
         from tab_user_zch_hwz_gjc
         where userAccount_zch_hwz_gjc = #{userAccount};
     </select>
-    <select id="userLogin" parameterType="com.quickhome.domain.User" resultType="com.quickhome.domain.User">
+    <select id="userLogin" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />
         from tab_user_zch_hwz_gjc
-        where userEmail_zch_hwz_gjc = #{user.userEmail_zch_hwz_gjc}
-           or userAccount_zch_hwz_gjc = #{user.userAccount_zch_hwz_gjc}
-           or userPhone_zch_hwz_gjc = #{user.userPhone_zch_hwz_gjc} and
-              userPwd_zch_hwz_gjc = #{user.userPwd_zch_hwz_gjc}
+        where userEmail_zch_hwz_gjc = #{userEmail_zch_hwz_gjc}
+           or userAccount_zch_hwz_gjc = #{userAccount_zch_hwz_gjc}
+           or userPhone_zch_hwz_gjc = #{userPhone_zch_hwz_gjc} and
+              userPwd_zch_hwz_gjc = #{userPwd_zch_hwz_gjc}
     </select>
 </mapper>
