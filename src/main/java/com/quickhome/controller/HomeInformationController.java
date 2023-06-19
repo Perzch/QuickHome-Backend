@@ -31,10 +31,11 @@ public class HomeInformationController {
         List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer_zch_hwz_gjc.list();
         return ResponseEntity.ok(ResponseResult.ok(allHomeInformationZchHwzGjc));
     }
+
     @RequestMapping("/getHomeInfById")
     @ResponseBody
-    public ResponseEntity<?> getHomeInfById(@RequestBody HomeInformation home, HttpServletRequest req){
-        home=homeInfSer_zch_hwz_gjc.getById(home.getHomeId_zch_hwz_gjc());
+    public ResponseEntity<?> getHomeInfById(@RequestBody HomeInformation home, HttpServletRequest req) {
+        home = homeInfSer_zch_hwz_gjc.getById(home.getHomeId_zch_hwz_gjc());
         return ResponseEntity.ok(ResponseResult.ok(home));
     }
 }

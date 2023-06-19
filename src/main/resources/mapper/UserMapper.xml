@@ -24,4 +24,9 @@
         userInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
         standby3_zch_hwz_gjc,visible_zch_hwz_gjc
     </sql>
+    <select id="getUserAccountByAccount_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultType="com.quickhome.domain.User">
+        select *
+        from tab_user_zch_hwz_gjc
+        where userAccount_zch_hwz_gjc = #{userAccount};
+    </select>
 </mapper>

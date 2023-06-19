@@ -2,7 +2,6 @@ package com.quickhome.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.domain.User;
-import com.quickhome.domain.UserInformation;
 
 /**
 * @author Perzch
@@ -11,4 +10,5 @@ import com.quickhome.domain.UserInformation;
 */
 public interface UserService extends IService<User> {
 
+    public User getUserAccountByAccount_zch_hwz_gjc(String userAccount);
 }

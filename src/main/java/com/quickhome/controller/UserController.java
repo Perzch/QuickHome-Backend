@@ -25,7 +25,10 @@ public class UserController {
     private UserInformationService userInformationService;
     @PostMapping("/insertUser")
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
-        user.setUserAccount_zch_hwz_gjc(String.valueOf(CreatAccount.creatAccount()));
+        String account=String.valueOf(CreatAccount.creatAccount());
+        while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null){
+            account=String.valueOf(CreatAccount.creatAccount());
+        }
         user.setUserInDate_zch_hwz_gjc(DateTime.now());//当前时间
         boolean flag = userService.save(user);
         if(flag) {
@@ -42,6 +45,15 @@ public class UserController {
             return ResponseEntity.ok(ResponseResult.ok(userInformation));
         } else {
             return ResponseEntity.ok(ResponseResult.of(100,"用户信息注册失败!"));
+        }
+    }
+    @RequestMapping("/getUserAccountByAccount")
+    public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req){
+        user = userService.getUserAccountByAccount_zch_hwz_gjc(user.getUserAccount_zch_hwz_gjc());
+        if(user != null){
+            return ResponseEntity.ok(ResponseResult.of(100,"该账号已被使用!"));
+        }else {
+            return ResponseEntity.ok(ResponseResult.of(200,"该账号可用!"));
         }
     }
 }
