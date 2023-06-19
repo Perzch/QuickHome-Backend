@@ -16,3 +16,9 @@ mybatis-plus:
   type-aliases-package: com.quickhome.domain
   configuration:
     map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: visible_zch_hwz_gjc
+      logic-delete-value: 0,
+      logic-not-delete-value: 1

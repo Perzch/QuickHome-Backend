@@ -15,7 +15,7 @@ CREATE TABLE tab_user_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 0-- 可见性
 );
 -- 表2 用户信息表
 DROP TABLE IF EXISTS tab_userInformation_zch_hwz_gjc;
