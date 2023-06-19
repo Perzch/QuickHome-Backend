@@ -11,4 +11,5 @@ import com.quickhome.domain.User;
 public interface UserService extends IService<User> {
 
     public User getUserAccountByAccount_zch_hwz_gjc(String userAccount);
+    public User userLogin(User user);
 }

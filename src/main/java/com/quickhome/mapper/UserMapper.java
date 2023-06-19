@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     public User getUserAccountByAccount_zch_hwz_gjc(String userAccount);
+    public User userLogin(User user);
 }
 
 

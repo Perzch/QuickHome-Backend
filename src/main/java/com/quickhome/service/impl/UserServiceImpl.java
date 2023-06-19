@@ -20,6 +20,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User getUserAccountByAccount_zch_hwz_gjc(String userAccount) {
         return baseMapper.getUserAccountByAccount_zch_hwz_gjc(userAccount);
     }
+
+    @Override
+    public User userLogin(User user) {
+        return baseMapper.userLogin(user);
+    }
 }
 
 
