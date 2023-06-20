@@ -5,17 +5,17 @@ USE Quickhome_zch_hwz_gjc;
 -- 表1 用户表(tab_user_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_user_zch_hwz_gjc;
 CREATE TABLE tab_user_zch_hwz_gjc (
-	userId_zch_hwz_gjc BIGINT PRIMARY KEY auto_increment,-- 用户编号
-	userAccount_zch_hwz_gjc VARCHAR ( 50 ),-- 用户账户
-	userName_zch_hwz_gjc VARCHAR ( 50 ),-- 用户名
-	userPwd_zch_hwz_gjc VARCHAR ( 50 ),-- 用户密码
-	userEmail_zch_hwz_gjc VARCHAR ( 100 ),-- 用户电子邮箱地址
-	userPhone_zch_hwz_gjc VARCHAR ( 50 ),-- 用户手机号
-	userInDate_zch_hwz_gjc DATETIME,-- 用户注册日期
-	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
-	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
-	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int default 0-- 可见性
+	userId_zch_hwz_gjc BIGINT PRIMARY KEY auto_increment comment "用户编号",
+	userAccount_zch_hwz_gjc VARCHAR ( 50 ) comment "用户账户",
+	userName_zch_hwz_gjc VARCHAR ( 50 ) comment "用户名",
+	userPwd_zch_hwz_gjc VARCHAR ( 50 ) comment "用户密码",
+	userEmail_zch_hwz_gjc VARCHAR ( 100 ) comment "用户电子邮箱地址",
+	userPhone_zch_hwz_gjc VARCHAR ( 50 ) comment "用户手机号",
+	userInDate_zch_hwz_gjc DATETIME comment "用户注册日期",
+	standby1_zch_hwz_gjc VARCHAR(50) comment "备用字段1",
+	standby2_zch_hwz_gjc VARCHAR(50) comment "备用字段2",
+	standby3_zch_hwz_gjc VARCHAR(50) comment "备用字段3",
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表2 用户信息表
 DROP TABLE IF EXISTS tab_userInformation_zch_hwz_gjc;
@@ -33,7 +33,7 @@ CREATE TABLE tab_userInformation_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表3 头像表
 DROP TABLE IF EXISTS tab_userHeadImage_zch_hwz_gjc;
@@ -45,7 +45,7 @@ CREATE TABLE tab_userHeadImage_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表4 超级管理员表
 DROP TABLE IF EXISTS tab_superManager_zch_hwz_gjc;
@@ -57,7 +57,7 @@ createTime_zch_hwz_gjc DATETIME, -- 超级管理员账号创建时间
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表5 管理员表
 DROP TABLE IF EXISTS tab_manager_zch_hwz_gjc;
@@ -73,7 +73,7 @@ managerInDate_zch_hwz_gjc DATETIME, -- 注册日期
 	standby1_zch_hwz_gjc VARCHAR(50), -- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50), -- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50), -- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表6 金额表
 DROP TABLE IF EXISTS tab_accountBalance_zch_hwz_gjc;
@@ -87,22 +87,9 @@ CREATE TABLE tab_accountBalance_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
--- -- 表26: 账户表
--- CREATE TABLE tab_account_zch_hwz_gjc(
--- accountID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,  -- 账号编号
--- userID_zch_hwz_gjc BIGINT,  -- 用户编号
--- accountName_zch_hwz_gjc VARCHAR(50),   -- 账户名称 
--- accountNumber_zch_hwz_gjc VARCHAR(50), -- 账号
--- accountBalance_zch_hwz_gjc DECIMAL(10,2), -- 账号余额
--- 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
--- 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
--- 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
--- 	visible_zch_hwz_gjc int -- 可见性
--- );
--- 
 -- 表7 房屋信息表(tab_Home_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_homeInformation_zch_hwz_gjc;
 CREATE TABLE tab_homeInformation_zch_hwz_gjc (
@@ -121,7 +108,7 @@ CREATE TABLE tab_homeInformation_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表8 维修保洁与维护信息表(tab_repairCleaningAndMaintenanceInformation_zch_hwz_gjc)
@@ -139,7 +126,7 @@ CREATE TABLE tab_RCAMI_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表9 用户统一通知表(tab_userNotification_zch_hwz_gjc)
@@ -152,7 +139,7 @@ CREATE TABLE tab_userNotification_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表10 优惠券表(tab_coupon_zch_hwz_gjc)
@@ -170,7 +157,7 @@ CREATE TABLE tab_coupon_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 附表1 优惠用户详情表
 DROP TABLE IF EXISTS tab_usersAndCoupons_zch_hwz_gjc;
@@ -182,7 +169,7 @@ CREATE TABLE tab_usersAndCoupons_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表11 日志表(tab_log_zch_hwz_gjc)
@@ -197,7 +184,7 @@ CREATE TABLE tab_log_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表12 房屋评论表(tab_housingReview_zch_hwz_gjc)
@@ -214,23 +201,23 @@ CREATE TABLE tab_housingReview_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 
 -- 表13 私信聊天记录
 DROP TABLE IF EXISTS tab_myChat_zch_hwz_gjc;
 CREATE TABLE tab_myChat_zch_hwz_gjc(
-chatId_zch_hwz_gjc BIGINT PRIMARY KEY auto_increment,-- 聊天id
-messageReceive_zch_hwz_gjc BIGINT,-- 消息接收人编号
-messageContent_zch_hwz_gjc VARCHAR(500),-- 消息内容
-messageSender_zch_hwz_gjc BIGINT,-- 消息发送人编号
-conversationDialogId_zch_hwz_gjc BIGINT,-- 对话框编号
-sendingTime_zch_hwz_gjc DATETIME,-- 发送时间
+    chatId_zch_hwz_gjc BIGINT PRIMARY KEY auto_increment,-- 聊天id
+    messageReceive_zch_hwz_gjc BIGINT,-- 消息接收人编号
+    messageContent_zch_hwz_gjc VARCHAR(500),-- 消息内容
+    messageSender_zch_hwz_gjc BIGINT,-- 消息发送人编号
+    conversationDialogId_zch_hwz_gjc BIGINT,-- 对话框编号
+    sendingTime_zch_hwz_gjc DATETIME,-- 发送时间
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表14 景点表(tab_attractions_zch_hwz_gjc)
@@ -245,7 +232,7 @@ CREATE TABLE tab_attractions_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表15 景点评论表表(tab_attractionReview_zch_hwz_gjc)
@@ -262,7 +249,7 @@ CREATE TABLE tab_attractionReview_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表16 房屋收藏表
@@ -275,7 +262,7 @@ CREATE TABLE tab_houseCollection_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+    visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 -- 表17 景点收藏表
 DROP TABLE IF EXISTS tab_attractionCollection_zch_hwz_gjc;
@@ -287,7 +274,7 @@ CREATE TABLE tab_attractionCollection_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表18 订单表(tab_order_zch_hwz_gjc)
@@ -308,7 +295,7 @@ CREATE TABLE tab_order_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表19: 司机信息表 
@@ -322,7 +309,7 @@ CREATE TABLE tab_driverInfo_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 ); 
 
 -- 表20: 汽车信息表
@@ -337,7 +324,7 @@ CREATE TABLE tab_carInfo_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表21: 预约表 
@@ -352,13 +339,13 @@ CREATE TABLE tab_carReservation_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表22:行程记录表
 DROP TABLE IF EXISTS tab_tripRecord_zch_hwz_gjc;
 CREATE TABLE tab_tripRecord_zch_hwz_gjc(
-    recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT,-- 记录编号
+    recordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT comment "记录编号",
     reservationID_zch_hwz_gjc BIGINT, -- 外键,关联预约表
     startingPoint_zch_hwz_gjc VARCHAR(50),   -- 起点
     destination_zch_hwz_gjc VARCHAR(50),   -- 终点
@@ -368,7 +355,7 @@ CREATE TABLE tab_tripRecord_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表23: 智能设备表
@@ -383,7 +370,7 @@ CREATE TABLE tab_smartDevice_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表24:设备状态表
@@ -396,7 +383,7 @@ CREATE TABLE tab_deviceStatus_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 ); 
 
 -- 表25: 设备控制记录表
@@ -412,7 +399,7 @@ CREATE TABLE tab_deviceControlRecord_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 
@@ -430,7 +417,7 @@ CREATE TABLE tab_carOrder_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 
@@ -444,7 +431,7 @@ CREATE TABLE tab_paymentPassword_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表29 房屋图片表
@@ -457,7 +444,7 @@ CREATE TABLE tab_homeImage_zch_hwz_gjc (
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表30 汽车使用情况表
@@ -476,7 +463,7 @@ CREATE TABLE tab_carUseStatus_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表31 维修保洁绑定房屋表
@@ -491,7 +478,7 @@ CREATE TABLE tab_adminHomeBinding_zch_hwz_gjc(
 	standby1_zch_hwz_gjc VARCHAR(50),-- 备用字段1
 	standby2_zch_hwz_gjc VARCHAR(50),-- 备用字段2
 	standby3_zch_hwz_gjc VARCHAR(50),-- 备用字段3
-	visible_zch_hwz_gjc int -- 可见性
+	visible_zch_hwz_gjc int default 1 comment "可见性"
 );
 
 -- 表2 用户信息表

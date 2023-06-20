@@ -24,7 +24,7 @@ public class HomeInformationController {
     private HomeInformationService homeInfSer_zch_hwz_gjc;
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
-    @GetMapping("/getAllHomeInf")
+    @GetMapping("/")
     @ResponseBody
     public ResponseEntity<?> getAllHomeInf() {
         List<HomeInformation> allHomeInformationZchHwzGjc = homeInfSer_zch_hwz_gjc.list();

@@ -12,9 +12,9 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 @Controller("UserCon")
 @RequestMapping("/User")
@@ -26,6 +26,7 @@ public class UserController {
     private UserInformationService userInformationService;
 
     @PostMapping("/insertUser")
+    @ResponseBody
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
         String account = String.valueOf(CreatAccount.creatAccount());
         while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null) {
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/insertUserInf")
+    @ResponseBody
     public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation, HttpServletRequest req) {
         userInformation.setAuthenticationTime_zch_hwz_gjc(DateTime.now());//当前时间
         boolean flag = userInformationService.save(userInformation);
@@ -51,11 +53,10 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/getUserAccountByAccount")
-    public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
-        user = userService.getUserAccountByAccount_zch_hwz_gjc(user.getUserAccount_zch_hwz_gjc());
-        System.out.println("2222222222222");
-        if (user.getUserId_zch_hwz_gjc() != null) {
+    @GetMapping("/getUserAccountByAccount")
+    @ResponseBody
+    public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount, HttpServletRequest req) {
+        if (userService.getUserAccountByAccount_zch_hwz_gjc(userAccount).getUserId_zch_hwz_gjc() != null) {
             return ResponseEntity.ok(ResponseResult.of(100, "该账号已被使用!"));
         } else {
             return ResponseEntity.ok(ResponseResult.ok("该账号可用!"));
@@ -63,13 +64,22 @@ public class UserController {
     }
 
     @SneakyThrows
-    @RequestMapping("/userLogin")
-    public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
+    @GetMapping("/userLogin")
+    public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestParam(required = false) String userAccount,
+                                                                   @RequestParam(required = false) String userEmail,
+                                                                   @RequestParam(required = false) String userPhone,
+                                                                   @RequestParam String userPwd,
+                                                                   HttpServletRequest req) {
+        User user = User.builder()
+                .userAccount_zch_hwz_gjc(userAccount)
+                .userEmail_zch_hwz_gjc(userEmail)
+                .userPhone_zch_hwz_gjc(userPhone)
+                .userPwd_zch_hwz_gjc(userPwd).build();
         user = userService.userLogin(user);
         if (user.getUserId_zch_hwz_gjc() != null) {
-                return ResponseEntity.ok(ResponseResult.ok(user));
+            return ResponseEntity.ok(ResponseResult.ok(user));
         } else {
-            return ResponseEntity.ok(ResponseResult.of(404, "未查询到相应账户!"));
+            return ResponseEntity.ok(ResponseResult.of(USER_NOT_EXIST));
         }
     }
 }

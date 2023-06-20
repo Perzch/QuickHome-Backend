@@ -1,5 +1,6 @@
 package com.quickhome.exception;
 
+import com.quickhome.domain.User;
 import com.quickhome.request.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -42,7 +43,7 @@ public final class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> parameterMissingExceptionHandler(MissingServletRequestParameterException e) {
         log.error(e.getMessage());
-        return ResponseEntity.ok(ResponseResult.of(403,e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
     }
 
     /**
@@ -54,7 +55,7 @@ public final class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
-        return ResponseEntity.ok(ResponseResult.of(403,e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
     }
 
     /**
@@ -74,9 +75,9 @@ public final class GlobalExceptionHandler {
             if (!errors.isEmpty()) {
                 List<String> errorsMessage = new ArrayList<>();
                 errors.forEach(err -> errorsMessage.add(err.getDefaultMessage()));
-                return ResponseEntity.ok(ResponseResult.of(403,(StringUtils.join(errorsMessage,','))));
+                return ResponseEntity.ok(ResponseResult.of(403, (StringUtils.join(errorsMessage, ','))));
             }
         }
-        return ResponseEntity.ok(ResponseResult.of(403,e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
     }
 }
