@@ -64,6 +64,7 @@ public class UserController {
     }
 
     @SneakyThrows
+    @ResponseBody
     @GetMapping("/userLogin")
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestParam(required = false) String userAccount,
                                                                    @RequestParam(required = false) String userEmail,
@@ -80,6 +81,6 @@ public class UserController {
             return ResponseEntity.ok(ResponseResult.ok(user));
         } else {
             return ResponseEntity.ok(ResponseResult.of(USER_NOT_EXIST));
-        }
+         }
     }
 }
