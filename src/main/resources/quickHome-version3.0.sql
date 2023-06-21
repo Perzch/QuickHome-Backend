@@ -598,7 +598,7 @@ ALTER TABLE tab_tripRecord_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_tripRecord_tab_carReservation_zch_hwz_gjc FOREIGN KEY (reservationID_zch_hwz_gjc) REFERENCES tab_carReservation_zch_hwz_gjc (reservationID_zch_hwz_gjc);
 -- 表23: 房屋设备表
 ALTER TABLE tab_homeDevice_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_smartDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc);
+    ADD CONSTRAINT FK_tab_homeDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc);
 -- 表24:设备状态表
 ALTER TABLE tab_deviceStatus_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_deviceStatus_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc);
@@ -606,9 +606,6 @@ ALTER TABLE tab_deviceStatus_zch_hwz_gjc
 ALTER TABLE tab_deviceControlRecord_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_deviceControlRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc),
     ADD CONSTRAINT FK_tab_deviceControlRecord_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc);
--- -- 表26: 账户表
--- ALTER TABLE tab_account_zch_hwz_gjc
--- ADD CONSTRAINT FK_tab_account_tab_user_zch_hwz_gjc FOREIGN KEY(userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc(userID_zch_hwz_gjc);
 -- 表27: 汽车订单表
 ALTER TABLE tab_carOrder_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_carOrder_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc),
