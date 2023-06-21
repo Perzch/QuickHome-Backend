@@ -1,15 +1,14 @@
 package com.quickhome.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.domain.TripRecord;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author Perzch
-* @description 针对表【tab_tripRecord_zch_hwz_gjc】的数据库操作Mapper
-* @createDate 2023-06-17 19:42:29
+* @author Tim-h
+* @description 针对表【tab_triprecord_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-21 09:48:49
+* @Entity .domain.TripRecord
 */
-@Mapper
 public interface TripRecordMapper extends BaseMapper<TripRecord> {
 
 }

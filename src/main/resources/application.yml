@@ -19,6 +19,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      logic-delete-field: visible_zch_hwz_gjc
+      logic-delete-field: deleted_zch_hwz_gjc
       logic-delete-value: 0,
       logic-not-delete-value: 1

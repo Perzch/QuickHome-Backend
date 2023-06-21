@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.quickhome.domain.Manager">
             <id property="managerId_zch_hwz_gjc" column="managerId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="administratorCategory_zch_hwz_gjc" column="administratorCategory_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="managerCategory_zch_hwz_gjc" column="managerCategory_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="managerAccount_zch_hwz_gjc" column="managerAccount_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="managerPwd_zch_hwz_gjc" column="managerPwd_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="managerName_zch_hwz_gjc" column="managerName_zch_hwz_gjc" jdbcType="VARCHAR"/>
@@ -16,13 +16,13 @@
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        managerId_zch_hwz_gjc,administratorCategory_zch_hwz_gjc,managerAccount_zch_hwz_gjc,
+        managerId_zch_hwz_gjc,managerCategory_zch_hwz_gjc,managerAccount_zch_hwz_gjc,
         managerPwd_zch_hwz_gjc,managerName_zch_hwz_gjc,managerPhone_zch_hwz_gjc,
         managerGender_zch_hwz_gjc,managerInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,
-        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

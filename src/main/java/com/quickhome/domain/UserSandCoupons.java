@@ -1,7 +1,9 @@
 package com.quickhome.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -11,61 +13,61 @@ import lombok.NoArgsConstructor;
 
 /**
  * 
- * @TableName tab_usersAndCoupons_zch_hwz_gjc
+ * @TableName tab_usersandcoupons_zch_hwz_gjc
  */
-@TableName(value ="tab_usersAndCoupons_zch_hwz_gjc")
+@TableName(value ="tab_usersandcoupons_zch_hwz_gjc")
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UsersAndCoupons implements Serializable {
+@AllArgsConstructor
+@Builder
+public class UserSandCoupons implements Serializable {
     /**
-     * 
+     * 优惠用户详情编号
      */
     @TableId(value = "UACID_zch_hwz_gjc", type = IdType.AUTO)
     private Long UACID_zch_hwz_gjc;
 
     /**
-     * 
+     * 使用状况
      */
     @TableField(value = "condition_zch_hwz_gjc")
     private String condition_zch_hwz_gjc;
 
     /**
-     * 
+     * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
     private Long userId_zch_hwz_gjc;
 
     /**
-     * 
+     * 优惠券编号
      */
     @TableField(value = "couponId_zch_hwz_gjc")
     private Long couponId_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段1
      */
     @TableField(value = "standby1_zch_hwz_gjc")
     private String standby1_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段2
      */
     @TableField(value = "standby2_zch_hwz_gjc")
     private String standby2_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段3
      */
     @TableField(value = "standby3_zch_hwz_gjc")
     private String standby3_zch_hwz_gjc;
 
     /**
-     * 
+     * 逻辑删除（默认0，逻辑删除1）
      */
-    @TableField(value = "visible_zch_hwz_gjc")
-    private Integer visible_zch_hwz_gjc;
+    @TableField(value = "deleted_zch_hwz_gjc")
+    private Integer deleted_zch_hwz_gjc;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -81,7 +83,7 @@ public class UsersAndCoupons implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UsersAndCoupons other = (UsersAndCoupons) that;
+        UserSandCoupons other = (UserSandCoupons) that;
         return (this.getUACID_zch_hwz_gjc() == null ? other.getUACID_zch_hwz_gjc() == null : this.getUACID_zch_hwz_gjc().equals(other.getUACID_zch_hwz_gjc()))
             && (this.getCondition_zch_hwz_gjc() == null ? other.getCondition_zch_hwz_gjc() == null : this.getCondition_zch_hwz_gjc().equals(other.getCondition_zch_hwz_gjc()))
             && (this.getUserId_zch_hwz_gjc() == null ? other.getUserId_zch_hwz_gjc() == null : this.getUserId_zch_hwz_gjc().equals(other.getUserId_zch_hwz_gjc()))
@@ -89,7 +91,7 @@ public class UsersAndCoupons implements Serializable {
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
-            && (this.getVisible_zch_hwz_gjc() == null ? other.getVisible_zch_hwz_gjc() == null : this.getVisible_zch_hwz_gjc().equals(other.getVisible_zch_hwz_gjc()));
+            && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
 
     @Override
@@ -103,7 +105,7 @@ public class UsersAndCoupons implements Serializable {
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getVisible_zch_hwz_gjc() == null) ? 0 : getVisible_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
     }
 
@@ -120,7 +122,7 @@ public class UsersAndCoupons implements Serializable {
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
-        sb.append(", visible_zch_hwz_gjc=").append(visible_zch_hwz_gjc);
+        sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

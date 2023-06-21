@@ -1,12 +1,12 @@
 package com.quickhome.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.domain.Attractions;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
-* @author Perzch
+* @author Tim-h
 * @description 针对表【tab_attractions_zch_hwz_gjc】的数据库操作Service
-* @createDate 2023-06-17 19:42:28
+* @createDate 2023-06-21 09:45:15
 */
 public interface AttractionsService extends IService<Attractions> {
 

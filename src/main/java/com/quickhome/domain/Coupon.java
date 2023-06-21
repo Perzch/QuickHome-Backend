@@ -18,87 +18,87 @@ import lombok.NoArgsConstructor;
  */
 @TableName(value ="tab_coupon_zch_hwz_gjc")
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Coupon implements Serializable {
     /**
-     * 
+     * 优惠券编号
      */
     @TableId(value = "couponId_zch_hwz_gjc", type = IdType.AUTO)
     private Long couponId_zch_hwz_gjc;
 
     /**
-     * 
+     * 优惠券名称
      */
     @TableField(value = "couponName_zch_hwz_gjc")
     private String couponName_zch_hwz_gjc;
 
     /**
-     * 
+     * 优惠方式
      */
     @TableField(value = "discountMethod_zch_hwz_gjc")
     private String discountMethod_zch_hwz_gjc;
 
     /**
-     * 
+     * 优惠力度
      */
     @TableField(value = "discountIntensity_zch_hwz_gjc")
     private Double discountIntensity_zch_hwz_gjc;
 
     /**
-     * 
+     * 使用门槛
      */
     @TableField(value = "useThreshold_zch_hwz_gjc")
     private Double useThreshold_zch_hwz_gjc;
 
     /**
-     * 
+     * 适用范围
      */
     @TableField(value = "applicableScope_zch_hwz_gjc")
     private String applicableScope_zch_hwz_gjc;
 
     /**
-     * 
+     * 优惠信息
      */
     @TableField(value = "discountInformation_zch_hwz_gjc")
     private String discountInformation_zch_hwz_gjc;
 
     /**
-     * 
+     * 最早使用时间
      */
     @TableField(value = "earliestUseTime_zch_hwz_gjc")
     private Date earliestUseTime_zch_hwz_gjc;
 
     /**
-     * 
+     * 最晚使用时间
      */
     @TableField(value = "latestUseTime_zch_hwz_gjc")
     private Date latestUseTime_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段1
      */
     @TableField(value = "standby1_zch_hwz_gjc")
     private String standby1_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段2
      */
     @TableField(value = "standby2_zch_hwz_gjc")
     private String standby2_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段3
      */
     @TableField(value = "standby3_zch_hwz_gjc")
     private String standby3_zch_hwz_gjc;
 
     /**
-     * 
+     * 逻辑删除（默认0，逻辑删除1）
      */
-    @TableField(value = "visible_zch_hwz_gjc")
-    private Integer visible_zch_hwz_gjc;
+    @TableField(value = "deleted_zch_hwz_gjc")
+    private Integer deleted_zch_hwz_gjc;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -127,7 +127,7 @@ public class Coupon implements Serializable {
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
-            && (this.getVisible_zch_hwz_gjc() == null ? other.getVisible_zch_hwz_gjc() == null : this.getVisible_zch_hwz_gjc().equals(other.getVisible_zch_hwz_gjc()));
+            && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
 
     @Override
@@ -146,7 +146,7 @@ public class Coupon implements Serializable {
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getVisible_zch_hwz_gjc() == null) ? 0 : getVisible_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
     }
 
@@ -168,7 +168,7 @@ public class Coupon implements Serializable {
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
-        sb.append(", visible_zch_hwz_gjc=").append(visible_zch_hwz_gjc);
+        sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
