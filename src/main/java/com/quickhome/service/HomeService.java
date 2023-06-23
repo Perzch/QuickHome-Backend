@@ -2,6 +2,11 @@ package com.quickhome.service;
 
 import com.quickhome.domain.Home;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.quickhome.pojo.PojoHome;
+import com.quickhome.pojo.PojoPageHome;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author Tim-h
@@ -9,5 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:47:09
 */
 public interface HomeService extends IService<Home> {
+    public List<Home> getHomesByPage(Long page, Long size);
 
 }

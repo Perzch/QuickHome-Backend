@@ -23,4 +23,9 @@
         standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
+    <select id="selectHomeByPage" resultType="com.quickhome.domain.Home">
+        SELECT *
+        FROM tab_home_zch_hwz_gjc
+            LIMIT #{page}, #{size}
+    </select>
 </mapper>

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author Tim-h
  * @description 用于前端获取界面的pojoPage
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PojoPageHome {
-    private Integer page;
-    private Integer size;
-    private PojoHome pojoHome;
+    private Long page;
+    private Long size;
+    private List<PojoHome> pojoHome;
 }

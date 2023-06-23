@@ -20,4 +20,7 @@
         inDateTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
         standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
+    <select id="getAllById" parameterType="Long" resultMap="BaseResultMap">
+        select * from tab_homeimage_zch_hwz_gjc where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+    </select>
 </mapper>

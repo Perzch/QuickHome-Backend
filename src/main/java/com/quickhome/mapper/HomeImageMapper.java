@@ -3,6 +3,8 @@ package com.quickhome.mapper;
 import com.quickhome.domain.HomeImage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
 * @author Tim-h
 * @description 针对表【tab_homeimage_zch_hwz_gjc】的数据库操作Mapper
@@ -10,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity .domain.HomeImage
 */
 public interface HomeImageMapper extends BaseMapper<HomeImage> {
+    public List<HomeImage> getAllById(Long homeId_zch_hwz_gjc);
 
 }
 

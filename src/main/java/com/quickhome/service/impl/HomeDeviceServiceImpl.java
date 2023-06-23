@@ -6,6 +6,8 @@ import com.quickhome.service.HomeDeviceService;
 import com.quickhome.mapper.HomeDeviceMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author Tim-h
 * @description 针对表【tab_homedevice_zch_hwz_gjc】的数据库操作Service实现
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class HomeDeviceServiceImpl extends ServiceImpl<HomeDeviceMapper, HomeDevice>
     implements HomeDeviceService{
 
+    @Override
+    public List<HomeDevice> getAllByHomeId(Long id) {
+        return baseMapper.getAllById(id);
+    }
 }
 
 
