@@ -14,21 +14,19 @@
             <result property="checkOutTime_zch_hwz_gjc" column="checkOutTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="orderPayment_zch_hwz_gjc" column="orderPayment_zch_hwz_gjc" jdbcType="DOUBLE"/>
             <result property="orderDeposit_zch_hwz_gjc" column="orderDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="maintainStatus_zch_hwz_gjc" column="maintainStatus_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="orderState_zch_hwz_gjc" column="orderState_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         orderId_zch_hwz_gjc,homeId_zch_hwz_gjc,DynamicDoorPassword_zch_hwz_gjc,
         creationTime_zch_hwz_gjc,endTime_zch_hwz_gjc,checkInTime_zch_hwz_gjc,
         checkOutTime_zch_hwz_gjc,orderPayment_zch_hwz_gjc,orderDeposit_zch_hwz_gjc,
-        maintainStatus_zch_hwz_gjc,orderState_zch_hwz_gjc,userId_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
-        visible_zch_hwz_gjc
+        orderState_zch_hwz_gjc,userId_zch_hwz_gjc,standby1_zch_hwz_gjc,
+        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

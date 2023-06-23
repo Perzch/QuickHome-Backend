@@ -15,26 +15,32 @@
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         userId_zch_hwz_gjc,userAccount_zch_hwz_gjc,userName_zch_hwz_gjc,
         userPwd_zch_hwz_gjc,userEmail_zch_hwz_gjc,userPhone_zch_hwz_gjc,
         userInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
     <select id="getUserAccountByAccount_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
-        select *
+        select userAccount_zch_hwz_gjc
         from tab_user_zch_hwz_gjc
-        where userAccount_zch_hwz_gjc = #{userAccount};
+        where userAccount_zch_hwz_gjc = #{userAccount}
     </select>
-    <select id="userLogin" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" />
+    <select id="userLogin_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from tab_user_zch_hwz_gjc
-        where userEmail_zch_hwz_gjc = #{userEmail_zch_hwz_gjc}
-           or userAccount_zch_hwz_gjc = #{userAccount_zch_hwz_gjc}
-           or userPhone_zch_hwz_gjc = #{userPhone_zch_hwz_gjc} and
-              userPwd_zch_hwz_gjc = #{userPwd_zch_hwz_gjc}
+        where userEmail_zch_hwz_gjc=#{userEmail_zch_hwz_gjc}
+        or userAccount_zch_hwz_gjc=#{userAccount_zch_hwz_gjc}
+        or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc} and
+        userPwd_zch_hwz_gjc=#{userPwd_zch_hwz_gjc}
+    </select>
+    <select id="getUserIdByAccount" parameterType="java.lang.String" resultType="java.lang.Long">
+        select userId_zch_hwz_gjc
+        from tab_user_zch_hwz_gjc
+        where userAccount_zch_hwz_gjc = #{userAccount}
     </select>
 </mapper>

@@ -1,15 +1,14 @@
 package com.quickhome.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.domain.UserInformation;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author Perzch
-* @description 针对表【tab_userInformation_zch_hwz_gjc】的数据库操作Mapper
-* @createDate 2023-06-17 19:42:29
+* @author Tim-h
+* @description 针对表【tab_userinformation_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-21 09:49:11
+* @Entity .domain.UserInformation
 */
-@Mapper
 public interface UserInformationMapper extends BaseMapper<UserInformation> {
 
 }

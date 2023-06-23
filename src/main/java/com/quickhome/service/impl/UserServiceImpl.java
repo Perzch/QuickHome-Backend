@@ -1,32 +1,33 @@
 package com.quickhome.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.User;
-import com.quickhome.mapper.UserMapper;
 import com.quickhome.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.quickhome.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 /**
-* @author Perzch
+* @author Tim-h
 * @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service实现
-* @createDate 2023-06-17 19:42:29
+* @createDate 2023-06-21 09:48:54
 */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-    implements UserService {
+    implements UserService{
 
     @Override
-    public User getUserAccountByAccount_zch_hwz_gjc(String userAccount) {
+    public String getUserAccountByAccount_zch_hwz_gjc(String userAccount) {
         return baseMapper.getUserAccountByAccount_zch_hwz_gjc(userAccount);
     }
 
     @Override
-    public User userLogin(User user) {
-        return baseMapper.userLogin(user);
+    public User userLogin_zch_hwz_gjc(User user) {
+        return baseMapper.userLogin_zch_hwz_gjc(user);
+    }
+
+    @Override
+    public Long getUserIdByAccount(String userAccount) {
+        return baseMapper.getUserIdByAccount(userAccount);
     }
 }
 

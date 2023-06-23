@@ -1,8 +1,5 @@
 package com.quickhome.util;
 
-import com.quickhome.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Random;
 
 public final class CreatAccount {

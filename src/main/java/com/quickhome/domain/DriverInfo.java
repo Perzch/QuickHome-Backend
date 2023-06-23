@@ -13,67 +13,67 @@ import lombok.NoArgsConstructor;
 
 /**
  * 
- * @TableName tab_driverInfo_zch_hwz_gjc
+ * @TableName tab_driverinfo_zch_hwz_gjc
  */
-@TableName(value ="tab_driverInfo_zch_hwz_gjc")
+@TableName(value ="tab_driverinfo_zch_hwz_gjc")
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DriverInfo implements Serializable {
     /**
-     * 
+     * 司机编号
      */
     @TableId(value = "driverID_zch_hwz_gjc", type = IdType.AUTO)
     private Long driverID_zch_hwz_gjc;
 
     /**
-     * 
+     * 司机姓名
      */
     @TableField(value = "driverName_zch_hwz_gjc")
     private String driverName_zch_hwz_gjc;
 
     /**
-     * 
+     * 联系电话
      */
     @TableField(value = "contactPhoneNumber_zch_hwz_gjc")
     private String contactPhoneNumber_zch_hwz_gjc;
 
     /**
-     * 
+     * 身份证号码
      */
     @TableField(value = "idNumber_zch_hwz_gjc")
     private String idNumber_zch_hwz_gjc;
 
     /**
-     * 
+     * 驾驶证号码
      */
     @TableField(value = "licenseNumber_zch_hwz_gjc")
     private String licenseNumber_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段1
      */
     @TableField(value = "standby1_zch_hwz_gjc")
     private String standby1_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段2
      */
     @TableField(value = "standby2_zch_hwz_gjc")
     private String standby2_zch_hwz_gjc;
 
     /**
-     * 
+     * 备用字段3
      */
     @TableField(value = "standby3_zch_hwz_gjc")
     private String standby3_zch_hwz_gjc;
 
     /**
-     * 
+     * 逻辑删除（默认0，逻辑删除1）
      */
-    @TableField(value = "visible_zch_hwz_gjc")
-    private Integer visible_zch_hwz_gjc;
+    @TableField(value = "deleted_zch_hwz_gjc")
+    private Integer deleted_zch_hwz_gjc;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -98,7 +98,7 @@ public class DriverInfo implements Serializable {
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
-            && (this.getVisible_zch_hwz_gjc() == null ? other.getVisible_zch_hwz_gjc() == null : this.getVisible_zch_hwz_gjc().equals(other.getVisible_zch_hwz_gjc()));
+            && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
 
     @Override
@@ -113,7 +113,7 @@ public class DriverInfo implements Serializable {
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getVisible_zch_hwz_gjc() == null) ? 0 : getVisible_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
     }
 
@@ -131,7 +131,7 @@ public class DriverInfo implements Serializable {
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
-        sb.append(", visible_zch_hwz_gjc=").append(visible_zch_hwz_gjc);
+        sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

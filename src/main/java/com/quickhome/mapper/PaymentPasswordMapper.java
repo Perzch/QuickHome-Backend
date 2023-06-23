@@ -1,15 +1,14 @@
 package com.quickhome.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.domain.PaymentPassword;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author Perzch
-* @description 针对表【tab_paymentPassword_zch_hwz_gjc】的数据库操作Mapper
-* @createDate 2023-06-17 19:42:29
+* @author Tim-h
+* @description 针对表【tab_paymentpassword_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-21 09:48:24
+* @Entity .domain.PaymentPassword
 */
-@Mapper
 public interface PaymentPasswordMapper extends BaseMapper<PaymentPassword> {
 
 }

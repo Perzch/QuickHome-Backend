@@ -12,12 +12,21 @@
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         userImageId_zch_hwz_gjc,userId_zch_hwz_gjc,imagePath_zch_hwz_gjc,
         inDateTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
+    <insert id="insertHeadImgDef_zch_hwz_gjc" parameterType="com.quickhome.domain.UserHeadImage">
+        insert into tab_userheadimage_zch_hwz_gjc(userId_zch_hwz_gjc, imagePath_zch_hwz_gjc, inDateTime_zch_hwz_gjc)
+        values (#{userId_zch_hwz_gjc}, #{imagePath_zch_hwz_gjc}, #{inDateTime_zch_hwz_gjc})
+    </insert>
+    <select id="getHeadImgIdByUserId_zch_hwz_gjc" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select userImageId_zch_hwz_gjc
+        from tab_userheadimage_zch_hwz_gjc
+        where userId_zch_hwz_gjc = #{userId}
+    </select>
 </mapper>

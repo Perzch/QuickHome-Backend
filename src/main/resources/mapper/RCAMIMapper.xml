@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.quickhome.mapper.RcamiMapper">
+<mapper namespace="com.quickhome.mapper.RCAMIMapper">
 
-    <resultMap id="BaseResultMap" type="com.quickhome.domain.Rcami">
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.RCAMI">
             <id property="workItemId_zch_hwz_gjc" column="workItemId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="informationCreatTime_zch_hwz_gjc" column="informationCreatTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="completionProcessTime_zch_hwz_gjc" column="completionProcessTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
@@ -13,18 +13,19 @@
             <result property="workUserId_zch_hwz_gjc" column="workUserId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="completion_zch_hwz_gjc" column="completion_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="publisherId_zch_hwz_gjc" column="publisherId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="orderId_zch_hwz_gjc" column="orderId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         workItemId_zch_hwz_gjc,informationCreatTime_zch_hwz_gjc,completionProcessTime_zch_hwz_gjc,
         RCAMIInformation_zch_hwz_gjc,des_zch_hwz_gjc,workUserId_zch_hwz_gjc,
-        completion_zch_hwz_gjc,publisherId_zch_hwz_gjc,homeId_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
-        visible_zch_hwz_gjc
+        completion_zch_hwz_gjc,publisherId_zch_hwz_gjc,orderId_zch_hwz_gjc,
+        homeId_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
+        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

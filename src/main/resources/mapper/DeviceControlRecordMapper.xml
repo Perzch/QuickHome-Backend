@@ -15,13 +15,13 @@
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="visible_zch_hwz_gjc" column="visible_zch_hwz_gjc" jdbcType="INTEGER"/>
+            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         recordID_zch_hwz_gjc,userID_zch_hwz_gjc,deviceID_zch_hwz_gjc,
         controlTime_zch_hwz_gjc,controlType_zch_hwz_gjc,controlContent_zch_hwz_gjc,
         deviceReservationTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,visible_zch_hwz_gjc
+        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

@@ -1,20 +1,20 @@
 package com.quickhome.mapper;
 
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.domain.User;
-import com.quickhome.domain.UserInformation;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.junit.Test;
 
 /**
-* @author Perzch
+* @author Tim-h
 * @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Mapper
-* @createDate 2023-06-17 19:42:29
+* @createDate 2023-06-21 09:48:54
+* @Entity .domain.User
 */
-@Mapper
 public interface UserMapper extends BaseMapper<User> {
-    public User getUserAccountByAccount_zch_hwz_gjc(String userAccount);
-    public User userLogin(User user);
+    public String getUserAccountByAccount_zch_hwz_gjc(String userAccount);
+    public User userLogin_zch_hwz_gjc(User user);
+    public Long getUserIdByAccount(String userAccount);
+
 }
 
 

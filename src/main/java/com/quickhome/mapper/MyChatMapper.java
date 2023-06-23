@@ -1,15 +1,14 @@
 package com.quickhome.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.domain.MyChat;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author Perzch
-* @description 针对表【tab_myChat_zch_hwz_gjc】的数据库操作Mapper
-* @createDate 2023-06-17 19:42:29
+* @author Tim-h
+* @description 针对表【tab_mychat_zch_hwz_gjc】的数据库操作Mapper
+* @createDate 2023-06-21 09:48:14
+* @Entity .domain.MyChat
 */
-@Mapper
 public interface MyChatMapper extends BaseMapper<MyChat> {
 
 }
