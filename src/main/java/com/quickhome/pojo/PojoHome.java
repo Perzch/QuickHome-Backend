@@ -20,10 +20,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PojoHome {
+    private Long homeId_zch_hwz_gjc;
     private Home home;
     private HomeInformation homeInformation;
     private List<HomeDevice> homeDeviceList;
     private List<HomeImage> homeImageList;
+    private Integer collectionCount;
 
     //获取房屋中的智能设备信息
     public List<HomeDevice> getSmartDeviceList(){

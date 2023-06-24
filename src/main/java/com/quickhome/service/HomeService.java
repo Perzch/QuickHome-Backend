@@ -15,5 +15,6 @@ import java.util.List;
 */
 public interface HomeService extends IService<Home> {
     public List<Home> getHomesByPage(Long page, Long size);
+    public List<PojoHome> getHomeListOrderByCollectionCount();
 
 }

@@ -2,6 +2,9 @@ package com.quickhome.mapper;
 
 import com.quickhome.domain.Attractions;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.quickhome.pojo.PojoAttraction;
+
+import java.util.List;
 
 /**
 * @author Tim-h
@@ -10,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity .domain.Attractions
 */
 public interface AttractionsMapper extends BaseMapper<Attractions> {
-
+    List<PojoAttraction> getAttractionListOrderByCollectionCount();
 }
 
 

@@ -28,4 +28,18 @@
         FROM tab_home_zch_hwz_gjc
             LIMIT #{page}, #{size}
     </select>
+
+    <select id="getHomeListOrderByCollectionCount" resultType="com.quickhome.pojo.PojoHome">
+        SELECT
+            a.homeId_zch_hwz_gjc,
+            COUNT(c.hFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
+        FROM
+            tab_home_zch_hwz_gjc a
+                LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
+        GROUP BY
+            a.homeId_zch_hwz_gjc
+        ORDER BY
+            collectionCount DESC
+        limit 10
+    </select>
 </mapper>

@@ -30,6 +30,11 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
     public List<Home> getHomesByPage(Long page, Long size) {
         return baseMapper.selectHomeByPage(page, size);
     }
+
+    @Override
+    public List<PojoHome> getHomeListOrderByCollectionCount() {
+        return baseMapper.getHomeListOrderByCollectionCount();
+    }
 }
 
 

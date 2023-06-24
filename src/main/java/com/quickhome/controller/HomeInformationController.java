@@ -37,7 +37,6 @@ public class HomeInformationController {
 
     @Autowired
     private HomeDeviceService homeDeviceSer_zch_hwz_gjc;
-    static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
     @GetMapping("/")
     @ResponseBody
@@ -76,5 +75,24 @@ public class HomeInformationController {
         pojoPageHome.setPage(page);
         pojoPageHome.setSize(size);
         return ResponseEntity.ok(ResponseResult.ok(pojoPageHome));
+    }
+
+    @GetMapping("/getHomeListOrderByCollectionCount")
+    @ResponseBody
+    public ResponseEntity<?> getHomeListOrderByCollectionCount() {
+        List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
+        List<PojoHome> pojoHomeList = new ArrayList<>();
+        for (PojoHome pojoHome : homeList) {
+            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+            pojoHome.setHome(home);
+            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setHomeInformation(homeInformation);
+            List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setHomeDeviceList(homeDevices);
+            List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setHomeImageList(homeImages);
+            pojoHomeList.add(pojoHome);
+        }
+        return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
     }
 }

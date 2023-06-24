@@ -20,5 +20,5 @@ mybatis-plus:
   global-config:
     db-config:
       logic-delete-field: deleted_zch_hwz_gjc
-      logic-delete-value: 0,
-      logic-not-delete-value: 1
+      logic-delete-value: 1,
+      logic-not-delete-value: 0
