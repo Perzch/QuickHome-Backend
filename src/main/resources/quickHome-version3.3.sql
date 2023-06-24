@@ -524,6 +524,20 @@ CREATE TABLE tab_managerHomeBinding_zch_hwz_gjc
     deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
+-- 表32 景点图片表
+DROP TABLE IF EXISTS tab_attractionImage_zch_hwz_gjc;
+CREATE TABLE tab_attractionImage_zch_hwz_gjc
+(
+    imageId_zch_hwz_gjc    BIGINT PRIMARY KEY auto_increment comment "图片编号",
+    attractionId_zch_hwz_gjc     BIGINT comment "景点编号",
+    imagePath_zch_hwz_gjc  VARCHAR(300) comment "图片路径",
+    inDateTime_zch_hwz_gjc DATETIME comment "上传时间",
+    standby1_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
+    standby2_zch_hwz_gjc   VARCHAR(50) comment "备用字段2",
+    standby3_zch_hwz_gjc   VARCHAR(50) comment "备用字段3",
+    deleted_zch_hwz_gjc    int default 0 comment "逻辑删除（默认0，逻辑删除1）"
+);
+
 -- 表1 用户表
 ALTER TABLE tab_user_zch_hwz_gjc
     AUTO_INCREMENT = 1000;
@@ -625,3 +639,6 @@ ALTER TABLE tab_carUseStatus_zch_hwz_gjc
 ALTER TABLE tab_managerHomeBinding_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_managerHomeBinding_tab_manager_zch_hwz_gjc FOREIGN KEY (managerID_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerID_zch_hwz_gjc) ON UPDATE CASCADE,
     ADD CONSTRAINT FK_tab_managerHomeBinding_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE;
+-- 表32 景点图片表
+ALTER TABLE tab_attractionImage_zch_hwz_gjc
+    ADD CONSTRAINT FK_tab_attractionImage_tab_Home_zch_hwz_gjc FOREIGN KEY (attractionId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE;
