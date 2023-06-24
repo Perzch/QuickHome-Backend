@@ -46,11 +46,9 @@ public class UserController {
         try {
             //写入用户表
             flag = userService.save(user);
-            System.out.println(flag);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(userService.getUserIdByAccount(account) + "---------------------------");
         if (flag) {
             //创建默认头像
             UserHeadImage userHeadImage = UserHeadImage.builder()
@@ -74,8 +72,11 @@ public class UserController {
     public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,
                                                        HttpServletRequest req) {
         userInformation.setAuthenticationTime_zch_hwz_gjc(DateTime.now());//当前时间
-        System.out.println("=====================");
-        userInformation.setUserHeadId_zch_hwz_gjc(userHeadImageService.getHeadImgIdByUserId_zch_hwz_gjc(userInformation.getUserId_zch_hwz_gjc()));
+        userInformation.setUserHeadId_zch_hwz_gjc(
+                userHeadImageService.getHeadImgIdByUserId_zch_hwz_gjc(
+                        userInformation.getUserId_zch_hwz_gjc()
+                )
+        );
         boolean flag = userInformationService.save(userInformation);
         if (flag) {
             return ResponseEntity.ok(ResponseResult.ok(userInformation.getUserId_zch_hwz_gjc()));
@@ -86,7 +87,8 @@ public class UserController {
 
     @GetMapping("/getUserAccountByAccount")
     @ResponseBody
-    public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount, HttpServletRequest req) {
+    public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount,
+                                                                 HttpServletRequest req) {
         if (userService.getUserAccountByAccount_zch_hwz_gjc(userAccount) != null) {
             return ResponseEntity.ok(ResponseResult.of(100, "该账号已被使用!"));
         } else {

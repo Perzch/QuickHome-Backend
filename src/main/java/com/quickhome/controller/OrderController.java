@@ -23,7 +23,8 @@ public class OrderController{
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
     @PostMapping("/addOrder")
-    public ResponseEntity<?> addOrder_zch_hwz_gjc(@RequestBody Order order, HttpServletRequest req) {
+    public ResponseEntity<?> addOrder_zch_hwz_gjc(@RequestBody Order order,
+                                                  HttpServletRequest req) {
 //        order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(DynamicDoorPassword.dynamicDoorPassword()));
         order.setCreationTime_zch_hwz_gjc(DateTime.now());//当前时间
         order.setOrderState_zch_hwz_gjc("未支付");

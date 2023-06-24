@@ -51,11 +51,13 @@ public class HomeInformationController {
 
     @GetMapping("/getHomeInfById")
     @ResponseBody
-    public ResponseEntity<?> getHomeInfById(@RequestParam Long id, HttpServletRequest req) {
+    public ResponseEntity<?> getHomeInfById(@RequestParam Long id,
+                                            HttpServletRequest req) {
         return ResponseEntity.ok(ResponseResult.ok(homeInfSer_zch_hwz_gjc.getById(id)));
     }
     @GetMapping("/getHome")
-    public ResponseEntity<?> getHomesByPage(@RequestParam Long page, @RequestParam Long size) {
+    public ResponseEntity<?> getHomesByPage(@RequestParam Long page,
+                                            @RequestParam Long size) {
         PojoPageHome pojoPageHome = new PojoPageHome();
         page = (page - 1) * size;
         List<Home> homeList =  homeSer_zch_hwz_gjc.getHomesByPage(page, size);
