@@ -32,38 +32,55 @@ public class UserController {
 
     @PostMapping("/insertUser")
     @ResponseBody
-    public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user, HttpServletRequest req) {
+    public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestParam(required = false) String userName,
+                                                    @RequestParam(required = false) String userPwd,
+                                                    @RequestParam(required = false) String userEmail,
+                                                    @RequestParam(required = false) String userPhone,
+                                                    HttpServletRequest req) {
+        //插入标记
+        boolean flag_user = false, flag_img = false, flag_queryUser = false;
+
         //创建用户Account
         String account = String.valueOf(CreatAccount.creatAccount());
         while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null
                 && userService.getUserAccountByAccount_zch_hwz_gjc(account).equals(account)) {
             account = String.valueOf(CreatAccount.creatAccount());
         }
-        boolean flag = false;
-        user.setUserAccount_zch_hwz_gjc(account);
-        //当前时间
-        user.setUserInDate_zch_hwz_gjc(DateTime.now());
-        try {
+
+        //构造用户类
+        User user = User.builder()
+                .userAccount_zch_hwz_gjc(account)
+                .userName_zch_hwz_gjc(userName)
+                .userPwd_zch_hwz_gjc(userPwd)
+                .userEmail_zch_hwz_gjc(userEmail)
+                .userPhone_zch_hwz_gjc(userPhone)
+                .userInDate_zch_hwz_gjc(DateTime.now())
+                .build();
+
+        //查询用户信息是否重复
+        flag_queryUser=userService.queryUser(user);
+        if(flag_queryUser){
             //写入用户表
-            flag = userService.save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (flag) {
-            //创建默认头像
-            UserHeadImage userHeadImage = UserHeadImage.builder()
-                    .inDateTime_zch_hwz_gjc(DateTime.now())
-                    .userId_zch_hwz_gjc(userService.getUserIdByAccount(account))
-                    .imagePath_zch_hwz_gjc("F:\\QuickHome_SpringBoot\\QuickHome-Backend\\src\\main\\img\\head.jpg")
-                    .build();//头像entity构造器
-            boolean flag_img = userHeadImageService.save(userHeadImage);
-            if (flag_img) {
-                return ResponseEntity.ok(ResponseResult.ok(userService.getUserIdByAccount(account)));
+            flag_user = userService.save(user);
+            if (flag_user) {
+                //创建默认头像
+                UserHeadImage userHeadImage = UserHeadImage.builder()
+                        .inDateTime_zch_hwz_gjc(DateTime.now())
+                        .userId_zch_hwz_gjc(userService.getUserIdByAccount(account))
+                        .imagePath_zch_hwz_gjc("F:\\QuickHome_SpringBoot\\QuickHome-Backend\\src\\main\\img\\head.jpg")
+                        .build();//头像entity构造器
+                //头像保存状态
+                flag_img = userHeadImageService.save(userHeadImage);
+                if (flag_img) {
+                    return ResponseEntity.ok(ResponseResult.ok(userService.getUserIdByAccount(account)));
+                } else {
+                    return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
+                }
             } else {
                 return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
             }
-        } else {
-            return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
+        }else {
+            return ResponseEntity.ok(ResponseResult.of(100, "用户信息已被注册!"));
         }
     }
 

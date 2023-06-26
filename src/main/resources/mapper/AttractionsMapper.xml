@@ -25,17 +25,14 @@
     </sql>
 
     <select id="getAttractionListOrderByCollectionCount" resultType="com.quickhome.pojo.PojoAttraction">
-        SELECT
-            a.*,
-            COUNT(c.aFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
-        FROM
-            tab_attractions_zch_hwz_gjc a
-                LEFT JOIN tab_attractioncollection_zch_hwz_gjc c ON a.attractionsId_zch_hwz_gjc = c.attractionsId_zch_hwz_gjc
-        GROUP BY
-            a.attractionsId_zch_hwz_gjc,
-            a.attractionsName_zch_hwz_gjc
-        ORDER BY
-            collectionCount DESC
+        SELECT a.*,
+               COUNT(c.aFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
+        FROM tab_attractions_zch_hwz_gjc a
+                 LEFT JOIN tab_attractioncollection_zch_hwz_gjc c
+                           ON a.attractionsId_zch_hwz_gjc = c.attractionsId_zch_hwz_gjc
+        GROUP BY a.attractionsId_zch_hwz_gjc,
+                 a.attractionsName_zch_hwz_gjc
+        ORDER BY collectionCount DESC
         limit 10
     </select>
 </mapper>

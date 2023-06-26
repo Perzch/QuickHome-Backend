@@ -29,6 +29,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Long getUserIdByAccount(String userAccount) {
         return baseMapper.getUserIdByAccount(userAccount);
     }
+
+    @Override
+    public Boolean queryUser(User user) {
+        return null;
+    }
 }
 
 

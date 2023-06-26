@@ -56,8 +56,8 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(homeInfSer_zch_hwz_gjc.getById(id)));
     }
     @GetMapping("/getHome")
-    public ResponseEntity<?> getHomesByPage(@RequestParam Long page,
-                                            @RequestParam Long size) {
+    public ResponseEntity<?> getHomesByPage(@RequestParam(defaultValue = "1") Long page,
+                                            @RequestParam(defaultValue = "2") Long size) {
         PojoPageHome pojoPageHome = new PojoPageHome();
         page = (page - 1) * size;
         List<Home> homeList =  homeSer_zch_hwz_gjc.getHomesByPage(page, size);

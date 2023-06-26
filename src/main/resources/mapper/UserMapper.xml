@@ -43,4 +43,10 @@
         from tab_user_zch_hwz_gjc
         where userAccount_zch_hwz_gjc = #{userAccount}
     </select>
+    <select id="queryUser" parameterType="com.quickhome.domain.User" resultType="java.lang.Boolean">
+        select *
+        from tab_user_zch_hwz_gjc
+        where userEmail_zch_hwz_gjc = ${userEmail_zch_hwz_gjc}
+           or userPhone_zch_hwz_gjc = ${userPhone_zch_hwz_gjc}
+    </select>
 </mapper>
