@@ -10,8 +10,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
     public String getUserAccountByAccount_zch_hwz_gjc(String userAccount);
-    public User userLogin_zch_hwz_gjc(User user);
+    public String userLogin_zch_hwz_gjc(User user);
     public Long getUserIdByAccount(String userAccount);
-    public Boolean queryUser(User user);
+    public User queryUser(User user);
+    public User queryUserForLogin(User user);
 
 }

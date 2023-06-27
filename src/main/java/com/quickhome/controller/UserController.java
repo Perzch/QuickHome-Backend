@@ -38,28 +38,28 @@ public class UserController {
                                                     @RequestParam(required = false) String userPhone,
                                                     HttpServletRequest req) {
         //插入标记
-        boolean flag_user = false, flag_img = false, flag_queryUser = false;
-
-        //创建用户Account
-        String account = String.valueOf(CreatAccount.creatAccount());
-        while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null
-                && userService.getUserAccountByAccount_zch_hwz_gjc(account).equals(account)) {
-            account = String.valueOf(CreatAccount.creatAccount());
-        }
-
+        boolean flag_user = false, flag_img = false;
+        User flag_queryUser = null;
         //构造用户类
         User user = User.builder()
-                .userAccount_zch_hwz_gjc(account)
                 .userName_zch_hwz_gjc(userName)
                 .userPwd_zch_hwz_gjc(userPwd)
                 .userEmail_zch_hwz_gjc(userEmail)
                 .userPhone_zch_hwz_gjc(userPhone)
                 .userInDate_zch_hwz_gjc(DateTime.now())
                 .build();
-
-        //查询用户信息是否重复
+        //查询用户信息
         flag_queryUser=userService.queryUser(user);
-        if(flag_queryUser){
+        //判断是否重复
+        if(flag_queryUser==null){
+            //创建用户Account
+            String account = String.valueOf(CreatAccount.creatAccount());
+            while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null
+                    && userService.getUserAccountByAccount_zch_hwz_gjc(account).equals(account)) {
+                account = String.valueOf(CreatAccount.creatAccount());
+            }
+            //写入唯一的用户账号
+            user.setUserAccount_zch_hwz_gjc(account);
             //写入用户表
             flag_user = userService.save(user);
             if (flag_user) {
@@ -115,20 +115,13 @@ public class UserController {
 
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/userLogin")
-    public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestParam(required = false) String userAccount,
-                                                                   @RequestParam(required = false) String userEmail,
-                                                                   @RequestParam(required = false) String userPhone,
-                                                                   @RequestParam String userPwd,
-                                                                   HttpServletRequest req) {
-        User user = User.builder()
-                .userAccount_zch_hwz_gjc(userAccount)
-                .userEmail_zch_hwz_gjc(userEmail)
-                .userPhone_zch_hwz_gjc(userPhone)
-                .userPwd_zch_hwz_gjc(userPwd).build();
-        user = userService.userLogin_zch_hwz_gjc(user);
-        if (user.getUserId_zch_hwz_gjc() != null) {
-            return ResponseEntity.ok(ResponseResult.ok(user));
+    @PostMapping("/userLogin")
+    public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
+
+        String token = userService.userLogin_zch_hwz_gjc(user);
+        System.out.println(token);
+        if (token != null) {
+            return ResponseEntity.ok(ResponseResult.ok(token));
         } else {
             return ResponseEntity.ok(ResponseResult.of(USER_NOT_EXIST));
         }

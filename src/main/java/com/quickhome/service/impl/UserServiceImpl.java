@@ -1,10 +1,21 @@
 package com.quickhome.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.User;
+import com.quickhome.exception.ExistException;
+import com.quickhome.request.ResultCode;
 import com.quickhome.service.UserService;
 import com.quickhome.mapper.UserMapper;
+import com.quickhome.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Objects;
 
 /**
 * @author Tim-h
@@ -14,6 +25,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
+    @Value("${rsa.private_key}")
+    private String privateKey;
+    @Value("${rsa.public_key}")
+    private String publicKey;
 
     @Override
     public String getUserAccountByAccount_zch_hwz_gjc(String userAccount) {
@@ -21,8 +36,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User userLogin_zch_hwz_gjc(User user) {
-        return baseMapper.userLogin_zch_hwz_gjc(user);
+    public String userLogin_zch_hwz_gjc(User user) {
+        RSA rsa=new RSA(privateKey,publicKey);
+        byte[] decrypt = rsa.decrypt(user.getUserPwd_zch_hwz_gjc(), KeyType.PrivateKey);
+        User u=queryUserForLogin(user);
+        if(Objects.isNull(u)) throw new ExistException(ResultCode.USER_NOT_EXIST.getMsg());
+        System.out.println("==============================");
+        System.out.println(StrUtil.str(decrypt, StandardCharsets.UTF_8));
+        System.out.println("==============================");
+        System.out.println(u);
+        if(u.getUserPwd_zch_hwz_gjc().equals(StrUtil.str(decrypt, StandardCharsets.UTF_8))){
+            return JwtUtil.createToken(u.getUserId_zch_hwz_gjc());
+        }else {
+            return null;
+        }
     }
 
     @Override
@@ -31,8 +58,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Boolean queryUser(User user) {
-        return null;
+    public User queryUser(User user) {
+        return baseMapper.queryUser(user);
+    }
+    public User queryUserForLogin(User user){
+        return baseMapper.queryUserForLogin(user);
     }
 }
 

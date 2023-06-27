@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class User implements Serializable {
      * 用户编号
      */
     @TableId(value = "userId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 用户账户
      */
     @TableField(value = "userAccount_zch_hwz_gjc")
+    @JsonProperty("userAccount")
     private String userAccount_zch_hwz_gjc;
 
     /**
      * 用户名
      */
     @TableField(value = "userName_zch_hwz_gjc")
+    @JsonProperty("userName")
     private String userName_zch_hwz_gjc;
 
     /**
      * 用户密码
      */
     @TableField(value = "userPwd_zch_hwz_gjc")
+    @JsonProperty("userPwd")
     private String userPwd_zch_hwz_gjc;
 
     /**
      * 用户电子邮箱地址
      */
     @TableField(value = "userEmail_zch_hwz_gjc")
+    @JsonProperty("userEmail")
     private String userEmail_zch_hwz_gjc;
 
     /**
      * 用户手机号
      */
     @TableField(value = "userPhone_zch_hwz_gjc")
+    @JsonProperty("userPhone")
     private String userPhone_zch_hwz_gjc;
 
     /**
