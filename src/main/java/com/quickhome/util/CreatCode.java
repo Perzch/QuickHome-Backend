@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * @author Tim-h
- * @description 创建验证码，带参数，number为纯数字，chat为字符
+ * @description 创建验证码，带参数，number为纯数字，char为字符
  * @creatDate 2023/6/28 15:09
  */
 
@@ -18,7 +18,7 @@ public final class CreatCode {
             for (int i = 0; i < 6; i++) {
                 code += code_map_number[randomCode.nextInt(code_map_number.length)];
             }
-        }else if (type.equals("chat")){
+        }else if (type.equals("char")){
             for (int i = 0; i < 6; i++) {
                 code += code_map[randomCode.nextInt(code_map.length)];
             }
