@@ -47,9 +47,9 @@
         FROM tab_home_zch_hwz_gjc AS a
                  JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
                  LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ > ]]> #{area}
-          AND b.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
-          AND ('#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR '#{beginDate}' <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
+        WHERE b.homeArea_zch_hwz_gjc >=  #{area}
+          AND b.maxPerson_zch_hwz_gjc >=  #{maxPeople}
+          AND (#{endDate} <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR #{beginDate}  >  c.checkOutTime_zch_hwz_gjc OR
                c.checkInTime_zch_hwz_gjc IS NULL)
         LIMIT #{page}, #{size}
     </select>
@@ -58,10 +58,10 @@
         FROM tab_home_zch_hwz_gjc AS a
                  JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
                  LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ > ]]> #{area}
+        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ >= ]]> #{area}
           AND b.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
-          AND a.homeType_zch_hwz_gjc LIKE '%#{homeType}%'
-          AND ('#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR '#{beginDate}' <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
+          AND a.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+          AND (#{endDate} <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
                c.checkInTime_zch_hwz_gjc IS NULL)
         LIMIT #{page}, #{size}
     </select>
