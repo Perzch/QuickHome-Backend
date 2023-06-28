@@ -71,6 +71,8 @@ public class HomeInformationController {
                 .page(pageNumber_un)
                 .size(size_un)
                 .build();
+        System.out.println("============");
+        System.out.println(pjh);
         if (homeType_un.equals("all")) {
             homeList = homeSer_zch_hwz_gjc.selectHomeCate(pjh);
         } else {
@@ -101,29 +103,6 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(homeInfSer_zch_hwz_gjc.getById(id)));
     }
 
-    @GetMapping("/getHome")
-    public ResponseEntity<?> getHomesByPage(@RequestParam(defaultValue = "1") Long page,
-                                            @RequestParam(defaultValue = "2") Long size) {//获取房屋
-        PojoPageHome pojoPageHome = new PojoPageHome();
-        page = (page - 1) * size;
-        List<Home> homeList = homeSer_zch_hwz_gjc.getHomesByPage(page, size);
-        List<PojoHome> pojoHomeList = new ArrayList<>();
-        for (Home home : homeList) {
-            PojoHome pojoHome = new PojoHome();
-            pojoHome.setHome(home);
-            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
-            pojoHome.setHomeInformation(homeInformation);
-            List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            pojoHome.setHomeDeviceList(homeDevices);
-            List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            pojoHome.setHomeImageList(homeImages);
-            pojoHomeList.add(pojoHome);
-        }
-        pojoPageHome.setPojoHome(pojoHomeList);
-        pojoPageHome.setPage(page);
-        pojoPageHome.setSize(size);
-        return ResponseEntity.ok(ResponseResult.ok(pojoPageHome));
-    }
 
 
     @GetMapping("/getHomeListOrderByCollectionCount")

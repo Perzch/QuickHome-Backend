@@ -43,34 +43,26 @@
         limit 10
     </select>
     <select id="selectHomeCate" parameterType="com.quickhome.pojo.PJHselect" resultType="com.quickhome.domain.Home">
-        select a.*
-        from tab_home_zch_hwz_gjc as a,
-             tab_homeinformation_zch_hwz_gjc as b,
-             tab_order_zch_hwz_gjc as c
-        where a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-            and b.homeArea_zch_hwz_gjc > #{area}
-            and b.maxPerson_zch_hwz_gjc  <![CDATA[ >= ]]> #{maxPeople}
-            and
-              (c.checkInTime_zch_hwz_gjc  <![CDATA[ < ]]> '#{beginDate}' and
-               c.checkInTime_zch_hwz_gjc <![CDATA[ < ]]> '#{beginDate}')
-           or (c.checkInTime_zch_hwz_gjc <![CDATA[ > ]]> '#{beginDate}' and
-               '#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc)
+        SELECT a.*
+        FROM tab_home_zch_hwz_gjc AS a
+                 JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
+                 LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
+        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ > ]]> #{area}
+          AND b.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+          AND ('#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR '#{beginDate}' <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
+               c.checkInTime_zch_hwz_gjc IS NULL)
         LIMIT #{page}, #{size}
     </select>
     <select id="selectHomeTypeCate" parameterType="com.quickhome.pojo.PJHselect" resultType="com.quickhome.domain.Home">
-        select a.*
-        from tab_home_zch_hwz_gjc as a,
-             tab_homeinformation_zch_hwz_gjc as b,
-             tab_order_zch_hwz_gjc as c
-        where a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-            and b.homeArea_zch_hwz_gjc > #{area}
-            and b.maxPerson_zch_hwz_gjc  <![CDATA[ >= ]]> #{maxPeople}
-            and a.homeType_zch_hwz_gjc like '%#{homeType}%'
-            and
-              (c.checkInTime_zch_hwz_gjc  <![CDATA[ < ]]> '#{beginDate}' and
-               c.checkInTime_zch_hwz_gjc <![CDATA[ < ]]> '#{beginDate}')
-           or (c.checkInTime_zch_hwz_gjc <![CDATA[ > ]]> '#{beginDate}' and
-               '#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc)
+        SELECT a.*
+        FROM tab_home_zch_hwz_gjc AS a
+                 JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
+                 LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
+        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ > ]]> #{area}
+          AND b.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+          AND a.homeType_zch_hwz_gjc LIKE '%#{homeType}%'
+          AND ('#{endDate}' <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR '#{beginDate}' <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
+               c.checkInTime_zch_hwz_gjc IS NULL)
         LIMIT #{page}, #{size}
     </select>
 </mapper>

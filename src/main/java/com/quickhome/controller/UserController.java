@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import com.quickhome.service.UserInformationService;
 import com.quickhome.service.UserService;
 
+import java.util.List;
+
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 @Controller("UserCon")
@@ -39,7 +41,7 @@ public class UserController {
                                                     HttpServletRequest req) {
         //插入标记
         boolean flag_user = false, flag_img = false;
-        User flag_queryUser = null;
+        List<User> flag_queryUser = null;
         //构造用户类
         User user = User.builder()
                 .userName_zch_hwz_gjc(userName)
@@ -51,7 +53,7 @@ public class UserController {
         //查询用户信息
         flag_queryUser=userService.queryUser(user);
         //判断是否重复
-        if(flag_queryUser==null){
+        if(flag_queryUser==null||flag_queryUser.size()==0){
             //创建用户Account
             String account = String.valueOf(CreatAccount.creatAccount());
             while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null

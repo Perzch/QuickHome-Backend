@@ -22,5 +22,4 @@ public class PJHselect {
     String beginDate;
     String endDate;
     int maxPeople;
-
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -58,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User queryUser(User user) {
+    public List<User> queryUser(User user) {
         return baseMapper.queryUser(user);
     }
     public User queryUserForLogin(User user){

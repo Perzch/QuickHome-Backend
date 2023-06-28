@@ -3,6 +3,8 @@ package com.quickhome.service;
 import com.quickhome.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author Tim-h
 * @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service
@@ -12,7 +14,7 @@ public interface UserService extends IService<User> {
     public String getUserAccountByAccount_zch_hwz_gjc(String userAccount);
     public String userLogin_zch_hwz_gjc(User user);
     public Long getUserIdByAccount(String userAccount);
-    public User queryUser(User user);
+    public List<User> queryUser(User user);
     public User queryUserForLogin(User user);
 
 }
