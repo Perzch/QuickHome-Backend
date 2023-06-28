@@ -2,6 +2,7 @@ package com.quickhome.mapper;
 
 import com.quickhome.domain.Home;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.quickhome.pojo.PJHselect;
 import com.quickhome.pojo.PojoHome;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,10 @@ public interface HomeMapper extends BaseMapper<Home> {
     public List<Home> selectHomeByPage(@Param("page") Long page, @Param("size") Long size);
 
     public List<PojoHome> getHomeListOrderByCollectionCount();
+
+    public List<Home> selectHomeTypeCate(PJHselect pjh);
+
+    public List<Home> selectHomeCate(PJHselect pjh);
 
 }
 

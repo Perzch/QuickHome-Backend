@@ -5,6 +5,7 @@ import com.quickhome.domain.Home;
 import com.quickhome.domain.HomeDevice;
 import com.quickhome.domain.HomeImage;
 import com.quickhome.domain.HomeInformation;
+import com.quickhome.pojo.PJHselect;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.pojo.PojoPageHome;
 import com.quickhome.service.HomeDeviceService;
@@ -34,6 +35,16 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
     @Override
     public List<PojoHome> getHomeListOrderByCollectionCount() {
         return baseMapper.getHomeListOrderByCollectionCount();
+    }
+
+    @Override
+    public List<Home> selectHomeTypeCate(PJHselect pjh) {
+        return baseMapper.selectHomeTypeCate(pjh);
+    }
+
+    @Override
+    public List<Home> selectHomeCate(PJHselect pjh) {
+        return baseMapper.selectHomeCate(pjh);
     }
 }
 

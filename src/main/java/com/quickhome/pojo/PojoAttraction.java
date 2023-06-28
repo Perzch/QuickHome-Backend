@@ -9,6 +9,7 @@ package com.quickhome.pojo;
 import com.quickhome.domain.AttractionImage;
 import com.quickhome.domain.Attractions;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PojoAttraction {
     private Long attractionsId_zch_hwz_gjc;
     List<AttractionImage> attractionImageList;

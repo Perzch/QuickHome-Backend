@@ -321,7 +321,7 @@ CREATE TABLE tab_order_zch_hwz_gjc
     checkOutTime_zch_hwz_gjc        DATETIME comment "退房时间",
     orderPayment_zch_hwz_gjc        DOUBLE comment "订单支付金额",
     orderDeposit_zch_hwz_gjc        DOUBLE comment "房屋押金",
-    orderState_zch_hwz_gjc          VARCHAR(50) comment "订单状态",
+    orderState_zch_hwz_gjc          VARCHAR(50) comment "订单状态", -- 已结束/正常/待结算
     userId_zch_hwz_gjc              BIGINT comment "用户编号",
     standby1_zch_hwz_gjc            VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc            VARCHAR(50) comment "备用字段2",
