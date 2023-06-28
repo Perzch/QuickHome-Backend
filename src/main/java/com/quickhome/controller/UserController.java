@@ -35,13 +35,16 @@ public class UserController {
     @PostMapping("/insertUser")
     @ResponseBody
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestParam(required = false) String userName,
-                                                    @RequestParam(required = false) String userPwd,
+                                                    @RequestParam String userPwd,
                                                     @RequestParam(required = false) String userEmail,
                                                     @RequestParam(required = false) String userPhone,
                                                     HttpServletRequest req) {
         //插入标记
         boolean flag_user = false, flag_img = false;
         List<User> flag_queryUser = null;
+        if (userPwd.equals("") || userPwd == null) {
+            return ResponseEntity.ok(ResponseResult.of(100, "请输入用户密码!"));
+        }
         //构造用户类
         User user = User.builder()
                 .userName_zch_hwz_gjc(userName)
@@ -51,9 +54,9 @@ public class UserController {
                 .userInDate_zch_hwz_gjc(DateTime.now())
                 .build();
         //查询用户信息
-        flag_queryUser=userService.queryUser(user);
+        flag_queryUser = userService.queryUser(user);
         //判断是否重复
-        if(flag_queryUser==null||flag_queryUser.size()==0){
+        if (flag_queryUser == null || flag_queryUser.size() == 0) {
             //创建用户Account
             String account = String.valueOf(CreatAccount.creatAccount());
             while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null
@@ -81,7 +84,7 @@ public class UserController {
             } else {
                 return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
             }
-        }else {
+        } else {
             return ResponseEntity.ok(ResponseResult.of(100, "用户信息已被注册!"));
         }
     }
