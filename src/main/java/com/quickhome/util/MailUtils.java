@@ -40,7 +40,7 @@ public class MailUtils {
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(email)); // 设置发送方式和接收者
 
         // 设置邮件主题
-        message.setSubject("邮件主题");
+        message.setSubject("QuickHome验证码");
 
         // 设置邮件正文  emailMsg内容就是邮件的内容
 //        String emailMsg = "【QuickHome快家】您的验证码是 "+code+" ，该验证码5分钟内有效，请勿泄露于他人！\n感谢您使用QuickHome快家！";
