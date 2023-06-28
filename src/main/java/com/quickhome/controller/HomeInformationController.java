@@ -85,6 +85,7 @@ public class HomeInformationController {
             for (Home home : homeList) {
                 PojoHome pojoHome = new PojoHome();
                 pojoHome.setHome(home);
+                pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
                 HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
                 pojoHome.setHomeInformation(homeInformation);
                 List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
