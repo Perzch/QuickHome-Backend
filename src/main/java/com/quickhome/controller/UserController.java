@@ -37,13 +37,21 @@ public class UserController {
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestParam(required = false) String userName,
                                                     @RequestParam String userPwd,
                                                     @RequestParam(required = false) String userEmail,
-                                                    @RequestParam(required = false) String userPhone,
+                                                    @RequestParam String userPhone,
                                                     HttpServletRequest req) {
         //插入标记
         boolean flag_user = false, flag_img = false;
         List<User> flag_queryUser = null;
+        //缺少数据判定
         if (userPwd.equals("") || userPwd == null) {
             return ResponseEntity.ok(ResponseResult.of(100, "请输入用户密码!"));
+        }
+        if (userPhone.equals("") || userPhone == null) {
+            //用正则表达式判断手机号是否符合规范
+            if (!userPhone.matches("^1[3456789]\\d{9}$")){
+                return ResponseEntity.ok(ResponseResult.of(100, "请输入正确的手机号!"));
+            }
+            return ResponseEntity.ok(ResponseResult.of(100, "请输入手机号!"));
         }
         //构造用户类
         User user = User.builder()
@@ -65,6 +73,7 @@ public class UserController {
             }
             //写入唯一的用户账号
             user.setUserAccount_zch_hwz_gjc(account);
+            user.setUserName_zch_hwz_gjc(account);
             //写入用户表
             flag_user = userService.save(user);
             if (flag_user) {
