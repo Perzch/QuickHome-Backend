@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/Method")
 @CrossOrigin(origins = "http://localhost:5173")
 public class MethodController {
-    @PostMapping("/SendSMS")
+    @PostMapping("/sendSMS")
     @ResponseBody
     public ResponseEntity<?> sendSMS(@RequestParam String phoneNumber) {
         String returnCode;
