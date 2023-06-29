@@ -115,7 +115,7 @@ public class HomeInformationController {
 
     @GetMapping("/getHomeListOrderByCollectionCount")
     @ResponseBody
-    public ResponseEntity<?> getHomeListOrderByCollectionCount() {//获取热门景点
+    public ResponseEntity<?> getHomeListOrderByCollectionCount() {//获取热门房屋
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : homeList) {
