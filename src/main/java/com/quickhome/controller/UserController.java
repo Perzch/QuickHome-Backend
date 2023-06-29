@@ -1,6 +1,8 @@
 package com.quickhome.controller;
 
 import cn.hutool.core.date.DateTime;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
 import com.quickhome.domain.UserHeadImage;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.UserHeadImageService;
@@ -10,6 +12,7 @@ import com.quickhome.domain.UserInformation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +23,21 @@ import java.util.List;
 
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
+/**
+ * @author Tim-h
+ * @description 密码加密传回
+ * @changeDate 2023/6/28 15:21
+ */
+
 @Controller("UserCon")
 @RequestMapping("/User")
 public class UserController {
+    //公钥与私钥
+    @Value("${rsa.private_key}")
+    String privateKey;
+    @Value("${rsa.public_key}")
+    String publicKey;
+
     @Autowired
     private UserService userService;
 
@@ -34,33 +49,29 @@ public class UserController {
 
     @PostMapping("/insertUser")
     @ResponseBody
-    public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestParam(required = false) String userName,
-                                                    @RequestParam String userPwd,
-                                                    @RequestParam(required = false) String userEmail,
-                                                    @RequestParam String userPhone,
+    public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user,
                                                     HttpServletRequest req) {
+        //RSA方式生成公钥和私钥
+        RSA rsa = new RSA(privateKey, publicKey);
         //插入标记
         boolean flag_user = false, flag_img = false;
         List<User> flag_queryUser = null;
         //缺少数据判定
-        if (userPwd.equals("") || userPwd == null) {
+        if (user.getUserPwd_zch_hwz_gjc().equals("") || user.getUserPwd_zch_hwz_gjc() == null) {
             return ResponseEntity.ok(ResponseResult.of(100, "请输入用户密码!"));
         }
-        if (userPhone.equals("") || userPhone == null) {
+        if (user.getUserPhone_zch_hwz_gjc().equals("") || user.getUserPhone_zch_hwz_gjc() == null) {
             //用正则表达式判断手机号是否符合规范
-            if (!userPhone.matches("^1[3456789]\\d{9}$")){
+            if (!user.getUserPhone_zch_hwz_gjc().matches("^1[3456789]\\d{9}$")) {
                 return ResponseEntity.ok(ResponseResult.of(100, "请输入正确的手机号!"));
             }
             return ResponseEntity.ok(ResponseResult.of(100, "请输入手机号!"));
         }
-        //构造用户类
-        User user = User.builder()
-                .userName_zch_hwz_gjc(userName)
-                .userPwd_zch_hwz_gjc(userPwd)
-                .userEmail_zch_hwz_gjc(userEmail)
-                .userPhone_zch_hwz_gjc(userPhone)
-                .userInDate_zch_hwz_gjc(DateTime.now())
-                .build();
+        //补全用户类
+        user.setUserInDate_zch_hwz_gjc(DateTime.now());
+
+        byte[] decrypt = rsa.decrypt(user.getUserPwd_zch_hwz_gjc(), KeyType.PrivateKey);
+        user.setUserPwd_zch_hwz_gjc(new String(decrypt));
         //查询用户信息
         flag_queryUser = userService.queryUser(user);
         //判断是否重复
@@ -131,7 +142,6 @@ public class UserController {
     @ResponseBody
     @PostMapping("/userLogin")
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
-
         String token = userService.userLogin_zch_hwz_gjc(user);
         System.out.println(token);
         if (token != null) {
