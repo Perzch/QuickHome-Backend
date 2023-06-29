@@ -3,6 +3,7 @@ package com.quickhome.controller;
 import com.quickhome.domain.AttractionImage;
 import com.quickhome.domain.Attractions;
 import com.quickhome.pojo.PojoAttraction;
+import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
 import com.quickhome.service.AttractionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,6 @@ public class AttractionController {
             List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId_zch_hwz_gjc());
             pojoAttraction.setAttractionImageList(attractionImageList);
         }
-        return ResponseEntity.ok(pojoAttractionList);
+        return ResponseEntity.ok(ResponseResult.ok(pojoAttractionList));
     }
 }
