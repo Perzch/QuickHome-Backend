@@ -7,9 +7,6 @@ package com.quickhome.util;
  */
 
 import com.aliyun.tea.*;
-
-import static com.quickhome.util.DynamicDoorPassword.dynamicDoorPassword;
-
 public class SendSMS {
     /**
      * 使用AK&SK初始化账号Client
