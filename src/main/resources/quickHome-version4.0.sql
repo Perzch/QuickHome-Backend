@@ -528,29 +528,29 @@ CREATE TABLE tab_managerHomeBinding_zch_hwz_gjc
 DROP TABLE IF EXISTS tab_attractionImage_zch_hwz_gjc;
 CREATE TABLE tab_attractionImage_zch_hwz_gjc
 (
-    imageId_zch_hwz_gjc    BIGINT PRIMARY KEY auto_increment comment "图片编号",
-    attractionId_zch_hwz_gjc     BIGINT comment "景点编号",
-    imagePath_zch_hwz_gjc  VARCHAR(300) comment "图片路径",
-    inDateTime_zch_hwz_gjc DATETIME comment "上传时间",
-    standby1_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc   VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc   VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc    int default 0 comment "逻辑删除（默认0，逻辑删除1）"
+    imageId_zch_hwz_gjc      BIGINT PRIMARY KEY auto_increment comment "图片编号",
+    attractionId_zch_hwz_gjc BIGINT comment "景点编号",
+    imagePath_zch_hwz_gjc    VARCHAR(300) comment "图片路径",
+    inDateTime_zch_hwz_gjc   DATETIME comment "上传时间",
+    standby1_zch_hwz_gjc     VARCHAR(50) comment "备用字段1",
+    standby2_zch_hwz_gjc     VARCHAR(50) comment "备用字段2",
+    standby3_zch_hwz_gjc     VARCHAR(50) comment "备用字段3",
+    deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
 -- 表33 身份证记录表
 DROP TABLE if exists tab_IDCardRecord_zch_hwz_gjc;
 CREATE TABLE tab_IDCardRecord_zch_hwz_gjc
 (
-    IDCardRecordID_zch_hwz_gjc   BIGINT PRIMARY KEY AUTO_INCREMENT comment "身份证记录编号",
-    IDCardName_zch_hwz_gjc       VARCHAR(20) comment "身份证姓名",
-    IDCardNumber_zch_hwz_gjc     VARCHAR(20) comment "身份证号码",
-    userId_zch_hwz_gjc           BIGINT comment "写入用户id",
-    inDateTime_zch_hwz_gjc       DATETIME comment "上传记录时间",
-    standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc         VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc         VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
+    IDCardRecordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT comment "身份证记录编号",
+    IDCardName_zch_hwz_gjc     VARCHAR(20) comment "身份证姓名",
+    IDCardNumber_zch_hwz_gjc   VARCHAR(20) comment "身份证号码",
+    userId_zch_hwz_gjc         BIGINT comment "写入用户id",
+    inDateTime_zch_hwz_gjc     DATETIME comment "上传记录时间",
+    standby1_zch_hwz_gjc       VARCHAR(50) comment "备用字段1",
+    standby2_zch_hwz_gjc       VARCHAR(50) comment "备用字段2",
+    standby3_zch_hwz_gjc       VARCHAR(50) comment "备用字段3",
+    deleted_zch_hwz_gjc        int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
 -- 表34 身份信息对照表
