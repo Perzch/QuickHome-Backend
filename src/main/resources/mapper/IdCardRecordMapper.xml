@@ -2,12 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.quickhome.mapper.IDCardRecordMapper">
+<mapper namespace="com.quickhome.mapper.IdCardRecordMapper">
 
-    <resultMap id="BaseResultMap" type="com.quickhome.domain.IDCardRecord">
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.IdCardRecord">
             <id property="IDCardRecordID_zch_hwz_gjc" column="IDCardRecordID_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="IDCardName_zch_hwz_gjc" column="IDCardName_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="IDCardNumber_zch_hwz_gjc" column="IDCardNumber_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="IDCardPhoneNumber_zch_hwz_gjc" column="IDCardPhoneNumber_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="inDateTime_zch_hwz_gjc" column="inDateTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
@@ -18,7 +19,8 @@
 
     <sql id="Base_Column_List">
         IDCardRecordID_zch_hwz_gjc,IDCardName_zch_hwz_gjc,IDCardNumber_zch_hwz_gjc,
-        userId_zch_hwz_gjc,inDateTime_zch_hwz_gjc,standby1_zch_hwz_gjc,
-        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        IDCardPhoneNumber_zch_hwz_gjc,userId_zch_hwz_gjc,inDateTime_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        deleted_zch_hwz_gjc
     </sql>
 </mapper>

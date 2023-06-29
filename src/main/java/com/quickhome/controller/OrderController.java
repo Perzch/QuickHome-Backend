@@ -2,8 +2,10 @@ package com.quickhome.controller;
 
 import cn.hutool.core.date.DateTime;
 import com.quickhome.domain.Order;
+import com.quickhome.pojo.PJOrder;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.OrderService;
+import com.quickhome.util.DynamicDoorPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,15 +25,16 @@ public class OrderController{
     static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
     @PostMapping("/addOrder")
-    public ResponseEntity<?> addOrder_zch_hwz_gjc(@RequestBody Order order,
+    public ResponseEntity<?> addOrder_zch_hwz_gjc(@RequestBody PJOrder pjOrder,
                                                   HttpServletRequest req) {
 
 
 
 //        order.setDynamicDoorPassword_zch_hwz_gjc(String.valueOf(DynamicDoorPassword.dynamicDoorPassword()));
-        order.setCreationTime_zch_hwz_gjc(DateTime.now());//当前时间
-        order.setOrderState_zch_hwz_gjc("未支付");
-        boolean flag = orderService_.save(order);
-        return ResponseEntity.ok(ResponseResult.ok(order));
+//        order.setCreationTime_zch_hwz_gjc(DateTime.now());//当前时间
+//        order.setOrderState_zch_hwz_gjc("未支付");
+//        boolean flag = orderService_.save(order);
+//        return ResponseEntity.ok(ResponseResult.ok(order));\
+        return null;
     }
 }

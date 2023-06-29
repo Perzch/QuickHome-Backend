@@ -545,6 +545,7 @@ CREATE TABLE tab_IDCardRecord_zch_hwz_gjc
     IDCardRecordID_zch_hwz_gjc BIGINT PRIMARY KEY AUTO_INCREMENT comment "身份证记录编号",
     IDCardName_zch_hwz_gjc     VARCHAR(20) comment "身份证姓名",
     IDCardNumber_zch_hwz_gjc   VARCHAR(20) comment "身份证号码",
+    IDCardPhoneNumber_zch_hwz_gjc VARCHAR(20) comment "身份证手机号码",
     userId_zch_hwz_gjc         BIGINT comment "写入用户id",
     inDateTime_zch_hwz_gjc     DATETIME comment "上传记录时间",
     standby1_zch_hwz_gjc       VARCHAR(50) comment "备用字段1",
