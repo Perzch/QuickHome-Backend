@@ -670,3 +670,10 @@ ALTER TABLE tab_managerHomeBinding_zch_hwz_gjc
 -- 表32 景点图片表
 ALTER TABLE tab_attractionImage_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_attractionImage_tab_Home_zch_hwz_gjc FOREIGN KEY (attractionId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE;
+-- 表33 身份证记录表
+ALTER TABLE tab_IDCardRecord_zch_hwz_gjc
+    ADD CONSTRAINT FK_tab_IDCardRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+-- 表34 身份信息对照表
+ALTER TABLE tab_IdentityChecklist_zch_hwz_gjc
+    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_IDCardRecord_zch_hwz_gjc FOREIGN KEY (IDCardRecordID_zch_hwz_gjc) REFERENCES tab_IDCardRecord_zch_hwz_gjc (IDCardRecordID_zch_hwz_gjc) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_order_zch_hwz_gjc FOREIGN KEY (orderID_zch_hwz_gjc) REFERENCES tab_order_zch_hwz_gjc (orderID_zch_hwz_gjc) ON UPDATE CASCADE;
