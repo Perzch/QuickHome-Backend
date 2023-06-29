@@ -150,9 +150,4 @@ public class UserController {
             return ResponseEntity.ok(ResponseResult.of(USER_NOT_EXIST));
         }
     }
-    @ResponseBody
-    @GetMapping("/test")
-    public String test(){
-        return "test";
-    }
 }
