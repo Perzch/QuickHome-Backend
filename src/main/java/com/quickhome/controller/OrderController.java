@@ -22,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -110,6 +108,18 @@ public class OrderController {
                 .userId_zch_hwz_gjc(userId)
                 .build();
         boolean flag = orderService.save(order);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
+    @GetMapping("/getDynamicDoorPassword")
+    public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long OrderId,
+                                                    HttpServletRequest req){
+        RSA rsa = new RSA(privateKey, publicKey);
+//        String dynamicDoorPassword = orderService.getDynamicDoorPassword(OrderId);
+//        byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
+//        return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
+return null;
+    }
+
 }
