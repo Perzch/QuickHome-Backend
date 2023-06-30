@@ -12,5 +12,6 @@ import java.util.List;
 */
 public interface HomeInformationService extends IService<HomeInformation> {
     public HomeInformation getByHomeId(Long homeId_zch_hwz_gjc);
+    public Double getHomeDepositByHomeId(Long homeId_zch_hwz_gjc);
 
 }

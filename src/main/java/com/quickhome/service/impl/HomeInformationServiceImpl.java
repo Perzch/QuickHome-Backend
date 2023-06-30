@@ -21,6 +21,11 @@ public class HomeInformationServiceImpl extends ServiceImpl<HomeInformationMappe
     public HomeInformation getByHomeId(Long homeId_zch_hwz_gjc) {
         return baseMapper.getByHomeId(homeId_zch_hwz_gjc);
     }
+
+    @Override
+    public Double getHomeDepositByHomeId(Long homeId_zch_hwz_gjc) {
+        return baseMapper.getHomeDepositByHomeId(homeId_zch_hwz_gjc);
+    }
 }
 
 

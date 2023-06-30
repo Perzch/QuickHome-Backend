@@ -143,7 +143,6 @@ public class UserController {
     @PostMapping("/userLogin")
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
         String token = userService.userLogin_zch_hwz_gjc(user);
-        System.out.println(token);
         if (token != null) {
             return ResponseEntity.ok(ResponseResult.ok(token));
         } else {

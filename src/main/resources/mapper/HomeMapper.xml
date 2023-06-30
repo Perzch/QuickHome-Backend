@@ -65,4 +65,9 @@
                c.checkInTime_zch_hwz_gjc IS NULL)
         LIMIT #{page}, #{size}
     </select>
+    <select id="getHomeDayRentByHomeId" parameterType="Long" resultType="java.lang.Double">
+        select homeDayRent_zch_hwz_gjc
+        from tab_home_zch_hwz_gjc
+        where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+    </select>
 </mapper>

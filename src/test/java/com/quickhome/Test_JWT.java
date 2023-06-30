@@ -14,11 +14,11 @@ import java.security.KeyPair;
 
 /**
  * @author Tim-h
- * @description
+ * @description 用于加密和解密的测试
  * @creatDate 2023/6/27 9:57
  */
 @SpringBootTest
-public class Test_abc {
+public class Test_JWT {
     @Value("${rsa.private_key}")
     String privateKey;
     @Value("${rsa.public_key}")
@@ -55,7 +55,7 @@ public class Test_abc {
 //        System.out.println("转成字符串为:" + Base64.encode(pair.getPrivate().getEncoded()));
 //        System.out.println("公钥"+pair.getPublic());
 //        System.out.println("转成字符串为:" + Base64.encode(pair.getPublic().getEncoded()));
-        String password = "123";
+        String password = "未到入住时间";
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] encrypt = rsa.encrypt(password, KeyType.PublicKey);
         System.out.println("加密后的密文为:" + Base64.encode(encrypt));

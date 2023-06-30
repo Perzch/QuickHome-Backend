@@ -19,5 +19,6 @@ public interface HomeService extends IService<Home> {
     public List<PojoHome> getHomeListOrderByCollectionCount();
     public List<Home> selectHomeTypeCate(PJHselect pjh);
     public List<Home> selectHomeCate(PJHselect pjh);
+    public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);
 
 }

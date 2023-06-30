@@ -5,17 +5,17 @@
 <mapper namespace="com.quickhome.mapper.HomeInformationMapper">
 
     <resultMap id="BaseResultMap" type="com.quickhome.domain.HomeInformation">
-            <id property="homeInfId_zch_hwz_gjc" column="homeInfId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="homeArea_zch_hwz_gjc" column="homeArea_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="houseStructure_zch_hwz_gjc" column="houseStructure_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="maxPerson_zch_hwz_gjc" column="maxPerson_zch_hwz_gjc" jdbcType="INTEGER"/>
-            <result property="homeDeposit_zch_hwz_gjc" column="homeDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="homeInDate_zch_hwz_gjc" column="homeInDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
+        <id property="homeInfId_zch_hwz_gjc" column="homeInfId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="homeArea_zch_hwz_gjc" column="homeArea_zch_hwz_gjc" jdbcType="DOUBLE"/>
+        <result property="houseStructure_zch_hwz_gjc" column="houseStructure_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="maxPerson_zch_hwz_gjc" column="maxPerson_zch_hwz_gjc" jdbcType="INTEGER"/>
+        <result property="homeDeposit_zch_hwz_gjc" column="homeDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
+        <result property="homeInDate_zch_hwz_gjc" column="homeInDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+        <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -26,6 +26,13 @@
     </sql>
 
     <select id="getByHomeId" parameterType="Long" resultMap="BaseResultMap">
-        select * from tab_homeinformation_zch_hwz_gjc where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+        select *
+        from tab_homeinformation_zch_hwz_gjc
+        where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+    </select>
+    <select id="getHomeDepositByHomeId" parameterType="Long" resultType="java.lang.Double">
+        select homeDeposit_zch_hwz_gjc
+        from tab_homeinformation_zch_hwz_gjc
+        where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc};
     </select>
 </mapper>

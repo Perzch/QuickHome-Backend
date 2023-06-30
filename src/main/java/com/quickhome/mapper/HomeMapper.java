@@ -25,6 +25,8 @@ public interface HomeMapper extends BaseMapper<Home> {
 
     public List<Home> selectHomeCate(PJHselect pjh);
 
+    public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);
+
 }
 
 

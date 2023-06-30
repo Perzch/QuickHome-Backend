@@ -42,10 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         byte[] decrypt = rsa.decrypt(user.getUserPwd_zch_hwz_gjc(), KeyType.PrivateKey);
         User u=queryUserForLogin(user);
         if(Objects.isNull(u)) throw new ExistException(ResultCode.USER_NOT_EXIST.getMsg());
-        System.out.println("==============================");
-        System.out.println(StrUtil.str(decrypt, StandardCharsets.UTF_8));
-        System.out.println("==============================");
-        System.out.println(u);
         if(u.getUserPwd_zch_hwz_gjc().equals(StrUtil.str(decrypt, StandardCharsets.UTF_8))){
             return JwtUtil.createToken(u.getUserId_zch_hwz_gjc());
         }else {

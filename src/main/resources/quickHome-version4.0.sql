@@ -360,7 +360,7 @@ CREATE TABLE tab_carInfo_zch_hwz_gjc
     deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表21: 预约表 
+-- 表21: 汽车预约表
 DROP TABLE IF EXISTS tab_carReservation_zch_hwz_gjc;
 CREATE TABLE tab_carReservation_zch_hwz_gjc
 (

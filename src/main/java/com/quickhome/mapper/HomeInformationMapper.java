@@ -13,6 +13,7 @@ import java.util.List;
 */
 public interface HomeInformationMapper extends BaseMapper<HomeInformation> {
     public HomeInformation getByHomeId(Long homeId_zch_hwz_gjc);
+    public Double getHomeDepositByHomeId(Long homeId_zch_hwz_gjc);
 
 }
 

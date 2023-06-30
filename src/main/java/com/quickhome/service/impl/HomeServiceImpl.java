@@ -46,6 +46,11 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
     public List<Home> selectHomeCate(PJHselect pjh) {
         return baseMapper.selectHomeCate(pjh);
     }
+
+    @Override
+    public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc) {
+        return baseMapper.getHomeDayRentByHomeId(homeId_zch_hwz_gjc);
+    }
 }
 
 
