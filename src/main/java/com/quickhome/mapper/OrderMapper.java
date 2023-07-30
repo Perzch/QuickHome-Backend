@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity .domain.Order
 */
 public interface OrderMapper extends BaseMapper<Order> {
+    public String getDynamicDoorPassword(Long OrderId);
+    public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
 }
 

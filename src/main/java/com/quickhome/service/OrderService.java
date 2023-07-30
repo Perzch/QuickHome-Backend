@@ -9,5 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:48:18
 */
 public interface OrderService extends IService<Order> {
+    public String getDynamicDoorPassword(Long OrderId);
+    public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
 }

@@ -21,6 +21,7 @@ public enum ResultCode {
     USER_NOT_EXIST(202,"用户不存在"),
     USER_LOGIN_ERROR(203,"登陆失败，账号或者密码有误"),
     NOT_PERMISSION(204,"无权限访问"),
+    NOT_UPDATE(205,"更新失败"),
     /* 业务错误 301 - 399*/
     DATA_NOT_FOUND(301,"没有数据");
 

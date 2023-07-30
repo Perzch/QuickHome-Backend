@@ -5,21 +5,21 @@
 <mapper namespace="com.quickhome.mapper.OrderMapper">
 
     <resultMap id="BaseResultMap" type="com.quickhome.domain.Order">
-            <id property="orderId_zch_hwz_gjc" column="orderId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="dynamicDoorPassword_zch_hwz_gjc" column="DynamicDoorPassword_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="creationTime_zch_hwz_gjc" column="creationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="endTime_zch_hwz_gjc" column="endTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="checkInTime_zch_hwz_gjc" column="checkInTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="checkOutTime_zch_hwz_gjc" column="checkOutTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="orderPayment_zch_hwz_gjc" column="orderPayment_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="orderDeposit_zch_hwz_gjc" column="orderDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="orderState_zch_hwz_gjc" column="orderState_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
+        <id property="orderId_zch_hwz_gjc" column="orderId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="dynamicDoorPassword_zch_hwz_gjc" column="DynamicDoorPassword_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="creationTime_zch_hwz_gjc" column="creationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+        <result property="endTime_zch_hwz_gjc" column="endTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+        <result property="checkInTime_zch_hwz_gjc" column="checkInTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+        <result property="checkOutTime_zch_hwz_gjc" column="checkOutTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
+        <result property="orderPayment_zch_hwz_gjc" column="orderPayment_zch_hwz_gjc" jdbcType="DOUBLE"/>
+        <result property="orderDeposit_zch_hwz_gjc" column="orderDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
+        <result property="orderState_zch_hwz_gjc" column="orderState_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -29,4 +29,12 @@
         orderState_zch_hwz_gjc,userId_zch_hwz_gjc,standby1_zch_hwz_gjc,
         standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
+    <update id="updateDynamicDoorPassword">
+
+    </update>
+    <select id="getDynamicDoorPassword" parameterType="java.lang.Long" resultType="java.lang.String">
+        select DynamicDoorPassword_zch_hwz_gjc
+        from tab_order_zch_hwz_gjc
+        where orderId_zch_hwz_gjc = #{OrderId}
+    </select>
 </mapper>

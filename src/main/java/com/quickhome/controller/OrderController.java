@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.quickhome.request.ResultCode.NOT_UPDATE;
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 @Controller("OrderCon")
@@ -112,14 +113,32 @@ public class OrderController {
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
+
     @GetMapping("/getDynamicDoorPassword")
     public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long OrderId,
-                                                    HttpServletRequest req){
+                                                    HttpServletRequest req) {
         RSA rsa = new RSA(privateKey, publicKey);
-//        String dynamicDoorPassword = orderService.getDynamicDoorPassword(OrderId);
-//        byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
-//        return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
-return null;
+        String dynamicDoorPassword = orderService.getDynamicDoorPassword(OrderId);
+        byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
+        return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
+    }
+    @PostMapping("/creatDynamicDoorPassword")
+    public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestBody Long orderId, HttpServletRequest req) {
+        RSA rsa = new RSA(privateKey, publicKey);
+        String dateTime =String.valueOf(DateTime.now());
+        String dynamicDoorPassword = null;
+        if (dateTime.compareTo(LocalDate.now().toString()) >= 0) {
+            dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
+        } else {
+            dynamicDoorPassword = "未到入住时间";
+        }
+        Boolean flag = orderService.updateDynamicDoorPassword(orderId, dynamicDoorPassword);
+        if(flag) {
+            byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
+            return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
+        }else {
+            return ResponseEntity.ok(ResponseResult.of(NOT_UPDATE));
+        }
     }
 
 }

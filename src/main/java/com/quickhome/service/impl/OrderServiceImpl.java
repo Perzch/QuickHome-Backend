@@ -1,5 +1,6 @@
 package com.quickhome.service.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.Order;
 import com.quickhome.service.OrderService;
@@ -15,6 +16,15 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     implements OrderService{
 
+    @Override
+    public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword) {
+        return null;
+    }
+
+    @Override
+    public String getDynamicDoorPassword(Long OrderId) {
+        return baseMapper.getDynamicDoorPassword(OrderId);
+    }
 }
 
 

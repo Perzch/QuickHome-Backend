@@ -19,7 +19,7 @@ public class MailUtils {
         prop.setProperty("mail.host", "smtp.qq.com"); // 发件人邮箱的SMTP服务器地址
         prop.setProperty("mail.smtp.auth", "true"); // 请求认证，参数名称与具体实现有关，指定验证为true
 
-        String code = CreatCode.creatCode("char");
+        String code = CreatCode.creatCode("number");
 
         // 创建验证器  输入授权码，不是密码
         Authenticator auth = new Authenticator() {
