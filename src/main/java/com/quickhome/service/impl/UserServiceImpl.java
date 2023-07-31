@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
-* @author Tim-h
-* @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service实现
-* @createDate 2023-06-21 09:48:54
-*/
+ * @author Tim-h
+ * @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service实现
+ * @createDate 2023-06-21 09:48:54
+ */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-    implements UserService{
+        implements UserService {
     @Value("${rsa.private_key}")
     private String privateKey;
     @Value("${rsa.public_key}")
@@ -38,13 +38,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public String userLogin_zch_hwz_gjc(User user) {
-        RSA rsa=new RSA(privateKey,publicKey);
+        RSA rsa = new RSA(privateKey, publicKey);
         byte[] decrypt = rsa.decrypt(user.getUserPwd_zch_hwz_gjc(), KeyType.PrivateKey);
-        User u=queryUserForLogin(user);
-        if(Objects.isNull(u)) throw new ExistException(ResultCode.USER_NOT_EXIST.getMsg());
-        if(u.getUserPwd_zch_hwz_gjc().equals(StrUtil.str(decrypt, StandardCharsets.UTF_8))){
+        User u = queryUserForLogin(user);
+        if (Objects.isNull(u)) throw new ExistException(ResultCode.USER_NOT_EXIST.getMsg());
+        if (u.getUserPwd_zch_hwz_gjc().equals(StrUtil.str(decrypt, StandardCharsets.UTF_8))) {
             return JwtUtil.createToken(u.getUserId_zch_hwz_gjc());
-        }else {
+        } else {
             return null;
         }
     }
@@ -58,8 +58,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public List<User> queryUser(User user) {
         return baseMapper.queryUser(user);
     }
-    public User queryUserForLogin(User user){
+
+    public User queryUserForLogin(User user) {
         return baseMapper.queryUserForLogin(user);
+    }
+
+    @Override
+    public Boolean userForget_zch_hwz_gjc(User user) {
+        User u = baseMapper.queryUserForLogin(user);
+        if(Objects.isNull(u)){
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
 

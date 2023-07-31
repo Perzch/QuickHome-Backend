@@ -72,15 +72,11 @@ public class HomeInformationController {
                     .page(pageNumber_un)
                     .size(size_un)
                     .build();
-            System.out.println("============");
-            System.out.println(pjh);
             if (homeType_un.equals("all")) {
                 homeList = homeSer_zch_hwz_gjc.selectHomeCate(pjh);
             } else {
                 homeList = homeSer_zch_hwz_gjc.selectHomeTypeCate(pjh);
             }
-            System.out.println("=======================================");
-            System.out.println(homeList);
             List<PojoHome> pojoHomeList = new ArrayList<>();
             for (Home home : homeList) {
                 PojoHome pojoHome = new PojoHome();

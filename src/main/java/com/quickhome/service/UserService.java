@@ -16,5 +16,6 @@ public interface UserService extends IService<User> {
     public Long getUserIdByAccount(String userAccount);
     public List<User> queryUser(User user);
     public User queryUserForLogin(User user);
+    public Boolean userForget_zch_hwz_gjc(User user);
 
 }

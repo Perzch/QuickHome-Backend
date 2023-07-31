@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.quickhome.domain.UserHeadImage;
+import com.quickhome.pojo.PJUser;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.UserHeadImageService;
 import com.quickhome.util.CreatAccount;
@@ -143,10 +144,34 @@ public class UserController {
     @PostMapping("/userLogin")
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
         String token = userService.userLogin_zch_hwz_gjc(user);
+        List<User> user1=userService.queryUser(user);
+        User user2=user1.get(0);
+        PJUser pjUser= PJUser.builder().token(token).userId(user2.getUserId_zch_hwz_gjc()).build();
         if (token != null) {
-            return ResponseEntity.ok(ResponseResult.ok(token));
+            return ResponseEntity.ok(ResponseResult.ok(pjUser));
         } else {
             return ResponseEntity.ok(ResponseResult.of(USER_NOT_EXIST));
         }
+    }
+
+
+    @SneakyThrows
+    @ResponseBody
+    @GetMapping("/userForget")
+    public ResponseEntity<ResponseResult<?>> userForget_zch_hwz_gjc(@RequestParam(defaultValue = "all") String userEmail,
+                                                                    @RequestParam(defaultValue = "all") String userPhone,
+                                                                    HttpServletRequest req) {
+        User userForget = User.builder()
+                .userEmail_zch_hwz_gjc(userEmail)
+                .userPhone_zch_hwz_gjc(userPhone)
+                .build();
+        Boolean userFlag = userService.userForget_zch_hwz_gjc(userForget);
+        if (userFlag) {
+            return ResponseEntity.ok(ResponseResult.ok("用户存在!"));
+        } else {
+            return ResponseEntity.ok(ResponseResult.of(100, "用户不存在!"));
+        }
+
+
     }
 }
