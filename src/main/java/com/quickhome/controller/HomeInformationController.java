@@ -42,15 +42,15 @@ public class HomeInformationController {
     @Autowired
     private HomeDeviceService homeDeviceSer_zch_hwz_gjc;
 
-    @GetMapping("/")
+    @GetMapping("/")//获取房屋信息（复合模糊查询）
     @ResponseBody
-    public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "all") String homeType,
-                                        @RequestParam(required = false, defaultValue = "0.0") double area,
-                                        @RequestParam String beginDate,
-                                        @RequestParam String endDate,
-                                        @RequestParam(required = false, defaultValue = "1") int maxPeople,
-                                        @RequestParam(defaultValue = "1") Long pageNumber,
-                                        @RequestParam(required = false, defaultValue = "5") Long size,
+    public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "all") String homeType,//房屋类型
+                                        @RequestParam(required = false, defaultValue = "0.0") double area,//面积
+                                        @RequestParam String beginDate,//入住日期
+                                        @RequestParam String endDate,//退房日期
+                                        @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
+                                        @RequestParam(defaultValue = "1") Long pageNumber,//最大回传显示页数
+                                        @RequestParam(required = false, defaultValue = "5") Long size,//单页最大显示条数
                                         HttpServletRequest req) {
         try {
             PojoPageHome pojoPageHome = new PojoPageHome();
@@ -100,7 +100,7 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.error());
     }
 
-    @GetMapping("/getHomeInfById")
+    @GetMapping("/getHomeInfById")//获取房屋信息通过id
     @ResponseBody
     public ResponseEntity<?> getHomeInfById(@RequestParam Long id,
                                             HttpServletRequest req) {
@@ -109,7 +109,7 @@ public class HomeInformationController {
 
 
 
-    @GetMapping("/getHomeListOrderByCollectionCount")
+    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
     @ResponseBody
     public ResponseEntity<?> getHomeListOrderByCollectionCount() {//获取热门房屋
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();

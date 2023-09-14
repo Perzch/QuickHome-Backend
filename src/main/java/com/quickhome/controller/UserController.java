@@ -48,7 +48,7 @@ public class UserController {
     @Autowired
     private UserHeadImageService userHeadImageService;
 
-    @PostMapping("/insertUser")
+    @PostMapping("/insertUser")//创建用户
     @ResponseBody
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user,
                                                     HttpServletRequest req) {
@@ -110,7 +110,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/insertUserInf")
+    @PostMapping("/insertUserInf")//用户信息插入
     @ResponseBody
     public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,
                                                        HttpServletRequest req) {
@@ -128,7 +128,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUserAccountByAccount")
+    @GetMapping("/getUserAccountByAccount")//通过用户账号判断账号是否可用
     @ResponseBody
     public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount,
                                                                  HttpServletRequest req) {
@@ -141,7 +141,7 @@ public class UserController {
 
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/userLogin")
+    @PostMapping("/userLogin")//用户登录
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
         String token = userService.userLogin_zch_hwz_gjc(user);
         List<User> user1=userService.queryUser(user);
@@ -157,7 +157,7 @@ public class UserController {
 
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/userForget")
+    @GetMapping("/userForget")//忘记密码
     public ResponseEntity<ResponseResult<?>> userForget_zch_hwz_gjc(@RequestParam(defaultValue = "all") String userEmail,
                                                                     @RequestParam(defaultValue = "all") String userPhone,
                                                                     HttpServletRequest req) {
