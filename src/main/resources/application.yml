@@ -1,12 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://47.98.191.69:3306/quickhome?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
-#    username: QuickHome
-#    password: kNwaXPzbFBtc6AGe
-    url: jdbc:mysql://127.0.0.1:3306/quickhome_zch_hwz_gjc?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
-    username: root
-    password: hwz123
+    url: jdbc:mysql://mysql.sqlpub.com:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
+    username: timjohnson
+    password: a686390f41f57dec
 
 
 #    mybatis

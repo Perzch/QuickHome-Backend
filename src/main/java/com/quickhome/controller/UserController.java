@@ -154,6 +154,16 @@ public class UserController {
         }
     }
 
+    @SneakyThrows
+    @ResponseBody
+    @PostMapping("/userLoginByPhone")//用户登录通过手机
+    public ResponseEntity<ResponseResult<?>> userLoginByPhone_zch_hwz_hwz(@RequestBody User user,
+                                                                          HttpServletRequest req) {
+
+        return null;
+    }
+
+
 
     @SneakyThrows
     @ResponseBody
