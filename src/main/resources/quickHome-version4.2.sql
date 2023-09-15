@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS Quickhome_zch_hwz_gjc;
-CREATE DATABASE Quickhome_zch_hwz_gjc;
-USE Quickhome_zch_hwz_gjc;
+-- DROP DATABASE IF EXISTS Quickhome_zch_hwz_gjc;
+-- CREATE DATABASE Quickhome_zch_hwz_gjc;
+-- USE Quickhome_zch_hwz_gjc;
 
 -- 表1 用户表(tab_user_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_user_zch_hwz_gjc;
@@ -329,7 +329,7 @@ CREATE TABLE tab_order_zch_hwz_gjc
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表19: 司机信息表 
+-- 表19: 司机信息表
 DROP TABLE IF EXISTS tab_driverInfo_zch_hwz_gjc;
 CREATE TABLE tab_driverInfo_zch_hwz_gjc
 (
@@ -573,108 +573,108 @@ ALTER TABLE tab_user_zch_hwz_gjc
 
 -- 表2 用户信息表
 ALTER TABLE tab_userInformation_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_userInformation_tab_userHeadImage_zch_hwz_gjc FOREIGN KEY (userHeadId_zch_hwz_gjc) REFERENCES tab_userHeadImage_zch_hwz_gjc (userImageId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_userInformation_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
--- 表3 头像表 
+    ADD CONSTRAINT FK_tab_userInformation_tab_userHeadImage_zch_hwz_gjc FOREIGN KEY (userHeadId_zch_hwz_gjc) REFERENCES tab_userHeadImage_zch_hwz_gjc (userImageId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_userInformation_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+-- 表3 头像表
 ALTER TABLE tab_userHeadImage_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_userHeadImage_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_userHeadImage_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表6 金额表
 ALTER TABLE tab_accountBalance_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_accountBalance_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_accountBalance_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表7附1 房屋信息表
 ALTER TABLE tab_homeInformation_zch_hwz_gjc
-    ADD CONSTRAINT FK_homeInformation_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_homeInformation_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表8 维修保洁与维护信息表
 ALTER TABLE tab_RCAMI_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_RCAMI_tab_Order_zch_hwz_gjc FOREIGN KEY (orderId_zch_hwz_gjc) REFERENCES tab_Order_zch_hwz_gjc (orderId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc foreign key (workUserId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_tab_user_zch_hwz_gjc_2 FOREIGN KEY (publisherId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc_2 foreign key (publisherId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_RCAMI_tab_Order_zch_hwz_gjc FOREIGN KEY (orderId_zch_hwz_gjc) REFERENCES tab_Order_zch_hwz_gjc (orderId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc foreign key (workUserId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_RCAMI_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_RCAMI_tab_user_zch_hwz_gjc_2 FOREIGN KEY (publisherId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc_2 foreign key (publisherId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表9 用户统一通知表
 ALTER TABLE tab_userNotification_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_userNotification_tab_manager_zch_hwz_gjc FOREIGN KEY (notifyPostManager_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_userNotification_tab_manager_zch_hwz_gjc FOREIGN KEY (notifyPostManager_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表10 优惠券表
 ALTER TABLE tab_usersAndCoupons_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_UAC_tab_coupon_zch_hwz_gjc FOREIGN KEY (couponId_zch_hwz_gjc) REFERENCES tab_coupon_zch_hwz_gjc (couponId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_UAC_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_UAC_tab_coupon_zch_hwz_gjc FOREIGN KEY (couponId_zch_hwz_gjc) REFERENCES tab_coupon_zch_hwz_gjc (couponId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_UAC_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表11 日志表
 ALTER TABLE tab_log_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_log_tab_user_zch_hwz_gjc FOREIGN KEY (userPerformingId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_log_tab_manager_userPerformingId2_zch_hwz_gjc foreign key (userPerformingId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_log_tab_user_zch_hwz_gjc FOREIGN KEY (userPerformingId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_log_tab_manager_userPerformingId2_zch_hwz_gjc foreign key (userPerformingId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表12 房屋评论表
 ALTER TABLE tab_housingReview_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_housingReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_housingReview_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_HR_zch_hwz_gjc_tab_HR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondHousingReviewId_zch_hwz_gjc) references tab_housingReview_zch_hwz_gjc (housingReviewId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_housingReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_housingReview_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_HR_zch_hwz_gjc_tab_HR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondHousingReviewId_zch_hwz_gjc) references tab_housingReview_zch_hwz_gjc (housingReviewId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- 表13 私信聊天记录
 ALTER TABLE tab_myChat_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc FOREIGN KEY (messageReceive_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc_2 FOREIGN KEY (messageSender_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageReceive2_zch_hwz_gjc foreign key (messageReceive_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageSender2_zch_hwz_gjc foreign key (messageSender_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc FOREIGN KEY (messageReceive_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc_2 FOREIGN KEY (messageSender_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageReceive2_zch_hwz_gjc foreign key (messageReceive_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageSender2_zch_hwz_gjc foreign key (messageSender_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表15 景点评论表表
 ALTER TABLE tab_attractionReview_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_attractionReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_attractionReview_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_AR_zch_hwz_gjc_tab_AR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondAttractionReviewId_zch_hwz_gjc) references tab_attractionReview_zch_hwz_gjc (attractionReviewId_zch_hwz_gjc) ON UPDATE CASCADE;
--- 表16 房屋收藏表 
+    ADD CONSTRAINT FK_tab_attractionReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_attractionReview_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_AR_zch_hwz_gjc_tab_AR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondAttractionReviewId_zch_hwz_gjc) references tab_attractionReview_zch_hwz_gjc (attractionReviewId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+-- 表16 房屋收藏表
 ALTER TABLE tab_houseCollection_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_houseCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_houseCollection_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE;
--- 表17 景点收藏表 
+    ADD CONSTRAINT FK_tab_houseCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_houseCollection_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+-- 表17 景点收藏表
 ALTER TABLE tab_attractionCollection_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_attractionCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_attractionCollection_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_attractionCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_attractionCollection_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表18 订单表
 ALTER TABLE tab_order_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_order_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_order_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_order_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_order_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表21: 预约表
 ALTER TABLE tab_carReservation_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carReservation_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_carReservation_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_carReservation_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_carReservation_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_carReservation_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_carReservation_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表22:行程记录表
 ALTER TABLE tab_tripRecord_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_tripRecord_tab_carReservation_zch_hwz_gjc FOREIGN KEY (reservationID_zch_hwz_gjc) REFERENCES tab_carReservation_zch_hwz_gjc (reservationID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_tripRecord_tab_carReservation_zch_hwz_gjc FOREIGN KEY (reservationID_zch_hwz_gjc) REFERENCES tab_carReservation_zch_hwz_gjc (reservationID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表23: 房屋设备表
 ALTER TABLE tab_homeDevice_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_homeDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_homeDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表24:设备状态表
 ALTER TABLE tab_deviceStatus_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_deviceStatus_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_deviceStatus_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表25: 设备控制记录表
 ALTER TABLE tab_deviceControlRecord_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表27: 汽车订单表
 ALTER TABLE tab_carOrder_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carOrder_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_tripRecord_zch_hwz_gjc FOREIGN KEY (tripRecordID_zch_hwz_gjc) REFERENCES tab_tripRecord_zch_hwz_gjc (recordID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_carOrder_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_carOrder_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_carOrder_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_carOrder_tab_tripRecord_zch_hwz_gjc FOREIGN KEY (tripRecordID_zch_hwz_gjc) REFERENCES tab_tripRecord_zch_hwz_gjc (recordID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表28: 支付密码表
 ALTER TABLE tab_paymentPassword_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_paymentPassword_tab_accountBalance_zch_hwz_gjc FOREIGN KEY (accountID_zch_hwz_gjc) REFERENCES tab_accountBalance_zch_hwz_gjc (bid_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_paymentPassword_tab_accountBalance_zch_hwz_gjc FOREIGN KEY (accountID_zch_hwz_gjc) REFERENCES tab_accountBalance_zch_hwz_gjc (bid_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表29 房屋图片表
 ALTER TABLE tab_homeImage_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_homeImage_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_homeImage_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表30 汽车使用情况表
 ALTER TABLE tab_carUseStatus_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carUseStatus_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE;
--- 表31 维修保洁绑定房屋表 
+    ADD CONSTRAINT FK_tab_carUseStatus_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+-- 表31 维修保洁绑定房屋表
 ALTER TABLE tab_managerHomeBinding_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_managerHomeBinding_tab_manager_zch_hwz_gjc FOREIGN KEY (managerID_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_managerHomeBinding_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_managerHomeBinding_tab_manager_zch_hwz_gjc FOREIGN KEY (managerID_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_managerHomeBinding_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表32 景点图片表
 ALTER TABLE tab_attractionImage_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_attractionImage_tab_Home_zch_hwz_gjc FOREIGN KEY (attractionId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_attractionImage_tab_Home_zch_hwz_gjc FOREIGN KEY (attractionId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表33 身份证记录表
 ALTER TABLE tab_IDCardRecord_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_IDCardRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_IDCardRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表34 身份信息对照表
 ALTER TABLE tab_IdentityChecklist_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_IDCardRecord_zch_hwz_gjc FOREIGN KEY (IDCardRecordID_zch_hwz_gjc) REFERENCES tab_IDCardRecord_zch_hwz_gjc (IDCardRecordID_zch_hwz_gjc) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_order_zch_hwz_gjc FOREIGN KEY (orderID_zch_hwz_gjc) REFERENCES tab_order_zch_hwz_gjc (orderID_zch_hwz_gjc) ON UPDATE CASCADE;
+    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_IDCardRecord_zch_hwz_gjc FOREIGN KEY (IDCardRecordID_zch_hwz_gjc) REFERENCES tab_IDCardRecord_zch_hwz_gjc (IDCardRecordID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
+    ADD CONSTRAINT FK_tab_IdentityChecklist_tab_order_zch_hwz_gjc FOREIGN KEY (orderID_zch_hwz_gjc) REFERENCES tab_order_zch_hwz_gjc (orderID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
