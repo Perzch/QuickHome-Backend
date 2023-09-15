@@ -48,6 +48,12 @@ public class HomeInformationController {
                                         @RequestParam(required = false, defaultValue = "0.0") double area,//面积
                                         @RequestParam String beginDate,//入住日期
                                         @RequestParam String endDate,//退房日期
+                                        //------------------------------------------------
+                                        @RequestParam(required = false, defaultValue = "all") String device,//房屋设备
+                                        @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
+                                        @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
+                                        @RequestParam(required = false, defaultValue = "all") String address,//模糊地址关键字
+                                        //------------------------------------------------
                                         @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
                                         @RequestParam(defaultValue = "1") Long pageNumber,//最大回传显示页数
                                         @RequestParam(required = false, defaultValue = "5") Long size,//单页最大显示条数
