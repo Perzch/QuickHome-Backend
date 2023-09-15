@@ -1,6 +1,6 @@
-# DROP DATABASE IF EXISTS Quickhome_zch_hwz_gjc;
-# CREATE DATABASE Quickhome_zch_hwz_gjc;
-# USE Quickhome_zch_hwz_gjc;
+DROP DATABASE IF EXISTS Quickhome_zch_hwz_gjc;
+CREATE DATABASE Quickhome_zch_hwz_gjc;
+USE Quickhome_zch_hwz_gjc;
 
 -- 表1 用户表(tab_user_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_user_zch_hwz_gjc;
@@ -254,8 +254,8 @@ CREATE TABLE tab_attractions_zch_hwz_gjc
     attractionsId_zch_hwz_gjc         BIGINT PRIMARY KEY auto_increment comment "景点编号",
     attractionsName_zch_hwz_gjc       VARCHAR(50) comment "景点名称",
     attractionInformation_zch_hwz_gjc VARCHAR(500) comment "景点介绍",
-    openingTime_zch_hwz_gjc           DATETIME comment "景点开放时间",
-    closingTime_zch_hwz_gjc           DATETIME comment "景点关闭时间",
+    openingTime_zch_hwz_gjc           TIME comment "景点开放时间",
+    closingTime_zch_hwz_gjc           TIME comment "景点关闭时间",
     attractionInDate_zch_hwz_gjc      DATETIME comment "信息录入时间",
     standby1_zch_hwz_gjc              VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc              VARCHAR(50) comment "备用字段2",
