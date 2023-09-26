@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql.sqlpub.com:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
     username: timjohnson
-    password: a686390f41f57dec
+    password: 2546e135093a6ae1
 
 
 #    mybatis
