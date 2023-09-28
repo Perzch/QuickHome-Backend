@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class MyChat implements Serializable {
      * 私信编号
      */
     @TableId(value = "chatId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("chatId")
     private Long chatId_zch_hwz_gjc;
 
     /**
      * 接收人编号
      */
     @TableField(value = "messageReceive_zch_hwz_gjc")
+    @JsonProperty("messageReceive")
     private Long messageReceive_zch_hwz_gjc;
 
     /**
      * 私信内容
      */
     @TableField(value = "messageContent_zch_hwz_gjc")
+    @JsonProperty("messageContent")
     private String messageContent_zch_hwz_gjc;
 
     /**
      * 发送人编号
      */
     @TableField(value = "messageSender_zch_hwz_gjc")
+    @JsonProperty("messageSender")
     private Long messageSender_zch_hwz_gjc;
 
     /**
      * 对话编号
      */
     @TableField(value = "conversationDialogId_zch_hwz_gjc")
+    @JsonProperty("conversationDialogId")
     private Long conversationDialogId_zch_hwz_gjc;
 
     /**
      * 发送时间
      */
     @TableField(value = "sendingTime_zch_hwz_gjc")
+    @JsonProperty("sendingTime")
     private Date sendingTime_zch_hwz_gjc;
 
     /**

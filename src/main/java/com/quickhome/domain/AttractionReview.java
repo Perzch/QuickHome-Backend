@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,48 +29,56 @@ public class AttractionReview implements Serializable {
      * 景点评论编号
      */
     @TableId(value = "attractionReviewId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("attractionReviewId")
     private Long attractionReviewId_zch_hwz_gjc;
 
     /**
      * 评论内容
      */
     @TableField(value = "comments_zch_hwz_gjc")
+    @JsonProperty("comments")
     private String comments_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 景点编号
      */
     @TableField(value = "attractionsId_zch_hwz_gjc")
+    @JsonProperty("attractionsId")
     private Long attractionsId_zch_hwz_gjc;
 
     /**
      * 评论时间
      */
     @TableField(value = "reviewTime_zch_hwz_gjc")
+    @JsonProperty("reviewTime")
     private Date reviewTime_zch_hwz_gjc;
 
     /**
      * 点赞数
      */
     @TableField(value = "attractionLikeCount_zch_hwz_gjc")
+    @JsonProperty("attractionLikeCount")
     private Integer attractionLikeCount_zch_hwz_gjc;
 
     /**
      * 评分
      */
     @TableField(value = "attractionReviewRating_zch_hwz_gjc")
+    @JsonProperty("attractionReviewRating")
     private Integer attractionReviewRating_zch_hwz_gjc;
 
     /**
      * 二级评论编号
      */
     @TableField(value = "secondAttractionReviewId_zch_hwz_gjc")
+    @JsonProperty("secondAttractionReviewId")
     private Long secondAttractionReviewId_zch_hwz_gjc;
 
     /**

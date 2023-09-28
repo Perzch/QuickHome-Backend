@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class CarReservation implements Serializable {
      * 预约编号
      */
     @TableId(value = "reservationID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("reservationID")
     private Long reservationID_zch_hwz_gjc;
 
     /**
      * 司机编号
      */
     @TableField(value = "driverID_zch_hwz_gjc")
+    @JsonProperty("driverID")
     private Long driverID_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 汽车编号
      */
     @TableField(value = "carID_zch_hwz_gjc")
+    @JsonProperty("carID")
     private Long carID_zch_hwz_gjc;
 
     /**
      * 客户预约时间
      */
     @TableField(value = "carReservationTime_zch_hwz_gjc")
+    @JsonProperty("carReservationTime")
     private Date carReservationTime_zch_hwz_gjc;
 
     /**
      * 客户预约状态
      */
     @TableField(value = "reservationStatus_zch_hwz_gjc")
+    @JsonProperty("reservationStatus")
     private String reservationStatus_zch_hwz_gjc;
 
     /**

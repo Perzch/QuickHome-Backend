@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,18 +28,21 @@ public class IdentityCheckList implements Serializable {
      * 身份信息对照编号
      */
     @TableId(value = "IdentityChecklistID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("IdentityChecklistID")
     private Long identityChecklistID_zch_hwz_gjc;
 
     /**
      * 身份证记录编号
      */
     @TableField(value = "IDCardRecordID_zch_hwz_gjc")
+    @JsonProperty("IDCardRecordID")
     private Long IDCardRecordID_zch_hwz_gjc;
 
     /**
      * 订单编号
      */
     @TableField(value = "orderID_zch_hwz_gjc")
+    @JsonProperty("orderID")
     private Long orderID_zch_hwz_gjc;
 
     /**

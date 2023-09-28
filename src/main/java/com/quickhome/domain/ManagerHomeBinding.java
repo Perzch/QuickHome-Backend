@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class ManagerHomeBinding implements Serializable {
      * 维修保洁绑定编号
      */
     @TableId(value = "bindingID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("bindingID")
     private Long bindingID_zch_hwz_gjc;
 
     /**
      * 维修保洁编号
      */
     @TableField(value = "managerID_zch_hwz_gjc")
+    @JsonProperty("managerID")
     private Long managerID_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeID_zch_hwz_gjc")
+    @JsonProperty("homeID")
     private Long homeID_zch_hwz_gjc;
 
     /**
      * 绑定人类型
      */
     @TableField(value = "bindingType_zch_hwz_gjc")
+    @JsonProperty("bindingType")
     private String bindingType_zch_hwz_gjc;
 
     /**
      * 绑定时间
      */
     @TableField(value = "bindingTime_zch_hwz_gjc")
+    @JsonProperty("bindingTime")
     private Date bindingTime_zch_hwz_gjc;
 
     /**
      * 绑定状态
      */
     @TableField(value = "bindingState_zch_hwz_gjc")
+    @JsonProperty("bindingState")
     private String bindingState_zch_hwz_gjc;
 
     /**

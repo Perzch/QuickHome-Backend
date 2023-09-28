@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,36 +28,42 @@ public class Home implements Serializable {
      * 房屋编号
      */
     @TableId(value = "homeId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 房屋名称
      */
     @TableField(value = "homeName_zch_hwz_gjc")
+    @JsonProperty("homeName")
     private String homeName_zch_hwz_gjc;
 
     /**
      * 房屋类型
      */
     @TableField(value = "homeType_zch_hwz_gjc")
+    @JsonProperty("homeType")
     private String homeType_zch_hwz_gjc;
 
     /**
      * 每日租金
      */
     @TableField(value = "homeDayRent_zch_hwz_gjc")
+    @JsonProperty("homeDayRent")
     private Double homeDayRent_zch_hwz_gjc;
 
     /**
      * 房屋状态
      */
     @TableField(value = "homeState_zch_hwz_gjc")
+    @JsonProperty("homeState")
     private String homeState_zch_hwz_gjc;
 
     /**
      * 房屋地址
      */
     @TableField(value = "homeAddress_zch_hwz_gjc")
+    @JsonProperty("homeAddress")
     private String homeAddress_zch_hwz_gjc;
 
     /**

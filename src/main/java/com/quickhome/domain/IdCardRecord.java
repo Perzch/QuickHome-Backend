@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class IdCardRecord implements Serializable {
      * 身份证记录编号
      */
     @TableId(value = "IDCardRecordID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("IDCardRecordID")
     private Long IDCardRecordID_zch_hwz_gjc;
 
     /**
      * 身份证姓名
      */
     @TableField(value = "IDCardName_zch_hwz_gjc")
+    @JsonProperty("IDCardName")
     private String IDCardName_zch_hwz_gjc;
 
     /**
      * 身份证号码
      */
     @TableField(value = "IDCardNumber_zch_hwz_gjc")
+    @JsonProperty("IDCardNumber")
     private String IDCardNumber_zch_hwz_gjc;
 
     /**
      * 身份证手机号码
      */
     @TableField(value = "IDCardPhoneNumber_zch_hwz_gjc")
+    @JsonProperty("IDCardPhoneNumber")
     private String IDCardPhoneNumber_zch_hwz_gjc;
 
     /**
      * 写入用户id
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 上传记录时间
      */
     @TableField(value = "inDateTime_zch_hwz_gjc")
+    @JsonProperty("inDateTime")
     private Date inDateTime_zch_hwz_gjc;
 
     /**

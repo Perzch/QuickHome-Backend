@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class HouseCollection implements Serializable {
      * 房屋收藏编号
      */
     @TableId(value = "hFavoriteRecordsId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("hFavoriteRecordsId")
     private Long hFavoriteRecordsId_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 收藏时间
      */
     @TableField(value = "collectionTime_zch_hwz_gjc")
+    @JsonProperty("collectionTime")
     private Date collectionTime_zch_hwz_gjc;
 
     /**

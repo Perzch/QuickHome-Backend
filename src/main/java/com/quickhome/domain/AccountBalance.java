@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class AccountBalance implements Serializable {
      * 金额表编号
      */
     @TableId(value = "bid_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("bid")
     private Long bid_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 用户账户余额
      */
     @TableField(value = "userBalance_zch_hwz_gjc")
+    @JsonProperty("userBalance")
     private Double userBalance_zch_hwz_gjc;
 
     /**
      * 用户账户押金
      */
     @TableField(value = "userDeposit_zch_hwz_gjc")
+    @JsonProperty("userDeposit")
     private Double userDeposit_zch_hwz_gjc;
 
     /**
      * 最后修改时间
      */
     @TableField(value = "lastModifiedDate_zch_hwz_gjc")
+    @JsonProperty("lastModifiedDate")
     private Date lastModifiedDate_zch_hwz_gjc;
 
     /**
      * 开户时间
      */
     @TableField(value = "openTime_zch_hwz_gjc")
+    @JsonProperty("openTime")
     private Date openTime_zch_hwz_gjc;
 
     /**

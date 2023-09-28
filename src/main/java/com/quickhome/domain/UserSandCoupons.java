@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,24 +28,28 @@ public class UserSandCoupons implements Serializable {
      * 优惠用户详情编号
      */
     @TableId(value = "UACID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("UACID")
     private Long UACID_zch_hwz_gjc;
 
     /**
      * 使用状况
      */
     @TableField(value = "condition_zch_hwz_gjc")
+    @JsonProperty("condition")
     private String condition_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 优惠券编号
      */
     @TableField(value = "couponId_zch_hwz_gjc")
+    @JsonProperty("couponId")
     private Long couponId_zch_hwz_gjc;
 
     /**

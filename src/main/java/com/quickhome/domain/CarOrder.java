@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,48 +30,56 @@ public class CarOrder implements Serializable {
      * 订单编号
      */
     @TableId(value = "orderID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("orderID")
     private Long orderID_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userID_zch_hwz_gjc")
+    @JsonProperty("userID")
     private Long userID_zch_hwz_gjc;
 
     /**
      * 汽车编号
      */
     @TableField(value = "carID_zch_hwz_gjc")
+    @JsonProperty("carID")
     private Long carID_zch_hwz_gjc;
 
     /**
      * 司机编号
      */
     @TableField(value = "driverID_zch_hwz_gjc")
+    @JsonProperty("driverID")
     private Long driverID_zch_hwz_gjc;
 
     /**
      * 下单时间
      */
     @TableField(value = "orderTime_zch_hwz_gjc")
+    @JsonProperty("orderTime")
     private Date orderTime_zch_hwz_gjc;
 
     /**
      * 订单状态
      */
     @TableField(value = "orderStatus_zch_hwz_gjc")
+    @JsonProperty("orderStatus")
     private String orderStatus_zch_hwz_gjc;
 
     /**
      * 订单金额
      */
     @TableField(value = "orderAmount_zch_hwz_gjc")
+    @JsonProperty("orderAmount")
     private BigDecimal orderAmount_zch_hwz_gjc;
 
     /**
      * 行程记录编号
      */
     @TableField(value = "tripRecordID_zch_hwz_gjc")
+    @JsonProperty("tripRecordID")
     private Long tripRecordID_zch_hwz_gjc;
 
     /**

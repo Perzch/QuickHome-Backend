@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class CarInfo implements Serializable {
      * 汽车编号
      */
     @TableId(value = "carID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("carID")
     private Long carID_zch_hwz_gjc;
 
     /**
      * 汽车品牌
      */
     @TableField(value = "brand_zch_hwz_gjc")
+    @JsonProperty("brand")
     private String brand_zch_hwz_gjc;
 
     /**
      * 汽车型号
      */
     @TableField(value = "model_zch_hwz_gjc")
+    @JsonProperty("model")
     private String model_zch_hwz_gjc;
 
     /**
      * 车牌号码
      */
     @TableField(value = "licensePlateNumber_zch_hwz_gjc")
+    @JsonProperty("licensePlateNumber")
     private String licensePlateNumber_zch_hwz_gjc;
 
     /**
      * 汽车颜色
      */
     @TableField(value = "carColor_zch_hwz_gjc")
+    @JsonProperty("carColor")
     private String carColor_zch_hwz_gjc;
 
     /**
      * 汽车录入时间
      */
     @TableField(value = "entryTime_zch_hwz_gjc")
+    @JsonProperty("entryTime")
     private Date entryTime_zch_hwz_gjc;
 
     /**

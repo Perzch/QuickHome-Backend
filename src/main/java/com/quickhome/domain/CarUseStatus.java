@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,54 +29,63 @@ public class CarUseStatus implements Serializable {
      * 使用情况编号
      */
     @TableId(value = "useStatusID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("useStatusID")
     private Long useStatusID_zch_hwz_gjc;
 
     /**
      * 汽车编号
      */
     @TableField(value = "carID_zch_hwz_gjc")
+    @JsonProperty("carID")
     private Long carID_zch_hwz_gjc;
 
     /**
      * 使用日期
      */
     @TableField(value = "useDate_zch_hwz_gjc")
+    @JsonProperty("useDate")
     private Date useDate_zch_hwz_gjc;
 
     /**
      * 使用情况
      */
     @TableField(value = "useStatus_zch_hwz_gjc")
+    @JsonProperty("useStatus")
     private String useStatus_zch_hwz_gjc;
 
     /**
      * 里程
      */
     @TableField(value = "mileage_zch_hwz_gjc")
+    @JsonProperty("mileage")
     private Integer mileage_zch_hwz_gjc;
 
     /**
      * 轮胎情况
      */
     @TableField(value = "tireSituation_zch_hwz_gjc")
+    @JsonProperty("tireSituation")
     private String tireSituation_zch_hwz_gjc;
 
     /**
      * 其他维修情况
      */
     @TableField(value = "otherMaintenance_zch_hwz_gjc")
+    @JsonProperty("otherMaintenance")
     private String otherMaintenance_zch_hwz_gjc;
 
     /**
      * 下次维修时间
      */
     @TableField(value = "nextInspectionTime_zch_hwz_gjc")
+    @JsonProperty("nextInspectionTime")
     private Date nextInspectionTime_zch_hwz_gjc;
 
     /**
      * 维修备注
      */
     @TableField(value = "inspectRemark_zch_hwz_gjc")
+    @JsonProperty("inspectRemark")
     private String inspectRemark_zch_hwz_gjc;
 
     /**

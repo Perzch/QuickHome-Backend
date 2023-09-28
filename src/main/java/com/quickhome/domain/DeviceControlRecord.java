@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,42 +29,49 @@ public class DeviceControlRecord implements Serializable {
      * 记录编号
      */
     @TableId(value = "recordID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("recordID")
     private Long recordID_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userID_zch_hwz_gjc")
+    @JsonProperty("userID")
     private Long userID_zch_hwz_gjc;
 
     /**
      * 设备编号
      */
     @TableField(value = "deviceID_zch_hwz_gjc")
+    @JsonProperty("deviceID")
     private Long deviceID_zch_hwz_gjc;
 
     /**
      * 控制时间
      */
     @TableField(value = "controlTime_zch_hwz_gjc")
+    @JsonProperty("controlTime")
     private Date controlTime_zch_hwz_gjc;
 
     /**
      * 控制类型
      */
     @TableField(value = "controlType_zch_hwz_gjc")
+    @JsonProperty("controlType")
     private String controlType_zch_hwz_gjc;
 
     /**
      * 控制内容
      */
     @TableField(value = "controlContent_zch_hwz_gjc")
+    @JsonProperty("controlContent")
     private String controlContent_zch_hwz_gjc;
 
     /**
      * 设备预约时间
      */
     @TableField(value = "deviceReservationTime_zch_hwz_gjc")
+    @JsonProperty("deviceReservationTime")
     private Date deviceReservationTime_zch_hwz_gjc;
 
     /**

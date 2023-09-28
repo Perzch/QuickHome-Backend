@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class UserNotification implements Serializable {
      * 用户通知编号
      */
     @TableId(value = "userNotificationId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("userNotificationId")
     private Long userNotificationId_zch_hwz_gjc;
 
     /**
      * 通知发布时间
      */
     @TableField(value = "notificationReleaseTime_zch_hwz_gjc")
+    @JsonProperty("notificationReleaseTime")
     private Date notificationReleaseTime_zch_hwz_gjc;
 
     /**
      * 通知发布管理员编号
      */
     @TableField(value = "notifyPostManager_zch_hwz_gjc")
+    @JsonProperty("notifyPostManager")
     private Long notifyPostManager_zch_hwz_gjc;
 
     /**
      * 通知内容
      */
     @TableField(value = "notificationContent_zch_hwz_gjc")
+    @JsonProperty("notificationContent")
     private String notificationContent_zch_hwz_gjc;
 
     /**

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,42 +29,49 @@ public class TripRecord implements Serializable {
      * 记录编号
      */
     @TableId(value = "recordID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("recordID")
     private Long recordID_zch_hwz_gjc;
 
     /**
      * 预约编号
      */
     @TableField(value = "reservationID_zch_hwz_gjc")
+    @JsonProperty("reservationID")
     private Long reservationID_zch_hwz_gjc;
 
     /**
      * 起点
      */
     @TableField(value = "startingPoint_zch_hwz_gjc")
+    @JsonProperty("startingPoint")
     private String startingPoint_zch_hwz_gjc;
 
     /**
      * 终点
      */
     @TableField(value = "destination_zch_hwz_gjc")
+    @JsonProperty("destination")
     private String destination_zch_hwz_gjc;
 
     /**
      * 开始时间
      */
     @TableField(value = "startingTime_zch_hwz_gjc")
+    @JsonProperty("startingTime")
     private Date startingTime_zch_hwz_gjc;
 
     /**
      * 结束时间
      */
     @TableField(value = "endTime_zch_hwz_gjc")
+    @JsonProperty("endTime")
     private Date endTime_zch_hwz_gjc;
 
     /**
      * 行程距离
      */
     @TableField(value = "distanceTraveled_zch_hwz_gjc")
+    @JsonProperty("distanceTraveled")
     private Double distanceTraveled_zch_hwz_gjc;
 
     /**

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,42 +29,49 @@ public class HomeDevice implements Serializable {
      * 设备编号
      */
     @TableId(value = "deviceID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("deviceID")
     private Long deviceID_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeID")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 设备名称
      */
     @TableField(value = "deviceName_zch_hwz_gjc")
+    @JsonProperty("deviceName")
     private String deviceName_zch_hwz_gjc;
 
     /**
      * 设备类型(电视/空调/冰箱/洗衣机/热水器/冷暖器)
      */
     @TableField(value = "deviceType_zch_hwz_gjc")
+    @JsonProperty("deviceType")
     private String deviceType_zch_hwz_gjc;
 
     /**
      * 设备属性(安全设备/基础设备/智能设备)
      */
     @TableField(value = "deviceProperties_zch_hwz_gjc")
+    @JsonProperty("deviceProperties")
     private String deviceProperties_zch_hwz_gjc;
 
     /**
      * 品牌
      */
     @TableField(value = "brand_zch_hwz_gjc")
+    @JsonProperty("brand")
     private String brand_zch_hwz_gjc;
 
     /**
      * 价格
      */
     @TableField(value = "price_zch_hwz_gjc")
+    @JsonProperty("price")
     private BigDecimal price_zch_hwz_gjc;
 
     /**

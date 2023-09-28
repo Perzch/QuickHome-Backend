@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,48 +29,56 @@ public class HousingReview implements Serializable {
      * 房屋评论编号
      */
     @TableId(value = "housingReviewId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("housingReviewId")
     private Long housingReviewId_zch_hwz_gjc;
 
     /**
      * 评论内容
      */
     @TableField(value = "comments_zch_hwz_gjc")
+    @JsonProperty("comments")
     private String comments_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 评论时间
      */
     @TableField(value = "reviewTime_zch_hwz_gjc")
+    @JsonProperty("reviewTime")
     private Date reviewTime_zch_hwz_gjc;
 
     /**
      * 评分
      */
     @TableField(value = "housingReviewRating_zch_hwz_gjc")
+    @JsonProperty("housingReviewRating")
     private Integer housingReviewRating_zch_hwz_gjc;
 
     /**
      * 点赞数
      */
     @TableField(value = "homeLikeCount_zch_hwz_gjc")
+    @JsonProperty("homeLikeCount")
     private Integer homeLikeCount_zch_hwz_gjc;
 
     /**
      * 二级评论编号
      */
     @TableField(value = "secondHousingReviewId_zch_hwz_gjc")
+    @JsonProperty("secondHousingReviewId")
     private Long secondHousingReviewId_zch_hwz_gjc;
 
     /**

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,54 +29,63 @@ public class Coupon implements Serializable {
      * 优惠券编号
      */
     @TableId(value = "couponId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("couponId")
     private Long couponId_zch_hwz_gjc;
 
     /**
      * 优惠券名称
      */
     @TableField(value = "couponName_zch_hwz_gjc")
+    @JsonProperty("couponName")
     private String couponName_zch_hwz_gjc;
 
     /**
      * 优惠方式
      */
     @TableField(value = "discountMethod_zch_hwz_gjc")
+    @JsonProperty("discountMethod")
     private String discountMethod_zch_hwz_gjc;
 
     /**
      * 优惠力度
      */
     @TableField(value = "discountIntensity_zch_hwz_gjc")
+    @JsonProperty("discountIntensity")
     private Double discountIntensity_zch_hwz_gjc;
 
     /**
      * 使用门槛
      */
     @TableField(value = "useThreshold_zch_hwz_gjc")
+    @JsonProperty("useThreshold")
     private Double useThreshold_zch_hwz_gjc;
 
     /**
      * 适用范围
      */
     @TableField(value = "applicableScope_zch_hwz_gjc")
+    @JsonProperty("applicableScope")
     private String applicableScope_zch_hwz_gjc;
 
     /**
      * 优惠信息
      */
     @TableField(value = "discountInformation_zch_hwz_gjc")
+    @JsonProperty("discountInformation")
     private String discountInformation_zch_hwz_gjc;
 
     /**
      * 最早使用时间
      */
     @TableField(value = "earliestUseTime_zch_hwz_gjc")
+    @JsonProperty("earliestUseTime")
     private Date earliestUseTime_zch_hwz_gjc;
 
     /**
      * 最晚使用时间
      */
     @TableField(value = "latestUseTime_zch_hwz_gjc")
+    @JsonProperty("latestUseTime")
     private Date latestUseTime_zch_hwz_gjc;
 
     /**

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,66 +29,77 @@ public class Order implements Serializable {
      * 订单编号
      */
     @TableId(value = "orderId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("orderId")
     private Long orderId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 动态门卡密码
      */
     @TableField(value = "DynamicDoorPassword_zch_hwz_gjc")
+    @JsonProperty("DynamicDoorPassword")
     private String dynamicDoorPassword_zch_hwz_gjc;
 
     /**
      * 订单创建时间
      */
     @TableField(value = "creationTime_zch_hwz_gjc")
+    @JsonProperty("creationTime")
     private Date creationTime_zch_hwz_gjc;
 
     /**
      * 订单结束时间
      */
     @TableField(value = "endTime_zch_hwz_gjc")
+    @JsonProperty("endTime")
     private Date endTime_zch_hwz_gjc;
 
     /**
      * 入住时间
      */
     @TableField(value = "checkInTime_zch_hwz_gjc")
+    @JsonProperty("checkInTime")
     private Date checkInTime_zch_hwz_gjc;
 
     /**
      * 退房时间
      */
     @TableField(value = "checkOutTime_zch_hwz_gjc")
+    @JsonProperty("checkOutTime")
     private Date checkOutTime_zch_hwz_gjc;
 
     /**
      * 订单支付金额
      */
     @TableField(value = "orderPayment_zch_hwz_gjc")
+    @JsonProperty("orderPayment")
     private Double orderPayment_zch_hwz_gjc;
 
     /**
      * 房屋押金
      */
     @TableField(value = "orderDeposit_zch_hwz_gjc")
+    @JsonProperty("orderDeposit")
     private Double orderDeposit_zch_hwz_gjc;
 
     /**
      * 订单状态
      */
     @TableField(value = "orderState_zch_hwz_gjc")
+    @JsonProperty("orderState")
     private String orderState_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**

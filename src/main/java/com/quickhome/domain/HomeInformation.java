@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,42 +29,49 @@ public class HomeInformation implements Serializable {
      * 房屋信息编号
      */
     @TableId(value = "homeInfId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("homeInfId")
     private Long homeInfId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 房屋面积
      */
     @TableField(value = "homeArea_zch_hwz_gjc")
+    @JsonProperty("homeArea")
     private Double homeArea_zch_hwz_gjc;
 
     /**
      * 房屋结构
      */
     @TableField(value = "houseStructure_zch_hwz_gjc")
+    @JsonProperty("houseStructure")
     private String houseStructure_zch_hwz_gjc;
 
     /**
      * 最大入住人数
      */
     @TableField(value = "maxPerson_zch_hwz_gjc")
+    @JsonProperty("maxPerson")
     private Integer maxPerson_zch_hwz_gjc;
 
     /**
      * 房屋押金
      */
     @TableField(value = "homeDeposit_zch_hwz_gjc")
+    @JsonProperty("homeDeposit")
     private Double homeDeposit_zch_hwz_gjc;
 
     /**
      * 房屋注册日期
      */
     @TableField(value = "homeInDate_zch_hwz_gjc")
+    @JsonProperty("homeInDate")
     private Date homeInDate_zch_hwz_gjc;
 
     /**

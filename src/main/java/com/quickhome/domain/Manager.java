@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,48 +29,56 @@ public class Manager implements Serializable {
      * 管理员编号
      */
     @TableId(value = "managerId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("managerId")
     private Long managerId_zch_hwz_gjc;
 
     /**
      * 管理员类别
      */
     @TableField(value = "managerCategory_zch_hwz_gjc")
+    @JsonProperty("managerCategory")
     private String managerCategory_zch_hwz_gjc;
 
     /**
      * 管理员账号
      */
     @TableField(value = "managerAccount_zch_hwz_gjc")
+    @JsonProperty("managerAccount")
     private String managerAccount_zch_hwz_gjc;
 
     /**
      * 管理员密码
      */
     @TableField(value = "managerPwd_zch_hwz_gjc")
+    @JsonProperty("managerPwd")
     private String managerPwd_zch_hwz_gjc;
 
     /**
      * 管理员姓名
      */
     @TableField(value = "managerName_zch_hwz_gjc")
+    @JsonProperty("managerName")
     private String managerName_zch_hwz_gjc;
 
     /**
      * 管理员电话
      */
     @TableField(value = "managerPhone_zch_hwz_gjc")
+    @JsonProperty("managerPhone")
     private String managerPhone_zch_hwz_gjc;
 
     /**
      * 管理员性别
      */
     @TableField(value = "managerGender_zch_hwz_gjc")
+    @JsonProperty("managerGender")
     private String managerGender_zch_hwz_gjc;
 
     /**
      * 创建时间
      */
     @TableField(value = "managerInDate_zch_hwz_gjc")
+    @JsonProperty("managerInDate")
     private Date managerInDate_zch_hwz_gjc;
 
     /**

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,60 +29,70 @@ public class UserInformation implements Serializable {
      * 用户信息编号
      */
     @TableId(value = "UIId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("UIId")
     private Long UIId_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 用户性别
      */
     @TableField(value = "userGender_zch_hwz_gjc")
+    @JsonProperty("userGender")
     private String userGender_zch_hwz_gjc;
 
     /**
      * 用户头像编号
      */
     @TableField(value = "userHeadId_zch_hwz_gjc")
+    @JsonProperty("userHeadId")
     private Long userHeadId_zch_hwz_gjc;
 
     /**
      * 用户生日
      */
     @TableField(value = "userBirthday_zch_hwz_gjc")
+    @JsonProperty("userBirthday")
     private Date userBirthday_zch_hwz_gjc;
 
     /**
      * 个性签名
      */
     @TableField(value = "userSignature_zch_hwz_gjc")
+    @JsonProperty("userSignature")
     private String userSignature_zch_hwz_gjc;
 
     /**
      * 证件类型
      */
     @TableField(value = "idCardType_zch_hwz_gjc")
+    @JsonProperty("idCardType")
     private String idCardType_zch_hwz_gjc;
 
     /**
      * 证件号码
      */
     @TableField(value = "idCardNumber_zch_hwz_gjc")
+    @JsonProperty("idCardNumber")
     private String idCardNumber_zch_hwz_gjc;
 
     /**
      * 实名认证状态
      */
     @TableField(value = "authenticationStatus_zch_hwz_gjc")
+    @JsonProperty("authenticationStatus")
     private String authenticationStatus_zch_hwz_gjc;
 
     /**
      * 实名认证时间
      */
     @TableField(value = "authenticationTime_zch_hwz_gjc")
+    @JsonProperty("authenticationTime")
     private Date authenticationTime_zch_hwz_gjc;
 
     /**

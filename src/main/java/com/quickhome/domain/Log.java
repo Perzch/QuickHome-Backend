@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class Log implements Serializable {
      * 日志编号
      */
     @TableId(value = "logId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("logId")
     private Long logId_zch_hwz_gjc;
 
     /**
      * 用户执行编号
      */
     @TableField(value = "userPerformingId_zch_hwz_gjc")
+    @JsonProperty("userPerformingId")
     private Long userPerformingId_zch_hwz_gjc;
 
     /**
      * 执行时间
      */
     @TableField(value = "executionTime_zch_hwz_gjc")
+    @JsonProperty("executionTime")
     private Date executionTime_zch_hwz_gjc;
 
     /**
      * 执行内容
      */
     @TableField(value = "executionContent_zch_hwz_gjc")
+    @JsonProperty("executionContent")
     private String executionContent_zch_hwz_gjc;
 
     /**
      * 设备编号
      */
     @TableField(value = "deviceId_zch_hwz_gjc")
+    @JsonProperty("deviceId")
     private String deviceId_zch_hwz_gjc;
 
     /**
      * 执行地点
      */
     @TableField(value = "executionPlace_zch_hwz_gjc")
+    @JsonProperty("executionPlace")
     private String executionPlace_zch_hwz_gjc;
 
     /**

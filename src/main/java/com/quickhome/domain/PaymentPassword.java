@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class PaymentPassword implements Serializable {
      * 支付密码编号
      */
     @TableId(value = "passwordID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("passwordID")
     private Long passwordID_zch_hwz_gjc;
 
     /**
      * 账号编号
      */
     @TableField(value = "accountID_zch_hwz_gjc")
+    @JsonProperty("accountID")
     private Long accountID_zch_hwz_gjc;
 
     /**
      * 支付密码
      */
     @TableField(value = "paymentPassword_zch_hwz_gjc")
+    @JsonProperty("paymentPassword")
     private String paymentPassword_zch_hwz_gjc;
 
     /**
      * 设置时间
      */
     @TableField(value = "setTime_zch_hwz_gjc")
+    @JsonProperty("setTime")
     private Date setTime_zch_hwz_gjc;
 
     /**

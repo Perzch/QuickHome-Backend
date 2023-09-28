@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,60 +29,70 @@ public class RCAMI implements Serializable {
      * 维修保洁与维护信息编号
      */
     @TableId(value = "workItemId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("workItemId")
     private Long workItemId_zch_hwz_gjc;
 
     /**
      * 信息创建时间
      */
     @TableField(value = "informationCreatTime_zch_hwz_gjc")
+    @JsonProperty("informationCreatTime")
     private Date informationCreatTime_zch_hwz_gjc;
 
     /**
      * 完成处理时间
      */
     @TableField(value = "completionProcessTime_zch_hwz_gjc")
+    @JsonProperty("completionProcessTime")
     private Date completionProcessTime_zch_hwz_gjc;
 
     /**
      * 信息内容
      */
     @TableField(value = "RCAMIInformation_zch_hwz_gjc")
+    @JsonProperty("RCAMIInformation")
     private String RCAMIInformation_zch_hwz_gjc;
 
     /**
      * 描述
      */
     @TableField(value = "des_zch_hwz_gjc")
+    @JsonProperty("des")
     private String des_zch_hwz_gjc;
 
     /**
      * 工作人员编号
      */
     @TableField(value = "workUserId_zch_hwz_gjc")
+    @JsonProperty("workUserId")
     private Long workUserId_zch_hwz_gjc;
 
     /**
      * 完成情况
      */
     @TableField(value = "completion_zch_hwz_gjc")
+    @JsonProperty("completion")
     private String completion_zch_hwz_gjc;
 
     /**
      * 发布人编号
      */
     @TableField(value = "publisherId_zch_hwz_gjc")
+    @JsonProperty("publisherId")
     private Long publisherId_zch_hwz_gjc;
 
     /**
      * 订单编号
      */
     @TableField(value = "orderId_zch_hwz_gjc")
+    @JsonProperty("orderId")
     private Long orderId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**

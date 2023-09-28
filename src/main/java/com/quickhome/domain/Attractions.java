@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,36 +29,42 @@ public class Attractions implements Serializable {
      * 景点编号
      */
     @TableId(value = "attractionsId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("attractionsId")
     private Long attractionsId_zch_hwz_gjc;
 
     /**
      * 景点名称
      */
     @TableField(value = "attractionsName_zch_hwz_gjc")
+    @JsonProperty("attractionsName")
     private String attractionsName_zch_hwz_gjc;
 
     /**
      * 景点介绍
      */
     @TableField(value = "attractionInformation_zch_hwz_gjc")
+    @JsonProperty("attractionInformation")
     private String attractionInformation_zch_hwz_gjc;
 
     /**
      * 景点开放时间
      */
     @TableField(value = "openingTime_zch_hwz_gjc")
+    @JsonProperty("openingTime")
     private Date openingTime_zch_hwz_gjc;
 
     /**
      * 景点关闭时间
      */
     @TableField(value = "closingTime_zch_hwz_gjc")
+    @JsonProperty("closingTime")
     private Date closingTime_zch_hwz_gjc;
 
     /**
      * 信息录入时间
      */
     @TableField(value = "attractionInDate_zch_hwz_gjc")
+    @JsonProperty("attractionInDate")
     private Date attractionInDate_zch_hwz_gjc;
 
     /**

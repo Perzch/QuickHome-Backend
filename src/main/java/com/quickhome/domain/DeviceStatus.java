@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class DeviceStatus implements Serializable {
      * 状态编号
      */
     @TableId(value = "statusID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("statusID")
     private Long statusID_zch_hwz_gjc;
 
     /**
      * 设备编号
      */
     @TableField(value = "deviceID_zch_hwz_gjc")
+    @JsonProperty("deviceID")
     private Long deviceID_zch_hwz_gjc;
 
     /**
      * 设备状态
      */
     @TableField(value = "deviceStatus_zch_hwz_gjc")
+    @JsonProperty("deviceStatus")
     private String deviceStatus_zch_hwz_gjc;
 
     /**
      * 更新时间
      */
     @TableField(value = "updateTime_zch_hwz_gjc")
+    @JsonProperty("updateTime")
     private Date updateTime_zch_hwz_gjc;
 
     /**

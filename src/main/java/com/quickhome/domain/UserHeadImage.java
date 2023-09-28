@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class UserHeadImage implements Serializable {
      * 用户头像编号
      */
     @TableId(value = "userImageId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("userImageId")
     private Long userImageId_zch_hwz_gjc;
 
     /**
      * 用户编号
      */
     @TableField(value = "userId_zch_hwz_gjc")
+    @JsonProperty("userId")
     private Long userId_zch_hwz_gjc;
 
     /**
      * 用户头像路径
      */
     @TableField(value = "imagePath_zch_hwz_gjc")
+    @JsonProperty("imagePath")
     private String imagePath_zch_hwz_gjc;
 
     /**
      * 上传时间
      */
     @TableField(value = "inDateTime_zch_hwz_gjc")
+    @JsonProperty("inDateTime")
     private Date inDateTime_zch_hwz_gjc;
 
     /**

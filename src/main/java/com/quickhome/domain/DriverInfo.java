@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,30 +28,35 @@ public class DriverInfo implements Serializable {
      * 司机编号
      */
     @TableId(value = "driverID_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("driverID")
     private Long driverID_zch_hwz_gjc;
 
     /**
      * 司机姓名
      */
     @TableField(value = "driverName_zch_hwz_gjc")
+    @JsonProperty("driverName")
     private String driverName_zch_hwz_gjc;
 
     /**
      * 联系电话
      */
     @TableField(value = "contactPhoneNumber_zch_hwz_gjc")
+    @JsonProperty("contactPhoneNumber")
     private String contactPhoneNumber_zch_hwz_gjc;
 
     /**
      * 身份证号码
      */
     @TableField(value = "idNumber_zch_hwz_gjc")
+    @JsonProperty("idNumber")
     private String idNumber_zch_hwz_gjc;
 
     /**
      * 驾驶证号码
      */
     @TableField(value = "licenseNumber_zch_hwz_gjc")
+    @JsonProperty("licenseNumber")
     private String licenseNumber_zch_hwz_gjc;
 
     /**

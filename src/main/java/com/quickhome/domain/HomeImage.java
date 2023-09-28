@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class HomeImage implements Serializable {
      * 图片编号
      */
     @TableId(value = "imageId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("imageId")
     private Long imageId_zch_hwz_gjc;
 
     /**
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**
      * 图片路径
      */
     @TableField(value = "imagePath_zch_hwz_gjc")
+    @JsonProperty("imagePath")
     private String imagePath_zch_hwz_gjc;
 
     /**
      * 上传时间
      */
     @TableField(value = "inDateTime_zch_hwz_gjc")
+    @JsonProperty("inDateTime")
     private Date inDateTime_zch_hwz_gjc;
 
     /**

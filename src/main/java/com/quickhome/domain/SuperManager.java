@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,24 +29,28 @@ public class SuperManager implements Serializable {
      * 超级管理员编号
      */
     @TableId(value = "superManagerId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("superManagerId")
     private Long superManagerId_zch_hwz_gjc;
 
     /**
      * 超级管理员账号
      */
     @TableField(value = "superManagerAccount_zch_hwz_gjc")
+    @JsonProperty("superManagerAccount")
     private String superManagerAccount_zch_hwz_gjc;
 
     /**
      * 超级管理员密码
      */
     @TableField(value = "superManagerPwd_zch_hwz_gjc")
+    @JsonProperty("superManagerPwd")
     private String superManagerPwd_zch_hwz_gjc;
 
     /**
      * 创建时间
      */
     @TableField(value = "createTime_zch_hwz_gjc")
+    @JsonProperty("createTime")
     private Date createTime_zch_hwz_gjc;
 
     /**
