@@ -38,9 +38,9 @@ import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 public class OrderController {
     //公钥与私钥
     @Value("${rsa.private_key}")
-    String privateKey;
+    private String privateKey;
     @Value("${rsa.public_key}")
-    String publicKey;
+    private String publicKey;
     //服务
     @Autowired
     private OrderService orderService;

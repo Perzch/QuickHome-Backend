@@ -23,9 +23,14 @@ public class AttractionController {
 
     @Autowired
     private AttractionImageService attractionImageService;
+
+    /**
+     * 按收藏数量获取景点列表
+     * @return 景点信息列表
+     */
     @GetMapping("/getAttractionListByCollectionCount")
     @ResponseBody
-    public ResponseEntity<?> getAttractionListOrderByCollectionCount() {
+    public ResponseEntity<ResponseResult<List<PojoAttraction>>> getAttractionListOrderByCollectionCount() {
         List<PojoAttraction> pojoAttractionList = attractionsService.getAttractionListOrderByCollectionCount();
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
             Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId_zch_hwz_gjc());

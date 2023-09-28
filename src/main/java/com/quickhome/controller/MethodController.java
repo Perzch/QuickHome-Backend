@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/Method")
 @CrossOrigin(origins = "http://localhost:8081")
 public class MethodController {
+    /**
+     * 发送短信
+     * @param phoneNumber 手机号
+     * @return 返回发送结果
+     */
     @PostMapping("/sendSMS")
     @ResponseBody
     public ResponseEntity<?> sendSMS(@RequestParam String phoneNumber) {
@@ -39,6 +44,11 @@ public class MethodController {
         }
     }
 
+    /**
+     * 发送邮件
+     * @param email 邮箱
+     * @return 返回发送结果
+     */
     @PostMapping("/sendMail")
     @ResponseBody
     public ResponseEntity<?> sendMail(@RequestParam String email) {

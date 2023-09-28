@@ -35,9 +35,9 @@ import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 public class UserController {
     //公钥与私钥
     @Value("${rsa.private_key}")
-    String privateKey;
+    private String privateKey;
     @Value("${rsa.public_key}")
-    String publicKey;
+    private String publicKey;
 
     @Autowired
     private UserService userService;
@@ -181,7 +181,5 @@ public class UserController {
         } else {
             return ResponseEntity.ok(ResponseResult.of(100, "用户不存在!"));
         }
-
-
     }
 }

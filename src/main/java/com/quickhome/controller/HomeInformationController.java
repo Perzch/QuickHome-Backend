@@ -42,7 +42,24 @@ public class HomeInformationController {
     @Autowired
     private HomeDeviceService homeDeviceSer_zch_hwz_gjc;
 
-    @GetMapping("/")//获取房屋信息（复合模糊查询）
+    /**
+     * 添加房屋信息(复合模糊查询)
+     * @param homeType 房屋类型
+     * @param area 面积
+     * @param beginDate 入住日期
+     * @param endDate 退房日期
+     * @param device 房屋设备
+     * @param minRent 最低租金
+     * @param maxRent 最高租金
+     * @param address 模糊地址关键字
+     * @param maxPeople 最大入住人数
+     * @param pageNumber 最大回传显示页数
+     * @param size 单页最大显示条数
+     * @param req 请求
+     * @return 添加结果
+     */
+
+    @GetMapping("/")
     @ResponseBody
     public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "all") String homeType,//房屋类型
                                         @RequestParam(required = false, defaultValue = "0.0") double area,//面积
@@ -106,6 +123,12 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.error());
     }
 
+    /**
+     * 通过ID获取房屋信息
+     * @param id 房屋ID
+     * @param req 请求
+     * @return 房屋信息
+     */
     @GetMapping("/getHomeInfById")//获取房屋信息通过id
     @ResponseBody
     public ResponseEntity<?> getHomeInfById(@RequestParam Long id,
@@ -114,10 +137,13 @@ public class HomeInformationController {
     }
 
 
-
-    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
+    /**
+     * 获取热门房屋信息
+     * @return 热门房屋信息
+     */
+    @GetMapping("/getHomeListOrderByCollectionCount")
     @ResponseBody
-    public ResponseEntity<?> getHomeListOrderByCollectionCount() {//获取热门房屋
+    public ResponseEntity<?> getHomeListOrderByCollectionCount() {
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : homeList) {
