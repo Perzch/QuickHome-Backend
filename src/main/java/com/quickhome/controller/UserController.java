@@ -167,7 +167,7 @@ public class UserController {
 
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/userForget")//忘记密码
+    @PostMapping("/userForget")//忘记密码
     public ResponseEntity<ResponseResult<?>> userForget_zch_hwz_gjc(@RequestParam(defaultValue = "all") String userEmail,
                                                                     @RequestParam(defaultValue = "all") String userPhone,
                                                                     HttpServletRequest req) {
