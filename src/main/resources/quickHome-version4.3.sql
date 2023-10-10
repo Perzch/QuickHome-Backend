@@ -588,9 +588,7 @@ ALTER TABLE tab_homeInformation_zch_hwz_gjc
 ALTER TABLE tab_RCAMI_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_RCAMI_tab_Order_zch_hwz_gjc FOREIGN KEY (orderId_zch_hwz_gjc) REFERENCES tab_Order_zch_hwz_gjc (orderId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc foreign key (workUserId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_tab_user_zch_hwz_gjc_2 FOREIGN KEY (publisherId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc_2 foreign key (publisherId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT FK_tab_RCAMI_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表9 用户统一通知表
 ALTER TABLE tab_userNotification_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_userNotification_tab_manager_zch_hwz_gjc FOREIGN KEY (notifyPostManager_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -608,12 +606,6 @@ ALTER TABLE tab_housingReview_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_housingReview_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_HR_zch_hwz_gjc_tab_HR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondHousingReviewId_zch_hwz_gjc) references tab_housingReview_zch_hwz_gjc (housingReviewId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 
--- 表13 私信聊天记录
-ALTER TABLE tab_myChat_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc FOREIGN KEY (messageReceive_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_user_zch_hwz_gjc_2 FOREIGN KEY (messageSender_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageReceive2_zch_hwz_gjc foreign key (messageReceive_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_myChat_tab_manager_messageSender2_zch_hwz_gjc foreign key (messageSender_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表15 景点评论表表
 ALTER TABLE tab_attractionReview_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_attractionReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
