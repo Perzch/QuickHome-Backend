@@ -18,8 +18,10 @@ public class PJHselect {
     Long page;
     Long size;
     String homeType;
-    double area;
     String beginDate;
     String endDate;
+    double minRent;
+    double maxRent;
+    String address;
     int maxPeople;
 }
