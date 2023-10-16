@@ -66,11 +66,7 @@ public class OrderController {
         //用于给动态密码加密
         RSA rsa = new RSA(privateKey, publicKey);
         //判断当前时间是否可以获取动态房屋密码
-        /**
-         *把新增订单信息里面的动态密码分开，去掉这个接口里面的动态密码
-         *动态密码通过方法单独获取
-         */
-        if (checkInDate.compareTo(LocalDate.now().toString()) < 0) {
+        if (checkInDate.compareTo(LocalDate.now().toString()) >= 0) {
             dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
         } else {
             dynamicDoorPassword = "未到入住时间";
