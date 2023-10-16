@@ -66,11 +66,16 @@ public class OrderController {
         //用于给动态密码加密
         RSA rsa = new RSA(privateKey, publicKey);
         //判断当前时间是否可以获取动态房屋密码
-        if (checkInDate.compareTo(LocalDate.now().toString()) >= 0) {
+        /**
+         *把新增订单信息里面的动态密码分开，去掉这个接口里面的动态密码
+         *
+         */
+        if (checkInDate.compareTo(LocalDate.now().toString()) < 0) {
             dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
         } else {
             dynamicDoorPassword = "未到入住时间";
         }
+        System.out.println(checkInDate.compareTo(LocalDate.now().toString()) < 0);
         //写入租客身份证信息
         for (PJUserTenant userTenant : userTenantList) {
             IdCardRecord idCardRecord = IdCardRecord.builder()
