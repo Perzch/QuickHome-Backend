@@ -23,6 +23,11 @@ public class RCAMIController {
     @Autowired
     private RCAMIService RCAMIService;
 
+    /**
+     * 上传房屋维修信息
+     * @param rcami 维修信息
+     * @return 维修信息
+     */
     @PostMapping("/addRCAMI")
     public ResponseEntity<?> addRCAMI(@RequestBody RCAMI rcami, HttpServletRequest req) {
         rcami.setInformationCreatTime_zch_hwz_gjc(DateTime.now());
