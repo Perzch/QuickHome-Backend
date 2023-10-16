@@ -37,4 +37,5 @@
         from tab_order_zch_hwz_gjc
         where orderId_zch_hwz_gjc = #{OrderId}
     </select>
+    <select id="getAllUserOrders" resultType="com.quickhome.domain.Order"></select>
 </mapper>

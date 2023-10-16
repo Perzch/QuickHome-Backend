@@ -71,7 +71,6 @@ public class OrderController {
         } else {
             dynamicDoorPassword = "未到入住时间";
         }
-        System.out.println(checkInDate.compareTo(LocalDate.now().toString()) < 0);
         //写入租客身份证信息
         for (PJUserTenant userTenant : userTenantList) {
             IdCardRecord idCardRecord = IdCardRecord.builder()
@@ -140,6 +139,23 @@ public class OrderController {
         }else {
             return ResponseEntity.ok(ResponseResult.of(NOT_UPDATE));
         }
+    }
+
+    /**
+     * 获取用户全部订单
+     * @param userId 用户id
+     * @return 用户全部订单
+     */
+
+    @GetMapping("/getAllUserOrder")
+    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId) {
+        List<Order> orders = orderService.getAllUserOrders(userId);
+        for (Order order : orders){
+            RSA rsa = new RSA(privateKey, publicKey);
+            byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+            order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+        }
+        return ResponseEntity.ok(ResponseResult.ok(orders));
     }
 
 }
