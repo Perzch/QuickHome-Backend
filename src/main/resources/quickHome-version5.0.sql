@@ -18,6 +18,7 @@ CREATE TABLE tab_user_zch_hwz_gjc
     standby3_zch_hwz_gjc    VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
+
 -- 表2 用户信息表
 DROP TABLE IF EXISTS tab_userInformation_zch_hwz_gjc;
 CREATE TABLE tab_userInformation_zch_hwz_gjc
@@ -37,6 +38,7 @@ CREATE TABLE tab_userInformation_zch_hwz_gjc
     standby3_zch_hwz_gjc             VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
+
 -- 表3 头像表
 DROP TABLE IF EXISTS tab_userHeadImage_zch_hwz_gjc;
 CREATE TABLE tab_userHeadImage_zch_hwz_gjc
@@ -80,6 +82,7 @@ CREATE TABLE tab_manager_zch_hwz_gjc
     standby3_zch_hwz_gjc        VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
+
 -- 表6 金额表
 DROP TABLE IF EXISTS tab_accountBalance_zch_hwz_gjc;
 CREATE TABLE tab_accountBalance_zch_hwz_gjc
@@ -113,7 +116,7 @@ CREATE TABLE tab_Home_zch_hwz_gjc
 );
 
 
--- 表7附1 房屋信息表
+-- 表8 房屋信息表
 DROP TABLE IF EXISTS tab_homeInformation_zch_hwz_gjc;
 CREATE TABLE tab_homeInformation_zch_hwz_gjc
 (
@@ -130,7 +133,7 @@ CREATE TABLE tab_homeInformation_zch_hwz_gjc
     deleted_zch_hwz_gjc        int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表8 维修保洁与维护信息表(tab_repairCleaningAndMaintenanceInformation_zch_hwz_gjc)
+-- 表9 维修保洁与维护信息表(tab_repairCleaningAndMaintenanceInformation_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_RCAMI_zch_hwz_gjc;
 CREATE TABLE tab_RCAMI_zch_hwz_gjc
 (
@@ -150,7 +153,7 @@ CREATE TABLE tab_RCAMI_zch_hwz_gjc
     deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表9 用户统一通知表(tab_userNotification_zch_hwz_gjc)
+-- 表10 用户统一通知表(tab_userNotification_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_userNotification_zch_hwz_gjc;
 CREATE TABLE tab_userNotification_zch_hwz_gjc
 (
@@ -164,7 +167,7 @@ CREATE TABLE tab_userNotification_zch_hwz_gjc
     deleted_zch_hwz_gjc                 int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表10 优惠券表(tab_coupon_zch_hwz_gjc)
+-- 表11 优惠券表(tab_coupon_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_coupon_zch_hwz_gjc;
 CREATE TABLE tab_coupon_zch_hwz_gjc
 (
@@ -182,7 +185,7 @@ CREATE TABLE tab_coupon_zch_hwz_gjc
     standby3_zch_hwz_gjc            VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
--- 附表1 优惠用户详情表
+-- 表12 优惠用户详情表
 DROP TABLE IF EXISTS tab_usersAndCoupons_zch_hwz_gjc;
 CREATE TABLE tab_usersAndCoupons_zch_hwz_gjc
 (
@@ -196,7 +199,7 @@ CREATE TABLE tab_usersAndCoupons_zch_hwz_gjc
     deleted_zch_hwz_gjc   int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表11 日志表(tab_log_zch_hwz_gjc)
+-- 表13 日志表(tab_log_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_log_zch_hwz_gjc;
 CREATE TABLE tab_log_zch_hwz_gjc
 (
@@ -212,7 +215,7 @@ CREATE TABLE tab_log_zch_hwz_gjc
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表12 房屋评论表(tab_housingReview_zch_hwz_gjc)
+-- 表14 房屋评论表(tab_housingReview_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_housingReview_zch_hwz_gjc;
 CREATE TABLE tab_housingReview_zch_hwz_gjc
 (
@@ -231,7 +234,7 @@ CREATE TABLE tab_housingReview_zch_hwz_gjc
 );
 
 
--- 表13 私信聊天记录
+-- 表15 私信聊天记录
 DROP TABLE IF EXISTS tab_myChat_zch_hwz_gjc;
 CREATE TABLE tab_myChat_zch_hwz_gjc
 (
@@ -247,7 +250,7 @@ CREATE TABLE tab_myChat_zch_hwz_gjc
     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表14 景点表(tab_attractions_zch_hwz_gjc)
+-- 表16 景点表(tab_attractions_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_attractions_zch_hwz_gjc;
 CREATE TABLE tab_attractions_zch_hwz_gjc
 (
@@ -263,7 +266,7 @@ CREATE TABLE tab_attractions_zch_hwz_gjc
     deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表15 景点评论表表(tab_attractionReview_zch_hwz_gjc)
+-- 表17 景点评论表表(tab_attractionReview_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_attractionReview_zch_hwz_gjc;
 CREATE TABLE tab_attractionReview_zch_hwz_gjc
 (
@@ -281,7 +284,7 @@ CREATE TABLE tab_attractionReview_zch_hwz_gjc
     deleted_zch_hwz_gjc                  int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表16 房屋收藏表
+-- 表18 房屋收藏表
 DROP TABLE IF EXISTS tab_houseCollection_zch_hwz_gjc;
 CREATE TABLE tab_houseCollection_zch_hwz_gjc
 (
@@ -294,7 +297,7 @@ CREATE TABLE tab_houseCollection_zch_hwz_gjc
     standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
--- 表17 景点收藏表
+-- 表19 景点收藏表
 DROP TABLE IF EXISTS tab_attractionCollection_zch_hwz_gjc;
 CREATE TABLE tab_attractionCollection_zch_hwz_gjc
 (
@@ -308,7 +311,7 @@ CREATE TABLE tab_attractionCollection_zch_hwz_gjc
     deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表18 订单表(tab_order_zch_hwz_gjc)
+-- 表20 订单表(tab_order_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_order_zch_hwz_gjc;
 CREATE TABLE tab_order_zch_hwz_gjc
 (
@@ -329,71 +332,7 @@ CREATE TABLE tab_order_zch_hwz_gjc
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表19: 司机信息表
-DROP TABLE IF EXISTS tab_driverInfo_zch_hwz_gjc;
-CREATE TABLE tab_driverInfo_zch_hwz_gjc
-(
-    driverID_zch_hwz_gjc           BIGINT PRIMARY KEY AUTO_INCREMENT comment "司机编号",
-    driverName_zch_hwz_gjc         VARCHAR(50) comment "司机姓名",
-    contactPhoneNumber_zch_hwz_gjc VARCHAR(50) comment "联系电话",
-    idNumber_zch_hwz_gjc           VARCHAR(50) comment "身份证号码",
-    licenseNumber_zch_hwz_gjc      VARCHAR(50) comment "驾驶证号码",
-    standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表20: 汽车信息表
-DROP TABLE IF EXISTS tab_carInfo_zch_hwz_gjc;
-CREATE TABLE tab_carInfo_zch_hwz_gjc
-(
-    carID_zch_hwz_gjc              BIGINT PRIMARY KEY AUTO_INCREMENT comment "汽车编号",
-    brand_zch_hwz_gjc              VARCHAR(50) comment "汽车品牌",
-    model_zch_hwz_gjc              VARCHAR(50) comment "汽车型号",
-    licensePlateNumber_zch_hwz_gjc VARCHAR(50) comment "车牌号码",
-    carColor_zch_hwz_gjc           VARCHAR(50) comment "汽车颜色",
-    entryTime_zch_hwz_gjc          VARCHAR(50) comment "汽车录入时间",
-    standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表21: 汽车预约表
-DROP TABLE IF EXISTS tab_carReservation_zch_hwz_gjc;
-CREATE TABLE tab_carReservation_zch_hwz_gjc
-(
-    reservationID_zch_hwz_gjc      BIGINT PRIMARY KEY AUTO_INCREMENT comment "预约编号",
-    driverID_zch_hwz_gjc           BIGINT comment "司机编号",
-    userId_zch_hwz_gjc             BIGINT comment "用户编号",
-    carID_zch_hwz_gjc              BIGINT comment "汽车编号",
-    carReservationTime_zch_hwz_gjc DATETIME comment "客户预约时间",
-    reservationStatus_zch_hwz_gjc  VARCHAR(10) comment "客户预约状态",
-    standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表22:行程记录表
-DROP TABLE IF EXISTS tab_tripRecord_zch_hwz_gjc;
-CREATE TABLE tab_tripRecord_zch_hwz_gjc
-(
-    recordID_zch_hwz_gjc         BIGINT PRIMARY KEY AUTO_INCREMENT comment "记录编号",
-    reservationID_zch_hwz_gjc    BIGINT comment "预约编号",
-    startingPoint_zch_hwz_gjc    VARCHAR(50) comment "起点",
-    destination_zch_hwz_gjc      VARCHAR(50) comment "终点",
-    startingTime_zch_hwz_gjc     DATETIME comment "开始时间",
-    endTime_zch_hwz_gjc          DATETIME comment "结束时间",
-    distanceTraveled_zch_hwz_gjc DOUBLE comment "行程距离",
-    standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc         VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc         VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表23: 房屋设备表
+-- 表21: 房屋设备表
 DROP TABLE IF EXISTS tab_homeDevice_zch_hwz_gjc;
 CREATE TABLE tab_homeDevice_zch_hwz_gjc
 (
@@ -401,7 +340,6 @@ CREATE TABLE tab_homeDevice_zch_hwz_gjc
     homeId_zch_hwz_gjc           BIGINT comment "房屋编号",
     deviceName_zch_hwz_gjc       VARCHAR(50) comment "设备名称",
     deviceType_zch_hwz_gjc       VARCHAR(20) comment "设备类型(电视/空调/冰箱/洗衣机/热水器/冷暖器)",
-    deviceProperties_zch_hwz_gjc VARCHAR(20) comment "设备属性(安全设备/基础设备/智能设备)",
     brand_zch_hwz_gjc            VARCHAR(50) comment "品牌",
     price_zch_hwz_gjc            DECIMAL(10, 2) comment "价格",
     standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
@@ -410,58 +348,7 @@ CREATE TABLE tab_homeDevice_zch_hwz_gjc
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表24:设备状态表
-DROP TABLE IF EXISTS tab_deviceStatus_zch_hwz_gjc;
-CREATE TABLE tab_deviceStatus_zch_hwz_gjc
-(
-    statusID_zch_hwz_gjc     BIGINT PRIMARY KEY AUTO_INCREMENT comment "状态编号",
-    deviceID_zch_hwz_gjc     BIGINT comment "设备编号",
-    deviceStatus_zch_hwz_gjc VARCHAR(20) comment "设备状态",
-    updateTime_zch_hwz_gjc   DATETIME comment "更新时间",
-    standby1_zch_hwz_gjc     VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc     VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc     VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表25: 设备控制记录表
-DROP TABLE IF EXISTS tab_deviceControlRecord_zch_hwz_gjc;
-CREATE TABLE tab_deviceControlRecord_zch_hwz_gjc
-(
-    recordID_zch_hwz_gjc              BIGINT PRIMARY KEY AUTO_INCREMENT comment "记录编号",
-    userID_zch_hwz_gjc                BIGINT comment "用户编号",
-    deviceID_zch_hwz_gjc              BIGINT comment "设备编号",
-    controlTime_zch_hwz_gjc           DATETIME comment "控制时间",
-    controlType_zch_hwz_gjc           VARCHAR(20) comment "控制类型",
-    controlContent_zch_hwz_gjc        VARCHAR(50) comment "控制内容",
-    deviceReservationTime_zch_hwz_gjc DATETIME comment "设备预约时间",
-    standby1_zch_hwz_gjc              VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc              VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc              VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
-
--- 表27: 汽车订单表
-DROP TABLE IF EXISTS tab_carOrder_zch_hwz_gjc;
-CREATE TABLE tab_carOrder_zch_hwz_gjc
-(
-    orderID_zch_hwz_gjc      BIGINT PRIMARY KEY AUTO_INCREMENT comment "订单编号",
-    userID_zch_hwz_gjc       BIGINT comment "用户编号",
-    carID_zch_hwz_gjc        BIGINT comment "汽车编号",
-    driverID_zch_hwz_gjc     BIGINT comment "司机编号",
-    orderTime_zch_hwz_gjc    DATETIME comment "下单时间",
-    orderStatus_zch_hwz_gjc  VARCHAR(20) comment "订单状态",
-    orderAmount_zch_hwz_gjc  DECIMAL(10, 2) comment "订单金额",
-    tripRecordID_zch_hwz_gjc BIGINT comment "行程记录编号",
-    standby1_zch_hwz_gjc     VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc     VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc     VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
-
--- 表28: 支付密码表
+-- 表22: 支付密码表
 DROP TABLE IF EXISTS tab_paymentPassword_zch_hwz_gjc;
 CREATE TABLE tab_paymentPassword_zch_hwz_gjc
 (
@@ -475,7 +362,7 @@ CREATE TABLE tab_paymentPassword_zch_hwz_gjc
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表29 房屋图片表
+-- 表23 房屋图片表
 DROP TABLE IF EXISTS tab_homeImage_zch_hwz_gjc;
 CREATE TABLE tab_homeImage_zch_hwz_gjc
 (
@@ -489,26 +376,7 @@ CREATE TABLE tab_homeImage_zch_hwz_gjc
     deleted_zch_hwz_gjc    int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表30 汽车使用情况表
-DROP TABLE IF EXISTS tab_carUseStatus_zch_hwz_gjc;
-CREATE TABLE tab_carUseStatus_zch_hwz_gjc
-(
-    useStatusID_zch_hwz_gjc        BIGINT PRIMARY KEY AUTO_INCREMENT comment "使用情况编号",
-    carID_zch_hwz_gjc              BIGINT comment "汽车编号",
-    useDate_zch_hwz_gjc            DATE comment "使用日期",
-    useStatus_zch_hwz_gjc          VARCHAR(20) comment "使用情况",
-    mileage_zch_hwz_gjc            INT comment "里程",
-    tireSituation_zch_hwz_gjc      VARCHAR(100) comment "轮胎情况",
-    otherMaintenance_zch_hwz_gjc   VARCHAR(200) comment "其他维修情况",
-    nextInspectionTime_zch_hwz_gjc DATE comment "下次维修时间",
-    inspectRemark_zch_hwz_gjc      VARCHAR(200) comment "维修备注",
-    standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
-    deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
-
--- 表31 维修保洁绑定房屋表
+-- 表24 维修保洁绑定房屋表
 DROP TABLE IF EXISTS tab_managerHomeBinding_zch_hwz_gjc;
 CREATE TABLE tab_managerHomeBinding_zch_hwz_gjc
 (
@@ -524,7 +392,7 @@ CREATE TABLE tab_managerHomeBinding_zch_hwz_gjc
     deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表32 景点图片表
+-- 表25 景点图片表
 DROP TABLE IF EXISTS tab_attractionImage_zch_hwz_gjc;
 CREATE TABLE tab_attractionImage_zch_hwz_gjc
 (
@@ -538,7 +406,7 @@ CREATE TABLE tab_attractionImage_zch_hwz_gjc
     deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表33 身份证记录表
+-- 表26 身份证记录表
 DROP TABLE if exists tab_IDCardRecord_zch_hwz_gjc;
 CREATE TABLE tab_IDCardRecord_zch_hwz_gjc
 (
@@ -554,7 +422,7 @@ CREATE TABLE tab_IDCardRecord_zch_hwz_gjc
     deleted_zch_hwz_gjc        int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表34 身份信息对照表
+-- 表27 身份信息对照表
 drop table if exists tab_IdentityChecklist_zch_hwz_gjc;
 create table tab_IdentityChecklist_zch_hwz_gjc
 (
@@ -581,92 +449,68 @@ ALTER TABLE tab_userHeadImage_zch_hwz_gjc
 -- 表6 金额表
 ALTER TABLE tab_accountBalance_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_accountBalance_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表7附1 房屋信息表
+-- 表8 房屋信息表
 ALTER TABLE tab_homeInformation_zch_hwz_gjc
     ADD CONSTRAINT FK_homeInformation_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表8 维修保洁与维护信息表
+-- 表9 维修保洁与维护信息表
 ALTER TABLE tab_RCAMI_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_RCAMI_tab_Order_zch_hwz_gjc FOREIGN KEY (orderId_zch_hwz_gjc) REFERENCES tab_Order_zch_hwz_gjc (orderId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_RCAMI_zch_hwz_gjc_manager_zch_hwz_gjc foreign key (workUserId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_RCAMI_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表9 用户统一通知表
+-- 表10 用户统一通知表
 ALTER TABLE tab_userNotification_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_userNotification_tab_manager_zch_hwz_gjc FOREIGN KEY (notifyPostManager_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表10 优惠券表
+-- 表11 优惠券表
 ALTER TABLE tab_usersAndCoupons_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_UAC_tab_coupon_zch_hwz_gjc FOREIGN KEY (couponId_zch_hwz_gjc) REFERENCES tab_coupon_zch_hwz_gjc (couponId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_UAC_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表11 日志表
+-- 表13 日志表
 ALTER TABLE tab_log_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_log_tab_user_zch_hwz_gjc FOREIGN KEY (userPerformingId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_log_tab_manager_userPerformingId2_zch_hwz_gjc foreign key (userPerformingId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表12 房屋评论表
+-- 表14 房屋评论表
 ALTER TABLE tab_housingReview_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_housingReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_housingReview_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_HR_zch_hwz_gjc_tab_HR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondHousingReviewId_zch_hwz_gjc) references tab_housingReview_zch_hwz_gjc (housingReviewId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 
--- 表15 景点评论表表
+-- 表17 景点评论表表
 ALTER TABLE tab_attractionReview_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_attractionReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_attractionReview_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_AR_zch_hwz_gjc_tab_AR_zch_hwz_gjc_reviewId_zch_hwz_gjc foreign key (secondAttractionReviewId_zch_hwz_gjc) references tab_attractionReview_zch_hwz_gjc (attractionReviewId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表16 房屋收藏表
+-- 表18 房屋收藏表
 ALTER TABLE tab_houseCollection_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_houseCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_houseCollection_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表17 景点收藏表
+-- 表19 景点收藏表
 ALTER TABLE tab_attractionCollection_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_attractionCollection_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_attractionCollection_tab_attractions_zch_hwz_gjc FOREIGN KEY (attractionsId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表18 订单表
+-- 表20 订单表
 ALTER TABLE tab_order_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_order_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_order_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表21: 预约表
-ALTER TABLE tab_carReservation_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carReservation_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_carReservation_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_carReservation_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表22:行程记录表
-ALTER TABLE tab_tripRecord_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_tripRecord_tab_carReservation_zch_hwz_gjc FOREIGN KEY (reservationID_zch_hwz_gjc) REFERENCES tab_carReservation_zch_hwz_gjc (reservationID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表23: 房屋设备表
+-- 表21: 房屋设备表
 ALTER TABLE tab_homeDevice_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_homeDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表24:设备状态表
-ALTER TABLE tab_deviceStatus_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_deviceStatus_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表25: 设备控制记录表
-ALTER TABLE tab_deviceControlRecord_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_deviceControlRecord_tab_homeDevice_zch_hwz_gjc FOREIGN KEY (deviceID_zch_hwz_gjc) REFERENCES tab_homeDevice_zch_hwz_gjc (deviceID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表27: 汽车订单表
-ALTER TABLE tab_carOrder_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carOrder_tab_user_zch_hwz_gjc FOREIGN KEY (userID_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_driverInfo_zch_hwz_gjc FOREIGN KEY (driverID_zch_hwz_gjc) REFERENCES tab_driverInfo_zch_hwz_gjc (driverID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_carOrder_tab_tripRecord_zch_hwz_gjc FOREIGN KEY (tripRecordID_zch_hwz_gjc) REFERENCES tab_tripRecord_zch_hwz_gjc (recordID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表28: 支付密码表
+-- 表22: 支付密码表
 ALTER TABLE tab_paymentPassword_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_paymentPassword_tab_accountBalance_zch_hwz_gjc FOREIGN KEY (accountID_zch_hwz_gjc) REFERENCES tab_accountBalance_zch_hwz_gjc (bid_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表29 房屋图片表
+-- 表23 房屋图片表
 ALTER TABLE tab_homeImage_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_homeImage_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表30 汽车使用情况表
-ALTER TABLE tab_carUseStatus_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_carUseStatus_tab_carInfo_zch_hwz_gjc FOREIGN KEY (carID_zch_hwz_gjc) REFERENCES tab_carInfo_zch_hwz_gjc (carID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表31 维修保洁绑定房屋表
+-- 表24 维修保洁绑定房屋表
 ALTER TABLE tab_managerHomeBinding_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_managerHomeBinding_tab_manager_zch_hwz_gjc FOREIGN KEY (managerID_zch_hwz_gjc) REFERENCES tab_manager_zch_hwz_gjc (managerID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_managerHomeBinding_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表32 景点图片表
+-- 表25 景点图片表
 ALTER TABLE tab_attractionImage_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_attractionImage_tab_Home_zch_hwz_gjc FOREIGN KEY (attractionId_zch_hwz_gjc) REFERENCES tab_attractions_zch_hwz_gjc (attractionsId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表33 身份证记录表
+-- 表26 身份证记录表
 ALTER TABLE tab_IDCardRecord_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_IDCardRecord_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
--- 表34 身份信息对照表
+-- 表27 身份信息对照表
 ALTER TABLE tab_IdentityChecklist_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_IdentityChecklist_tab_IDCardRecord_zch_hwz_gjc FOREIGN KEY (IDCardRecordID_zch_hwz_gjc) REFERENCES tab_IDCardRecord_zch_hwz_gjc (IDCardRecordID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
     ADD CONSTRAINT FK_tab_IdentityChecklist_tab_order_zch_hwz_gjc FOREIGN KEY (orderID_zch_hwz_gjc) REFERENCES tab_order_zch_hwz_gjc (orderID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
