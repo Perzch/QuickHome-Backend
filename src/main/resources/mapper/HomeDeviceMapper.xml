@@ -9,7 +9,6 @@
             <result property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="deviceName_zch_hwz_gjc" column="deviceName_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="deviceType_zch_hwz_gjc" column="deviceType_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="deviceProperties_zch_hwz_gjc" column="deviceProperties_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="brand_zch_hwz_gjc" column="brand_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="price_zch_hwz_gjc" column="price_zch_hwz_gjc" jdbcType="DECIMAL"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>

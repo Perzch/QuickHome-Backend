@@ -8,7 +8,6 @@
             <id property="bid_zch_hwz_gjc" column="bid_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="userBalance_zch_hwz_gjc" column="userBalance_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="userDeposit_zch_hwz_gjc" column="userDeposit_zch_hwz_gjc" jdbcType="DOUBLE"/>
             <result property="lastModifiedDate_zch_hwz_gjc" column="lastModifiedDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="openTime_zch_hwz_gjc" column="openTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>

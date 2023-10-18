@@ -28,15 +28,4 @@ public class PojoHome {
     private List<HomeDevice> homeDeviceList;
     private List<HomeImage> homeImageList;
     private Integer collectionCount;
-
-    //获取房屋中的智能设备信息
-    public List<HomeDevice> getSmartDeviceList(){
-        List<HomeDevice> homeDevices=this.homeDeviceList;
-        List<HomeDevice> smartDevices = new ArrayList<>();
-        homeDevices.forEach((homeDevice -> {
-            if(homeDevice.getDeviceType_zch_hwz_gjc().equals("智能设备"))
-                smartDevices.add(homeDevice);
-        }));
-        return smartDevices;
-    }
 }
