@@ -90,7 +90,6 @@ CREATE TABLE tab_accountBalance_zch_hwz_gjc
     bid_zch_hwz_gjc              BIGINT PRIMARY KEY auto_increment comment "金额表编号",
     userId_zch_hwz_gjc           BIGINT comment "用户编号",
     userBalance_zch_hwz_gjc      DOUBLE comment "用户账户余额",
-    userDeposit_zch_hwz_gjc      DOUBLE comment "用户账户押金",
     lastModifiedDate_zch_hwz_gjc DATETIME comment "最后修改时间",
     openTime_zch_hwz_gjc         DATETIME comment "开户时间",
     standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",

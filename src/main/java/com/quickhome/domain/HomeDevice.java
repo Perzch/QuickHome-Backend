@@ -54,13 +54,6 @@ public class HomeDevice implements Serializable {
     private String deviceType_zch_hwz_gjc;
 
     /**
-     * 设备属性(安全设备/基础设备/智能设备)
-     */
-    @TableField(value = "deviceProperties_zch_hwz_gjc")
-    @JsonProperty("deviceProperties")
-    private String deviceProperties_zch_hwz_gjc;
-
-    /**
      * 品牌
      */
     @TableField(value = "brand_zch_hwz_gjc")
@@ -117,7 +110,6 @@ public class HomeDevice implements Serializable {
             && (this.getHomeId_zch_hwz_gjc() == null ? other.getHomeId_zch_hwz_gjc() == null : this.getHomeId_zch_hwz_gjc().equals(other.getHomeId_zch_hwz_gjc()))
             && (this.getDeviceName_zch_hwz_gjc() == null ? other.getDeviceName_zch_hwz_gjc() == null : this.getDeviceName_zch_hwz_gjc().equals(other.getDeviceName_zch_hwz_gjc()))
             && (this.getDeviceType_zch_hwz_gjc() == null ? other.getDeviceType_zch_hwz_gjc() == null : this.getDeviceType_zch_hwz_gjc().equals(other.getDeviceType_zch_hwz_gjc()))
-            && (this.getDeviceProperties_zch_hwz_gjc() == null ? other.getDeviceProperties_zch_hwz_gjc() == null : this.getDeviceProperties_zch_hwz_gjc().equals(other.getDeviceProperties_zch_hwz_gjc()))
             && (this.getBrand_zch_hwz_gjc() == null ? other.getBrand_zch_hwz_gjc() == null : this.getBrand_zch_hwz_gjc().equals(other.getBrand_zch_hwz_gjc()))
             && (this.getPrice_zch_hwz_gjc() == null ? other.getPrice_zch_hwz_gjc() == null : this.getPrice_zch_hwz_gjc().equals(other.getPrice_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
@@ -134,7 +126,6 @@ public class HomeDevice implements Serializable {
         result = prime * result + ((getHomeId_zch_hwz_gjc() == null) ? 0 : getHomeId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeviceName_zch_hwz_gjc() == null) ? 0 : getDeviceName_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeviceType_zch_hwz_gjc() == null) ? 0 : getDeviceType_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getDeviceProperties_zch_hwz_gjc() == null) ? 0 : getDeviceProperties_zch_hwz_gjc().hashCode());
         result = prime * result + ((getBrand_zch_hwz_gjc() == null) ? 0 : getBrand_zch_hwz_gjc().hashCode());
         result = prime * result + ((getPrice_zch_hwz_gjc() == null) ? 0 : getPrice_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
@@ -154,7 +145,6 @@ public class HomeDevice implements Serializable {
         sb.append(", homeId_zch_hwz_gjc=").append(homeId_zch_hwz_gjc);
         sb.append(", deviceName_zch_hwz_gjc=").append(deviceName_zch_hwz_gjc);
         sb.append(", deviceType_zch_hwz_gjc=").append(deviceType_zch_hwz_gjc);
-        sb.append(", deviceProperties_zch_hwz_gjc=").append(deviceProperties_zch_hwz_gjc);
         sb.append(", brand_zch_hwz_gjc=").append(brand_zch_hwz_gjc);
         sb.append(", price_zch_hwz_gjc=").append(price_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);

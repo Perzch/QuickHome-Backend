@@ -1,6 +1,5 @@
 package com.quickhome.mapper;
 
-import com.quickhome.domain.CarUseStatus;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

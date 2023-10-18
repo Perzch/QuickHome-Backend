@@ -1,6 +1,5 @@
 package com.quickhome.mapper;
 
-import com.quickhome.domain.CarReservation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

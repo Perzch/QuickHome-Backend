@@ -47,13 +47,6 @@ public class AccountBalance implements Serializable {
     private Double userBalance_zch_hwz_gjc;
 
     /**
-     * 用户账户押金
-     */
-    @TableField(value = "userDeposit_zch_hwz_gjc")
-    @JsonProperty("userDeposit")
-    private Double userDeposit_zch_hwz_gjc;
-
-    /**
      * 最后修改时间
      */
     @TableField(value = "lastModifiedDate_zch_hwz_gjc")
@@ -109,7 +102,6 @@ public class AccountBalance implements Serializable {
         return (this.getBid_zch_hwz_gjc() == null ? other.getBid_zch_hwz_gjc() == null : this.getBid_zch_hwz_gjc().equals(other.getBid_zch_hwz_gjc()))
             && (this.getUserId_zch_hwz_gjc() == null ? other.getUserId_zch_hwz_gjc() == null : this.getUserId_zch_hwz_gjc().equals(other.getUserId_zch_hwz_gjc()))
             && (this.getUserBalance_zch_hwz_gjc() == null ? other.getUserBalance_zch_hwz_gjc() == null : this.getUserBalance_zch_hwz_gjc().equals(other.getUserBalance_zch_hwz_gjc()))
-            && (this.getUserDeposit_zch_hwz_gjc() == null ? other.getUserDeposit_zch_hwz_gjc() == null : this.getUserDeposit_zch_hwz_gjc().equals(other.getUserDeposit_zch_hwz_gjc()))
             && (this.getLastModifiedDate_zch_hwz_gjc() == null ? other.getLastModifiedDate_zch_hwz_gjc() == null : this.getLastModifiedDate_zch_hwz_gjc().equals(other.getLastModifiedDate_zch_hwz_gjc()))
             && (this.getOpenTime_zch_hwz_gjc() == null ? other.getOpenTime_zch_hwz_gjc() == null : this.getOpenTime_zch_hwz_gjc().equals(other.getOpenTime_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
@@ -125,7 +117,6 @@ public class AccountBalance implements Serializable {
         result = prime * result + ((getBid_zch_hwz_gjc() == null) ? 0 : getBid_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserId_zch_hwz_gjc() == null) ? 0 : getUserId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserBalance_zch_hwz_gjc() == null) ? 0 : getUserBalance_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getUserDeposit_zch_hwz_gjc() == null) ? 0 : getUserDeposit_zch_hwz_gjc().hashCode());
         result = prime * result + ((getLastModifiedDate_zch_hwz_gjc() == null) ? 0 : getLastModifiedDate_zch_hwz_gjc().hashCode());
         result = prime * result + ((getOpenTime_zch_hwz_gjc() == null) ? 0 : getOpenTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
@@ -144,7 +135,6 @@ public class AccountBalance implements Serializable {
         sb.append(", bid_zch_hwz_gjc=").append(bid_zch_hwz_gjc);
         sb.append(", userId_zch_hwz_gjc=").append(userId_zch_hwz_gjc);
         sb.append(", userBalance_zch_hwz_gjc=").append(userBalance_zch_hwz_gjc);
-        sb.append(", userDeposit_zch_hwz_gjc=").append(userDeposit_zch_hwz_gjc);
         sb.append(", lastModifiedDate_zch_hwz_gjc=").append(lastModifiedDate_zch_hwz_gjc);
         sb.append(", openTime_zch_hwz_gjc=").append(openTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);

@@ -1,6 +1,5 @@
 package com.quickhome.service;
 
-import com.quickhome.domain.CarReservation;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

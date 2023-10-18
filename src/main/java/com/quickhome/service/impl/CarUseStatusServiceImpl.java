@@ -1,7 +1,6 @@
 package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.quickhome.domain.CarUseStatus;
 import com.quickhome.service.CarUseStatusService;
 import com.quickhome.mapper.CarUseStatusMapper;
 import org.springframework.stereotype.Service;
