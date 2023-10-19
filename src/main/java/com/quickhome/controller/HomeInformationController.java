@@ -1,35 +1,28 @@
 package com.quickhome.controller;
 
-import cn.hutool.core.date.DateTime;
 import com.quickhome.domain.Home;
 import com.quickhome.domain.HomeDevice;
 import com.quickhome.domain.HomeImage;
-import com.quickhome.pojo.PJHselect;
 import com.quickhome.pojo.PojoHome;
-import com.quickhome.pojo.PojoPageHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.domain.HomeInformation;
-import com.quickhome.service.HomeDeviceService;
-import com.quickhome.service.HomeImageService;
-import com.quickhome.service.HomeService;
+import com.quickhome.service.*;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Data;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.quickhome.service.HomeInformationService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller("HomeInfCon")
 @RequestMapping("/homeInf")
 public class HomeInformationController {
+
+    @Autowired
+    private HouseCollectionService houseCollectionService;
 
     @Autowired
     private HomeInformationService homeInfSer_zch_hwz_gjc;
@@ -118,6 +111,8 @@ public class HomeInformationController {
             pojoHome.setHomeDeviceList(homeDevices);
             List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeImageList(homeImages);
+            int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setCollectionCount(collectionNum);
             pojoHomeList.add(pojoHome);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));

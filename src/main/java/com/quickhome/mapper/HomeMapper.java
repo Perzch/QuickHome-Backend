@@ -2,7 +2,6 @@ package com.quickhome.mapper;
 
 import com.quickhome.domain.Home;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.quickhome.pojo.PJHselect;
 import com.quickhome.pojo.PojoHome;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:47:41
 */
 public interface HouseCollectionService extends IService<HouseCollection> {
-
+    public int getCollectionCountByHomeId(Long homeId);
 }
