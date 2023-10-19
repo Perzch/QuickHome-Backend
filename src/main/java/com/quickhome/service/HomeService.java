@@ -7,6 +7,7 @@ import com.quickhome.pojo.PojoHome;
 import com.quickhome.pojo.PojoPageHome;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +18,6 @@ import java.util.List;
 public interface HomeService extends IService<Home> {
     public List<Home> getHomesByPage(Long page, Long size);
     public List<PojoHome> getHomeListOrderByCollectionCount();
-    public List<Home> selectHomeTypeCate(PJHselect pjh);
-    public List<Home> selectHomeCate(PJHselect pjh);
     public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);
-
+    List<PojoHome> getHomesByCriteriaWithDevices(String beginDateStr, String endDateStr, String address, double minRent, double maxRent, List<String> deviceNames,int maxPeople ,String homeType, int page, int size);
 }

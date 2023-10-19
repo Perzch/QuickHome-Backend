@@ -18,7 +18,6 @@ public interface OrderMapper extends BaseMapper<Order> {
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
     public List<Order> getAllUserOrders(Long userId);
-
 }
 
 

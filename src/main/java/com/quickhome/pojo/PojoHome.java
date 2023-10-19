@@ -27,5 +27,5 @@ public class PojoHome {
     private HomeInformation homeInformation;
     private List<HomeDevice> homeDeviceList;
     private List<HomeImage> homeImageList;
-    private Integer collectionCount;
+    private Integer collectionCount; // 收藏数
 }

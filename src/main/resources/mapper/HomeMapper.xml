@@ -42,32 +42,43 @@
             collectionCount DESC
         limit 10
     </select>
-    <select id="selectHomeCate" parameterType="com.quickhome.pojo.PJHselect" resultType="com.quickhome.domain.Home">
-        SELECT a.*
-        FROM tab_home_zch_hwz_gjc AS a
-                 JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
-                 LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-        WHERE b.homeArea_zch_hwz_gjc >=  #{area}
-          AND b.maxPerson_zch_hwz_gjc >=  #{maxPeople}
-          AND (#{endDate} <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR #{beginDate}  >  c.checkOutTime_zch_hwz_gjc OR
-               c.checkInTime_zch_hwz_gjc IS NULL)
-        LIMIT #{page}, #{size}
-    </select>
-    <select id="selectHomeTypeCate" parameterType="com.quickhome.pojo.PJHselect" resultType="com.quickhome.domain.Home">
-        SELECT a.*
-        FROM tab_home_zch_hwz_gjc AS a
-                 JOIN tab_homeinformation_zch_hwz_gjc AS b ON a.homeId_zch_hwz_gjc = b.homeId_zch_hwz_gjc
-                 LEFT JOIN tab_order_zch_hwz_gjc AS c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-        WHERE b.homeArea_zch_hwz_gjc <![CDATA[ >= ]]> #{area}
-          AND b.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
-          AND a.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
-          AND (#{endDate} <![CDATA[ < ]]> c.checkInTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> c.checkOutTime_zch_hwz_gjc OR
-               c.checkInTime_zch_hwz_gjc IS NULL)
-        LIMIT #{page}, #{size}
-    </select>
     <select id="getHomeDayRentByHomeId" parameterType="Long" resultType="java.lang.Double">
         select homeDayRent_zch_hwz_gjc
         from tab_home_zch_hwz_gjc
         where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+    </select>
+    <select id="selectHomesByCriteriaWithDevices" resultType="com.quickhome.domain.Home">
+        SELECT DISTINCT h.*
+        FROM tab_Home_zch_hwz_gjc h
+                 JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
+                 JOIN tab_homeDevice_zch_hwz_gjc d ON h.homeId_zch_hwz_gjc = d.homeId_zch_hwz_gjc
+                 JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+        WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
+               o.creationTime_zch_hwz_gjc IS NULL)
+        AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
+        AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+        AND h.homeType_zch_hwz_gjc <![CDATA[ = ]]> #{homeType}
+        AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+        AND d.deviceName_zch_hwz_gjc IN
+        <foreach item="deviceName" index="index" collection="deviceNames" open="(" separator="," close=")">
+            #{deviceName}
+        </foreach>
+        GROUP BY h.homeId_zch_hwz_gjc
+        HAVING COUNT(DISTINCT d.deviceType_zch_hwz_gjc) = #{deviceCount}
+        LIMIT #{page}, #{size}
+    </select>
+
+    <select id="selectHomesWithoutDevicesCriteria" resultType="com.quickhome.domain.Home">
+        SELECT h.*
+        FROM tab_Home_zch_hwz_gjc h
+        JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
+        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+        WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
+               o.creationTime_zch_hwz_gjc IS NULL)
+          AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
+          AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+          AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+          AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+        LIMIT #{page}, #{size}
     </select>
 </mapper>

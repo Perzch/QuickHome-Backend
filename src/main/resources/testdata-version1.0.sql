@@ -48,13 +48,13 @@ VALUES
     ('普通管理员', 'manager5', '123456', '小王', '13611111115', '男', '2023-05-05 12:00:00');
 
 -- 金额表
-INSERT INTO tab_accountBalance_zch_hwz_gjc (userId_zch_hwz_gjc, userBalance_zch_hwz_gjc, userDeposit_zch_hwz_gjc, openTime_zch_hwz_gjc)
+INSERT INTO tab_accountBalance_zch_hwz_gjc (userId_zch_hwz_gjc, userBalance_zch_hwz_gjc, openTime_zch_hwz_gjc)
 VALUES
-    (1000, 0, 0, '2023-01-06 12:00:00'),
-    (1001, 0, 0, '2023-02-06 12:00:00'),
-    (1002, 0, 0, '2023-03-06 12:00:00'),
-    (1003, 4000, 2000, '2023-04-06 12:00:00'),
-    (1004, 5000, 2500, '2023-05-06 12:00:00');
+    (1000, 0, '2023-01-06 12:00:00'),
+    (1001, 0, '2023-02-06 12:00:00'),
+    (1002, 0, '2023-03-06 12:00:00'),
+    (1003, 4000, '2023-04-06 12:00:00'),
+    (1004, 5000, '2023-05-06 12:00:00');
 
 -- 房屋表
 INSERT INTO tab_Home_zch_hwz_gjc (homeName_zch_hwz_gjc, homeType_zch_hwz_gjc, homeDayRent_zch_hwz_gjc, homeState_zch_hwz_gjc, homeAddress_zch_hwz_gjc)
@@ -160,60 +160,16 @@ VALUES
     (4, '2023-04-17 12:00:00', '2023-04-20 12:00:00', 1003),
     (5, '2023-05-17 12:00:00', '2023-05-20 12:00:00', 1004);
 
--- 司机信息表
-INSERT INTO tab_driverInfo_zch_hwz_gjc (driverName_zch_hwz_gjc, contactPhoneNumber_zch_hwz_gjc, idNumber_zch_hwz_gjc, licenseNumber_zch_hwz_gjc)
-VALUES
-    ('王一', '13511111111', '110101199003071011', '123456789123'),
-    ('王二', '13511111122', '110101199003071022', '123456789124'),
-    ('王三', '13511111333', '110101199103074011', '123456789125'),
-    ('李四', '13511111444', '110101199003074022', '123456789126'),
-    ('张五', '13511111555', '110101199103075011', '123456789127');
-
--- 汽车信息表
-INSERT INTO tab_carInfo_zch_hwz_gjc (brand_zch_hwz_gjc, model_zch_hwz_gjc, licensePlateNumber_zch_hwz_gjc, carColor_zch_hwz_gjc, entryTime_zch_hwz_gjc)
-VALUES
-    ('奥迪', 'A4L', '京A88888', '黑色', '2023-01-18 12:00:00'),
-    ('宝马', 'X5', '京B66666', '白色', '2023-02-18 12:00:00'),
-    ('奔驰', 'C260', '京C55555', '银色', '2023-03-18 12:00:00'),
-    ('别克', '昂科威', '京D44444', '蓝色', '2023-04-18 12:00:00'),
-    ('雷克萨斯', 'RX350', '京E33333', '红色', '2023-05-18 12:00:00');
 
 -- 房屋设备表
-INSERT INTO tab_homeDevice_zch_hwz_gjc (homeId_zch_hwz_gjc, deviceName_zch_hwz_gjc, deviceType_zch_hwz_gjc, deviceProperties_zch_hwz_gjc, brand_zch_hwz_gjc, price_zch_hwz_gjc)
+INSERT INTO tab_homeDevice_zch_hwz_gjc (homeId_zch_hwz_gjc, deviceName_zch_hwz_gjc, deviceType_zch_hwz_gjc, brand_zch_hwz_gjc, price_zch_hwz_gjc)
 
 VALUES
-    (1, '空调', '空调', '智能设备', '格力', 2500),
-    (2, '电视', '电视', '基础设备', '海信', 1500),
-    (3, '洗衣机', '洗衣机', '基础设备', '小天鹅', 1800),
-    (4, '冰箱', '冰箱', '基础设备', '海尔', 3000),
-    (5, '热水器', '热水器', '基础设备', '方太', 1200);
-
--- 设备状态表
-INSERT INTO tab_deviceStatus_zch_hwz_gjc (deviceID_zch_hwz_gjc, deviceStatus_zch_hwz_gjc, updateTime_zch_hwz_gjc)
-VALUES
-    (1, '开启', '2023-01-21 12:00:00'),
-    (2, '关闭', '2023-02-21 12:00:00'),
-    (3, '运行中', '2023-03-21 12:00:00'),
-    (4, '待机中', '2023-04-21 12:00:00'),
-    (5, '关闭', '2023-05-21 12:00:00');
-
--- 设备控制记录表
-INSERT INTO tab_deviceControlRecord_zch_hwz_gjc (userID_zch_hwz_gjc, deviceID_zch_hwz_gjc, controlTime_zch_hwz_gjc, controlType_zch_hwz_gjc, controlContent_zch_hwz_gjc)
-VALUES
-    (1000, 1, '2023-01-22 12:00:00', '语音控制', '打开空调'),
-    (1001, 2, '2023-02-22 12:00:00', 'APP控制', '关闭电视'),
-    (1002, 3, '2023-03-22 12:00:00', '语音控制', '暂停洗衣机'),
-    (1003, 4, '2023-04-22 12:00:00', 'APP控制', '调高冰箱温度'),
-    (1004, 5, '2023-05-22 12:00:00', '语音控制', '继续热水器');
-
--- 汽车订单表
-INSERT INTO tab_carOrder_zch_hwz_gjc (userID_zch_hwz_gjc, carID_zch_hwz_gjc, driverID_zch_hwz_gjc, orderTime_zch_hwz_gjc)
-VALUES
-    (1000, 1, 1, '2023-01-23 12:00:00'),
-    (1001, 2, 2, '2023-02-23 12:00:00'),
-    (1002, 3, 3, '2023-03-23 12:00:00'),
-    (1003, 4, 4, '2023-04-23 12:00:00'),
-    (1004, 5, 5, '2023-05-23 12:00:00');
+    (1, '空调', '空调', '格力', 2500),
+    (2, '电视', '电视', '海信', 1500),
+    (3, '洗衣机', '洗衣机', '小天鹅', 1800),
+    (4, '冰箱', '冰箱', '海尔', 3000),
+    (5, '热水器', '热水器', '方太', 1200);
 
 -- 支付密码表
 INSERT INTO tab_paymentPassword_zch_hwz_gjc (accountID_zch_hwz_gjc, paymentPassword_zch_hwz_gjc, setTime_zch_hwz_gjc)
@@ -232,15 +188,6 @@ VALUES
     (3, '/home3.jpg', '2023-03-25 12:00:00'),
     (4, '/home4.jpg', '2023-04-25 12:00:00'),
     (5, '/home5.jpg', '2023-05-25 12:00:00');
-
--- 汽车使用情况表
-INSERT INTO tab_carUseStatus_zch_hwz_gjc (carID_zch_hwz_gjc, useDate_zch_hwz_gjc, mileage_zch_hwz_gjc, nextInspectionTime_zch_hwz_gjc)
-VALUES
-    (1, '2023-01-26', 180, '2023-04-15'),
-    (2, '2023-02-26', 210, '2023-05-20'),
-    (3, '2023-03-26', 250, '2023-06-05'),
-    (4, '2023-04-26', 160, '2023-07-12'),
-    (5, '2023-05-26', 190, '2023-08-18');
 
 -- 维修保洁绑定房屋表
 INSERT INTO tab_managerHomeBinding_zch_hwz_gjc (managerID_zch_hwz_gjc, homeID_zch_hwz_gjc, bindingType_zch_hwz_gjc, bindingTime_zch_hwz_gjc)

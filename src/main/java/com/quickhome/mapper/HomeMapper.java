@@ -4,9 +4,11 @@ import com.quickhome.domain.Home;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.pojo.PJHselect;
 import com.quickhome.pojo.PojoHome;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,17 +18,17 @@ import java.util.List;
  * @Entity .domain.Home
  */
 @Repository
+@Mapper
 public interface HomeMapper extends BaseMapper<Home> {
     public List<Home> selectHomeByPage(@Param("page") Long page, @Param("size") Long size);
 
     public List<PojoHome> getHomeListOrderByCollectionCount();
 
-    public List<Home> selectHomeTypeCate(PJHselect pjh);
-
-    public List<Home> selectHomeCate(PJHselect pjh);
-
     public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);
 
+    List<Home> selectHomesByCriteriaWithDevices(Date beginDate, Date endDate, String address, double minRent, double maxRent, List<String> deviceNames, int deviceCount,int maxPeople ,String homeType, int page, int size);
+
+    List<Home> selectHomesWithoutDevicesCriteria(Date beginDate, Date endDate, String address, double minRent, double maxRent,int maxPeople ,String homeType, int page, int size);
 }
 
 
