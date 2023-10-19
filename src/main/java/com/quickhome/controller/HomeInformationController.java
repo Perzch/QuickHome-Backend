@@ -49,41 +49,6 @@ public class HomeInformationController {
      * @param size 单页最大显示条数
      * @return 房屋信息
      */
-//    @GetMapping("/")
-//    @ResponseBody
-//    public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "all") String homeType,//房屋类型
-//                                        @RequestParam String beginDate,//入住日期
-//                                        @RequestParam String endDate,//退房日期
-//                                        @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
-//                                        @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
-//                                        @RequestParam(required = false, defaultValue = "all") String address,//模糊地址关键字
-//                                        @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
-//                                        @RequestParam(defaultValue = "1") Long pageNumber,//最大回传显示页数
-//                                        @RequestParam(required = false, defaultValue = "5") Long size,//单页最大显示条数
-//                                        HttpServletRequest req){
-//        try{
-//            PojoPageHome pojoPageHome=new PojoPageHome();//回传的数据
-//            List<Home> homeList;//房屋信息列表
-//            PJHselect pjh=PJHselect.builder()
-//                    .homeType(homeType)
-//                    .beginDate(beginDate)
-//                    .endDate(endDate)
-//                    .minRent(minRent)
-//                    .maxRent(maxRent)
-//                    .address(address)
-//                    .maxPeople(maxPeople)
-//                    .page((pageNumber-1)*size)
-//                    .size(size)
-//                    .build();
-//            if(homeType.equals("all")){
-//                homeList=homeSer_zch_hwz_gjc.selectHomeCate(pjh);
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return ResponseEntity.ok(ResponseResult.error());
-//
-//    }
 
     @GetMapping("/")//获取房屋信息（复合模糊查询）
     @ResponseBody

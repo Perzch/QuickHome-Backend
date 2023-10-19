@@ -3,6 +3,7 @@ package com.quickhome.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.User;
 import com.quickhome.exception.ExistException;
@@ -50,6 +51,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    public Long setUserPassword(String userEmail, String userPhone, String userPwd) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("deleted_zch_hwz_gjc", 0)
+                .and(wrapper -> wrapper.eq("userEmail_zch_hwz_gjc", userEmail)
+                        .or()
+                        .eq("userPhone_zch_hwz_gjc", userPhone));
+
+        User user = baseMapper.selectOne(queryWrapper);
+        if (user != null) {
+            user.setUserPwd_zch_hwz_gjc(userPwd);
+            baseMapper.updateById(user);
+            return user.getUserId_zch_hwz_gjc();
+        }
+        return null;
+    }
+
+    @Override
+    public User loginByPhone(String phone) {
+        return baseMapper.findByPhone(phone);
+    }
+
+    @Override
     public Long getUserIdByAccount(String userAccount) {
         return baseMapper.getUserIdByAccount(userAccount);
     }
@@ -66,10 +89,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public Boolean userForget_zch_hwz_gjc(User user) {
         User u = baseMapper.queryUserForLogin(user);
-        if(Objects.isNull(u)){
+        if (Objects.isNull(u)) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }

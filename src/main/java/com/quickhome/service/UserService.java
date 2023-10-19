@@ -18,4 +18,6 @@ public interface UserService extends IService<User> {
     public User queryUserForLogin(User user);
     public Boolean userForget_zch_hwz_gjc(User user);
 
+    public User loginByPhone(String phone);
+    public Long setUserPassword(String userEmail, String userPhone, String userPwd);
 }

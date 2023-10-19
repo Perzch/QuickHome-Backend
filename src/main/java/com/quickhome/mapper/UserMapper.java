@@ -19,6 +19,8 @@ public interface UserMapper extends BaseMapper<User> {
     public List<User> queryUser(User user);
     public User queryUserForLogin(User user);
 
+    User findByPhone(String phone);
+
 }
 
 

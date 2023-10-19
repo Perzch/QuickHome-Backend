@@ -55,7 +55,7 @@ public class Test_JWT {
 //        System.out.println("转成字符串为:" + Base64.encode(pair.getPrivate().getEncoded()));
 //        System.out.println("公钥"+pair.getPublic());
 //        System.out.println("转成字符串为:" + Base64.encode(pair.getPublic().getEncoded()));
-        String password = "未到入住时间";
+        String password = "123456";
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] encrypt = rsa.encrypt(password, KeyType.PublicKey);
         System.out.println("加密后的密文为:" + Base64.encode(encrypt));

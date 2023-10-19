@@ -59,4 +59,8 @@
         or userAccount_zch_hwz_gjc=#{userAccount_zch_hwz_gjc}
         or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc}
     </select>
+
+    <select id="findByPhone" resultType="com.quickhome.domain.User">
+        SELECT * FROM tab_user_zch_hwz_gjc WHERE userPhone_zch_hwz_gjc = #{phone}
+    </select>
 </mapper>
