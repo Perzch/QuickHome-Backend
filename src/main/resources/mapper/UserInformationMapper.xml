@@ -28,4 +28,11 @@
         authenticationTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
         standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
+
+    <select id="getUserImagePath" parameterType="long" resultType="string">
+        SELECT imagePath_zch_hwz_gjc
+        FROM tab_userHeadImage_zch_hwz_gjc
+        WHERE userId_zch_hwz_gjc = #{userId}
+          AND deleted_zch_hwz_gjc = 0
+    </select>
 </mapper>

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.UserInformation;
 import com.quickhome.service.UserInformationService;
 import com.quickhome.mapper.UserInformationMapper;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +21,20 @@ import java.util.Date;
 public class UserInformationServiceImpl extends ServiceImpl<UserInformationMapper, UserInformation>
     implements UserInformationService{
 
+    @Autowired
+    private SqlSession sqlSession;
+
+    @Override
+    public String getUserImagePath(Long userId) {
+        String imagePath = null;
+        try {
+            imagePath = sqlSession.selectOne("com.quickhome.mapper.UserInformationMapper.getUserImagePath", userId);
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
+        }
+        return imagePath;
+    }
     public UserInformation getUserInformationByUserId(Long userId) {
         QueryWrapper<UserInformation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userId_zch_hwz_gjc", userId);
@@ -41,6 +57,8 @@ public class UserInformationServiceImpl extends ServiceImpl<UserInformationMappe
         }
         return userInformation.getUserId_zch_hwz_gjc();
     }
+
+
 
 }
 

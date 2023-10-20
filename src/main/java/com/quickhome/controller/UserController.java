@@ -3,19 +3,23 @@ package com.quickhome.controller;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
-import com.quickhome.domain.UserHeadImage;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.quickhome.domain.*;
+import com.quickhome.mapper.*;
 import com.quickhome.pojo.PJUser;
 import com.quickhome.pojo.PojoUser;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.UserHeadImageService;
 import com.quickhome.util.CreatAccount;
-import com.quickhome.domain.User;
-import com.quickhome.domain.UserInformation;
 import com.quickhome.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static cn.hutool.crypto.CipherMode.encrypt;
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 /**
@@ -53,10 +58,28 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserInformationMapper userInformationMapper;
+
+    @Autowired
+    private UserHeadImageMapper userHeadImageMapper;
+
+    @Autowired
+    private AccountBalanceMapper accountBalanceMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private PaymentPasswordMapper paymentPasswordMapper;
+
+    @Autowired
     private UserInformationService userInformationService;
 
     @Autowired
     private UserHeadImageService userHeadImageService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @PostMapping("/insertUser")//创建用户
     @ResponseBody
@@ -191,7 +214,8 @@ public class UserController {
             @RequestParam int userId,
             HttpServletRequest req) {
         boolean flag = JwtUtil.verifyToken(token);
-        if (flag) {
+        User user = userMapper.selectById(userId);
+        if (flag && user != null) {
             PojoUser pojoUser = new PojoUser();
             pojoUser.setToken(token);
             pojoUser.setUserId(userId);
@@ -201,7 +225,7 @@ public class UserController {
 
             return ResponseEntity.ok(ResponseResult.ok(pojoUser));
         }
-        return ResponseEntity.ok(ResponseResult.error("登录失败"));
+        return ResponseEntity.ok(ResponseResult.error("查询失败"));
     }
 
     @SneakyThrows
@@ -284,5 +308,126 @@ public class UserController {
         }
 
         return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userId, userGender, dateBirthday, userSignature)));
+    }
+
+    @SneakyThrows
+    @ResponseBody
+    @GetMapping("/getHeadImg")
+    public ResponseEntity<Resource> getHeadImg(@RequestParam Long userId) {
+        String imagePath = userInformationService.getUserImagePath(userId);
+        if (imagePath == null) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            Path path = Paths.get(imagePath);
+            Resource resource = new UrlResource(path.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @SneakyThrows
+    @ResponseBody
+    @PostMapping("/findHeadImg")
+    public ResponseEntity<ResponseResult<?>> findHeadImg(
+            @RequestParam Long userId,
+            @RequestParam String inDateTime,
+            HttpServletRequest req) {
+
+        // 拼接预期的文件名部分
+        String expectedFilenamePart = userId + "-" + inDateTime;
+
+        // 从数据库中根据用户ID查询头像路径
+        String imagePathInDB = userInformationService.getUserImagePath(userId);
+
+        if (imagePathInDB != null && !imagePathInDB.isEmpty()) {
+            // 从完整路径中提取文件名
+            String filenameInDB = imagePathInDB.substring(imagePathInDB.lastIndexOf("/") + 1, imagePathInDB.lastIndexOf("."));
+
+            if (filenameInDB.equals(expectedFilenamePart)) {
+                // 文件名匹配成功
+                return ResponseEntity.ok(ResponseResult.ok("头像不需要更新"));
+            } else {
+                // 文件名匹配失败
+                return ResponseEntity.ok(ResponseResult.of(210,"头像需要更新"));
+            }
+        } else {
+            // 用户ID没有对应的头像
+            return ResponseEntity.ok(ResponseResult.error("用户没有头像"));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteUser")
+    public ResponseEntity<ResponseResult<?>> deleteUser(
+            @RequestParam Long userId,
+            HttpServletRequest req) {
+
+        QueryWrapper<AccountBalance> queryWrapper5 = new QueryWrapper<>();
+        queryWrapper5.eq("userId_zch_hwz_gjc", userId);
+        AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper5);
+
+        if (accountBalance.getUserBalance_zch_hwz_gjc() > 0){
+            return ResponseEntity.ok(ResponseResult.error("用户余额大于0，不能注销"));
+        }
+
+        QueryWrapper<Order> queryWrapper6 = new QueryWrapper<>();
+        queryWrapper6.eq("userId_zch_hwz_gjc", userId);
+        List<Order> orders = orderMapper.selectList(queryWrapper6);
+
+        boolean hasUnfinishedOrder = false;
+
+        for (Order order : orders){
+            String state = order.getOrderState_zch_hwz_gjc();
+            if (!state.equals("已完成") && !state.equals("已取消")) {
+                hasUnfinishedOrder = true;
+                break;
+            }
+        }
+
+        if (hasUnfinishedOrder) {
+            return ResponseEntity.ok(ResponseResult.error("用户有未完成的订单，不能注销"));
+        }
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        userMapper.update(null, updateWrapper);
+
+        UpdateWrapper<PaymentPassword> updateWrapper7 = new UpdateWrapper<>();
+        updateWrapper7.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        paymentPasswordMapper.update(null, updateWrapper7);
+
+
+        UpdateWrapper<Order> updateWrapper6 = new UpdateWrapper<>();
+        updateWrapper6.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        orderMapper.update(null, updateWrapper6);
+
+
+        UpdateWrapper<UserInformation> updateWrapper1 = new UpdateWrapper<>();
+        updateWrapper1.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        userInformationMapper.update(null, updateWrapper1);
+
+        UpdateWrapper<UserHeadImage> updateWrapper2 = new UpdateWrapper<>();
+        updateWrapper2.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        userHeadImageMapper.update(null, updateWrapper2);
+
+        UpdateWrapper<AccountBalance> updateWrapper3 = new UpdateWrapper<>();
+        updateWrapper3.eq("userId_zch_hwz_gjc", userId)
+                .set("deleted_zch_hwz_gjc", 1);
+        accountBalanceMapper.update(null, updateWrapper3);
+
+        return ResponseEntity.ok(ResponseResult.ok("注销成功"));
     }
 }
