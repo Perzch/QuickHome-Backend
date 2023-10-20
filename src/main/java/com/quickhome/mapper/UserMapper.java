@@ -2,6 +2,7 @@ package com.quickhome.mapper;
 
 import com.quickhome.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.junit.Test;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 * @createDate 2023-06-21 09:48:54
 * @Entity .domain.User
 */
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
     public String getUserAccountByAccount_zch_hwz_gjc(String userAccount);
     public String userLogin_zch_hwz_gjc(User user);

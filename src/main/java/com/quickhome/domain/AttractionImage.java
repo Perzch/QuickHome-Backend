@@ -1,9 +1,6 @@
 package com.quickhome.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -74,6 +71,7 @@ public class AttractionImage implements Serializable {
     /**
      * 逻辑删除（默认0，逻辑删除1）
      */
+    @TableLogic
     @TableField(value = "deleted_zch_hwz_gjc")
     private Integer deleted_zch_hwz_gjc;
 

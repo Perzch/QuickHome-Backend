@@ -2,7 +2,7 @@
 -- 用户表
 INSERT INTO tab_user_zch_hwz_gjc (userAccount_zch_hwz_gjc, userName_zch_hwz_gjc, userPwd_zch_hwz_gjc, userEmail_zch_hwz_gjc, userPhone_zch_hwz_gjc, userInDate_zch_hwz_gjc)
 VALUES
-    ('user1', '张三', '123456', 'zhangsan@163.com', '13811111111', '2023-01-01 12:00:00'),
+    ('user1', '张三', '123456', 'zhangsan@163.com', '13142198096', '2023-01-01 12:00:00'),
     ('user2', '李四', '123456', 'lisi@163.com', '13811111112', '2023-02-01 12:00:00'),
     ('user3', '王五', '123456', 'wangwu@163.com', '13811111113', '2023-03-01 12:00:00'),
     ('user4', '赵六', '123456', 'zhaoliu@163.com', '13811111114', '2023-04-01 12:00:00'),
@@ -172,13 +172,13 @@ VALUES
     (5, '热水器', '热水器', '方太', 1200);
 
 -- 支付密码表
-INSERT INTO tab_paymentPassword_zch_hwz_gjc (accountID_zch_hwz_gjc, paymentPassword_zch_hwz_gjc, setTime_zch_hwz_gjc)
+INSERT INTO tab_paymentPassword_zch_hwz_gjc (userId_zch_hwz_gjc, paymentPassword_zch_hwz_gjc, setTime_zch_hwz_gjc)
 VALUES
-    (1, '123456', '2023-01-24 12:00:00'),
-    (2, '123456', '2023-02-24 12:00:00'),
-    (3, '123456', '2023-03-24 12:00:00'),
-    (4, '123456', '2023-04-24 12:00:00'),
-    (5, '123456', '2023-05-24 12:00:00');
+    (1000, '123456', '2023-01-24 12:00:00'),
+    (1001, '123456', '2023-02-24 12:00:00'),
+    (1002, '123456', '2023-03-24 12:00:00'),
+    (1003, '123456', '2023-04-24 12:00:00'),
+    (1004, '123456', '2023-05-24 12:00:00');
 
 -- 房屋图片表
 INSERT INTO tab_homeImage_zch_hwz_gjc (homeId_zch_hwz_gjc, imagePath_zch_hwz_gjc, inDateTime_zch_hwz_gjc)
