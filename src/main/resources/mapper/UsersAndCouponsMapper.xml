@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.quickhome.mapper.UserSandCouponsMapper">
+<mapper namespace="com.quickhome.mapper.UsersAndCouponsMapper">
 
-    <resultMap id="BaseResultMap" type="com.quickhome.domain.UserSandCoupons">
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.UsersAndCoupons">
             <id property="UACID_zch_hwz_gjc" column="UACID_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="condition_zch_hwz_gjc" column="condition_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>

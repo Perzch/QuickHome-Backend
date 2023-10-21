@@ -1,7 +1,8 @@
 package com.quickhome.mapper;
 
-import com.quickhome.domain.UserSandCoupons;
+import com.quickhome.domain.UsersAndCoupons;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author Tim-h
@@ -9,7 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-06-21 09:49:30
 * @Entity .domain.UserSandCoupons
 */
-public interface UserSandCouponsMapper extends BaseMapper<UserSandCoupons> {
+@Mapper
+public interface UsersAndCouponsMapper extends BaseMapper<UsersAndCoupons> {
 
 }
 

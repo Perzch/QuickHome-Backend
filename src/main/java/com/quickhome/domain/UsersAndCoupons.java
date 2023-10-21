@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
-public class UserSandCoupons implements Serializable {
+public class UsersAndCoupons implements Serializable {
     /**
      * 优惠用户详情编号
      */
@@ -89,7 +89,7 @@ public class UserSandCoupons implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UserSandCoupons other = (UserSandCoupons) that;
+        UsersAndCoupons other = (UsersAndCoupons) that;
         return (this.getUACID_zch_hwz_gjc() == null ? other.getUACID_zch_hwz_gjc() == null : this.getUACID_zch_hwz_gjc().equals(other.getUACID_zch_hwz_gjc()))
             && (this.getCondition_zch_hwz_gjc() == null ? other.getCondition_zch_hwz_gjc() == null : this.getCondition_zch_hwz_gjc().equals(other.getCondition_zch_hwz_gjc()))
             && (this.getUserId_zch_hwz_gjc() == null ? other.getUserId_zch_hwz_gjc() == null : this.getUserId_zch_hwz_gjc().equals(other.getUserId_zch_hwz_gjc()))

@@ -1,8 +1,11 @@
 package com.quickhome.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.quickhome.domain.Home;
 import com.quickhome.domain.HomeDevice;
 import com.quickhome.domain.HomeImage;
+import com.quickhome.mapper.HomeInformationMapper;
+import com.quickhome.mapper.HomeMapper;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.domain.HomeInformation;
@@ -15,11 +18,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller("HomeInfCon")
 @RequestMapping("/homeInf")
 public class HomeInformationController {
+
+    @Autowired
+    private HomeMapper homeMapper;
+
+    @Autowired
+    private HomeInformationMapper homeInformationMapper;
 
     @Autowired
     private HouseCollectionService houseCollectionService;
@@ -116,4 +126,112 @@ public class HomeInformationController {
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
     }
+
+
+    @ResponseBody
+    @PostMapping("/insertHome")
+    public ResponseEntity<ResponseResult<?>> insertHome(
+            @RequestBody Home home) {
+        try {
+            homeMapper.insert(home);
+            return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
+        } catch (Exception e) {
+            // 这里可以记录日志或者返回具体的错误信息
+            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/updateHome")
+    public ResponseEntity<ResponseResult<?>> updateHome(
+            @RequestBody Home home) {
+        try {
+            // 检查homeId是否存在，因为我们需要根据ID更新
+            if (home.getHomeId_zch_hwz_gjc() == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("房屋编号不能为空"));
+            }
+
+            UpdateWrapper<Home> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("homeId_zch_hwz_gjc", home.getHomeId_zch_hwz_gjc());
+
+            if (home.getHomeDayRent_zch_hwz_gjc() != null) {
+                updateWrapper.set("homeDayRent_zch_hwz_gjc", home.getHomeDayRent_zch_hwz_gjc());
+            }
+
+            if (home.getHomeState_zch_hwz_gjc() != null && !home.getHomeState_zch_hwz_gjc().isEmpty()) {
+                updateWrapper.set("homeState_zch_hwz_gjc", home.getHomeState_zch_hwz_gjc());
+            }
+
+            int result = homeMapper.update(null, updateWrapper);
+
+            // 检查是否有数据被更新
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，房屋编号可能不存在"));
+            }
+        } catch (Exception e) {
+            // 这里可以记录日志或者返回具体的错误信息
+            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/insertHomeInf")
+    public ResponseEntity<ResponseResult<?>> insertHomeInf(
+            @RequestBody HomeInformation homeInformation) {
+        try {
+            // 设置房屋注册日期为当前时间
+            homeInformation.setHomeInDate_zch_hwz_gjc(new Date());
+
+            homeInformationMapper.insert(homeInformation);
+            return ResponseEntity.ok(ResponseResult.ok(homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc())));
+        } catch (Exception e) {
+            // 这里可以记录日志或者返回具体的错误信息
+            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+        }
+    }
+    @ResponseBody
+    @PostMapping("/changeHomeInf")
+    public ResponseEntity<ResponseResult<?>> changeHomeInf(
+            @RequestBody HomeInformation homeInformation) {
+        try {
+            // 检查homeInfId是否存在，因为我们需要根据ID更新
+            if (homeInformation.getHomeInfId_zch_hwz_gjc() == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("房屋信息编号不能为空"));
+            }
+
+            UpdateWrapper<HomeInformation> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("homeInfId_zch_hwz_gjc", homeInformation.getHomeInfId_zch_hwz_gjc());
+
+            // 根据实际的可变信息字段进行更新，以下是一些示例字段
+            if (homeInformation.getHomeArea_zch_hwz_gjc() != null) {
+                updateWrapper.set("homeArea_zch_hwz_gjc", homeInformation.getHomeArea_zch_hwz_gjc());
+            }
+            if (homeInformation.getHouseStructure_zch_hwz_gjc() != null && !homeInformation.getHouseStructure_zch_hwz_gjc().isEmpty()) {
+                updateWrapper.set("houseStructure_zch_hwz_gjc", homeInformation.getHouseStructure_zch_hwz_gjc());
+            }
+            if (homeInformation.getMaxPerson_zch_hwz_gjc() != null) {
+                updateWrapper.set("maxPerson_zch_hwz_gjc", homeInformation.getMaxPerson_zch_hwz_gjc());
+            }
+            if (homeInformation.getHomeDeposit_zch_hwz_gjc() != null) {
+                updateWrapper.set("homeDeposit_zch_hwz_gjc", homeInformation.getHomeDeposit_zch_hwz_gjc());
+            }
+            // ... 添加其他可变字段的更新逻辑
+
+            int result = homeInformationMapper.update(null, updateWrapper);
+
+            // 检查是否有数据被更新
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok(homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc())));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，房屋信息编号可能不存在"));
+            }
+        } catch (Exception e) {
+            // 这里可以记录日志或者返回具体的错误信息
+            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+        }
+    }
+
+
 }
