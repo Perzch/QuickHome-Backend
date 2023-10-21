@@ -4,9 +4,14 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.quickhome.domain.AccountBalance;
 import com.quickhome.domain.HomeInformation;
 import com.quickhome.domain.IdCardRecord;
 import com.quickhome.domain.Order;
+import com.quickhome.mapper.AccountBalanceMapper;
+import com.quickhome.mapper.OrderMapper;
 import com.quickhome.pojo.PJOrder;
 import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
@@ -45,11 +50,18 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private AccountBalanceMapper accountBalanceMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
     private IdCardRecordService idCardRecordService;
     @Autowired
     private HomeService homeService;
     @Autowired
     private HomeInformationService homeInformationService;
+
+    @Autowired
+    private AccountBalanceController accountBalanceController;
 
 //    static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
@@ -115,11 +127,16 @@ public class OrderController {
     }
 
     @GetMapping("/getDynamicDoorPassword")
-    public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long OrderId,
+    public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long orderId,
                                                     HttpServletRequest req) {
         RSA rsa = new RSA(privateKey, publicKey);
-        String dynamicDoorPassword = orderService.getDynamicDoorPassword(OrderId);
+        String dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
         byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
+        Order order = orderMapper.selectById(orderId);
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
+                .set("DynamicDoorPassword_zch_hwz_gjc", dynamicDoorPassword);
+        orderMapper.update(order, updateWrapper);
         return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
     }
     @PostMapping("/creatDynamicDoorPassword")
@@ -156,6 +173,149 @@ public class OrderController {
             order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         }
         return ResponseEntity.ok(ResponseResult.ok(orders));
+    }
+
+    @ResponseBody
+    @PostMapping("/payOrder")
+    public ResponseEntity<ResponseResult<?>> payOrder(
+            @RequestParam Long orderId,
+            HttpServletRequest req) {
+
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+        }
+
+        if (!"未支付".equals(order.getOrderState_zch_hwz_gjc())) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单状态不允许支付"));
+        }
+
+        // 调用AccountBalanceController的updateMoney方法进行支付
+        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -order.getOrderPayment_zch_hwz_gjc(), req);
+
+        System.out.println(order.getUserId_zch_hwz_gjc()+"  "+ -order.getOrderPayment_zch_hwz_gjc());
+        System.out.println(paymentResponse.getStatusCode());
+
+        // 检查支付结果
+        if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("支付失败"));
+        }
+
+        // 使用UpdateWrapper更新订单状态为“已支付”
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
+                .set("orderState_zch_hwz_gjc", "已支付");
+        orderMapper.update(null, updateWrapper);
+
+        order = orderMapper.selectById(orderId);
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+        return ResponseEntity.ok(ResponseResult.ok(order));
+    }
+
+    @ResponseBody
+    @PostMapping("/checkOut")
+    public ResponseEntity<ResponseResult<?>> checkOut(
+            @RequestParam Long orderId,
+            HttpServletRequest req) {
+
+        // 1. 根据orderId查询订单
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+        }
+
+        // 2. 更改订单状态为“已退房”
+        order.setOrderState_zch_hwz_gjc("已退房");
+
+        // 3. 将房屋动态密码修改为“订单已结束”
+        order.setDynamicDoorPassword_zch_hwz_gjc("订单已结束");
+
+        // 4. 更新订单信息到数据库
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("orderId_zch_hwz_gjc", orderId);
+        orderMapper.update(order, updateWrapper);
+
+        order = orderMapper.selectById(orderId);
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+        return ResponseEntity.ok(ResponseResult.ok(order));
+    }
+
+
+    @ResponseBody
+    @PostMapping("/endOrder")
+    public ResponseEntity<ResponseResult<?>> endOrder(
+            @RequestParam Long orderId,
+            @RequestParam Double maintenanceCost,
+            HttpServletRequest req) {
+
+        // 1. 根据orderId查询订单
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+        }
+
+        Double deposit = order.getOrderDeposit_zch_hwz_gjc();
+        Double refundAmount = 0.0;
+
+        // 2. 检查维修金额
+        if (maintenanceCost <= 0) {
+            // 全额退回押金
+            refundAmount = deposit;
+            order.setOrderDeposit_zch_hwz_gjc(0.0);
+        } else {
+            // 扣除维修费用
+            refundAmount = deposit - maintenanceCost;
+            order.setOrderDeposit_zch_hwz_gjc(maintenanceCost);
+        }
+
+        // 3. 更新用户账户余额
+        QueryWrapper<AccountBalance> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId_zch_hwz_gjc", order.getUserId_zch_hwz_gjc());
+        AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
+        if (accountBalance == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
+        }
+
+        Double currentBalance = accountBalance.getUserBalance_zch_hwz_gjc();
+        if (refundAmount < 0) {
+            // 如果押金不足以支付维修费用，从用户余额中扣除
+            currentBalance += refundAmount;
+        } else {
+            // 退还剩余押金
+            currentBalance += refundAmount;
+        }
+        accountBalance.setUserBalance_zch_hwz_gjc(currentBalance);
+        accountBalanceMapper.updateById(accountBalance);
+
+        // 4. 更新订单状态为“已结束”
+        order.setOrderState_zch_hwz_gjc("已结束");
+        order.setEndTime_zch_hwz_gjc(DateTime.now());
+        orderMapper.updateById(order);
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+
+        return ResponseEntity.ok(ResponseResult.ok(order));
+    }
+
+    @ResponseBody
+    @PostMapping("/updateOrder")
+    public ResponseEntity<ResponseResult<?>> updateOrder(
+            @RequestBody Order order,
+            HttpServletRequest req) {
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("orderId_zch_hwz_gjc", order.getOrderId_zch_hwz_gjc());
+        orderMapper.update(order, updateWrapper);
+
+        order = orderMapper.selectById(order.getOrderId_zch_hwz_gjc());
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+        return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
 }

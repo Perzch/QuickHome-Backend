@@ -66,12 +66,12 @@ public class AccountBalanceController {
         queryWrapper.eq("userId_zch_hwz_gjc", userId);
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
         if (accountBalance == null) {
-            return ResponseEntity.ok(ResponseResult.error("用户不存在"));
+            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
         }
 
         // 检查提现金额是否超过余额
         if (money < 0 && Math.abs(money) > accountBalance.getUserBalance_zch_hwz_gjc()) {
-            return ResponseEntity.ok(ResponseResult.error("余额不足"));
+            return ResponseEntity.badRequest().body(ResponseResult.error("余额不足"));
         }
 
         // 更新余额
