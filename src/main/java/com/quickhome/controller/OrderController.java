@@ -6,12 +6,11 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.quickhome.domain.AccountBalance;
-import com.quickhome.domain.HomeInformation;
-import com.quickhome.domain.IdCardRecord;
-import com.quickhome.domain.Order;
+import com.quickhome.domain.*;
 import com.quickhome.mapper.AccountBalanceMapper;
+import com.quickhome.mapper.CouponMapper;
 import com.quickhome.mapper.OrderMapper;
+import com.quickhome.mapper.UsersAndCouponsMapper;
 import com.quickhome.pojo.PJOrder;
 import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
@@ -33,6 +32,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
@@ -62,8 +62,48 @@ public class OrderController {
 
     @Autowired
     private AccountBalanceController accountBalanceController;
+    @Autowired
+    private CouponController couponController;
+
+    @Autowired
+    private UsersAndCouponsMapper usersAndCouponsMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
 //    static final Log Logger = LogFactory.getLog(HomeInformationController.class);
+
+    private boolean isCouponValid(Long couponId, Double orderAmount, Long userId) {
+        Coupon coupon = couponMapper.selectById(couponId);
+        if (coupon == null) {
+            return false;
+        }
+
+        // 1. 检查优惠券是否在有效期内
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime earliestUseTime = LocalDateTime.parse(coupon.getEarliestUseTime_zch_hwz_gjc().toLocaleString());
+        LocalDateTime latestUseTime = LocalDateTime.parse(coupon.getLatestUseTime_zch_hwz_gjc().toLocaleString());
+        if (now.isBefore(earliestUseTime) || now.isAfter(latestUseTime)) {
+            return false;
+        }
+
+        // 2. 检查订单金额是否满足优惠券的使用门槛
+        if (orderAmount < coupon.getUseThreshold_zch_hwz_gjc()) {
+            return false;
+        }
+
+        // 3. 检查用户是否已经使用过该优惠券
+        QueryWrapper<UsersAndCoupons> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId_zch_hwz_gjc", userId)
+                .eq("couponId_zch_hwz_gjc", couponId)
+                .eq("condition_zch_hwz_gjc", "已使用");
+        UsersAndCoupons userCoupon = usersAndCouponsMapper.selectOne(queryWrapper);
+        if (userCoupon != null) {
+            return false;
+        }
+
+        return true;
+    }
 
     @PostMapping("/insertOrder")
     public ResponseEntity<?> insertOrder(@RequestBody PJOrder pjOrder,
@@ -139,10 +179,11 @@ public class OrderController {
         orderMapper.update(order, updateWrapper);
         return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
     }
+
     @PostMapping("/creatDynamicDoorPassword")
     public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestBody Long orderId, HttpServletRequest req) {
         RSA rsa = new RSA(privateKey, publicKey);
-        String dateTime =String.valueOf(DateTime.now());
+        String dateTime = String.valueOf(DateTime.now());
         String dynamicDoorPassword = null;
         if (dateTime.compareTo(LocalDate.now().toString()) >= 0) {
             dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
@@ -150,16 +191,17 @@ public class OrderController {
             dynamicDoorPassword = "未到入住时间";
         }
         Boolean flag = orderService.updateDynamicDoorPassword(orderId, dynamicDoorPassword);
-        if(flag) {
+        if (flag) {
             byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
             return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
-        }else {
+        } else {
             return ResponseEntity.ok(ResponseResult.of(NOT_UPDATE));
         }
     }
 
     /**
      * 获取用户全部订单
+     *
      * @param userId 用户id
      * @return 用户全部订单
      */
@@ -167,7 +209,7 @@ public class OrderController {
     @GetMapping("/getAllUserOrder")
     public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId) {
         List<Order> orders = orderService.getAllUserOrders(userId);
-        for (Order order : orders){
+        for (Order order : orders) {
             RSA rsa = new RSA(privateKey, publicKey);
             byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
             order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
@@ -175,10 +217,14 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(orders));
     }
 
+
+    // 根据优惠券的折扣方式和优惠力度计算实际支付金额
+
     @ResponseBody
     @PostMapping("/payOrder")
     public ResponseEntity<ResponseResult<?>> payOrder(
             @RequestParam Long orderId,
+            @RequestParam(required = false) Long UACID,  // 用户优惠券关联ID，可选参数
             HttpServletRequest req) {
 
         Order order = orderMapper.selectById(orderId);
@@ -190,11 +236,33 @@ public class OrderController {
             return ResponseEntity.badRequest().body(ResponseResult.error("订单状态不允许支付"));
         }
 
-        // 调用AccountBalanceController的updateMoney方法进行支付
-        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -order.getOrderPayment_zch_hwz_gjc(), req);
+        // 计算实际付款金额
+        Double actualPayment = order.getOrderPayment_zch_hwz_gjc() - order.getOrderDeposit_zch_hwz_gjc();
 
-        System.out.println(order.getUserId_zch_hwz_gjc()+"  "+ -order.getOrderPayment_zch_hwz_gjc());
-        System.out.println(paymentResponse.getStatusCode());
+        // 如果提供了UACID
+        if (UACID != null) {
+            UsersAndCoupons userCoupon = usersAndCouponsMapper.selectById(UACID);
+            if (userCoupon == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("用户优惠券关联不存在"));
+            }
+            Long couponId = userCoupon.getCouponId_zch_hwz_gjc();
+            ResponseEntity<ResponseResult<?>> couponResponse = couponController.getCouponInfo(couponId);
+            if (!couponResponse.getStatusCode().is2xxSuccessful()) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("获取优惠券信息失败"));
+            }
+            Coupon coupon = (Coupon) couponResponse.getBody().getData();
+
+            // 根据coupon对象进行优惠券折扣逻辑
+            if ("折扣".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
+                actualPayment *= coupon.getDiscountIntensity_zch_hwz_gjc();
+            } else if ("满减".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
+                actualPayment -= coupon.getDiscountIntensity_zch_hwz_gjc();
+            }
+            // 注意：这里只是一个示例，您需要根据实际的优惠券逻辑来进行计算
+        }
+
+        // 调用AccountBalanceController的updateMoney方法进行支付
+        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -(actualPayment+order.getOrderDeposit_zch_hwz_gjc()), req);
 
         // 检查支付结果
         if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
@@ -213,6 +281,8 @@ public class OrderController {
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
+
+
 
     @ResponseBody
     @PostMapping("/checkOut")
