@@ -9,4 +9,11 @@ public final class CreatAccount {
         Random randomAccount = new Random();
         return randomAccount.nextInt(maxAccount - minAccount + 1) + minAccount;
     }
+    public static String creatManagerAccount() {
+        int minAccount = 1000000;
+        int maxAccount = 99999999;
+        Random randomAccount = new Random();
+        return "G"+randomAccount.nextInt(maxAccount - minAccount + 1) + minAccount;
+    }
+
 }

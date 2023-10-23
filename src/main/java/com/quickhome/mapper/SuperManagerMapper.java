@@ -2,6 +2,7 @@ package com.quickhome.mapper;
 
 import com.quickhome.domain.SuperManager;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author Tim-h
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-06-21 09:48:39
 * @Entity .domain.SuperManager
 */
+@Mapper
 public interface SuperManagerMapper extends BaseMapper<SuperManager> {
 
 }
