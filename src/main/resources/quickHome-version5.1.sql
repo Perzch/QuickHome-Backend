@@ -13,8 +13,8 @@ CREATE TABLE tab_user_zch_hwz_gjc
     userEmail_zch_hwz_gjc   VARCHAR(100) comment "用户电子邮箱地址",
     userPhone_zch_hwz_gjc   VARCHAR(50) comment "用户手机号",
     userInDate_zch_hwz_gjc  DATETIME comment "用户注册日期",
-    standby1_zch_hwz_gjc    VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc    VARCHAR(50) comment "备用字段2",
+    userOnline_zch_hwz_gjc    VARCHAR(50) comment "在线状态",
+    onlineIP_zch_hwz_gjc    VARCHAR(50) comment "当前在线IP地址",
     standby3_zch_hwz_gjc    VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
@@ -77,8 +77,8 @@ CREATE TABLE tab_manager_zch_hwz_gjc
     managerPhone_zch_hwz_gjc    VARCHAR(50) comment "管理员电话",
     managerGender_zch_hwz_gjc   VARCHAR(10) comment "管理员性别",
     managerInDate_zch_hwz_gjc   DATETIME comment "创建时间",
-    standby1_zch_hwz_gjc        VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc        VARCHAR(50) comment "备用字段2",
+    managerOnline_zch_hwz_gjc    VARCHAR(50) comment "在线状态",
+    onlineIP_zch_hwz_gjc    VARCHAR(50) comment "当前在线IP地址",
     standby3_zch_hwz_gjc        VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
