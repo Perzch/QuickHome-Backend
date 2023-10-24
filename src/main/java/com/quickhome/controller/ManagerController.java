@@ -11,6 +11,7 @@ import com.quickhome.domain.SuperManager;
 import com.quickhome.mapper.ManagerMapper;
 import com.quickhome.mapper.SuperManagerMapper;
 import com.quickhome.request.ResponseResult;
+import com.quickhome.service.ManagerService;
 import com.quickhome.util.CreatAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,8 @@ public class ManagerController {
     @Value("${rsa.public_key}")
     private String publicKey;
 
+    @Autowired
+    private ManagerService managerService;
     @Autowired
     private SuperManagerMapper superManagerMapper;
 
@@ -155,6 +158,25 @@ public class ManagerController {
         return ResponseEntity.ok(ResponseResult.ok(managerPage));  // 返回分页结果
     }
 
+    @PostMapping("/setOnline")
+    public ResponseEntity<ResponseResult> setManagerOnline(@RequestParam Long managerId) {
+        try {
+            managerService.setManagerOnline(managerId);
+            return ResponseEntity.ok(ResponseResult.ok());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/setOffline")
+    public ResponseEntity<ResponseResult> setManagerOffline(@RequestParam Long managerId) {
+        try {
+            managerService.setManagerOffline(managerId);
+            return ResponseEntity.ok(ResponseResult.ok());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+        }
+    }
     @DeleteMapping("/deleteManager")
     public ResponseEntity<ResponseResult<?>> deleteManager(@RequestParam Long managerId) {
         // 创建一个 UpdateWrapper 对象来构建更新条件

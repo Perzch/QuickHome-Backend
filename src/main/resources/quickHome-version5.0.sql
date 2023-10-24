@@ -77,7 +77,7 @@ CREATE TABLE tab_manager_zch_hwz_gjc
     managerPhone_zch_hwz_gjc    VARCHAR(50) comment "管理员电话",
     managerGender_zch_hwz_gjc   VARCHAR(10) comment "管理员性别",
     managerInDate_zch_hwz_gjc   DATETIME comment "创建时间",
-    standby1_zch_hwz_gjc        VARCHAR(50) comment "备用字段1",
+    online_status_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc        VARCHAR(50) comment "备用字段2",
     standby3_zch_hwz_gjc        VARCHAR(50) comment "备用字段3",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
@@ -241,7 +241,6 @@ CREATE TABLE tab_myChat_zch_hwz_gjc
     messageReceive_zch_hwz_gjc       BIGINT comment "接收人编号",
     messageContent_zch_hwz_gjc       VARCHAR(500) comment "私信内容",
     messageSender_zch_hwz_gjc        BIGINT comment "发送人编号",
-    conversationDialogId_zch_hwz_gjc BIGINT comment "对话编号",
     sendingTime_zch_hwz_gjc          DATETIME comment "发送时间",
     standby1_zch_hwz_gjc             VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc             VARCHAR(50) comment "备用字段2",

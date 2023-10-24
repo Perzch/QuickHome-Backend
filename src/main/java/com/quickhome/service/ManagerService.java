@@ -9,5 +9,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:47:58
 */
 public interface ManagerService extends IService<Manager> {
+    public Manager getRandomOnlineManager();
+
+    public void setManagerOnline(Long managerId);
+
+    public void setManagerOffline(Long managerId);
 
 }

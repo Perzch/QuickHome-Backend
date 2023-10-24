@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
@@ -80,9 +81,11 @@ public class OrderController {
         }
 
         // 1. 检查优惠券是否在有效期内
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日 aH:mm:ss");
+
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime earliestUseTime = LocalDateTime.parse(coupon.getEarliestUseTime_zch_hwz_gjc().toLocaleString());
-        LocalDateTime latestUseTime = LocalDateTime.parse(coupon.getLatestUseTime_zch_hwz_gjc().toLocaleString());
+        LocalDateTime earliestUseTime = LocalDateTime.parse(coupon.getEarliestUseTime_zch_hwz_gjc().toLocaleString(), formatter);
+        LocalDateTime latestUseTime = LocalDateTime.parse(coupon.getLatestUseTime_zch_hwz_gjc().toLocaleString(), formatter);
         if (now.isBefore(earliestUseTime) || now.isAfter(latestUseTime)) {
             return false;
         }
@@ -96,7 +99,8 @@ public class OrderController {
         QueryWrapper<UsersAndCoupons> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userId_zch_hwz_gjc", userId)
                 .eq("couponId_zch_hwz_gjc", couponId)
-                .eq("condition_zch_hwz_gjc", "已使用");
+                .eq("condition_zch_hwz_gjc", "已使用")
+                .eq("deleted_zch_hwz_gjc", 0);
         UsersAndCoupons userCoupon = usersAndCouponsMapper.selectOne(queryWrapper);
         if (userCoupon != null) {
             return false;
@@ -264,7 +268,9 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(ResponseResult.error("获取优惠券信息失败"));
             }
             Coupon coupon = (Coupon) couponResponse.getBody().getData();
-
+            if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(),actualPayment, userCoupon.getUserId_zch_hwz_gjc())){
+                return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不可使用"));
+            }
             // 根据coupon对象进行优惠券折扣逻辑
             if ("折扣".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
                 actualPayment *= coupon.getDiscountIntensity_zch_hwz_gjc();

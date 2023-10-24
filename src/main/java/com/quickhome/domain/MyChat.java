@@ -52,13 +52,6 @@ public class MyChat implements Serializable {
     private Long messageSender_zch_hwz_gjc;
 
     /**
-     * 对话编号
-     */
-    @TableField(value = "conversationDialogId_zch_hwz_gjc")
-    @JsonProperty("conversationDialogId")
-    private Long conversationDialogId_zch_hwz_gjc;
-
-    /**
      * 发送时间
      */
     @TableField(value = "sendingTime_zch_hwz_gjc")
@@ -109,7 +102,6 @@ public class MyChat implements Serializable {
             && (this.getMessageReceive_zch_hwz_gjc() == null ? other.getMessageReceive_zch_hwz_gjc() == null : this.getMessageReceive_zch_hwz_gjc().equals(other.getMessageReceive_zch_hwz_gjc()))
             && (this.getMessageContent_zch_hwz_gjc() == null ? other.getMessageContent_zch_hwz_gjc() == null : this.getMessageContent_zch_hwz_gjc().equals(other.getMessageContent_zch_hwz_gjc()))
             && (this.getMessageSender_zch_hwz_gjc() == null ? other.getMessageSender_zch_hwz_gjc() == null : this.getMessageSender_zch_hwz_gjc().equals(other.getMessageSender_zch_hwz_gjc()))
-            && (this.getConversationDialogId_zch_hwz_gjc() == null ? other.getConversationDialogId_zch_hwz_gjc() == null : this.getConversationDialogId_zch_hwz_gjc().equals(other.getConversationDialogId_zch_hwz_gjc()))
             && (this.getSendingTime_zch_hwz_gjc() == null ? other.getSendingTime_zch_hwz_gjc() == null : this.getSendingTime_zch_hwz_gjc().equals(other.getSendingTime_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
@@ -125,7 +117,6 @@ public class MyChat implements Serializable {
         result = prime * result + ((getMessageReceive_zch_hwz_gjc() == null) ? 0 : getMessageReceive_zch_hwz_gjc().hashCode());
         result = prime * result + ((getMessageContent_zch_hwz_gjc() == null) ? 0 : getMessageContent_zch_hwz_gjc().hashCode());
         result = prime * result + ((getMessageSender_zch_hwz_gjc() == null) ? 0 : getMessageSender_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getConversationDialogId_zch_hwz_gjc() == null) ? 0 : getConversationDialogId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getSendingTime_zch_hwz_gjc() == null) ? 0 : getSendingTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
@@ -144,7 +135,6 @@ public class MyChat implements Serializable {
         sb.append(", messageReceive_zch_hwz_gjc=").append(messageReceive_zch_hwz_gjc);
         sb.append(", messageContent_zch_hwz_gjc=").append(messageContent_zch_hwz_gjc);
         sb.append(", messageSender_zch_hwz_gjc=").append(messageSender_zch_hwz_gjc);
-        sb.append(", conversationDialogId_zch_hwz_gjc=").append(conversationDialogId_zch_hwz_gjc);
         sb.append(", sendingTime_zch_hwz_gjc=").append(sendingTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
