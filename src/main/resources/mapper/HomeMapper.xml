@@ -69,7 +69,7 @@
     </select>
 
     <select id="selectHomesWithoutDevicesCriteria" resultType="com.quickhome.domain.Home">
-        SELECT h.*
+        SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
         JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
         JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
