@@ -71,7 +71,7 @@ public class HomeInformationController {
                                         @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
                                         @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
                                         @RequestParam(defaultValue = "1") int page,//最大回传显示页数
-                                        @RequestParam(required = false, defaultValue = "5") int size,//单页最大显示条数
+                                        @RequestParam(required = false, defaultValue = "10") int size,//单页最大显示条数
                                         HttpServletRequest req) {
         List<String> deviceNames = Arrays.asList(device.split(","));
         List<PojoHome> pojoHomes = homeSer_zch_hwz_gjc.getHomesByCriteriaWithDevices(beginDate, endDate, address, minRent, maxRent,deviceNames ,maxPeople ,homeType ,page, size);
