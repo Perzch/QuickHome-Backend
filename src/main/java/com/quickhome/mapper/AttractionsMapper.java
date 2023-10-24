@@ -3,6 +3,7 @@ package com.quickhome.mapper;
 import com.quickhome.domain.Attractions;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.pojo.PojoAttraction;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 * @createDate 2023-06-21 09:45:15
 * @Entity .domain.Attractions
 */
+@Mapper
 public interface AttractionsMapper extends BaseMapper<Attractions> {
     List<PojoAttraction> getAttractionListOrderByCollectionCount();
 }

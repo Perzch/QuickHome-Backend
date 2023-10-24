@@ -3,6 +3,7 @@ package com.quickhome.domain;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -49,14 +50,14 @@ public class Attractions implements Serializable {
      */
     @TableField(value = "openingTime_zch_hwz_gjc")
     @JsonProperty("openingTime")
-    private Date openingTime_zch_hwz_gjc;
+    private LocalTime openingTime_zch_hwz_gjc;
 
     /**
      * 景点关闭时间
      */
     @TableField(value = "closingTime_zch_hwz_gjc")
     @JsonProperty("closingTime")
-    private Date closingTime_zch_hwz_gjc;
+    private LocalTime closingTime_zch_hwz_gjc;
 
     /**
      * 信息录入时间

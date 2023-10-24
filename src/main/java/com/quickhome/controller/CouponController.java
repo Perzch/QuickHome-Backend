@@ -2,6 +2,8 @@ package com.quickhome.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.Coupon;
 import com.quickhome.domain.UsersAndCoupons;
 import com.quickhome.mapper.CouponMapper;
@@ -85,8 +87,10 @@ public class CouponController {
 
     @ResponseBody
     @GetMapping("/getAllCoupons")
-    public ResponseEntity<ResponseResult<?>> getUserCoupons(
+    public ResponseEntity<ResponseResult<?>> getAllCoupons(
             @RequestParam Long userId,
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
             HttpServletRequest req) {
 
         try {
@@ -94,10 +98,12 @@ public class CouponController {
             queryWrapper.eq("userId_zch_hwz_gjc", userId)
                     .eq("condition_zch_hwz_gjc", "未使用")
                     .eq("deleted_zch_hwz_gjc", 0);
-            List<UsersAndCoupons> usersAndCouponsList = usersAndCouponsMapper.selectList(queryWrapper);
+
+            Page<UsersAndCoupons> page = new Page<>(pageNum, pageSize);
+            IPage<UsersAndCoupons> usersAndCouponsPage = usersAndCouponsMapper.selectPage(page, queryWrapper);
 
             List<PojoCoupon> pojoCoupons = new ArrayList<>();
-            for (UsersAndCoupons usersAndCoupons : usersAndCouponsList) {
+            for (UsersAndCoupons usersAndCoupons : usersAndCouponsPage.getRecords()) {
                 Coupon coupon = couponMapper.selectById(usersAndCoupons.getCouponId_zch_hwz_gjc());
                 if (coupon != null) {
                     PojoCoupon pojoCoupon = new PojoCoupon();
@@ -106,7 +112,12 @@ public class CouponController {
                     pojoCoupons.add(pojoCoupon);
                 }
             }
-            return ResponseEntity.ok(ResponseResult.ok(pojoCoupons));
+
+            Page<PojoCoupon> pojoCouponPage = new Page<>(pageNum, pageSize);
+            pojoCouponPage.setTotal(usersAndCouponsPage.getTotal());
+            pojoCouponPage.setRecords(pojoCoupons);
+
+            return ResponseEntity.ok(ResponseResult.ok(pojoCouponPage));
         } catch (Exception e) {
             // Handle exception...
             return ResponseEntity.status(500).body(ResponseResult.error("查询失败：" + e.getMessage()));

@@ -2,6 +2,8 @@ package com.quickhome.controller;
 
 import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.RCAMI;
 import com.quickhome.mapper.RCAMIMapper;
 import com.quickhome.request.ResponseResult;
@@ -74,6 +76,8 @@ public class RCAMIController {
     public ResponseEntity<ResponseResult<?>> getRCAMIByOrderOrHome(
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) Long homeId,
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int size,
             HttpServletRequest req) {
 
         if (orderId == null && homeId == null) {
@@ -87,9 +91,10 @@ public class RCAMIController {
             queryWrapper.eq(RCAMI::getHomeId_zch_hwz_gjc, homeId);
         }
 
-        List<RCAMI> rcamiList = rcamiService.list(queryWrapper);
+        IPage<RCAMI> page = new Page<>(current, size);
+        IPage<RCAMI> resultPage = rcamiService.page(page, queryWrapper);
 
-        return ResponseEntity.ok(ResponseResult.ok(rcamiList));
+        return ResponseEntity.ok(ResponseResult.ok(resultPage));
     }
 
 }

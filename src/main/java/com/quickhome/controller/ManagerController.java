@@ -4,6 +4,8 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.Manager;
 import com.quickhome.domain.SuperManager;
 import com.quickhome.mapper.ManagerMapper;
@@ -129,20 +131,28 @@ public class ManagerController {
     }
 
     @GetMapping("/getAllManager")
-    public ResponseEntity<ResponseResult<List<Manager>>> getAllManager() {
-        List<Manager> managers = managerMapper.selectList(null);
+    public ResponseEntity<ResponseResult<?>> getAllManager(
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+
+        // 创建 Page 对象
+        Page<Manager> page = new Page<>(pageNo, pageSize);
+
+        // 执行分页查询
+        IPage<Manager> managerPage = managerMapper.selectPage(page, null);
 
         // 创建 RSA 对象
         RSA rsa = new RSA(privateKey, publicKey);
 
         // 遍历管理员列表并加密每个管理员的密码
+        List<Manager> managers = managerPage.getRecords();
         for (Manager manager : managers) {
             byte[] encryptedPasswordBytes = rsa.encrypt(manager.getManagerPwd_zch_hwz_gjc().getBytes(), KeyType.PublicKey);
             String encryptedPassword = Base64.getEncoder().encodeToString(encryptedPasswordBytes);
             manager.setManagerPwd_zch_hwz_gjc(encryptedPassword);
         }
 
-        return ResponseEntity.ok(ResponseResult.ok(managers));
+        return ResponseEntity.ok(ResponseResult.ok(managerPage));  // 返回分页结果
     }
 
     @DeleteMapping("/deleteManager")

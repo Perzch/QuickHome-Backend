@@ -6,6 +6,8 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.AccountBalanceMapper;
 import com.quickhome.mapper.CouponMapper;
@@ -20,8 +22,6 @@ import com.quickhome.service.IdCardRecordService;
 import com.quickhome.service.OrderService;
 import com.quickhome.util.DynamicDoorPassword;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -207,15 +207,28 @@ public class OrderController {
      */
 
     @GetMapping("/getAllUserOrder")
-    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId) {
-        List<Order> orders = orderService.getAllUserOrders(userId);
+    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId,
+                                                              @RequestParam(defaultValue = "1") int currentPage,
+                                                              @RequestParam(defaultValue = "10") int pageSize) {
+        // 创建一个Page对象
+        Page<Order> page = new Page<>(currentPage, pageSize);
+
+        // 使用OrderMapper的selectPage方法进行分页查询
+        IPage<Order> ordersPage = orderMapper.selectPage(page, new QueryWrapper<Order>().eq("userId_zch_hwz_gjc", userId).eq("deleted_zch_hwz_gjc", 0));
+
+        List<Order> orders = ordersPage.getRecords();
+
         for (Order order : orders) {
-            RSA rsa = new RSA(privateKey, publicKey);
-            byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
-            order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+            if (order.getDynamicDoorPassword_zch_hwz_gjc() != null) {
+                RSA rsa = new RSA(privateKey, publicKey);
+                byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+                order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+            }
         }
-        return ResponseEntity.ok(ResponseResult.ok(orders));
+
+        return ResponseEntity.ok(ResponseResult.ok(ordersPage));  // 返回整个IPage对象，它包含了当前页的数据、总记录数、总页数等信息
     }
+
 
 
     // 根据优惠券的折扣方式和优惠力度计算实际支付金额
