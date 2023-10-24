@@ -23,8 +23,8 @@ mybatis-plus:
       logic-delete-value: 1,
       logic-not-delete-value: 0
 
-server:
-  port: 8000
+#server:
+#  port: 8000
 
 jwt:
   key: "quickHome_jwt_key_melody"

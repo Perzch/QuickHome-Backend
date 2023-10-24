@@ -275,7 +275,7 @@ public class UserController {
     }
 
     private String saveUploadedFile(Long userId, MultipartFile file) throws IOException {
-        String uploadDir = "E:/Spring boot/uploads/";
+        String uploadDir = "E:/Spring boot/uploads/HeadImage/";
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();

@@ -7,21 +7,41 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.AttractionCollection;
 import com.quickhome.domain.AttractionImage;
 import com.quickhome.domain.Attractions;
+import com.quickhome.domain.UserHeadImage;
 import com.quickhome.mapper.AttractionCollectionMapper;
+import com.quickhome.mapper.AttractionImageMapper;
 import com.quickhome.mapper.AttractionsMapper;
 import com.quickhome.pojo.PojoAttraction;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
 import com.quickhome.service.AttractionsService;
+import com.quickhome.util.ImageUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller("AttractionCon")
 @RequestMapping("/Attraction")
@@ -33,10 +53,122 @@ public class AttractionController {
     private AttractionImageService attractionImageService;
 
     @Autowired
+    private AttractionImageMapper attractionImageMapper;
+
+    @Autowired
     private AttractionsMapper attractionMapper;
     @Autowired
     private AttractionCollectionMapper attractionCollectionMapper;
 
+    private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
+
+    @SneakyThrows
+    @ResponseBody
+    @GetMapping("/getAttractionImg")
+    public ResponseEntity<Resource> getAttractionImg(@RequestParam Long attractionId) {
+        QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
+        wrapper.eq("attractionId_zch_hwz_gjc", attractionId);
+        wrapper.eq("deleted_zch_hwz_gjc", 0);
+        List<AttractionImage> images = attractionImageMapper.selectList(wrapper);
+        if (images.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+
+        try {
+            for (AttractionImage image : images) {
+                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
+                FileInputStream fis = new FileInputStream(path.toFile());
+                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
+                zos.putNextEntry(zipEntry);
+
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attractionImages.zip")
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/deleteAttractionImg")
+    public ResponseEntity<?> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
+        try {
+            // 拼接attractionId和时间戳
+            String combinedString = attractionId.toString() +"-"+ timestamp;
+
+            // 使用拼接后的字符串去数据库中查找
+            QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
+            wrapper.like("imagePath_zch_hwz_gjc", combinedString);
+            wrapper.eq("deleted_zch_hwz_gjc", 0);
+
+            AttractionImage image = attractionImageMapper.selectOne(wrapper);
+            if (image != null) {
+                ImageUtil.deleteImg(image.getImagePath_zch_hwz_gjc());
+                UpdateWrapper<AttractionImage> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.like("imagePath_zch_hwz_gjc", combinedString)
+                        .set("deleted_zch_hwz_gjc", 1);
+
+                int result = attractionImageMapper.update(null, updateWrapper);
+                if (result > 0) {
+                    return ResponseEntity.ok(ResponseResult.ok());
+                } else {
+                    return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                }
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("图片不存在"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("删除图片出错"));
+        }
+    }
+
+
+    @ResponseBody
+    @PostMapping("/insertAttractionImg")
+    public ResponseEntity<ResponseResult<?>> insertAttractionImg(
+            @RequestParam("attractionId") Long attractionId,
+            @RequestParam("file") MultipartFile file,
+            HttpServletRequest req) throws IOException{
+        if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
+        }
+
+        String imagePath = saveUploadedFile(attractionId, file);
+
+        AttractionImage attractionImage = attractionImageService.saveOrUpdateUserHeadImage(attractionId, imagePath);
+
+        return ResponseEntity.ok(ResponseResult.ok(attractionImage));
+    }
+
+    private String saveUploadedFile(Long attractionId, MultipartFile file) throws IOException {
+        String uploadDir = "E:/Spring boot/uploads/AttractionImg/";
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String newFileName = attractionId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
+        String filePath = uploadDir + newFileName;
+        file.transferTo(new File(filePath));
+        return filePath;
+    }
+
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
 
     /**
      * 按收藏数量获取景点列表

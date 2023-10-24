@@ -11,5 +11,7 @@ import java.util.List;
 * @createDate 2023-06-24 11:29:22
 */
 public interface AttractionImageService extends IService<AttractionImage> {
+
+    public AttractionImage saveOrUpdateUserHeadImage(Long attractionId, String imagePath);
     public List<AttractionImage> getAttractionImageListById(Long attractionId_zch_hwz_gjc);
 }
