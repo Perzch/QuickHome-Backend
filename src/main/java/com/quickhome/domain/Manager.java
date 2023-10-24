@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "managerOnline_zch_hwz_gjc","onlineIP_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
+@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
 public class Manager implements Serializable {
     /**
      * 管理员编号
@@ -80,16 +80,16 @@ public class Manager implements Serializable {
     private Date managerInDate_zch_hwz_gjc;
 
     /**
-     * 在线状态
+     * 备用字段1
      */
-    @TableField(value = "managerOnline_zch_hwz_gjc")
-    private String managerOnline_zch_hwz_gjc;
+    @TableField(value = "standby1_zch_hwz_gjc")
+    private String standby1_zch_hwz_gjc;
 
     /**
-     * 当前在线IP地址
+     * 备用字段2
      */
-    @TableField(value = "onlineIP_zch_hwz_gjc")
-    private String onlineIP_zch_hwz_gjc;
+    @TableField(value = "standby2_zch_hwz_gjc")
+    private String standby2_zch_hwz_gjc;
 
     /**
      * 备用字段3
@@ -127,8 +127,8 @@ public class Manager implements Serializable {
             && (this.getManagerPhone_zch_hwz_gjc() == null ? other.getManagerPhone_zch_hwz_gjc() == null : this.getManagerPhone_zch_hwz_gjc().equals(other.getManagerPhone_zch_hwz_gjc()))
             && (this.getManagerGender_zch_hwz_gjc() == null ? other.getManagerGender_zch_hwz_gjc() == null : this.getManagerGender_zch_hwz_gjc().equals(other.getManagerGender_zch_hwz_gjc()))
             && (this.getManagerInDate_zch_hwz_gjc() == null ? other.getManagerInDate_zch_hwz_gjc() == null : this.getManagerInDate_zch_hwz_gjc().equals(other.getManagerInDate_zch_hwz_gjc()))
-            && (this.getManagerOnline_zch_hwz_gjc() == null ? other.getManagerOnline_zch_hwz_gjc() == null : this.getManagerOnline_zch_hwz_gjc().equals(other.getManagerOnline_zch_hwz_gjc()))
-            && (this.getOnlineIP_zch_hwz_gjc() == null ? other.getOnlineIP_zch_hwz_gjc() == null : this.getOnlineIP_zch_hwz_gjc().equals(other.getOnlineIP_zch_hwz_gjc()))
+            && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
+            && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
@@ -145,8 +145,8 @@ public class Manager implements Serializable {
         result = prime * result + ((getManagerPhone_zch_hwz_gjc() == null) ? 0 : getManagerPhone_zch_hwz_gjc().hashCode());
         result = prime * result + ((getManagerGender_zch_hwz_gjc() == null) ? 0 : getManagerGender_zch_hwz_gjc().hashCode());
         result = prime * result + ((getManagerInDate_zch_hwz_gjc() == null) ? 0 : getManagerInDate_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getManagerOnline_zch_hwz_gjc() == null) ? 0 : getManagerOnline_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getOnlineIP_zch_hwz_gjc() == null) ? 0 : getOnlineIP_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
@@ -166,8 +166,8 @@ public class Manager implements Serializable {
         sb.append(", managerPhone_zch_hwz_gjc=").append(managerPhone_zch_hwz_gjc);
         sb.append(", managerGender_zch_hwz_gjc=").append(managerGender_zch_hwz_gjc);
         sb.append(", managerInDate_zch_hwz_gjc=").append(managerInDate_zch_hwz_gjc);
-        sb.append(", managerOnline_zch_hwz_gjc=").append(managerOnline_zch_hwz_gjc);
-        sb.append(", onlineIP_zch_hwz_gjc=").append(onlineIP_zch_hwz_gjc);
+        sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
+        sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);

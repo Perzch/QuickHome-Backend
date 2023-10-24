@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "userOnline_zch_hwz_gjc","onlineIP_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
+@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
 public class User implements Serializable {
     /**
      * 用户编号
@@ -72,18 +72,16 @@ public class User implements Serializable {
     private Date userInDate_zch_hwz_gjc;
 
     /**
-     * 在线状态
+     * 备用字段1
      */
-    @TableField(value = "userOnline_zch_hwz_gjc")
-    @JsonProperty("userOnline")
-    private String userOnline_zch_hwz_gjc;
+    @TableField(value = "standby1_zch_hwz_gjc")
+    private String standby1_zch_hwz_gjc;
 
     /**
-     * 当前在线的IP地址
+     * 备用字段2
      */
-    @TableField(value = "onlineIP_zch_hwz_gjc")
-    @JsonProperty("onlineIP")
-    private String onlineIP_zch_hwz_gjc;
+    @TableField(value = "standby2_zch_hwz_gjc")
+    private String standby2_zch_hwz_gjc;
 
     /**
      * 备用字段3
@@ -120,8 +118,8 @@ public class User implements Serializable {
             && (this.getUserEmail_zch_hwz_gjc() == null ? other.getUserEmail_zch_hwz_gjc() == null : this.getUserEmail_zch_hwz_gjc().equals(other.getUserEmail_zch_hwz_gjc()))
             && (this.getUserPhone_zch_hwz_gjc() == null ? other.getUserPhone_zch_hwz_gjc() == null : this.getUserPhone_zch_hwz_gjc().equals(other.getUserPhone_zch_hwz_gjc()))
             && (this.getUserInDate_zch_hwz_gjc() == null ? other.getUserInDate_zch_hwz_gjc() == null : this.getUserInDate_zch_hwz_gjc().equals(other.getUserInDate_zch_hwz_gjc()))
-            && (this.getUserOnline_zch_hwz_gjc() == null ? other.getUserOnline_zch_hwz_gjc() == null : this.getUserOnline_zch_hwz_gjc().equals(other.getUserOnline_zch_hwz_gjc()))
-            && (this.getOnlineIP_zch_hwz_gjc() == null ? other.getOnlineIP_zch_hwz_gjc() == null : this.getOnlineIP_zch_hwz_gjc().equals(other.getOnlineIP_zch_hwz_gjc()))
+            && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
+            && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
@@ -137,8 +135,8 @@ public class User implements Serializable {
         result = prime * result + ((getUserEmail_zch_hwz_gjc() == null) ? 0 : getUserEmail_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserPhone_zch_hwz_gjc() == null) ? 0 : getUserPhone_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserInDate_zch_hwz_gjc() == null) ? 0 : getUserInDate_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getUserOnline_zch_hwz_gjc() == null) ? 0 : getUserOnline_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getOnlineIP_zch_hwz_gjc() == null) ? 0 : getOnlineIP_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
@@ -157,8 +155,8 @@ public class User implements Serializable {
         sb.append(", userEmail_zch_hwz_gjc=").append(userEmail_zch_hwz_gjc);
         sb.append(", userPhone_zch_hwz_gjc=").append(userPhone_zch_hwz_gjc);
         sb.append(", userInDate_zch_hwz_gjc=").append(userInDate_zch_hwz_gjc);
-        sb.append(", userOnline_zch_hwz_gjc=").append(userOnline_zch_hwz_gjc);
-        sb.append(", onlineIP_zch_hwz_gjc=").append(onlineIP_zch_hwz_gjc);
+        sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
+        sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);
