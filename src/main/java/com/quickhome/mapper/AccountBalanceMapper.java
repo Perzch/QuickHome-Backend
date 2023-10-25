@@ -3,6 +3,7 @@ package com.quickhome.mapper;
 import com.quickhome.domain.AccountBalance;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author Tim-h
@@ -10,6 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
 * @createDate 2023-06-21 09:43:54
 * @Entity .domain.AccountBalance
 */
+
+@Transactional
 @Mapper
 public interface AccountBalanceMapper extends BaseMapper<AccountBalance> {
 

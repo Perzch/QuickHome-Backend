@@ -1,6 +1,5 @@
 package com.quickhome.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.quickhome.domain.Coupon;
 import com.baomidou.mybatisplus.extension.service.IService;
 

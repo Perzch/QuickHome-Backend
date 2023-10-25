@@ -5,12 +5,14 @@ import com.quickhome.domain.ManagerHomeBinding;
 import com.quickhome.service.ManagerHomeBindingService;
 import com.quickhome.mapper.ManagerHomeBindingMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author Tim-h
 * @description 针对表【tab_managerhomebinding_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:48:08
 */
+@Transactional
 @Service
 public class ManagerHomeBindingServiceImpl extends ServiceImpl<ManagerHomeBindingMapper, ManagerHomeBinding>
     implements ManagerHomeBindingService{

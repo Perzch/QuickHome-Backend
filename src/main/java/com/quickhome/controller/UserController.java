@@ -22,6 +22,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.quickhome.service.UserInformationService;
 import com.quickhome.service.UserService;
@@ -45,6 +46,7 @@ import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
  * @changeDate 2023/6/28 15:21
  */
 
+@Transactional
 @Controller("UserCon")
 @RequestMapping("/User")
 public class UserController {

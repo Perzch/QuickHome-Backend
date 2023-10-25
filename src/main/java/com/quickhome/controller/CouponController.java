@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ import java.util.List;
  * @description
  * @creatDate 2023/10/21 22:37
  */
+@Transactional
 @Controller("CouponCon")
 @RequestMapping("/Coupon")
 public class CouponController {

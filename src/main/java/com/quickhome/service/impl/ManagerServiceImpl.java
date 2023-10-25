@@ -9,6 +9,7 @@ import com.quickhome.service.ManagerService;
 import com.quickhome.mapper.ManagerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
@@ -18,6 +19,7 @@ import java.util.Random;
 * @description 针对表【tab_manager_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:47:58
 */
+@Transactional
 @Service
 public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, Manager>
     implements ManagerService{

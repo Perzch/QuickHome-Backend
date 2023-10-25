@@ -13,6 +13,7 @@ import com.quickhome.mapper.UserMapper;
 import com.quickhome.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -24,6 +25,7 @@ import java.util.Objects;
  * @description 针对表【tab_user_zch_hwz_gjc】的数据库操作Service实现
  * @createDate 2023-06-21 09:48:54
  */
+@Transactional
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {

@@ -5,6 +5,7 @@ import com.quickhome.util.MailUtils;
 import com.quickhome.util.SendSMS;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @creatDate 2023/6/28 15:00
  */
 
+@Transactional
 @Controller("MethodCon")
 @RequestMapping("/Method")
 @CrossOrigin(origins = "http://localhost:8081")

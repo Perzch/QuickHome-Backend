@@ -5,6 +5,7 @@ import com.quickhome.domain.HomeInformation;
 import com.quickhome.service.HomeInformationService;
 import com.quickhome.mapper.HomeInformationMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 * @description 针对表【tab_homeinformation_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:47:30
 */
+@Transactional
 @Service
 public class HomeInformationServiceImpl extends ServiceImpl<HomeInformationMapper, HomeInformation>
     implements HomeInformationService{

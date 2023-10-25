@@ -7,12 +7,14 @@ import com.quickhome.service.UsersAndCouponsService;
 import com.quickhome.mapper.UsersAndCouponsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author Tim-h
 * @description 针对表【tab_usersandcoupons_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:49:30
 */
+@Transactional
 @Service
 public class UsersAndCouponsServiceImpl extends ServiceImpl<UsersAndCouponsMapper, UsersAndCoupons>
     implements UsersAndCouponsService {

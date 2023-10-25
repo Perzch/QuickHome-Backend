@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -39,6 +40,7 @@ import java.util.List;
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
+@Transactional
 @Controller("OrderCon")
 @RequestMapping("/Order")
 public class OrderController {

@@ -8,6 +8,7 @@ import com.quickhome.mapper.UserInformationMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
 * @description 针对表【tab_userinformation_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:49:11
 */
+@Transactional
 @Service
 public class UserInformationServiceImpl extends ServiceImpl<UserInformationMapper, UserInformation>
     implements UserInformationService{

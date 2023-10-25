@@ -17,14 +17,14 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    call-setters-on-nulls: true
   global-config:
     db-config:
       logic-delete-field: deleted_zch_hwz_gjc
       logic-delete-value: 1,
       logic-not-delete-value: 0
 
-#server:
-#  port: 8000
+
 
 jwt:
   key: "quickHome_jwt_key_melody"

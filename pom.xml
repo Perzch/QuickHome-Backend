@@ -115,9 +115,15 @@
             <artifactId>dysmsapi20170525</artifactId>
             <version>2.0.23</version>
         </dependency>
+        <!-- websocket -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- 事务 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
     </dependencies>
@@ -138,6 +144,33 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource><!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <!-- 打包是从根目录 config为项目src同级的config  ../config根项目同级的文件 -->
+                <directory>../config</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <!-- config下面所有文件全部打到包中去 -->
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <!-- <resource>&lt;!&ndash;公共资源文件 &ndash;&gt;
+                 <directory>../config</directory>
+                 <includes>
+                     <include>banner.txt</include>
+                     <include>mybatis-configuration.xml</include>
+                     <include>application-aop-service.xml</include>
+                     <include>messages_zh_CN.properties</include>
+                 </includes>
+             </resource>-->
+        </resources>
     </build>
 
 </project>

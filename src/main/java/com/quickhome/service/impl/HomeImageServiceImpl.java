@@ -5,6 +5,7 @@ import com.quickhome.domain.HomeImage;
 import com.quickhome.service.HomeImageService;
 import com.quickhome.mapper.HomeImageMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 * @description 针对表【tab_homeimage_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:47:24
 */
+@Transactional
 @Service
 public class HomeImageServiceImpl extends ServiceImpl<HomeImageMapper, HomeImage>
     implements HomeImageService{

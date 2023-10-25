@@ -8,6 +8,7 @@ import com.quickhome.service.UserHeadImageService;
 import com.quickhome.mapper.UserHeadImageMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
  * @description 针对表【tab_userheadimage_zch_hwz_gjc】的数据库操作Service实现
  * @createDate 2023-06-21 09:49:04
  */
+@Transactional
 @Service
 public class UserHeadImageServiceImpl extends ServiceImpl<UserHeadImageMapper, UserHeadImage>
         implements UserHeadImageService {

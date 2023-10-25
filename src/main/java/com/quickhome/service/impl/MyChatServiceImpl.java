@@ -9,6 +9,7 @@ import com.quickhome.service.MyChatService;
 import com.quickhome.mapper.MyChatMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 * @description 针对表【tab_mychat_zch_hwz_gjc】的数据库操作Service实现
 * @createDate 2023-06-21 09:48:14
 */
+@Transactional
 @Service
 public class MyChatServiceImpl extends ServiceImpl<MyChatMapper, MyChat>
     implements MyChatService{
