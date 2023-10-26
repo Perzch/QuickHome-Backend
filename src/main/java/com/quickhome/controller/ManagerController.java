@@ -100,16 +100,21 @@ public class ManagerController {
             byte[] decrypt = rsa.decrypt(encryptedBytes, KeyType.PrivateKey);
             String newPassword = new String(decrypt);
 
-            // 更新密码
-            UpdateWrapper<Manager> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("managerId_zch_hwz_gjc", managerId)
-                    .set("managerPwd_zch_hwz_gjc", newPassword);
+            // 从数据库中查询当前记录
+            Manager currentManager = managerMapper.selectById(managerId);
+            if (currentManager == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("managerId不存在"));
+            }
 
-            boolean success = managerMapper.update(null, updateWrapper) > 0;
+            // 更新密码
+            currentManager.setManagerPwd_zch_hwz_gjc(newPassword);
+
+            // 使用乐观锁更新方法
+            boolean success = managerMapper.updateById(currentManager) > 0;
             if (success) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("密码更新失败"));
+                return ResponseEntity.badRequest().body(ResponseResult.error("密码更新失败，请重试"));
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body(ResponseResult.error("解密失败: " + e.getMessage()));

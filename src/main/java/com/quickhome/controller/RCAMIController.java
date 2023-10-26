@@ -62,15 +62,18 @@ public class RCAMIController {
             rcami.setCompletion_zch_hwz_gjc("已完成");
         }
 
-        boolean flag = rcamiService.updateById(rcami);
+        // 设置版本号
+        rcami.setVersion_zch_hwz_gjc(existingRCAMI.getVersion_zch_hwz_gjc());
 
+        boolean flag = rcamiService.updateById(rcami);
 
         if (flag) {
             return ResponseEntity.ok(ResponseResult.ok(rcamiMapper.selectById(rcami.getWorkItemId_zch_hwz_gjc())));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.of(500,"更新失败"));
+            return ResponseEntity.badRequest().body(ResponseResult.of(500,"更新失败，数据可能已被其他用户修改"));
         }
     }
+
 
 
     @ResponseBody

@@ -187,7 +187,7 @@ public class OrderController {
     }
 
     @PostMapping("/creatDynamicDoorPassword")
-    public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestBody Long orderId, HttpServletRequest req) {
+    public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestParam Long orderId, HttpServletRequest req) {
         RSA rsa = new RSA(privateKey, publicKey);
         String dateTime = String.valueOf(DateTime.now());
         String dynamicDoorPassword = null;
@@ -293,8 +293,13 @@ public class OrderController {
         // 使用UpdateWrapper更新订单状态为“已支付”
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
+                .eq("orderState_zch_hwz_gjc", "未支付")  // 加入当前订单状态的检查
                 .set("orderState_zch_hwz_gjc", "已支付");
-        orderMapper.update(null, updateWrapper);
+        boolean updateSuccess = orderMapper.update(order, updateWrapper) > 0;
+
+        if (!updateSuccess) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单状态更新失败，可能已经被其他用户修改"));
+        }
 
         order = orderMapper.selectById(orderId);
         RSA rsa = new RSA(privateKey, publicKey);
@@ -398,15 +403,55 @@ public class OrderController {
     public ResponseEntity<ResponseResult<?>> updateOrder(
             @RequestBody Order order,
             HttpServletRequest req) {
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("orderId_zch_hwz_gjc", order.getOrderId_zch_hwz_gjc());
-        orderMapper.update(order, updateWrapper);
+        try {
+            if (order.getOrderId_zch_hwz_gjc() == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("订单ID不能为空"));
+            }
 
-        order = orderMapper.selectById(order.getOrderId_zch_hwz_gjc());
-        RSA rsa = new RSA(privateKey, publicKey);
-        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
-        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
-        return ResponseEntity.ok(ResponseResult.ok(order));
+            // 从数据库中查询当前记录
+            Order currentOrder = orderMapper.selectById(order.getOrderId_zch_hwz_gjc());
+            if (currentOrder == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("订单ID不存在"));
+            }
+
+            // 更新需要修改的字段
+            if (order.getEndTime_zch_hwz_gjc() != null) {
+                currentOrder.setEndTime_zch_hwz_gjc(order.getEndTime_zch_hwz_gjc());
+            }
+            if (order.getCheckOutTime_zch_hwz_gjc() != null) {
+                currentOrder.setCheckOutTime_zch_hwz_gjc(order.getCheckOutTime_zch_hwz_gjc());
+            }
+            if (order.getOrderPayment_zch_hwz_gjc() != null) {
+                currentOrder.setOrderPayment_zch_hwz_gjc(order.getOrderPayment_zch_hwz_gjc());
+            }
+            if (order.getOrderState_zch_hwz_gjc() != null) {
+                currentOrder.setOrderState_zch_hwz_gjc(order.getOrderState_zch_hwz_gjc());
+            }
+
+            // 使用乐观锁更新方法
+            int result = orderMapper.updateById(currentOrder);
+            if (result > 0) {
+                // 重新从数据库中查询更新后的记录
+                Order updatedOrder = orderMapper.selectById(order.getOrderId_zch_hwz_gjc());
+
+                // 加密动态门密码
+                RSA rsa = new RSA(privateKey, publicKey);
+
+                String dynamicDoorPassword = updatedOrder.getDynamicDoorPassword_zch_hwz_gjc();
+                if (dynamicDoorPassword != null) {
+                    byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
+                    updatedOrder.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+                }
+
+                return ResponseEntity.ok(ResponseResult.ok(updatedOrder));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(ResponseResult.error("更新订单信息出错: " + e.getMessage()));
+        }
     }
+
 
 }

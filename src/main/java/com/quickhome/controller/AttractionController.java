@@ -241,16 +241,40 @@ public class AttractionController {
             if (attractions.getAttractionsId_zch_hwz_gjc() == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不能为空"));
             }
-            int result = attractionMapper.updateById(attractions);
+
+            // 从数据库中查询当前记录
+            Attractions currentAttractions = attractionMapper.selectById(attractions.getAttractionsId_zch_hwz_gjc());
+            if (currentAttractions == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不存在"));
+            }
+
+            // 更新需要修改的字段
+            if (attractions.getAttractionsName_zch_hwz_gjc() != null) {
+                currentAttractions.setAttractionsName_zch_hwz_gjc(attractions.getAttractionsName_zch_hwz_gjc());
+            }
+            if (attractions.getAttractionInformation_zch_hwz_gjc() != null) {
+                currentAttractions.setAttractionInformation_zch_hwz_gjc(attractions.getAttractionInformation_zch_hwz_gjc());
+            }
+            if (attractions.getOpeningTime_zch_hwz_gjc() != null) {
+                currentAttractions.setOpeningTime_zch_hwz_gjc(attractions.getOpeningTime_zch_hwz_gjc());
+            }
+            if (attractions.getClosingTime_zch_hwz_gjc() != null) {
+                currentAttractions.setClosingTime_zch_hwz_gjc(attractions.getClosingTime_zch_hwz_gjc());
+            }
+
+            // 使用乐观锁更新方法
+            int result = attractionMapper.updateById(currentAttractions);
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败"));
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("更新景点信息出错"));
         }
     }
+
+
 
     @DeleteMapping("/deleteAttraction")
     public ResponseEntity<?> deleteAttraction(@RequestParam("attractionId") Long attractionId) {

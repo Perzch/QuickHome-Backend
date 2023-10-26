@@ -41,18 +41,22 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, Manager>
     }
     @Override
     public void setManagerOnline(Long managerId) {
-        UpdateWrapper<Manager> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("managerId_zch_hwz_gjc", managerId)
-                .set("online_status_zch_hwz_gjc", "在线");
-        managerMapper.update(null, updateWrapper);
+        Manager manager = managerMapper.selectById(managerId);
+        if (manager != null) {
+            manager.setOnlineStatus_zch_hwz_gjc("在线");
+            managerMapper.updateById(manager);
+        }
     }
+
     @Override
     public void setManagerOffline(Long managerId) {
-        UpdateWrapper<Manager> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("managerId_zch_hwz_gjc", managerId)
-                .set("online_status_zch_hwz_gjc", "离线");
-        managerMapper.update(null, updateWrapper);
+        Manager manager = managerMapper.selectById(managerId);
+        if (manager != null) {
+            manager.setOnlineStatus_zch_hwz_gjc("离线");
+            managerMapper.updateById(manager);
+        }
     }
+
 }
 
 

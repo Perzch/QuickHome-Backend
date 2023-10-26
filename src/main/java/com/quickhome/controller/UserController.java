@@ -253,14 +253,33 @@ public class UserController {
         String password = user.getUserPwd_zch_hwz_gjc();
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] decrypt = rsa.decrypt(password, KeyType.PrivateKey);
-        System.out.println("解密后的明文为:" + new String(decrypt));
-        Long userId = userService.setUserPassword(user.getUserEmail_zch_hwz_gjc(), user.getUserPhone_zch_hwz_gjc(), new String(decrypt));
-        if (userId != null) {
-            return ResponseEntity.ok(ResponseResult.ok(userId));
+        String plainTextPassword = new String(decrypt);
+        System.out.println("解密后的明文为:" + plainTextPassword);
+
+        // 构建查询条件
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userEmail_zch_hwz_gjc", user.getUserEmail_zch_hwz_gjc())
+                .or()
+                .eq("userPhone_zch_hwz_gjc", user.getUserPhone_zch_hwz_gjc());
+
+        // 从数据库中加载用户信息
+        User existingUser = userService.getOne(queryWrapper);
+        if (existingUser == null) {
+            return ResponseEntity.ok(ResponseResult.error("用户不存在"));
+        }
+
+        // 设置新密码
+        existingUser.setUserPwd_zch_hwz_gjc(plainTextPassword);
+
+        // 更新用户信息
+        boolean updateSuccess = userService.updateById(existingUser);
+        if (updateSuccess) {
+            return ResponseEntity.ok(ResponseResult.ok(existingUser.getUserId_zch_hwz_gjc()));
         } else {
-            return ResponseEntity.ok(ResponseResult.error("设置密码失败"));
+            return ResponseEntity.ok(ResponseResult.error("设置密码失败，数据可能已被其他用户修改"));
         }
     }
+
     @PostMapping("/uploadUserHeadImage")
     public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(
             @RequestParam("userId") Long userId,

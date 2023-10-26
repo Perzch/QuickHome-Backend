@@ -153,30 +153,36 @@ public class HomeInformationController {
                 return ResponseEntity.badRequest().body(ResponseResult.error("房屋编号不能为空"));
             }
 
-            UpdateWrapper<Home> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("homeId_zch_hwz_gjc", home.getHomeId_zch_hwz_gjc());
+            // 从数据库中查询当前记录
+            Home currentHome = homeMapper.selectById(home.getHomeId_zch_hwz_gjc());
+            if (currentHome == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("房屋编号不存在"));
+            }
 
+            // 更新需要修改的字段
             if (home.getHomeDayRent_zch_hwz_gjc() != null) {
-                updateWrapper.set("homeDayRent_zch_hwz_gjc", home.getHomeDayRent_zch_hwz_gjc());
+                currentHome.setHomeDayRent_zch_hwz_gjc(home.getHomeDayRent_zch_hwz_gjc());
             }
 
             if (home.getHomeState_zch_hwz_gjc() != null && !home.getHomeState_zch_hwz_gjc().isEmpty()) {
-                updateWrapper.set("homeState_zch_hwz_gjc", home.getHomeState_zch_hwz_gjc());
+                currentHome.setHomeState_zch_hwz_gjc(home.getHomeState_zch_hwz_gjc());
             }
 
-            int result = homeMapper.update(null, updateWrapper);
+            // 使用乐观锁更新方法
+            int result = homeMapper.updateById(currentHome);
 
             // 检查是否有数据被更新
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，房屋编号可能不存在"));
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
             return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
         }
     }
+
 
     @ResponseBody
     @PostMapping("/insertHomeInf")
@@ -203,31 +209,35 @@ public class HomeInformationController {
                 return ResponseEntity.badRequest().body(ResponseResult.error("房屋信息编号不能为空"));
             }
 
-            UpdateWrapper<HomeInformation> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("homeInfId_zch_hwz_gjc", homeInformation.getHomeInfId_zch_hwz_gjc());
+            // 从数据库中查询当前记录
+            HomeInformation currentHomeInf = homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc());
+            if (currentHomeInf == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("房屋信息编号不存在"));
+            }
 
-            // 根据实际的可变信息字段进行更新，以下是一些示例字段
+            // 更新需要修改的字段
             if (homeInformation.getHomeArea_zch_hwz_gjc() != null) {
-                updateWrapper.set("homeArea_zch_hwz_gjc", homeInformation.getHomeArea_zch_hwz_gjc());
+                currentHomeInf.setHomeArea_zch_hwz_gjc(homeInformation.getHomeArea_zch_hwz_gjc());
             }
             if (homeInformation.getHouseStructure_zch_hwz_gjc() != null && !homeInformation.getHouseStructure_zch_hwz_gjc().isEmpty()) {
-                updateWrapper.set("houseStructure_zch_hwz_gjc", homeInformation.getHouseStructure_zch_hwz_gjc());
+                currentHomeInf.setHouseStructure_zch_hwz_gjc(homeInformation.getHouseStructure_zch_hwz_gjc());
             }
             if (homeInformation.getMaxPerson_zch_hwz_gjc() != null) {
-                updateWrapper.set("maxPerson_zch_hwz_gjc", homeInformation.getMaxPerson_zch_hwz_gjc());
+                currentHomeInf.setMaxPerson_zch_hwz_gjc(homeInformation.getMaxPerson_zch_hwz_gjc());
             }
             if (homeInformation.getHomeDeposit_zch_hwz_gjc() != null) {
-                updateWrapper.set("homeDeposit_zch_hwz_gjc", homeInformation.getHomeDeposit_zch_hwz_gjc());
+                currentHomeInf.setHomeDeposit_zch_hwz_gjc(homeInformation.getHomeDeposit_zch_hwz_gjc());
             }
             // ... 添加其他可变字段的更新逻辑
 
-            int result = homeInformationMapper.update(null, updateWrapper);
+            // 使用乐观锁更新方法
+            int result = homeInformationMapper.updateById(currentHomeInf);
 
             // 检查是否有数据被更新
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc())));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，房屋信息编号可能不存在"));
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息

@@ -26,11 +26,17 @@ public class UsersAndCouponsServiceImpl extends ServiceImpl<UsersAndCouponsMappe
     }
 
     public boolean useCoupon(Long couponId) {
+        UsersAndCoupons usersAndCoupons = usersAndCouponsMapper.selectById(couponId);
+        if (usersAndCoupons == null) {
+            return false;
+        }
+
+        usersAndCoupons.setCondition_zch_hwz_gjc("已使用");
+        usersAndCoupons.setDeleted_zch_hwz_gjc(1);
+
         UpdateWrapper<UsersAndCoupons> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("UACID_zch_hwz_gjc", couponId)
-                .set("condition_zch_hwz_gjc", "已使用")
-                .set("deleted_zch_hwz_gjc", 1);
-        return usersAndCouponsMapper.update(null, updateWrapper) > 0;
+        updateWrapper.eq("UACID_zch_hwz_gjc", couponId);
+        return usersAndCouponsMapper.update(usersAndCoupons, updateWrapper) > 0;
     }
 
 }
