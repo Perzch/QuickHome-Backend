@@ -22,7 +22,7 @@
         homeInfId_zch_hwz_gjc,homeId_zch_hwz_gjc,homeArea_zch_hwz_gjc,
         houseStructure_zch_hwz_gjc,maxPerson_zch_hwz_gjc,homeDeposit_zch_hwz_gjc,
         homeInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 
     <select id="getByHomeId" parameterType="Long" resultMap="BaseResultMap">

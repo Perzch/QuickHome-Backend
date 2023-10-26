@@ -18,6 +18,6 @@
     <sql id="Base_Column_List">
         superManagerId_zch_hwz_gjc,superManagerAccount_zch_hwz_gjc,superManagerPwd_zch_hwz_gjc,
         createTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

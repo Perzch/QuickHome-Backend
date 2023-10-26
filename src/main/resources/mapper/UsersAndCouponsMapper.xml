@@ -18,6 +18,6 @@
     <sql id="Base_Column_List">
         UACID_zch_hwz_gjc,condition_zch_hwz_gjc,userId_zch_hwz_gjc,
         couponId_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

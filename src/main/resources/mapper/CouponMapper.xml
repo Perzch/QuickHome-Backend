@@ -24,7 +24,7 @@
         couponId_zch_hwz_gjc,couponName_zch_hwz_gjc,discountMethod_zch_hwz_gjc,
         discountIntensity_zch_hwz_gjc,useThreshold_zch_hwz_gjc,applicableScope_zch_hwz_gjc,
         discountInformation_zch_hwz_gjc,earliestUseTime_zch_hwz_gjc,latestUseTime_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 </mapper>

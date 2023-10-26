@@ -20,7 +20,7 @@
     <sql id="Base_Column_List">
         bindingID_zch_hwz_gjc,managerID_zch_hwz_gjc,homeID_zch_hwz_gjc,
         bindingType_zch_hwz_gjc,bindingTime_zch_hwz_gjc,bindingState_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 </mapper>

@@ -27,7 +27,7 @@
         creationTime_zch_hwz_gjc,endTime_zch_hwz_gjc,checkInTime_zch_hwz_gjc,
         checkOutTime_zch_hwz_gjc,orderPayment_zch_hwz_gjc,orderDeposit_zch_hwz_gjc,
         orderState_zch_hwz_gjc,userId_zch_hwz_gjc,standby1_zch_hwz_gjc,
-        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        standby2_zch_hwz_gjc,version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
     <update id="updateDynamicDoorPassword">
 

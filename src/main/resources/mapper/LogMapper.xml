@@ -20,7 +20,7 @@
     <sql id="Base_Column_List">
         logId_zch_hwz_gjc,userPerformingId_zch_hwz_gjc,executionTime_zch_hwz_gjc,
         executionContent_zch_hwz_gjc,deviceId_zch_hwz_gjc,executionPlace_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 </mapper>

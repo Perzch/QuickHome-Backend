@@ -13,7 +13,7 @@
             <result property="managerPhone_zch_hwz_gjc" column="managerPhone_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="managerGender_zch_hwz_gjc" column="managerGender_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="managerInDate_zch_hwz_gjc" column="managerInDate_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
-            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="onlineStatus_zch_hwz_gjc" column="online_status_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
@@ -22,7 +22,7 @@
     <sql id="Base_Column_List">
         managerId_zch_hwz_gjc,managerCategory_zch_hwz_gjc,managerAccount_zch_hwz_gjc,
         managerPwd_zch_hwz_gjc,managerName_zch_hwz_gjc,managerPhone_zch_hwz_gjc,
-        managerGender_zch_hwz_gjc,managerInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,
-        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        managerGender_zch_hwz_gjc,managerInDate_zch_hwz_gjc,online_status_zch_hwz_gjc,
+        standby2_zch_hwz_gjc,version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>

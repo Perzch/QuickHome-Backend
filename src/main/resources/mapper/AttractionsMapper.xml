@@ -20,7 +20,7 @@
     <sql id="Base_Column_List">
         attractionsId_zch_hwz_gjc,attractionsName_zch_hwz_gjc,attractionInformation_zch_hwz_gjc,
         openingTime_zch_hwz_gjc,closingTime_zch_hwz_gjc,attractionInDate_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 

@@ -22,7 +22,7 @@
         userId_zch_hwz_gjc,userAccount_zch_hwz_gjc,userName_zch_hwz_gjc,
         userPwd_zch_hwz_gjc,userEmail_zch_hwz_gjc,userPhone_zch_hwz_gjc,
         userInDate_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
     <select id="getUserAccountByAccount_zch_hwz_gjc" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
         select userAccount_zch_hwz_gjc

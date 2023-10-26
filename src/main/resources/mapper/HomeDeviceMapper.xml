@@ -21,7 +21,7 @@
         deviceID_zch_hwz_gjc,homeId_zch_hwz_gjc,deviceName_zch_hwz_gjc,
         deviceType_zch_hwz_gjc,deviceProperties_zch_hwz_gjc,brand_zch_hwz_gjc,
         price_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
     <select id="getAllById" parameterType="Long" resultMap="BaseResultMap">
         select * from tab_homedevice_zch_hwz_gjc where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}

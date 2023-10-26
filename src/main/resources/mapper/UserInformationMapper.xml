@@ -26,7 +26,7 @@
         userHeadId_zch_hwz_gjc,userBirthday_zch_hwz_gjc,userSignature_zch_hwz_gjc,
         idCardType_zch_hwz_gjc,idCardNumber_zch_hwz_gjc,authenticationStatus_zch_hwz_gjc,
         authenticationTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
-        standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 
     <select id="getUserImagePath" parameterType="long" resultType="string">

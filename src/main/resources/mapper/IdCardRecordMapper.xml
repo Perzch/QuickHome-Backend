@@ -20,7 +20,7 @@
     <sql id="Base_Column_List">
         IDCardRecordID_zch_hwz_gjc,IDCardName_zch_hwz_gjc,IDCardNumber_zch_hwz_gjc,
         IDCardPhoneNumber_zch_hwz_gjc,userId_zch_hwz_gjc,inDateTime_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 </mapper>

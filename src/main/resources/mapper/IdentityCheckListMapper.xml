@@ -16,7 +16,7 @@
 
     <sql id="Base_Column_List">
         IdentityChecklistID_zch_hwz_gjc,IDCardRecordID_zch_hwz_gjc,orderID_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,
+        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 </mapper>

@@ -23,6 +23,6 @@
         housingReviewId_zch_hwz_gjc,comments_zch_hwz_gjc,userId_zch_hwz_gjc,
         homeId_zch_hwz_gjc,reviewTime_zch_hwz_gjc,housingReviewRating_zch_hwz_gjc,
         homeLikeCount_zch_hwz_gjc,secondHousingReviewId_zch_hwz_gjc,standby1_zch_hwz_gjc,
-        standby2_zch_hwz_gjc,standby3_zch_hwz_gjc,deleted_zch_hwz_gjc
+        standby2_zch_hwz_gjc,version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>
 </mapper>
