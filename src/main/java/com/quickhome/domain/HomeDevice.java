@@ -34,7 +34,7 @@ public class HomeDevice implements Serializable {
      * 房屋编号
      */
     @TableField(value = "homeId_zch_hwz_gjc")
-    @JsonProperty("homeID")
+    @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
 
     /**

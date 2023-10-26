@@ -1,26 +1,44 @@
 package com.quickhome.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.quickhome.domain.Home;
-import com.quickhome.domain.HomeDevice;
-import com.quickhome.domain.HomeImage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.quickhome.domain.*;
+import com.quickhome.mapper.HomeDeviceMapper;
+import com.quickhome.mapper.HomeImageMapper;
 import com.quickhome.mapper.HomeInformationMapper;
 import com.quickhome.mapper.HomeMapper;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
-import com.quickhome.domain.HomeInformation;
 import com.quickhome.service.*;
+import com.quickhome.util.ImageUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Transactional
 @Controller("HomeInfCon")
@@ -47,6 +65,190 @@ public class HomeInformationController {
 
     @Autowired
     private HomeDeviceService homeDeviceSer_zch_hwz_gjc;
+
+    @Autowired
+    private HomeImageMapper homeImageMapper;
+
+    @Autowired
+    private HomeImageService homeImageService;
+    private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
+
+    @Autowired
+    private HomeDeviceMapper homeDeviceMapper;
+
+    @ResponseBody
+    @PostMapping("/insertHomeDevice")
+    public ResponseEntity<ResponseResult<?>> insertHomeDevice(
+            @RequestBody HomeDevice homeDevice) {
+        try {
+            homeDeviceMapper.insert(homeDevice);
+            return ResponseEntity.ok(ResponseResult.ok());
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+        }
+    }
+
+    @ResponseBody
+    @PutMapping("/updateHomeDevice")
+    public ResponseEntity<ResponseResult<?>> updateHomeDevice(
+            @RequestBody HomeDevice homeDevice) {
+        try {
+            int result = homeDeviceMapper.updateById(homeDevice);
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok());
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，设备可能不存在或版本号不匹配"));
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败"));
+        }
+    }
+
+    @GetMapping("/getHomeDevice")
+    public ResponseEntity<ResponseResult<?>> getHomeDevice(
+            @RequestParam Long homeId,
+            @RequestParam(required = false, defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size) {
+        try {
+            Page<HomeDevice> page = new Page<>(current, size);
+            IPage<HomeDevice> devices = homeDeviceMapper.getDevicesByHomeId(page, homeId);
+            return ResponseEntity.ok(ResponseResult.ok(devices));
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("获取设备列表失败"));
+        }
+    }
+
+    @DeleteMapping("/delHomeDev")
+    public ResponseEntity<ResponseResult<?>> delHomeDev(@RequestParam Long deviceId) {
+        try {
+            // 构建查询条件
+            QueryWrapper<HomeDevice> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("deviceID_zch_hwz_gjc", deviceId);
+
+            int result = homeDeviceMapper.delete(queryWrapper);
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok());
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败，设备可能不存在或已被删除"));
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+        }
+    }
+
+
+    @SneakyThrows
+    @ResponseBody
+    @GetMapping("/getHomeImg")
+    public ResponseEntity<Resource> getHomeImg(@RequestParam Long homeId) {
+        QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
+        wrapper.eq("homeId_zch_hwz_gjc", homeId);
+        wrapper.eq("deleted_zch_hwz_gjc", 0);
+        List<HomeImage> images = homeImageMapper.selectList(wrapper);
+        if (images.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+
+        try {
+            for (HomeImage image : images) {
+                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
+                FileInputStream fis = new FileInputStream(path.toFile());
+                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
+                zos.putNextEntry(zipEntry);
+
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=homeImages.zip")
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/deleteHomeImg")
+    public ResponseEntity<?> deleteHomeImg(@RequestParam Long homeId, @RequestParam String timestamp) {
+        try {
+            // 拼接attractionId和时间戳
+            String combinedString = homeId.toString() +"-"+ timestamp;
+
+            // 使用拼接后的字符串去数据库中查找
+            QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
+            wrapper.like("imagePath_zch_hwz_gjc", combinedString);
+            wrapper.eq("deleted_zch_hwz_gjc", 0);
+
+            HomeImage image = homeImageMapper.selectOne(wrapper);
+            if (image != null) {
+                ImageUtil.deleteImg(image.getImagePath_zch_hwz_gjc());
+                UpdateWrapper<HomeImage> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.like("imagePath_zch_hwz_gjc", combinedString)
+                        .set("deleted_zch_hwz_gjc", 1);
+
+                int result = homeImageMapper.update(null, updateWrapper);
+                if (result > 0) {
+                    return ResponseEntity.ok(ResponseResult.ok());
+                } else {
+                    return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                }
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("图片不存在"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("删除图片出错"));
+        }
+    }
+
+
+    @ResponseBody
+    @PostMapping("/addHomeImg")
+    public ResponseEntity<ResponseResult<?>> addHomeImg(
+            @RequestParam("homeId") Long homeId,
+            @RequestParam("file") MultipartFile file,
+            HttpServletRequest req) throws IOException {
+        if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
+        }
+
+        String imagePath = saveUploadedFile(homeId, file);
+
+        HomeImage homeImage = homeImageService.saveHomeImg(homeId, imagePath);
+
+        return ResponseEntity.ok(ResponseResult.ok(homeImage));
+    }
+
+    private String saveUploadedFile(Long homeId, MultipartFile file) throws IOException {
+        String uploadDir = "E:/Spring boot/uploads/HomeImg/";
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String newFileName = homeId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
+        String filePath = uploadDir + newFileName;
+        file.transferTo(new File(filePath));
+        return filePath;
+    }
+
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
 
     /**
      * 通过ID获取房屋信息

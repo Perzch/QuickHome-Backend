@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.AttractionCollection;
 import com.quickhome.domain.AttractionImage;
 import com.quickhome.domain.Attractions;
-import com.quickhome.domain.UserHeadImage;
 import com.quickhome.mapper.AttractionCollectionMapper;
 import com.quickhome.mapper.AttractionImageMapper;
 import com.quickhome.mapper.AttractionsMapper;
@@ -21,7 +20,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -150,7 +148,7 @@ public class AttractionController {
 
         String imagePath = saveUploadedFile(attractionId, file);
 
-        AttractionImage attractionImage = attractionImageService.saveOrUpdateUserHeadImage(attractionId, imagePath);
+        AttractionImage attractionImage = attractionImageService.saveAttractionImg(attractionId, imagePath);
 
         return ResponseEntity.ok(ResponseResult.ok(attractionImage));
     }

@@ -1,5 +1,9 @@
 package com.quickhome.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.quickhome.domain.Home;
+import com.quickhome.domain.Manager;
 import com.quickhome.domain.ManagerHomeBinding;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:48:08
 */
 public interface ManagerHomeBindingService extends IService<ManagerHomeBinding> {
+
+    public IPage<Home> getHomesByManagerId(Long managerId, Page<Home> page);
+    public IPage<Manager> getManagersByHomeId(Long homeId, Page<Manager> page);
 
 }

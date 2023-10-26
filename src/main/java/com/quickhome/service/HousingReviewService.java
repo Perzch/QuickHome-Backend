@@ -1,5 +1,6 @@
 package com.quickhome.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.HousingReview;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-21 09:47:50
 */
 public interface HousingReviewService extends IService<HousingReview> {
+    public boolean insertHomeReview(HousingReview housingReview);
 
+    public boolean likeComment(Long housingReviewId);
+    public boolean deleteCommentAndChildren(Long housingReviewId);
+    public IPage<HousingReview> getCommentsByHomeId(Long homeId, int pageNum, int pageSize);
 }

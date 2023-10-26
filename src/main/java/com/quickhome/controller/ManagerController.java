@@ -6,11 +6,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.quickhome.domain.Home;
 import com.quickhome.domain.Manager;
+import com.quickhome.domain.ManagerHomeBinding;
 import com.quickhome.domain.SuperManager;
+import com.quickhome.mapper.HomeMapper;
+import com.quickhome.mapper.ManagerHomeBindingMapper;
 import com.quickhome.mapper.ManagerMapper;
 import com.quickhome.mapper.SuperManagerMapper;
 import com.quickhome.request.ResponseResult;
+import com.quickhome.service.ManagerHomeBindingService;
 import com.quickhome.service.ManagerService;
 import com.quickhome.util.CreatAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +49,19 @@ public class ManagerController {
 
     @Autowired
     private ManagerService managerService;
+
+    @Autowired
+    private ManagerHomeBindingService managerHomeBindingService;
     @Autowired
     private SuperManagerMapper superManagerMapper;
+    @Autowired
+    private ManagerHomeBindingMapper bindingMapper;
 
     @Autowired
     private ManagerMapper managerMapper;
+
+    @Autowired
+    private HomeMapper homeMapper;
 
     @PostMapping("/insertManager")
     public ResponseEntity<ResponseResult<?>> insertManager(@RequestBody Manager manager) {
@@ -275,4 +288,68 @@ public class ManagerController {
         queryWrapper.eq("managerAccount_zch_hwz_gjc", account);
         return managerMapper.selectCount(queryWrapper) > 0;
     }
+
+    @DeleteMapping("/unbindManagerFromHome")
+    public ResponseEntity<ResponseResult<?>> unbindManagerFromHome(
+            @RequestParam Long managerId,
+            @RequestParam Long homeId) {
+
+        UpdateWrapper<ManagerHomeBinding> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("managerID_zch_hwz_gjc", managerId)
+                .eq("homeID_zch_hwz_gjc", homeId)
+                .eq("deleted_zch_hwz_gjc", 0)
+                .set("bindingState_zch_hwz_gjc", "已解绑")
+                .set("deleted_zch_hwz_gjc", 1);
+
+        int rows = bindingMapper.update(null, updateWrapper);
+        if (rows > 0) {
+            return ResponseEntity.ok(ResponseResult.ok());  // 返回成功响应
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("Failed to unbind manager from home"));
+        }
+    }
+
+    @PostMapping("/bindManagerToHome")
+    public ResponseEntity<ResponseResult<?>> bindManagerToHome(@RequestBody ManagerHomeBinding binding) {
+        QueryWrapper<ManagerHomeBinding> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("managerID_zch_hwz_gjc", binding.getManagerID_zch_hwz_gjc())
+                .eq("homeID_zch_hwz_gjc", binding.getHomeID_zch_hwz_gjc())
+                .eq("deleted_zch_hwz_gjc", 0);  // 确保记录未被逻辑删除
+
+        Long count = bindingMapper.selectCount(queryWrapper);  // 查询匹配条件的记录数
+        if (count > 0) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("已经存在绑定记录"));
+        }
+
+        binding.setBindingTime_zch_hwz_gjc(new Date());  // 获取当前时间作为绑定时间
+        binding.setBindingState_zch_hwz_gjc("已绑定");  // 设置绑定状态为已绑定
+
+        int rows = bindingMapper.insert(binding);  // 插入新的绑定记录
+        if (rows > 0) {
+            return ResponseEntity.ok(ResponseResult.ok());  // 返回成功响应
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("绑定失败"));
+        }
+    }
+
+    @GetMapping("/getBindingInfo")
+    public ResponseEntity<ResponseResult<?>> getBindingInfo(
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "managerId", required = false) Long managerId,
+            @RequestParam(value = "homeId", required = false) Long homeId) {
+
+        Page<?> page = new Page<>(pageNo, pageSize);
+
+        if (managerId != null) {
+            IPage<Manager> managerPage = managerHomeBindingService.getManagersByHomeId(homeId, (Page<Manager>) page);
+            return ResponseEntity.ok(ResponseResult.ok(managerPage));
+        } else if (homeId != null) {
+            IPage<Home> homePage = managerHomeBindingService.getHomesByManagerId(managerId, (Page<Home>) page);
+            return ResponseEntity.ok(ResponseResult.ok(homePage));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("需要提供管理员ID或房屋ID"));
+        }
+    }
+
 }

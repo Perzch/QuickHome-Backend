@@ -11,5 +11,7 @@ import java.util.List;
 * @createDate 2023-06-21 09:47:24
 */
 public interface HomeImageService extends IService<HomeImage> {
+
+    public HomeImage saveHomeImg(Long homeId, String imagePath);
     public List<HomeImage> getAllByHomeId(Long homeId_zch_hwz_gjc);
 }

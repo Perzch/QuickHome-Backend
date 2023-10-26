@@ -22,7 +22,7 @@ public class AttractionImageServiceImpl extends ServiceImpl<AttractionImageMappe
         implements AttractionImageService {
 
     @Override
-    public AttractionImage saveOrUpdateUserHeadImage(Long attractionId, String imagePath) {
+    public AttractionImage saveAttractionImg(Long attractionId, String imagePath) {
         AttractionImage Image = new AttractionImage();
         Image.setImagePath_zch_hwz_gjc(imagePath);
         Image.setInDateTime_zch_hwz_gjc(DateTime.now());
