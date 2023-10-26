@@ -35,7 +35,7 @@ CREATE TABLE tab_userInformation_zch_hwz_gjc
     authenticationTime_zch_hwz_gjc   DATETIME comment "实名认证时间",
     standby1_zch_hwz_gjc             VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc             VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc             VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc             BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE tab_userHeadImage_zch_hwz_gjc
     inDateTime_zch_hwz_gjc  DATETIME comment "上传时间",
     standby1_zch_hwz_gjc    VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc    VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc    VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc    BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 -- 表4 超级管理员表
@@ -62,7 +62,7 @@ CREATE TABLE tab_superManager_zch_hwz_gjc
     createTime_zch_hwz_gjc          DATETIME comment "创建时间",
     standby1_zch_hwz_gjc            VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc            VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc            VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc            BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 -- 表5 管理员表
@@ -79,7 +79,7 @@ CREATE TABLE tab_manager_zch_hwz_gjc
     managerInDate_zch_hwz_gjc   DATETIME comment "创建时间",
     online_status_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc        VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc        VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc        BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -94,7 +94,7 @@ CREATE TABLE tab_accountBalance_zch_hwz_gjc
     openTime_zch_hwz_gjc         DATETIME comment "开户时间",
     standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc         VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc         VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc         BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -110,7 +110,7 @@ CREATE TABLE tab_Home_zch_hwz_gjc
     homeAddress_zch_hwz_gjc VARCHAR(500) comment "房屋地址",
     standby1_zch_hwz_gjc    VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc    VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc    VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc    BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -128,7 +128,7 @@ CREATE TABLE tab_homeInformation_zch_hwz_gjc
     homeInDate_zch_hwz_gjc     DATETIME comment "房屋注册日期",
     standby1_zch_hwz_gjc       VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc       VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc       VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc       BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc        int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -148,7 +148,7 @@ CREATE TABLE tab_RCAMI_zch_hwz_gjc
     homeId_zch_hwz_gjc                BIGINT comment "房屋编号",
     standby1_zch_hwz_gjc              VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc              VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc              VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc              BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -162,7 +162,7 @@ CREATE TABLE tab_userNotification_zch_hwz_gjc
     notificationContent_zch_hwz_gjc     VARCHAR(500) comment "通知内容",
     standby1_zch_hwz_gjc                VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc                VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc                VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc                BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc                 int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -181,7 +181,7 @@ CREATE TABLE tab_coupon_zch_hwz_gjc
     latestUseTime_zch_hwz_gjc       DATETIME comment "最晚使用时间",
     standby1_zch_hwz_gjc            VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc            VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc            VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc            BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 -- 表12 优惠用户详情表
@@ -194,7 +194,7 @@ CREATE TABLE tab_usersAndCoupons_zch_hwz_gjc
     couponId_zch_hwz_gjc  BIGINT comment "优惠券编号",
     standby1_zch_hwz_gjc  VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc  VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc  VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc  BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc   int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -210,7 +210,7 @@ CREATE TABLE tab_log_zch_hwz_gjc
     executionPlace_zch_hwz_gjc   VARCHAR(100) comment "执行地点",
     standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc         VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc         VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc         BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -228,7 +228,7 @@ CREATE TABLE tab_housingReview_zch_hwz_gjc
     secondHousingReviewId_zch_hwz_gjc BIGINT comment "二级评论编号",
     standby1_zch_hwz_gjc              VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc              VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc              VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc              BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -244,7 +244,7 @@ CREATE TABLE tab_myChat_zch_hwz_gjc
     sendingTime_zch_hwz_gjc          DATETIME comment "发送时间",
     standby1_zch_hwz_gjc             VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc             VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc             VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc             BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -260,7 +260,7 @@ CREATE TABLE tab_attractions_zch_hwz_gjc
     attractionInDate_zch_hwz_gjc      DATETIME comment "信息录入时间",
     standby1_zch_hwz_gjc              VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc              VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc              VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc              BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc               int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -278,7 +278,7 @@ CREATE TABLE tab_attractionReview_zch_hwz_gjc
     secondAttractionReviewId_zch_hwz_gjc BIGINT comment "二级评论编号",
     standby1_zch_hwz_gjc                 VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc                 VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc                 VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc                 BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc                  int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -292,7 +292,7 @@ CREATE TABLE tab_houseCollection_zch_hwz_gjc
     collectionTime_zch_hwz_gjc     DATETIME comment "收藏时间",
     standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc           BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 -- 表19 景点收藏表
@@ -305,7 +305,7 @@ CREATE TABLE tab_attractionCollection_zch_hwz_gjc
     collectionTime_zch_hwz_gjc     DATETIME comment "收藏时间",
     standby1_zch_hwz_gjc           VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc           VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc           VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc           BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc            int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -326,7 +326,7 @@ CREATE TABLE tab_order_zch_hwz_gjc
     userId_zch_hwz_gjc              BIGINT comment "用户编号",
     standby1_zch_hwz_gjc            VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc            VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc            VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc            BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -342,7 +342,7 @@ CREATE TABLE tab_homeDevice_zch_hwz_gjc
     price_zch_hwz_gjc            DECIMAL(10, 2) comment "价格",
     standby1_zch_hwz_gjc         VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc         VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc         VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc         BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -351,12 +351,12 @@ DROP TABLE IF EXISTS tab_paymentPassword_zch_hwz_gjc;
 CREATE TABLE tab_paymentPassword_zch_hwz_gjc
 (
     passwordID_zch_hwz_gjc      BIGINT PRIMARY KEY AUTO_INCREMENT comment "支付密码编号",
-    accountID_zch_hwz_gjc       BIGINT comment "账号编号",
+    userId_zch_hwz_gjc       BIGINT comment "用户id",
     paymentPassword_zch_hwz_gjc VARCHAR(6) comment "支付密码",
     setTime_zch_hwz_gjc         DATETIME comment "设置时间",
     standby1_zch_hwz_gjc        VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc        VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc        VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc        BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -370,7 +370,7 @@ CREATE TABLE tab_homeImage_zch_hwz_gjc
     inDateTime_zch_hwz_gjc DATETIME comment "上传时间",
     standby1_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc   VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc   VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc   BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc    int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -386,7 +386,7 @@ CREATE TABLE tab_managerHomeBinding_zch_hwz_gjc
     bindingState_zch_hwz_gjc VARCHAR(20) comment "绑定状态",
     standby1_zch_hwz_gjc     VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc     VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc     VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc     BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -400,7 +400,7 @@ CREATE TABLE tab_attractionImage_zch_hwz_gjc
     inDateTime_zch_hwz_gjc   DATETIME comment "上传时间",
     standby1_zch_hwz_gjc     VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc     VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc     VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc     BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc      int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -416,7 +416,7 @@ CREATE TABLE tab_IDCardRecord_zch_hwz_gjc
     inDateTime_zch_hwz_gjc     DATETIME comment "上传记录时间",
     standby1_zch_hwz_gjc       VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc       VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc       VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc       BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc        int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -429,7 +429,7 @@ create table tab_IdentityChecklist_zch_hwz_gjc
     orderID_zch_hwz_gjc             BIGINT comment "订单编号",
     standby1_zch_hwz_gjc            VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc            VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc            VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc            BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
@@ -494,7 +494,7 @@ ALTER TABLE tab_homeDevice_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_homeDevice_tab_Home_zch_hwz_gjc FOREIGN KEY (homeID_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeID_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表22: 支付密码表
 ALTER TABLE tab_paymentPassword_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_paymentPassword_tab_accountBalance_zch_hwz_gjc FOREIGN KEY (accountID_zch_hwz_gjc) REFERENCES tab_accountBalance_zch_hwz_gjc (bid_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT FK_tab_paymentPassword_tab_accountBalance_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表23 房屋图片表
 ALTER TABLE tab_homeImage_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_homeImage_tab_Home_zch_hwz_gjc FOREIGN KEY (homeId_zch_hwz_gjc) REFERENCES tab_Home_zch_hwz_gjc (homeId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;

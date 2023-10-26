@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","standby3_zch_hwz_gjc","deleted_zch_hwz_gjc" })
+@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","deleted_zch_hwz_gjc" })
 public class UserHeadImage implements Serializable {
     /**
      * 用户头像编号
@@ -64,10 +64,13 @@ public class UserHeadImage implements Serializable {
     private String standby2_zch_hwz_gjc;
 
     /**
-     * 备用字段3
+     * 乐观锁
      */
-    @TableField(value = "standby3_zch_hwz_gjc")
-    private String standby3_zch_hwz_gjc;
+    @JsonProperty("version")
+    @Version
+    @TableField(value = "version_zch_hwz_gjc")
+    private Integer version_zch_hwz_gjc;
+
 
     /**
      * 逻辑删除（默认0，逻辑删除1）
@@ -97,7 +100,7 @@ public class UserHeadImage implements Serializable {
             && (this.getInDateTime_zch_hwz_gjc() == null ? other.getInDateTime_zch_hwz_gjc() == null : this.getInDateTime_zch_hwz_gjc().equals(other.getInDateTime_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
-            && (this.getStandby3_zch_hwz_gjc() == null ? other.getStandby3_zch_hwz_gjc() == null : this.getStandby3_zch_hwz_gjc().equals(other.getStandby3_zch_hwz_gjc()))
+            && (this.getVersion_zch_hwz_gjc() == null ? other.getVersion_zch_hwz_gjc() == null : this.getVersion_zch_hwz_gjc().equals(other.getVersion_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
     }
 
@@ -111,7 +114,7 @@ public class UserHeadImage implements Serializable {
         result = prime * result + ((getInDateTime_zch_hwz_gjc() == null) ? 0 : getInDateTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getStandby3_zch_hwz_gjc() == null) ? 0 : getStandby3_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getVersion_zch_hwz_gjc() == null) ? 0 : getVersion_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
         return result;
     }
@@ -128,7 +131,7 @@ public class UserHeadImage implements Serializable {
         sb.append(", inDateTime_zch_hwz_gjc=").append(inDateTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
-        sb.append(", standby3_zch_hwz_gjc=").append(standby3_zch_hwz_gjc);
+        sb.append(", version_zch_hwz_gjc=").append(version_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
