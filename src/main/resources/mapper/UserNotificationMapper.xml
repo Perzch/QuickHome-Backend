@@ -11,7 +11,7 @@
             <result property="notificationContent_zch_hwz_gjc" column="notificationContent_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby3_zch_hwz_gjc" column="standby3_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
