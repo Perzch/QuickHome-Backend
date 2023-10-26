@@ -62,6 +62,7 @@
         </dependency>
 
 
+
         <!-- jakarta ee 9 annotation -->
         <dependency>
             <groupId>jakarta.annotation</groupId>
@@ -125,6 +126,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!-- 乐观锁 -->
+
 
     </dependencies>
 

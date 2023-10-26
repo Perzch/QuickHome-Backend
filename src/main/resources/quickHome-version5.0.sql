@@ -15,7 +15,7 @@ CREATE TABLE tab_user_zch_hwz_gjc
     userInDate_zch_hwz_gjc  DATETIME comment "用户注册日期",
     standby1_zch_hwz_gjc    VARCHAR(50) comment "备用字段1",
     standby2_zch_hwz_gjc    VARCHAR(50) comment "备用字段2",
-    standby3_zch_hwz_gjc    VARCHAR(50) comment "备用字段3",
+    version_zch_hwz_gjc     BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
