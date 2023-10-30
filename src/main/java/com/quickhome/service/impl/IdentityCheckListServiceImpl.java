@@ -17,7 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class IdentityCheckListServiceImpl extends ServiceImpl<IdentityCheckListMapper, IdentityCheckList>
     implements IdentityCheckListService {
-
+    @Override
+    public IdentityCheckList createIdentityChecklist(Long IDCardRecordID, Long orderID) {
+        IdentityCheckList identityChecklist = new IdentityCheckList();
+        identityChecklist.setIDCardRecordID_zch_hwz_gjc(IDCardRecordID);
+        identityChecklist.setOrderID_zch_hwz_gjc(orderID);
+        boolean result = save(identityChecklist);
+        if (result) {
+            return identityChecklist;
+        } else {
+            return null;
+        }
+    }
 }
 
 

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ public class JwtUtil {
         JwtUtil.key = key;
     }
 
+
     public static String createToken(Long userId) {
         DateTime date = DateTime.now();
         DateTime newDate = date.offsetNew(DateField.HOUR, 10);
@@ -36,7 +38,8 @@ public class JwtUtil {
         payload.put(JWTPayload.NOT_BEFORE, date);
         //用户Id
         payload.put("userId",userId);
-        return JWTUtil.createToken(payload, key.getBytes());
+        String token = JWTUtil.createToken(payload, key.getBytes());
+        return token;
     }
 
     public static boolean verifyToken(String token) {
@@ -49,4 +52,10 @@ public class JwtUtil {
 
         return System.currentTimeMillis() / 1000 < Long.parseLong(jwt.getPayload("exp").toString());
     }
+
+    public static Long getUserIdFromToken(String token) {
+        JWT jwt = JWTUtil.parseToken(token);
+        return Long.parseLong(jwt.getPayload("userId").toString());
+    }
+
 }

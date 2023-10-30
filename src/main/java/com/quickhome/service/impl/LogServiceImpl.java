@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
     implements LogService{
-
+    @Override
+    public boolean insertLog(Log log) {
+        return baseMapper.insert(log) > 0;
+    }
 }
 
 

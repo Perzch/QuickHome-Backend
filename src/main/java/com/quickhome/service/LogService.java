@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Transactional
 public interface LogService extends IService<Log> {
-
+    public boolean insertLog(Log log);
 }

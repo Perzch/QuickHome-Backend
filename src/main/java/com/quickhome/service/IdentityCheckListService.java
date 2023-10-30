@@ -12,5 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Transactional
 public interface IdentityCheckListService extends IService<IdentityCheckList> {
+    public IdentityCheckList createIdentityChecklist(Long IDCardRecordID, Long orderID);
 
 }

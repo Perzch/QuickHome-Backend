@@ -24,8 +24,6 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
-
-
 jwt:
   key: "quickHome_jwt_key_melody"
 rsa:

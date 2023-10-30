@@ -33,9 +33,9 @@ public class PaymentPassword implements Serializable {
     /**
      * 账号编号
      */
-    @TableField(value = "accountID_zch_hwz_gjc")
-    @JsonProperty("accountID")
-    private Long accountID_zch_hwz_gjc;
+    @TableField(value = "userID_zch_hwz_gjc")
+    @JsonProperty("userID")
+    private Long userID_zch_hwz_gjc;
 
     /**
      * 支付密码
@@ -95,7 +95,7 @@ public class PaymentPassword implements Serializable {
         }
         PaymentPassword other = (PaymentPassword) that;
         return (this.getPasswordID_zch_hwz_gjc() == null ? other.getPasswordID_zch_hwz_gjc() == null : this.getPasswordID_zch_hwz_gjc().equals(other.getPasswordID_zch_hwz_gjc()))
-            && (this.getAccountID_zch_hwz_gjc() == null ? other.getAccountID_zch_hwz_gjc() == null : this.getAccountID_zch_hwz_gjc().equals(other.getAccountID_zch_hwz_gjc()))
+            && (this.getUserID_zch_hwz_gjc() == null ? other.getUserID_zch_hwz_gjc() == null : this.getUserID_zch_hwz_gjc().equals(other.getUserID_zch_hwz_gjc()))
             && (this.getPaymentPassword_zch_hwz_gjc() == null ? other.getPaymentPassword_zch_hwz_gjc() == null : this.getPaymentPassword_zch_hwz_gjc().equals(other.getPaymentPassword_zch_hwz_gjc()))
             && (this.getSetTime_zch_hwz_gjc() == null ? other.getSetTime_zch_hwz_gjc() == null : this.getSetTime_zch_hwz_gjc().equals(other.getSetTime_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
@@ -109,7 +109,7 @@ public class PaymentPassword implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getPasswordID_zch_hwz_gjc() == null) ? 0 : getPasswordID_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getAccountID_zch_hwz_gjc() == null) ? 0 : getAccountID_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getUserID_zch_hwz_gjc() == null) ? 0 : getUserID_zch_hwz_gjc().hashCode());
         result = prime * result + ((getPaymentPassword_zch_hwz_gjc() == null) ? 0 : getPaymentPassword_zch_hwz_gjc().hashCode());
         result = prime * result + ((getSetTime_zch_hwz_gjc() == null) ? 0 : getSetTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
@@ -126,7 +126,7 @@ public class PaymentPassword implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", passwordID_zch_hwz_gjc=").append(passwordID_zch_hwz_gjc);
-        sb.append(", accountID_zch_hwz_gjc=").append(accountID_zch_hwz_gjc);
+        sb.append(", userID_zch_hwz_gjc=").append(userID_zch_hwz_gjc);
         sb.append(", paymentPassword_zch_hwz_gjc=").append(paymentPassword_zch_hwz_gjc);
         sb.append(", setTime_zch_hwz_gjc=").append(setTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);

@@ -464,8 +464,7 @@ ALTER TABLE tab_usersAndCoupons_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_UAC_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表13 日志表
 ALTER TABLE tab_log_zch_hwz_gjc
-    ADD CONSTRAINT FK_tab_log_tab_user_zch_hwz_gjc FOREIGN KEY (userPerformingId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,
-    ADD CONSTRAINT FK_tab_log_tab_manager_userPerformingId2_zch_hwz_gjc foreign key (userPerformingId_zch_hwz_gjc) references tab_manager_zch_hwz_gjc (managerId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT FK_tab_log_tab_user_zch_hwz_gjc FOREIGN KEY (userPerformingId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE;
 -- 表14 房屋评论表
 ALTER TABLE tab_housingReview_zch_hwz_gjc
     ADD CONSTRAINT FK_tab_housingReview_tab_user_zch_hwz_gjc FOREIGN KEY (userId_zch_hwz_gjc) REFERENCES tab_user_zch_hwz_gjc (userId_zch_hwz_gjc) ON UPDATE CASCADE ON DELETE CASCADE,

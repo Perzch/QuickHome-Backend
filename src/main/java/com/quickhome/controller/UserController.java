@@ -10,7 +10,7 @@ import com.quickhome.mapper.*;
 import com.quickhome.pojo.PJUser;
 import com.quickhome.pojo.PojoUser;
 import com.quickhome.request.ResponseResult;
-import com.quickhome.service.UserHeadImageService;
+import com.quickhome.service.*;
 import com.quickhome.util.CreatAccount;
 import com.quickhome.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,12 +20,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import com.quickhome.service.UserInformationService;
-import com.quickhome.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -216,6 +215,10 @@ public class UserController {
             @RequestParam int userId,
             HttpServletRequest req) {
         boolean flag = JwtUtil.verifyToken(token);
+        Long verifyUserId = JwtUtil.getUserIdFromToken(token);
+        if(verifyUserId != userId){
+            return ResponseEntity.ok(ResponseResult.of(500,"用户信息错误"));
+        }
         User user = userMapper.selectById(userId);
         if (flag && user != null) {
             PojoUser pojoUser = new PojoUser();
@@ -450,5 +453,21 @@ public class UserController {
         accountBalanceMapper.update(null, updateWrapper3);
 
         return ResponseEntity.ok(ResponseResult.ok("注销成功"));
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<ResponseResult<?>> refreshToken(@RequestParam String token) {
+        // 验证旧的Token
+        if (!JwtUtil.verifyToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseResult.error("无效的Token"));
+        }
+        // 从旧Token中获取用户ID
+        Long userId = JwtUtil.getUserIdFromToken(token);
+
+        // 生成新的Token
+        String newToken = JwtUtil.createToken(userId);
+
+        // 返回新的Token
+        return ResponseEntity.ok(ResponseResult.ok(newToken));
     }
 }

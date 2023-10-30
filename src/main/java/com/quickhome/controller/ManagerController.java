@@ -6,17 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.quickhome.domain.Home;
-import com.quickhome.domain.Manager;
-import com.quickhome.domain.ManagerHomeBinding;
-import com.quickhome.domain.SuperManager;
-import com.quickhome.mapper.HomeMapper;
-import com.quickhome.mapper.ManagerHomeBindingMapper;
-import com.quickhome.mapper.ManagerMapper;
-import com.quickhome.mapper.SuperManagerMapper;
+import com.quickhome.domain.*;
+import com.quickhome.mapper.*;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.ManagerHomeBindingService;
 import com.quickhome.service.ManagerService;
+import com.quickhome.service.UserNotificationService;
 import com.quickhome.util.CreatAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +56,10 @@ public class ManagerController {
     private ManagerMapper managerMapper;
 
     @Autowired
-    private HomeMapper homeMapper;
+    private UserNotificationService userNotificationService;
+
+    @Autowired
+    private UserNotificationMapper userNotificationMapper;
 
     @PostMapping("/insertManager")
     public ResponseEntity<ResponseResult<?>> insertManager(@RequestBody Manager manager) {
@@ -197,6 +195,7 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
         }
     }
+
     @DeleteMapping("/deleteManager")
     public ResponseEntity<ResponseResult<?>> deleteManager(@RequestParam Long managerId) {
         // 创建一个 UpdateWrapper 对象来构建更新条件
@@ -342,14 +341,76 @@ public class ManagerController {
         Page<?> page = new Page<>(pageNo, pageSize);
 
         if (managerId != null) {
-            IPage<Manager> managerPage = managerHomeBindingService.getManagersByHomeId(homeId, (Page<Manager>) page);
-            return ResponseEntity.ok(ResponseResult.ok(managerPage));
-        } else if (homeId != null) {
-            IPage<Home> homePage = managerHomeBindingService.getHomesByManagerId(managerId, (Page<Home>) page);
+            IPage<Home> homePage = managerHomeBindingService.getHomesByManagerId(managerId, (Page<Home>) page);  // 修改了这里
             return ResponseEntity.ok(ResponseResult.ok(homePage));
+        } else if (homeId != null) {
+            IPage<Manager> managerPage = managerHomeBindingService.getManagersByHomeId(homeId, (Page<Manager>) page);  // 修改了这里
+            return ResponseEntity.ok(ResponseResult.ok(managerPage));
         } else {
             return ResponseEntity.badRequest().body(ResponseResult.error("需要提供管理员ID或房屋ID"));
         }
     }
 
+
+    @PostMapping("/createUserNotification")
+    public ResponseEntity<ResponseResult<?>> createUserNotification(@RequestBody UserNotification userNotification) {
+        boolean result = userNotificationService.createUserNotification(userNotification);
+        if (result) {
+            return ResponseEntity.ok(ResponseResult.ok(userNotification));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("错误"));
+        }
+    }
+
+    @PutMapping("/updateUserNotification")
+    public ResponseEntity<ResponseResult<?>> updateUserNotification(
+            @RequestParam Long userNotificationId,
+            @RequestParam(required = false) String notificationContent) {
+        try {
+            // 首先通过ID查找通知
+            UserNotification userNotification = userNotificationMapper.selectById(userNotificationId);
+            if (userNotification == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("通知不存在"));
+            }
+
+            // 更新通知内容
+            userNotification.setNotificationContent_zch_hwz_gjc(notificationContent);
+
+            // 使用MyBatis-Plus的方法更新通知
+            int result = userNotificationMapper.updateById(userNotification);
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok(userNotification));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新通知失败"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/deleteNotification")
+    public ResponseEntity<ResponseResult<?>> deleteNotification(@RequestParam Long userNotificationId) {
+        try {
+            boolean result = userNotificationService.deleteNotificationById(userNotificationId);
+            if (result) {
+                return ResponseEntity.ok(ResponseResult.ok("删除成功"));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败或通知不存在"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/getAllNotifications")
+    public ResponseEntity<ResponseResult<?>> getAllNotifications(
+            @RequestParam(required = false, defaultValue = "1") long current,
+            @RequestParam(required = false, defaultValue = "10") long size) {
+        try {
+            IPage<UserNotification> page = userNotificationService.getAllNotifications(current, size);
+            return ResponseEntity.ok(ResponseResult.ok(page));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+        }
+    }
 }

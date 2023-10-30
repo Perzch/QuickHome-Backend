@@ -1,9 +1,12 @@
 package com.quickhome.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.domain.IdCardRecord;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author Tim-h
@@ -12,5 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface IdCardRecordService extends IService<IdCardRecord> {
+    public IdCardRecord uploadIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber, Long userId);
 
+    public IPage<IdCardRecord> getIdCardInfo(Long userId, int current, int size);
+
+    public boolean updateIdCardInfo(Long recordId, String name, String number, String phoneNumber);
+    public boolean deleteIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber,Long userId);
+    List<IdCardRecord> getOrderIdentityInfo(Long orderID);;
 }
