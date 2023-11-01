@@ -36,9 +36,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -62,10 +60,52 @@ public class AttractionController {
 
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
+//    @SneakyThrows
+//    @ResponseBody
+//    @GetMapping("/getAttractionImg")
+//    public ResponseEntity<Resource> getAttractionImg(@RequestParam Long attractionId) {
+//        QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
+//        wrapper.eq("attractionId_zch_hwz_gjc", attractionId);
+//        wrapper.eq("deleted_zch_hwz_gjc", 0);
+//        List<AttractionImage> images = attractionImageMapper.selectList(wrapper);
+//        if (images.size() == 0) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        ZipOutputStream zos = new ZipOutputStream(baos);
+//
+//        try {
+//            for (AttractionImage image : images) {
+//                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
+//                FileInputStream fis = new FileInputStream(path.toFile());
+//                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
+//                zos.putNextEntry(zipEntry);
+//
+//                byte[] buffer = new byte[1024];
+//                int len;
+//                while ((len = fis.read(buffer)) > 0) {
+//                    zos.write(buffer, 0, len);
+//                }
+//                zos.closeEntry();
+//                fis.close();
+//            }
+//            zos.close();
+//
+//            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attractionImages.zip")
+//                    .body(resource);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
+
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getAttractionImg")
-    public ResponseEntity<Resource> getAttractionImg(@RequestParam Long attractionId) {
+    public ResponseEntity<ResponseResult<?>> getAttractionImg(@RequestParam Long attractionId) {
         QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
         wrapper.eq("attractionId_zch_hwz_gjc", attractionId);
         wrapper.eq("deleted_zch_hwz_gjc", 0);
@@ -74,37 +114,25 @@ public class AttractionController {
             return ResponseEntity.notFound().build();
         }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ZipOutputStream zos = new ZipOutputStream(baos);
-
+        List<String> imageUrls = new ArrayList<>();
         try {
             for (AttractionImage image : images) {
-                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
-                FileInputStream fis = new FileInputStream(path.toFile());
-                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
-                zos.putNextEntry(zipEntry);
-
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
-                }
-                zos.closeEntry();
-                fis.close();
+                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                imageUrls.add(imageUrl);
             }
-            zos.close();
 
-            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attractionImages.zip")
-                    .body(resource);
+            Map<String, List<String>> response = new HashMap<>();
+            response.put("imageUrls", imageUrls);
+            return ResponseEntity.ok(ResponseResult.ok(response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/deleteAttractionImg")
-    public ResponseEntity<?> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
+    public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
         try {
             // 拼接attractionId和时间戳
             String combinedString = attractionId.toString() +"-"+ timestamp;
@@ -182,11 +210,25 @@ public class AttractionController {
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
             Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId_zch_hwz_gjc());
             pojoAttraction.setAttractions(attractions);
+
             List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId_zch_hwz_gjc());
-            pojoAttraction.setAttractionImageList(attractionImageList);
+            List<AttractionImage> formattedImageList = new ArrayList<>();
+            for (AttractionImage image : attractionImageList) {
+                try {
+                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    image.setImagePath_zch_hwz_gjc(imageUrl);
+                    formattedImageList.add(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            pojoAttraction.setAttractionImageList(formattedImageList);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoAttractionList));
     }
+
 
     @PostMapping("/insertAttraction")
     public ResponseEntity<?> insertAttraction(@RequestBody Attractions attractions) {
@@ -215,8 +257,26 @@ public class AttractionController {
         }
     }
 
+//    @GetMapping("/queryAttractions")
+//    public ResponseEntity<ResponseResult<?>> queryAttractions(
+//            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+//            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+//            @RequestParam(value = "attractionsName", required = false) String attractionsName) {
+//        try {
+//            Page<Attractions> page = new Page<>(pageNo, pageSize);
+//            QueryWrapper<Attractions> queryWrapper = new QueryWrapper<>();
+//            if (attractionsName != null && !attractionsName.trim().isEmpty()) {
+//                queryWrapper.like("attractionsName_zch_hwz_gjc", attractionsName);
+//            }
+//            IPage<Attractions> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
+//            return ResponseEntity.ok(ResponseResult.ok(attractionsPage));
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(ResponseResult.error("获取景点列表出错"));
+//        }
+//    }
+
     @GetMapping("/queryAttractions")
-    public ResponseEntity<?> queryAttractions(
+    public ResponseEntity<ResponseResult<?>> queryAttractions(
             @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "attractionsName", required = false) String attractionsName) {
@@ -227,11 +287,49 @@ public class AttractionController {
                 queryWrapper.like("attractionsName_zch_hwz_gjc", attractionsName);
             }
             IPage<Attractions> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
-            return ResponseEntity.ok(attractionsPage);
+
+            List<PojoAttraction> pojoAttractionList = new ArrayList<>();
+            for (Attractions attraction : attractionsPage.getRecords()) {
+                PojoAttraction pojoAttraction = new PojoAttraction();
+                pojoAttraction.setAttractionsId_zch_hwz_gjc(attraction.getAttractionsId_zch_hwz_gjc());
+                pojoAttraction.setAttractions(attraction);
+
+                // 计算收藏数
+                QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
+                collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
+                Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
+                pojoAttraction.setCollectionCount(collectionCount);
+
+                // 获取图片
+                QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
+                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                imageWrapper.eq("deleted_zch_hwz_gjc", 0);
+                List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
+
+                List<AttractionImage> formattedImageList = new ArrayList<>();
+                for (AttractionImage image : images) {
+                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    image.setImagePath_zch_hwz_gjc(imageUrl);
+                    formattedImageList.add(image);
+                }
+                pojoAttraction.setAttractionImageList(formattedImageList);
+
+                pojoAttractionList.add(pojoAttraction);
+            }
+
+            Page<PojoAttraction> pojoAttractionPage = new Page<>(pageNo, pageSize);
+            pojoAttractionPage.setRecords(pojoAttractionList);
+            pojoAttractionPage.setTotal(attractionsPage.getTotal());
+
+            return ResponseEntity.ok(ResponseResult.ok(pojoAttractionPage));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("获取景点列表出错"));
         }
     }
+
 
     @PutMapping("/updateAttraction")
     public ResponseEntity<?> updateAttraction(@RequestBody Attractions attractions) {
@@ -297,6 +395,13 @@ public class AttractionController {
             @RequestParam("userId") Long userId,
             @RequestParam("attractionsId") Long attractionsId) {
         try {
+            QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userId_zch_hwz_gjc", userId)
+                    .eq("attractionsId_zch_hwz_gjc", attractionsId);
+            Long flag = attractionCollectionMapper.selectCount(queryWrapper);
+            if (flag > 0){
+                return ResponseEntity.ok(ResponseResult.error("已收藏"));
+            }
             AttractionCollection collection = new AttractionCollection();
             collection.setUserId_zch_hwz_gjc(userId);
             collection.setAttractionsId_zch_hwz_gjc(attractionsId);

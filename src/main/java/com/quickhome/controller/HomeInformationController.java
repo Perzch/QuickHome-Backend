@@ -33,10 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -141,10 +138,52 @@ public class HomeInformationController {
     }
 
 
+//    @SneakyThrows
+//    @ResponseBody
+//    @GetMapping("/getHomeImg")
+//    public ResponseEntity<Resource> getHomeImg(@RequestParam Long homeId) {
+//        QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
+//        wrapper.eq("homeId_zch_hwz_gjc", homeId);
+//        wrapper.eq("deleted_zch_hwz_gjc", 0);
+//        List<HomeImage> images = homeImageMapper.selectList(wrapper);
+//        if (images.size() == 0) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        ZipOutputStream zos = new ZipOutputStream(baos);
+//
+//        try {
+//            for (HomeImage image : images) {
+//                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
+//                FileInputStream fis = new FileInputStream(path.toFile());
+//                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
+//                zos.putNextEntry(zipEntry);
+//
+//                byte[] buffer = new byte[1024];
+//                int len;
+//                while ((len = fis.read(buffer)) > 0) {
+//                    zos.write(buffer, 0, len);
+//                }
+//                zos.closeEntry();
+//                fis.close();
+//            }
+//            zos.close();
+//
+//            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=homeImages.zip")
+//                    .body(resource);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
+
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getHomeImg")
-    public ResponseEntity<Resource> getHomeImg(@RequestParam Long homeId) {
+    public ResponseEntity<ResponseResult<?>> getHomeImg(@RequestParam Long homeId) {
         QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
         wrapper.eq("homeId_zch_hwz_gjc", homeId);
         wrapper.eq("deleted_zch_hwz_gjc", 0);
@@ -153,30 +192,18 @@ public class HomeInformationController {
             return ResponseEntity.notFound().build();
         }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ZipOutputStream zos = new ZipOutputStream(baos);
-
+        List<String> imageUrls = new ArrayList<>();
         try {
             for (HomeImage image : images) {
-                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
-                FileInputStream fis = new FileInputStream(path.toFile());
-                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
-                zos.putNextEntry(zipEntry);
-
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
-                }
-                zos.closeEntry();
-                fis.close();
+                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                imageUrls.add(imageUrl);
             }
-            zos.close();
 
-            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=homeImages.zip")
-                    .body(resource);
+            Map<String, List<String>> response = new HashMap<>();
+            response.put("imageUrls", imageUrls);
+            return ResponseEntity.ok(ResponseResult.ok(response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -289,7 +316,19 @@ public class HomeInformationController {
             List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeDeviceList(homeDevices);
             List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            pojoHome.setHomeImageList(homeImages);
+            List<HomeImage> formattedImageList = new ArrayList<>();
+            for (HomeImage image : homeImages) {
+                try {
+                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    image.setImagePath_zch_hwz_gjc(imageUrl);
+                    formattedImageList.add(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            pojoHome.setHomeImageList(formattedImageList);
             int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setCollectionCount(collectionNum);
             pojoHomeList.add(pojoHome);
@@ -312,7 +351,26 @@ public class HomeInformationController {
 
 
 
-    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
+//    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
+//    @ResponseBody
+//    public ResponseEntity<?> getHomeListOrderByCollectionCount() {
+//        List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
+//        List<PojoHome> pojoHomeList = new ArrayList<>();
+//        for (PojoHome pojoHome : homeList) {
+//            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+//            pojoHome.setHome(home);
+//            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
+//            pojoHome.setHomeInformation(homeInformation);
+//            List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+//            pojoHome.setHomeDeviceList(homeDevices);
+//            List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+//            pojoHome.setHomeImageList(homeImages);
+//            pojoHomeList.add(pojoHome);
+//        }
+//        return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
+//    }
+
+    @GetMapping("/getHomeListOrderByCollectionCount") //获取热门房屋信息
     @ResponseBody
     public ResponseEntity<?> getHomeListOrderByCollectionCount() {
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
@@ -325,7 +383,19 @@ public class HomeInformationController {
             List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeDeviceList(homeDevices);
             List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            pojoHome.setHomeImageList(homeImages);
+            List<HomeImage> formattedImageList = new ArrayList<>();
+            for (HomeImage image : homeImages) {
+                try {
+                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    image.setImagePath_zch_hwz_gjc(imageUrl);
+                    formattedImageList.add(image);
+                } catch (Exception e) {
+                    // Handle exception if necessary
+                }
+            }
+            pojoHome.setHomeImageList(formattedImageList);
             pojoHomeList.add(pojoHome);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));

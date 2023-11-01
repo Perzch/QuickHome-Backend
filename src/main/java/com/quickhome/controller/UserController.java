@@ -334,28 +334,47 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userId, userGender, dateBirthday, userSignature)));
     }
 
+//    @SneakyThrows
+//    @ResponseBody
+//    @GetMapping("/getHeadImg")
+//    public ResponseEntity<Resource> getHeadImg(@RequestParam Long userId) {
+//        String imagePath = userInformationService.getUserImagePath(userId);
+//        if (imagePath == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        try {
+//            Path path = Paths.get(imagePath);
+//            Resource resource = new UrlResource(path.toUri());
+//            if (resource.exists() || resource.isReadable()) {
+//                return ResponseEntity.ok()
+//                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
+//                        .body(resource);
+//            } else {
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getHeadImg")
-    public ResponseEntity<Resource> getHeadImg(@RequestParam Long userId) {
+    public ResponseEntity<ResponseResult<?>> getHeadImg(@RequestParam Long userId) {
         String imagePath = userInformationService.getUserImagePath(userId);
         if (imagePath == null) {
             return ResponseEntity.notFound().build();
         }
         try {
-            Path path = Paths.get(imagePath);
-            Resource resource = new UrlResource(path.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            Path fullPath = Paths.get(imagePath);
+            Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+            String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+            return ResponseEntity.ok(ResponseResult.ok(imageUrl));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
+
 
     @SneakyThrows
     @ResponseBody
