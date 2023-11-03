@@ -28,5 +28,6 @@
         select userImageId_zch_hwz_gjc
         from tab_userheadimage_zch_hwz_gjc
         where userId_zch_hwz_gjc = #{userId}
+          AND deleted_zch_hwz_gjc = 0
     </select>
 </mapper>

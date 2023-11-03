@@ -29,10 +29,12 @@
         select *
         from tab_homeinformation_zch_hwz_gjc
         where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+          AND deleted_zch_hwz_gjc = 0
     </select>
     <select id="getHomeDepositByHomeId" parameterType="Long" resultType="java.lang.Double">
         select homeDeposit_zch_hwz_gjc
         from tab_homeinformation_zch_hwz_gjc
-        where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc};
+        where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+          AND deleted_zch_hwz_gjc = 0
     </select>
 </mapper>

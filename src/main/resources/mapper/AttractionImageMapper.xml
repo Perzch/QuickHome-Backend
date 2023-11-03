@@ -22,5 +22,6 @@
     </sql>
     <select id="getAttractionImageListById" parameterType="Long" resultMap="BaseResultMap">
         select * from tab_attractionimage_zch_hwz_gjc where attractionId_zch_hwz_gjc = #{attractionId_zch_hwz_gjc}
+                                                        AND deleted_zch_hwz_gjc = 0
     </select>
 </mapper>

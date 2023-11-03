@@ -25,5 +25,6 @@
     </sql>
     <select id="getAllById" parameterType="Long" resultMap="BaseResultMap">
         select * from tab_homedevice_zch_hwz_gjc where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+                                                   AND deleted_zch_hwz_gjc = 0
     </select>
 </mapper>

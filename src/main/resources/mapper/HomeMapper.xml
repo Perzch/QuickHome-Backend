@@ -26,6 +26,7 @@
     <select id="selectHomeByPage" resultType="com.quickhome.domain.Home">
         SELECT *
         FROM tab_home_zch_hwz_gjc
+        where deleated_zch_hwz_gjc = 0
             LIMIT #{page}, #{size}
     </select>
 
@@ -36,6 +37,7 @@
         FROM
             tab_home_zch_hwz_gjc a
                 LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
+        where a.deleted_zch_hwz_gjc = 0
         GROUP BY
             a.homeId_zch_hwz_gjc
         ORDER BY
@@ -46,6 +48,7 @@
         select homeDayRent_zch_hwz_gjc
         from tab_home_zch_hwz_gjc
         where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
+          AND deleted_zch_hwz_gjc = 0
     </select>
     <select id="selectHomesByCriteriaWithDevices" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
@@ -59,6 +62,7 @@
         AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
         AND h.homeType_zch_hwz_gjc <![CDATA[ = ]]> #{homeType}
         AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+        AND h.deleted_zch_hwz_gjc = 0
         AND d.deviceName_zch_hwz_gjc IN
         <foreach item="deviceName" index="index" collection="deviceNames" open="(" separator="," close=")">
             #{deviceName}
@@ -79,6 +83,7 @@
           AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
           AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
           AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+          AND h.deleted_zch_hwz_gjc = 0
         LIMIT #{page}, #{size}
     </select>
 </mapper>

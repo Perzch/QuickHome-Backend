@@ -4,6 +4,10 @@ spring:
     url: jdbc:mysql://mysql.sqlpub.com:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
     username: timjohnson
     password: 2546e135093a6ae1
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 
 #    mybatis

@@ -36,6 +36,7 @@
         select DynamicDoorPassword_zch_hwz_gjc
         from tab_order_zch_hwz_gjc
         where orderId_zch_hwz_gjc = #{OrderId}
+          and deleated_zch_hwz_gjc = 0
     </select>
     <select id="getAllUserOrders" resultType="com.quickhome.domain.Order"></select>
 </mapper>
