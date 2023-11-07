@@ -5,20 +5,21 @@
 <mapper namespace="com.quickhome.mapper.HomeMapper">
 
     <resultMap id="BaseResultMap" type="com.quickhome.domain.Home">
-            <id property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="homeName_zch_hwz_gjc" column="homeName_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="homeType_zch_hwz_gjc" column="homeType_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="homeDayRent_zch_hwz_gjc" column="homeDayRent_zch_hwz_gjc" jdbcType="DOUBLE"/>
-            <result property="homeState_zch_hwz_gjc" column="homeState_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="homeAddress_zch_hwz_gjc" column="homeAddress_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
+        <id property="homeId_zch_hwz_gjc" column="homeId_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="homeName_zch_hwz_gjc" column="homeName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="homeType_zch_hwz_gjc" column="homeType_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="homeDayRent_zch_hwz_gjc" column="homeDayRent_zch_hwz_gjc" jdbcType="DOUBLE"/>
+        <result property="homeState_zch_hwz_gjc" column="homeState_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="homeAddress_zch_hwz_gjc" column="homeAddress_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
+        <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        homeId_zch_hwz_gjc,homeName_zch_hwz_gjc,homeType_zch_hwz_gjc,
+        homeId_zch_hwz_gjc
+        ,homeName_zch_hwz_gjc,homeType_zch_hwz_gjc,
         homeDayRent_zch_hwz_gjc,homeState_zch_hwz_gjc,homeAddress_zch_hwz_gjc,
         standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
@@ -27,23 +28,26 @@
         SELECT *
         FROM tab_home_zch_hwz_gjc
         where deleated_zch_hwz_gjc = 0
-            LIMIT #{page}, #{size}
+            LIMIT #{page}
+            , #{size}
     </select>
 
     <select id="getHomeListOrderByCollectionCount" resultType="com.quickhome.pojo.PojoHome">
-        SELECT
-            a.homeId_zch_hwz_gjc,
-            COUNT(c.hFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
-        FROM
-            tab_home_zch_hwz_gjc a
-                LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
-        where a.deleted_zch_hwz_gjc = 0
-        GROUP BY
-            a.homeId_zch_hwz_gjc
-        ORDER BY
-            collectionCount DESC
-        limit 10
+        SELECT a.homeId_zch_hwz_gjc,
+               COUNT(c.hFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
+        FROM tab_home_zch_hwz_gjc a
+                 LEFT JOIN tab_order_zch_hwz_gjc o ON a.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
+            AND (o.endTime_zch_hwz_gjc IS NULL OR
+                 o.endTime_zch_hwz_gjc > #{endDate})
+                 LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
+        WHERE a.deleted_zch_hwz_gjc = 0
+          AND a.homeState_zch_hwz_gjc = '可入住'
+          AND (o.homeId_zch_hwz_gjc IS NULL OR o.endTime_zch_hwz_gjc > #{endDate})
+        GROUP BY a.homeId_zch_hwz_gjc
+        ORDER BY collectionCount DESC LIMIT 10
     </select>
+
+
     <select id="getHomeDayRentByHomeId" parameterType="Long" resultType="java.lang.Double">
         select homeDayRent_zch_hwz_gjc
         from tab_home_zch_hwz_gjc
@@ -53,15 +57,18 @@
     <select id="selectHomesByCriteriaWithDevices" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
-                 JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
-                 JOIN tab_homeDevice_zch_hwz_gjc d ON h.homeId_zch_hwz_gjc = d.homeId_zch_hwz_gjc
-                 JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
-        WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
-               o.creationTime_zch_hwz_gjc IS NULL)
+        LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND (o.endTime_zch_hwz_gjc IS
+        NULL OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
+        JOIN tab_homeDevice_zch_hwz_gjc d ON h.homeId_zch_hwz_gjc = d.homeId_zch_hwz_gjc
+        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+        WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]>
+        o.endTime_zch_hwz_gjc OR
+        o.creationTime_zch_hwz_gjc IS NULL)
         AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
         AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
         AND h.homeType_zch_hwz_gjc <![CDATA[ = ]]> #{homeType}
         AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+        AND h.homeState_zch_hwz_gjc = '可入住'
         AND h.deleted_zch_hwz_gjc = 0
         AND d.deviceName_zch_hwz_gjc IN
         <foreach item="deviceName" index="index" collection="deviceNames" open="(" separator="," close=")">
@@ -72,18 +79,23 @@
         LIMIT #{page}, #{size}
     </select>
 
+
     <select id="selectHomesWithoutDevicesCriteria" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
-        JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
-        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+                 LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
+                                                      (o.endTime_zch_hwz_gjc IS NULL OR
+                                                       o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
+                 JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
         WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
                o.creationTime_zch_hwz_gjc IS NULL)
           AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
           AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
-          AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+          AND i.maxPerson_zch_hwz_gjc <![CDATA[ = ]]> #{maxPeople}
           AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+          and h.homeState_zch_hwz_gjc = '可入住'
           AND h.deleted_zch_hwz_gjc = 0
-        LIMIT #{page}, #{size}
+            LIMIT #{page}
+            , #{size}
     </select>
 </mapper>

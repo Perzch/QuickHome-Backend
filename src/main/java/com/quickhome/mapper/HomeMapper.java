@@ -21,7 +21,7 @@ import java.util.List;
 public interface HomeMapper extends BaseMapper<Home> {
     public List<Home> selectHomeByPage(@Param("page") Long page, @Param("size") Long size);
 
-    public List<PojoHome> getHomeListOrderByCollectionCount();
+    public List<PojoHome> getHomeListOrderByCollectionCount(String endDate);
 
     public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);
 

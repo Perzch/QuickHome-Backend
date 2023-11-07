@@ -71,7 +71,8 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
 
     @Override
     public List<PojoHome> getHomeListOrderByCollectionCount() {
-        return baseMapper.getHomeListOrderByCollectionCount();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return baseMapper.getHomeListOrderByCollectionCount(sdf.format(new Date()));
     }
 
     @Override

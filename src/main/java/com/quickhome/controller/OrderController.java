@@ -34,6 +34,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -175,14 +177,37 @@ public class OrderController {
     @GetMapping("/getDynamicDoorPassword")
     public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long orderId,
                                                     HttpServletRequest req) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+        }
+
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
+
+        // 获取订单的入住时间，并将时间设置为当天的12点
+        LocalDateTime checkInDateAtNoon = order.getCheckInTime_zch_hwz_gjc().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atTime(LocalTime.NOON);
+
+        // 检查当前时间是否已经过了入住时间当天的12点
+        if (now.isBefore(checkInDateAtNoon)) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("还未到生成房屋密码的时间"));
+        }
+
+        // 如果已经过了12点，则生成动态门密码
         RSA rsa = new RSA(privateKey, publicKey);
         String dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
         byte[] encrypt = rsa.encrypt(dynamicDoorPassword, KeyType.PublicKey);
-        Order order = orderMapper.selectById(orderId);
+
+        // 更新订单中的动态门密码
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
                 .set("DynamicDoorPassword_zch_hwz_gjc", dynamicDoorPassword);
         orderMapper.update(order, updateWrapper);
+
+        // 返回加密后的动态门密码
         return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
     }
 
