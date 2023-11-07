@@ -124,11 +124,11 @@ public class OrderController {
         //用于给动态密码加密
         RSA rsa = new RSA(privateKey, publicKey);
         //判断当前时间是否可以获取动态房屋密码
-        if (checkInDate.compareTo(LocalDate.now().toString()) <= 0) {
-            dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
-        } else {
-            dynamicDoorPassword = "未到入住时间";
-        }
+//        if (checkInDate.compareTo(LocalDate.now().toString()) <= 0) {
+//            dynamicDoorPassword = DynamicDoorPassword.dynamicDoorPassword();
+//        } else {
+        dynamicDoorPassword = "未生成动态密码";
+//        }
         //写入租客身份证信息
         for (PJUserTenant userTenant : userTenantList) {
             IdCardRecord idCardRecord = IdCardRecord.builder()
@@ -236,7 +236,6 @@ public class OrderController {
     }
 
 
-
     // 根据优惠券的折扣方式和优惠力度计算实际支付金额
 
     @ResponseBody
@@ -270,7 +269,7 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(ResponseResult.error("获取优惠券信息失败"));
             }
             Coupon coupon = (Coupon) couponResponse.getBody().getData();
-            if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(),actualPayment, userCoupon.getUserId_zch_hwz_gjc())){
+            if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(), actualPayment, userCoupon.getUserId_zch_hwz_gjc())) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不可使用"));
             }
             // 根据coupon对象进行优惠券折扣逻辑
@@ -283,7 +282,7 @@ public class OrderController {
         }
 
         // 调用AccountBalanceController的updateMoney方法进行支付
-        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -(actualPayment+order.getOrderDeposit_zch_hwz_gjc()), req);
+        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -(actualPayment + order.getOrderDeposit_zch_hwz_gjc()), req);
 
         // 检查支付结果
         if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
@@ -307,7 +306,6 @@ public class OrderController {
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
-
 
 
     @ResponseBody
