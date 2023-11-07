@@ -157,7 +157,6 @@ public class CouponController {
                 return ResponseEntity.status(500).body(ResponseResult.error("删除失败"));
             }
         } catch (Exception e) {
-            // Handle exception...
             return ResponseEntity.status(500).body(ResponseResult.error("删除失败：" + e.getMessage()));
         }
     }
