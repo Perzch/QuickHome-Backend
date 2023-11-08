@@ -2,6 +2,7 @@ package com.quickhome.service;
 
 import com.quickhome.domain.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.quickhome.pojo.OrderEndResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface OrderService extends IService<Order> {
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
     public List<Order> getAllUserOrders(Long userId);
+    public OrderEndResult processOrderEnd(Long orderId) throws Exception;
 
 
 }

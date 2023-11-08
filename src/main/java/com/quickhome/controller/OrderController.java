@@ -13,6 +13,7 @@ import com.quickhome.mapper.AccountBalanceMapper;
 import com.quickhome.mapper.CouponMapper;
 import com.quickhome.mapper.OrderMapper;
 import com.quickhome.mapper.UsersAndCouponsMapper;
+import com.quickhome.pojo.OrderEndResult;
 import com.quickhome.pojo.PJOrder;
 import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
@@ -476,6 +477,41 @@ public class OrderController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(ResponseResult.error("更新订单信息出错: " + e.getMessage()));
+        }
+    }
+    @DeleteMapping("/delOrder")
+    public ResponseEntity<ResponseResult<?>> deleteOrder(@RequestParam Long orderId) {
+        try {
+            // 构建更新条件
+            UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
+                    .set("deleted_zch_hwz_gjc", 1);
+
+            int result = orderMapper.update(null, updateWrapper);
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok("订单删除成功"));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败，订单可能不存在或已被删除"));
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+        }
+    }
+
+    @GetMapping("/endOrderRefund")
+    @Transactional
+    public ResponseEntity<ResponseResult<?>> endOrderAndProcessRefund(@RequestParam Long orderId) {
+        try {
+            // This method should contain the logic to check the time and password, update the order and user balance.
+            OrderEndResult orderEndResult = orderService.processOrderEnd(orderId);
+
+            // Assuming processOrderEnd returns an object with the necessary information
+            return ResponseEntity.ok(ResponseResult.ok(orderEndResult));
+        } catch (Exception e) {
+            // Log the exception details as well for debugging
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(ResponseResult.error("Order processing failed: " + e.getMessage()));
         }
     }
 
