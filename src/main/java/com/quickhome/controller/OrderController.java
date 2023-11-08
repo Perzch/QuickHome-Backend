@@ -38,6 +38,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
@@ -84,34 +85,36 @@ public class OrderController {
             return false;
         }
 
-        // 1. 检查优惠券是否在有效期内
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日 aH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月d日 ahh:mm:ss", Locale.CHINA);
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime earliestUseTime = LocalDateTime.parse(coupon.getEarliestUseTime_zch_hwz_gjc().toLocaleString(), formatter);
         LocalDateTime latestUseTime = LocalDateTime.parse(coupon.getLatestUseTime_zch_hwz_gjc().toLocaleString(), formatter);
+
         if (now.isBefore(earliestUseTime) || now.isAfter(latestUseTime)) {
             return false;
         }
 
-        // 2. 检查订单金额是否满足优惠券的使用门槛
         if (orderAmount < coupon.getUseThreshold_zch_hwz_gjc()) {
             return false;
         }
 
-        // 3. 检查用户是否已经使用过该优惠券
+        // 检查用户是否有未使用的同种优惠券
         QueryWrapper<UsersAndCoupons> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userId_zch_hwz_gjc", userId)
                 .eq("couponId_zch_hwz_gjc", couponId)
-                .eq("condition_zch_hwz_gjc", "已使用")
+                .ne("condition_zch_hwz_gjc", "已使用") // 使用 ne 表示 “不等于”
                 .eq("deleted_zch_hwz_gjc", 0);
-        UsersAndCoupons userCoupon = usersAndCouponsMapper.selectOne(queryWrapper);
-        if (userCoupon != null) {
+
+        Long count = usersAndCouponsMapper.selectCount(queryWrapper);
+        if (count == 0) {
+            // 用户没有未使用的同种优惠券
             return false;
         }
 
         return true;
     }
+
 
     @PostMapping("/insertOrder")
     public ResponseEntity<?> insertOrder(@RequestBody PJOrder pjOrder,
