@@ -18,7 +18,6 @@ public interface OrderService extends IService<Order> {
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
     public List<Order> getAllUserOrders(Long userId);
-    public OrderEndResult processOrderEnd(Long orderId) throws Exception;
 
 
 }

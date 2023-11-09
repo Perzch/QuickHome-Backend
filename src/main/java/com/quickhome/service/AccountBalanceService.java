@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Transactional
 public interface AccountBalanceService extends IService<AccountBalance> {
-
+    public boolean refundUserBalance(Long userId, Double amount);
 }

@@ -17,10 +17,7 @@ import com.quickhome.pojo.OrderEndResult;
 import com.quickhome.pojo.PJOrder;
 import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
-import com.quickhome.service.HomeInformationService;
-import com.quickhome.service.HomeService;
-import com.quickhome.service.IdCardRecordService;
-import com.quickhome.service.OrderService;
+import com.quickhome.service.*;
 import com.quickhome.util.DynamicDoorPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,6 +75,9 @@ public class OrderController {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private AccountBalanceService accountBalanceService;
 
 //    static final Log Logger = LogFactory.getLog(HomeInformationController.class);
 
@@ -297,7 +298,7 @@ public class OrderController {
             if (!couponResponse.getStatusCode().is2xxSuccessful()) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("获取优惠券信息失败"));
             }
-            Coupon coupon = (Coupon) couponResponse.getBody().getData();
+            Coupon coupon = couponMapper.selectById(couponId);
             if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(), actualPayment, userCoupon.getUserId_zch_hwz_gjc())) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不可使用"));
             }
@@ -322,7 +323,9 @@ public class OrderController {
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
                 .eq("orderState_zch_hwz_gjc", "未支付")  // 加入当前订单状态的检查
-                .set("orderState_zch_hwz_gjc", "已支付");
+                .set("orderState_zch_hwz_gjc", "已支付")
+                .set("orderPayment_zch_hwz_gjc", (actualPayment + order.getOrderDeposit_zch_hwz_gjc()));
+        System.out.println((actualPayment + order.getOrderDeposit_zch_hwz_gjc()));
         boolean updateSuccess = orderMapper.update(order, updateWrapper) > 0;
 
         if (!updateSuccess) {
@@ -479,6 +482,7 @@ public class OrderController {
             return ResponseEntity.status(500).body(ResponseResult.error("更新订单信息出错: " + e.getMessage()));
         }
     }
+
     @DeleteMapping("/delOrder")
     public ResponseEntity<ResponseResult<?>> deleteOrder(@RequestParam Long orderId) {
         try {
@@ -499,20 +503,54 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/endOrderRefund")
-    @Transactional
-    public ResponseEntity<ResponseResult<?>> endOrderAndProcessRefund(@RequestParam Long orderId) {
-        try {
-            // This method should contain the logic to check the time and password, update the order and user balance.
-            OrderEndResult orderEndResult = orderService.processOrderEnd(orderId);
-
-            // Assuming processOrderEnd returns an object with the necessary information
-            return ResponseEntity.ok(ResponseResult.ok(orderEndResult));
-        } catch (Exception e) {
-            // Log the exception details as well for debugging
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(ResponseResult.error("Order processing failed: " + e.getMessage()));
+    @ResponseBody
+    @PostMapping("/endOrderRefund")
+    public ResponseEntity<ResponseResult<?>> endOrderRefund(@RequestParam Long orderId) {
+        // 1. 根据orderId查询订单
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
         }
+
+        // 2. 检查订单是否已经获取了动态门密码
+        boolean passwordObtained = order.getDynamicDoorPassword_zch_hwz_gjc() == null || order.getDynamicDoorPassword_zch_hwz_gjc().equals("未生成动态密码");
+
+        // 3. 对比当前时间与订单的创建时间，判断是否超过30分钟
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime creationTime = LocalDateTime.ofInstant(order.getCreationTime_zch_hwz_gjc().toInstant(), ZoneId.systemDefault());
+        boolean overThirtyMinutes = ChronoUnit.MINUTES.between(creationTime, now) > 30;
+
+        // 4. 执行全额退款或保留全款
+        if (!overThirtyMinutes && passwordObtained) {
+            // 全额退款逻辑
+            // 更新用户账户余额
+            // 假设有一个方法来更新用户余额
+            boolean refundSuccess = accountBalanceService.refundUserBalance(order.getUserId_zch_hwz_gjc(), order.getOrderPayment_zch_hwz_gjc());
+            if (!refundSuccess) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("退款失败"));
+            }
+            // 将订单的押金清零
+            order.setOrderState_zch_hwz_gjc("已退款");
+            order.setDynamicDoorPassword_zch_hwz_gjc("订单已结束");
+            order.setOrderState_zch_hwz_gjc("已退款");
+            order.setEndTime_zch_hwz_gjc(DateTime.now());
+            order.setOrderDeposit_zch_hwz_gjc(0.0);
+        }
+        else {
+            // 保留全款，需要管理员操作结束订单
+            // 这里不执行任何操作，等待管理员处理
+            order.setOrderState_zch_hwz_gjc("已退房");
+            order.setDynamicDoorPassword_zch_hwz_gjc("订单已结束");
+        }
+
+        // 5. 更新订单状态和相关信息
+        int updated = orderMapper.updateById(order);
+        if (updated <= 0) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("更新订单失败"));
+        }
+
+        // 返回更新后的订单信息
+        return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
 

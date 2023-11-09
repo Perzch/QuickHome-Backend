@@ -344,9 +344,33 @@ public class HomeInformationController {
      */
     @GetMapping("/getHomeInfById")//获取房屋信息通过id
     @ResponseBody
-    public ResponseEntity<?> getHomeInfById(@RequestParam Long id,
+    public ResponseEntity<ResponseResult<?>> getHomeInfById(@RequestParam Long id,
                                             HttpServletRequest req) {
-        return ResponseEntity.ok(ResponseResult.ok(homeInfSer_zch_hwz_gjc.getById(id)));
+        PojoHome pojoHome = new PojoHome();
+        Home home = homeSer_zch_hwz_gjc.getById(id);
+        pojoHome.setHome(home);
+        HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
+        pojoHome.setHomeInformation(homeInformation);
+        List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+        pojoHome.setHomeDeviceList(homeDevices);
+        List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+        List<HomeImage> formattedImageList = new ArrayList<>();
+        for (HomeImage image : homeImages) {
+            try {
+                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                image.setImagePath_zch_hwz_gjc(imageUrl);
+                formattedImageList.add(image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        pojoHome.setHomeImageList(formattedImageList);
+        int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
+        pojoHome.setCollectionCount(collectionNum);
+        pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+        return ResponseEntity.ok(ResponseResult.ok(pojoHome));
     }
 
 

@@ -36,13 +36,13 @@
         SELECT a.homeId_zch_hwz_gjc,
                COUNT(c.hFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
         FROM tab_home_zch_hwz_gjc a
-                 LEFT JOIN tab_order_zch_hwz_gjc o ON a.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc
-            AND (o.endTime_zch_hwz_gjc IS NULL OR
-                 o.endTime_zch_hwz_gjc > #{endDate})
                  LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
         WHERE a.deleted_zch_hwz_gjc = 0
           AND a.homeState_zch_hwz_gjc = '可入住'
-          AND (o.homeId_zch_hwz_gjc IS NULL OR o.endTime_zch_hwz_gjc > #{endDate})
+          AND NOT EXISTS (SELECT 1
+                          FROM tab_order_zch_hwz_gjc o
+                          WHERE o.homeId_zch_hwz_gjc = a.homeId_zch_hwz_gjc
+                            AND o.endTime_zch_hwz_gjc IS NULL)
         GROUP BY a.homeId_zch_hwz_gjc
         ORDER BY collectionCount DESC LIMIT 10
     </select>
