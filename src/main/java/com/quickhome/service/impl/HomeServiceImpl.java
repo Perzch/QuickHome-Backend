@@ -79,7 +79,3 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
         return baseMapper.getHomeDayRentByHomeId(homeId_zch_hwz_gjc);
     }
 }
-
-
-
-

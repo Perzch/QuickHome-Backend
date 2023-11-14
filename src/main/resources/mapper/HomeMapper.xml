@@ -42,7 +42,9 @@
           AND NOT EXISTS (SELECT 1
                           FROM tab_order_zch_hwz_gjc o
                           WHERE o.homeId_zch_hwz_gjc = a.homeId_zch_hwz_gjc
-                            AND o.endTime_zch_hwz_gjc IS NULL)
+                            AND o.endTime_zch_hwz_gjc IS NULL
+                            AND o.orderState_zch_hwz_gjc = '未支付'
+                            AND o.deleted_zch_hwz_gjc = 0)
         GROUP BY a.homeId_zch_hwz_gjc
         ORDER BY collectionCount DESC LIMIT 10
     </select>
@@ -57,8 +59,11 @@
     <select id="selectHomesByCriteriaWithDevices" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
-        LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND (o.endTime_zch_hwz_gjc IS
-        NULL OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
+        LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
+        (o.endTime_zch_hwz_gjc IS NULL
+        AND o.orderState_zch_hwz_gjc = '未支付'
+        AND o.deleted_zch_hwz_gjc = 0
+        OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
         JOIN tab_homeDevice_zch_hwz_gjc d ON h.homeId_zch_hwz_gjc = d.homeId_zch_hwz_gjc
         JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
         WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]>
@@ -84,8 +89,10 @@
         SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
                  LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
-                                                      (o.endTime_zch_hwz_gjc IS NULL OR
-                                                       o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
+                                                      (o.endTime_zch_hwz_gjc IS NULL
+                                                           AND o.orderState_zch_hwz_gjc = '未支付'
+                                                           AND o.deleted_zch_hwz_gjc = 0
+                                                          OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
                  JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
         WHERE (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
                o.creationTime_zch_hwz_gjc IS NULL)
