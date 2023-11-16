@@ -548,7 +548,9 @@ public class OrderController {
         if (updated <= 0) {
             return ResponseEntity.badRequest().body(ResponseResult.error("更新订单失败"));
         }
-
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
         // 返回更新后的订单信息
         return ResponseEntity.ok(ResponseResult.ok(order));
     }

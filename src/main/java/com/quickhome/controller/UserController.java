@@ -426,7 +426,7 @@ public class UserController {
 
         for (Order order : orders){
             String state = order.getOrderState_zch_hwz_gjc();
-            if (!state.equals("已完成") && !state.equals("已取消")) {
+            if (!state.equals("已完成") && !state.equals("已取消") && !state.equals("已退款")) {
                 hasUnfinishedOrder = true;
                 break;
             }

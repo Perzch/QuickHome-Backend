@@ -39,11 +39,10 @@
                  LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc
         WHERE a.deleted_zch_hwz_gjc = 0
           AND a.homeState_zch_hwz_gjc = '可入住'
-          AND NOT EXISTS (SELECT 1
+          AND NOT EXISTS (SELECT o.*
                           FROM tab_order_zch_hwz_gjc o
                           WHERE o.homeId_zch_hwz_gjc = a.homeId_zch_hwz_gjc
                             AND o.endTime_zch_hwz_gjc IS NULL
-                            AND o.orderState_zch_hwz_gjc = '未支付'
                             AND o.deleted_zch_hwz_gjc = 0)
         GROUP BY a.homeId_zch_hwz_gjc
         ORDER BY collectionCount DESC LIMIT 10
@@ -61,7 +60,6 @@
         FROM tab_Home_zch_hwz_gjc h
         LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
         (o.endTime_zch_hwz_gjc IS NULL
-        AND o.orderState_zch_hwz_gjc = '未支付'
         AND o.deleted_zch_hwz_gjc = 0
         OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
         JOIN tab_homeDevice_zch_hwz_gjc d ON h.homeId_zch_hwz_gjc = d.homeId_zch_hwz_gjc
@@ -90,7 +88,6 @@
         FROM tab_Home_zch_hwz_gjc h
                  LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
                                                       (o.endTime_zch_hwz_gjc IS NULL
-                                                           AND o.orderState_zch_hwz_gjc = '未支付'
                                                            AND o.deleted_zch_hwz_gjc = 0
                                                           OR o.endTime_zch_hwz_gjc <![CDATA[ > ]]> #{endDate})
                  JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
