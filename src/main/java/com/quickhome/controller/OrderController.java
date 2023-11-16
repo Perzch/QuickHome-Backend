@@ -19,6 +19,7 @@ import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
 import com.quickhome.util.DynamicDoorPassword;
+import com.quickhome.util.ValidationUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,6 +66,8 @@ public class OrderController {
     private HomeService homeService;
     @Autowired
     private HomeInformationService homeInformationService;
+    @Autowired
+    private IdentityCheckListService identityChecklistService;
 
     @Autowired
     private AccountBalanceController accountBalanceController;
@@ -136,19 +140,6 @@ public class OrderController {
 //        } else {
         dynamicDoorPassword = "未生成动态密码";
 //        }
-        //写入租客身份证信息
-        for (PJUserTenant userTenant : userTenantList) {
-            IdCardRecord idCardRecord = IdCardRecord.builder()
-                    .IDCardName_zch_hwz_gjc(userTenant.getName())
-                    .IDCardNumber_zch_hwz_gjc(userTenant.getCardIdNumber())
-                    .IDCardPhoneNumber_zch_hwz_gjc(userTenant.getPhone())
-                    .userId_zch_hwz_gjc(userId)
-                    .build();
-            Boolean flag = idCardRecordService.save(idCardRecord);
-            if (!flag) {
-                return ResponseEntity.ok(ResponseResult.of(100, "写入租客身份证信息失败!"));
-            }
-        }
         //获取押金
         Double deposit = homeInformationService.getHomeDepositByHomeId(homeId);
         //获取单日租金
@@ -176,6 +167,39 @@ public class OrderController {
         boolean flag = orderService.save(order);
         byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+        List<Long> idCardRecordIds = new ArrayList<>();
+
+        for (PJUserTenant userTenant : userTenantList) {
+            // 验证身份证号码和手机号码
+            if (!ValidationUtils.isValidIdCard(userTenant.getCardIdNumber()) || !ValidationUtils.isValidPhone(userTenant.getPhone())) {
+                continue; // 如果不符合正则表达式，则跳过此记录
+            }
+
+            IdCardRecord idCardRecord = IdCardRecord.builder()
+                    .IDCardName_zch_hwz_gjc(userTenant.getName())
+                    .IDCardNumber_zch_hwz_gjc(userTenant.getCardIdNumber())
+                    .IDCardPhoneNumber_zch_hwz_gjc(userTenant.getPhone())
+                    .userId_zch_hwz_gjc(userId)
+                    .build();
+
+            Boolean save = idCardRecordService.save(idCardRecord);
+            if (!save) {
+                continue; // 如果保存失败，也跳过此记录
+            }
+
+            // 保存新创建的身份证记录的ID
+            idCardRecordIds.add(idCardRecord.getIDCardRecordID_zch_hwz_gjc());
+        }
+
+        for (Long idCardRecordId : idCardRecordIds) {
+            IdentityCheckList identityChecklist = new IdentityCheckList();
+            identityChecklist.setIDCardRecordID_zch_hwz_gjc(idCardRecordId);
+            identityChecklist.setOrderID_zch_hwz_gjc(order.getOrderId_zch_hwz_gjc()); // 假设 order 是新创建的订单实体
+            // 可以设置其他字段
+
+            // 保存到数据库
+            identityChecklistService.save(identityChecklist);
+        }
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
@@ -535,8 +559,7 @@ public class OrderController {
             order.setOrderState_zch_hwz_gjc("已退款");
             order.setEndTime_zch_hwz_gjc(DateTime.now());
             order.setOrderDeposit_zch_hwz_gjc(0.0);
-        }
-        else {
+        } else {
             // 保留全款，需要管理员操作结束订单
             // 这里不执行任何操作，等待管理员处理
             order.setOrderState_zch_hwz_gjc("已退房");

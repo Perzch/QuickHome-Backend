@@ -32,6 +32,7 @@ public class IdCardRecordServiceImpl extends ServiceImpl<IdCardRecordMapper, IdC
 
     @Autowired
     private IdentityCheckListMapper identityCheckListMapper;
+
     @Override
     public IdCardRecord uploadIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber, Long userId) {
         // 假设你已经创建了一个IdCardRecord对象并保存到了数据库
@@ -48,16 +49,23 @@ public class IdCardRecordServiceImpl extends ServiceImpl<IdCardRecordMapper, IdC
 
     @Override
     public IPage<IdCardRecord> getIdCardInfo(Long userId, int current, int size) {
+        // 定义身份证和手机号的正则表达式
+        String idCardRegex = "^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
+        String phoneRegex = "^1(3\\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\\d|9[0-35-9])\\d{8}$";
+
         QueryWrapper<IdCardRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("DISTINCT IDCardName_zch_hwz_gjc, IDCardNumber_zch_hwz_gjc, IDCardPhoneNumber_zch_hwz_gjc")
-                .eq("userId_zch_hwz_gjc", userId);
+                .eq("userId_zch_hwz_gjc", userId)
+                // 使用正则表达式匹配身份证号和手机号
+                .apply("IDCardNumber_zch_hwz_gjc REGEXP {0}", idCardRegex)
+                .apply("IDCardPhoneNumber_zch_hwz_gjc REGEXP {0}", phoneRegex);
 
         Page<IdCardRecord> page = new Page<>(current, size);
         return baseMapper.selectPage(page, queryWrapper);
     }
 
     @Override
-    public boolean deleteIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber,Long userId) {
+    public boolean deleteIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber, Long userId) {
         QueryWrapper<IdCardRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("IDCardName_zch_hwz_gjc", IDCardName)
                 .eq("IDCardNumber_zch_hwz_gjc", IDCardNumber)

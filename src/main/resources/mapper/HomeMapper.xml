@@ -82,7 +82,6 @@
         LIMIT #{page}, #{size}
     </select>
 
-
     <select id="selectHomesWithoutDevicesCriteria" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
         FROM tab_Home_zch_hwz_gjc h
