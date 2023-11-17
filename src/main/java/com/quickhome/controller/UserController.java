@@ -175,9 +175,8 @@ public class UserController {
     @PostMapping("/userLogin")//用户登录
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
         String token = userService.userLogin_zch_hwz_gjc(user);
-        List<User> user1 = userService.queryUser(user);
-        User user2 = user1.get(0);
-        PJUser pjUser = PJUser.builder().token(token).userId(user2.getUserId_zch_hwz_gjc()).build();
+        User user1 = userService.queryUserForLogin(user);
+        PJUser pjUser = PJUser.builder().token(token).userId(user1.getUserId_zch_hwz_gjc()).build();
         if (token != null) {
             return ResponseEntity.ok(ResponseResult.ok(pjUser));
         } else {

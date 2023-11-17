@@ -52,6 +52,7 @@
         select *
         from tab_user_zch_hwz_gjc
         where userEmail_zch_hwz_gjc = '${userEmail_zch_hwz_gjc}'
+           or userAccount_zch_hwz_gjc=#{userAccount_zch_hwz_gjc}
            or userPhone_zch_hwz_gjc = '${userPhone_zch_hwz_gjc}'
             AND deleted_zch_hwz_gjc = 0
     </select>
