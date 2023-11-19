@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.*;
-import com.quickhome.mapper.HomeDeviceMapper;
-import com.quickhome.mapper.HomeImageMapper;
-import com.quickhome.mapper.HomeInformationMapper;
-import com.quickhome.mapper.HomeMapper;
+import com.quickhome.mapper.*;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
@@ -47,6 +44,9 @@ public class HomeInformationController {
 
     @Autowired
     private HomeInformationMapper homeInformationMapper;
+
+    @Autowired
+    private HouseCollectionMapper houseCollectionMapper;
 
     @Autowired
     private HouseCollectionService houseCollectionService;
@@ -538,6 +538,56 @@ public class HomeInformationController {
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
             return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+        }
+    }
+
+    @GetMapping("/getUserHomeList")
+    public ResponseEntity<?> getUserHomeList(
+            @RequestParam("userId") Long userId,
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        try {
+            Page<HouseCollection> resultPage = houseCollectionService.getUserHomeCollections(userId, pageNo, pageSize);
+            return ResponseEntity.ok(ResponseResult.ok(resultPage));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("获取房屋收藏列表出错"));
+        }
+    }
+
+    @PutMapping("/cancelHome")
+    public ResponseEntity<?> cancelHomeCollection(
+            @RequestParam("userId") Long userId,
+            @RequestParam("homeId") Long homeId) {
+        try {
+            UpdateWrapper<HouseCollection> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("userId_zch_hwz_gjc", userId)
+                    .eq("homeId_zch_hwz_gjc", homeId)
+                    .set("deleted_zch_hwz_gjc", 1);
+
+            int result = houseCollectionMapper.update(null, updateWrapper);
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok("取消收藏成功"));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏失败"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏出错"));
+        }
+    }
+
+    @PostMapping("/addHomeCollection")
+    public ResponseEntity<?> addHomeCollection(
+            @RequestParam("userId") Long userId,
+            @RequestParam("homeId") Long homeId) {
+        try {
+            boolean result = houseCollectionService.addHouseCollection(userId, homeId);
+            if (result) {
+                return ResponseEntity.ok(ResponseResult.ok("收藏成功"));
+            } else {
+                return ResponseEntity.ok(ResponseResult.error("已收藏"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("收藏房屋出错"));
         }
     }
 

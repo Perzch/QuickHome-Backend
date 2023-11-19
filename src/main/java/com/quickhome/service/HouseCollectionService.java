@@ -1,5 +1,6 @@
 package com.quickhome.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.HouseCollection;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,4 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface HouseCollectionService extends IService<HouseCollection> {
     public int getCollectionCountByHomeId(Long homeId);
+    public Page<HouseCollection> getUserHomeCollections(Long userId, int pageNo, int pageSize);
+    public boolean addHouseCollection(Long userId, Long homeId);
 }

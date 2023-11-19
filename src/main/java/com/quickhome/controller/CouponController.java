@@ -59,6 +59,7 @@ public class CouponController {
             return ResponseEntity.status(500).body(ResponseResult.error("插入失败"));
         }
     }
+
     @ResponseBody
     @PostMapping("/userAddCoupons")
     public ResponseEntity<ResponseResult<?>> userAddCoupons(

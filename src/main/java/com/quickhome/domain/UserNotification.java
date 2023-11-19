@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","deleted_zch_hwz_gjc" })
-public class UserNotification implements Serializable {
+public class  UserNotification implements Serializable {
     /**
      * 用户通知编号
      */

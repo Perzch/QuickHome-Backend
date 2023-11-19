@@ -99,7 +99,7 @@ public class UserController {
             }
             return ResponseEntity.ok(ResponseResult.of(100, "请输入手机号!"));
         }
-        //补全用户类
+        // 补全用户类
         user.setUserInDate_zch_hwz_gjc(DateTime.now());
 
         byte[] decrypt = rsa.decrypt(user.getUserPwd_zch_hwz_gjc(), KeyType.PrivateKey);
@@ -484,5 +484,51 @@ public class UserController {
 
         // 返回新的Token
         return ResponseEntity.ok(ResponseResult.ok(newToken));
+    }
+
+    @ResponseBody
+    @PostMapping("/updateUserBasicInf")
+    public ResponseEntity<ResponseResult<?>> updateUserBasicInf(
+            @RequestParam Long userId,
+            @RequestParam String userName,
+            @RequestParam String userEmail,
+            @RequestParam String userPhone,
+            HttpServletRequest request) {
+        try {
+            // 检查userId是否存在
+            if (userId == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不能为空"));
+            }
+
+            // 从数据库中查询当前用户记录
+            User currentUser = userMapper.selectById(userId);
+            if (currentUser == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不存在"));
+            }
+
+            // 更新需要修改的字段
+            if (userName != null && !userName.isEmpty()) {
+                currentUser.setUserName_zch_hwz_gjc(userName);
+            }
+            if (userEmail != null && !userEmail.isEmpty()) {
+                currentUser.setUserEmail_zch_hwz_gjc(userEmail);
+            }
+            if (userPhone != null && !userPhone.isEmpty()) {
+                currentUser.setUserPhone_zch_hwz_gjc(userPhone);
+            }
+
+            // 使用乐观锁更新方法
+            int result = userMapper.updateById(currentUser);
+
+            // 检查是否有数据被更新
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok(userMapper.selectById(userId)));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+            }
+        } catch (Exception e) {
+            // 这里可以记录日志或者返回具体的错误信息
+            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+        }
     }
 }
