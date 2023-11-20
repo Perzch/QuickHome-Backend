@@ -120,19 +120,7 @@ public class UserController {
             //写入用户表
             flag_user = userService.save(user);
             if (flag_user) {
-                //创建默认头像
-                UserHeadImage userHeadImage = UserHeadImage.builder()
-                        .inDateTime_zch_hwz_gjc(DateTime.now())
-                        .userId_zch_hwz_gjc(userService.getUserIdByAccount(account))
-                        .imagePath_zch_hwz_gjc("F:\\QuickHome_SpringBoot\\QuickHome-Backend\\src\\main\\img\\head.jpg")
-                        .build();//头像entity构造器
-                //头像保存状态
-                flag_img = userHeadImageService.save(userHeadImage);
-                if (flag_img) {
-                    return ResponseEntity.ok(ResponseResult.ok(userService.getUserIdByAccount(account)));
-                } else {
-                    return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
-                }
+                return ResponseEntity.ok(ResponseResult.ok(userService.getUserIdByAccount(account)));
             } else {
                 return ResponseEntity.ok(ResponseResult.of(100, "用户注册失败!"));
             }
@@ -212,8 +200,8 @@ public class UserController {
             HttpServletRequest req) {
         boolean flag = JwtUtil.verifyToken(token);
         Long verifyUserId = JwtUtil.getUserIdFromToken(token);
-        if(verifyUserId != userId){
-            return ResponseEntity.ok(ResponseResult.of(500,"用户信息错误"));
+        if (verifyUserId != userId) {
+            return ResponseEntity.ok(ResponseResult.of(500, "用户信息错误"));
         }
         User user = userMapper.selectById(userId);
         if (flag && user != null) {
@@ -241,9 +229,9 @@ public class UserController {
                 .build();
         Boolean userFlag = userService.userForget_zch_hwz_gjc(userForget);
         if (userFlag) {
-            return ResponseEntity.ok(ResponseResult.ok("用户存在!"));
+            return ResponseEntity.ok(ResponseResult.of(200, "用户存在!"));
         } else {
-            return ResponseEntity.ok(ResponseResult.ok("用户不存在!"));
+            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在!"));
         }
     }
 
@@ -264,7 +252,7 @@ public class UserController {
         // 从数据库中加载用户信息
         User existingUser = userService.getOne(queryWrapper);
         if (existingUser == null) {
-            return ResponseEntity.ok(ResponseResult.error("用户不存在"));
+            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
         }
 
         // 设置新密码
@@ -275,7 +263,7 @@ public class UserController {
         if (updateSuccess) {
             return ResponseEntity.ok(ResponseResult.ok(existingUser.getUserId_zch_hwz_gjc()));
         } else {
-            return ResponseEntity.ok(ResponseResult.error("设置密码失败，数据可能已被其他用户修改"));
+            return ResponseEntity.badRequest().body(ResponseResult.error("设置密码失败，数据可能已被其他用户修改"));
         }
     }
 
@@ -291,6 +279,11 @@ public class UserController {
         String imagePath = saveUploadedFile(userId, file);
 
         UserHeadImage userHeadImage = userHeadImageService.saveOrUpdateUserHeadImage(userId, imagePath);
+        QueryWrapper<UserInformation> queryWrapper =
+                new QueryWrapper<UserInformation>().eq("userId_zch_hwz_gjc", userId);
+        UserInformation userInformation = userInformationService.getOne(queryWrapper);
+        userInformation.setUserHeadId_zch_hwz_gjc(userHeadImage.getUserImageId_zch_hwz_gjc());
+        userInformationMapper.updateById(userInformation);
         return ResponseEntity.ok(ResponseResult.ok(userHeadImage));
     }
 
@@ -324,7 +317,7 @@ public class UserController {
         Date dateBirthday = null;
         if (userBirthday != null && !userBirthday.isEmpty()) {
             LocalDate localDateBirthday = LocalDate.parse(userBirthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            dateBirthday = Date.from(localDateBirthday.atStartOfDay(ZoneId.of("Asia/Shanghai")).toInstant());
+            dateBirthday = Date.from(localDateBirthday.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
 
         return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userId, userGender, dateBirthday, userSignature)));
@@ -395,7 +388,7 @@ public class UserController {
                 return ResponseEntity.ok(ResponseResult.ok("头像不需要更新"));
             } else {
                 // 文件名匹配失败
-                return ResponseEntity.ok(ResponseResult.of(210,"头像需要更新"));
+                return ResponseEntity.ok(ResponseResult.of(210, "头像需要更新"));
             }
         } else {
             // 用户ID没有对应的头像
@@ -413,7 +406,7 @@ public class UserController {
         queryWrapper5.eq("userId_zch_hwz_gjc", userId);
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper5);
 
-        if (accountBalance.getUserBalance_zch_hwz_gjc() > 0){
+        if (accountBalance.getUserBalance_zch_hwz_gjc() > 0) {
             return ResponseEntity.ok(ResponseResult.error("用户余额大于0，不能注销"));
         }
 
@@ -423,7 +416,7 @@ public class UserController {
 
         boolean hasUnfinishedOrder = false;
 
-        for (Order order : orders){
+        for (Order order : orders) {
             String state = order.getOrderState_zch_hwz_gjc();
             if (!state.equals("已完成") && !state.equals("已取消") && !state.equals("已退款")) {
                 hasUnfinishedOrder = true;
@@ -490,9 +483,9 @@ public class UserController {
     @PostMapping("/updateUserBasicInf")
     public ResponseEntity<ResponseResult<?>> updateUserBasicInf(
             @RequestParam Long userId,
-            @RequestParam String userName,
-            @RequestParam String userEmail,
-            @RequestParam String userPhone,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String userEmail,
+            @RequestParam(required = false) String userPhone,
             HttpServletRequest request) {
         try {
             // 检查userId是否存在

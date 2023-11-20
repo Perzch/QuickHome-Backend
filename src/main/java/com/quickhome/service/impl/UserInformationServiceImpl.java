@@ -2,6 +2,7 @@ package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.quickhome.domain.AccountBalance;
 import com.quickhome.domain.UserInformation;
 import com.quickhome.service.UserInformationService;
 import com.quickhome.mapper.UserInformationMapper;
@@ -44,7 +45,10 @@ public class UserInformationServiceImpl extends ServiceImpl<UserInformationMappe
     }
 
     public Long updateUserInformation(Long userId, String userGender, Date userBirthday, String userSignature) {
-        UserInformation userInformation = getUserInformationByUserId(userId);
+        QueryWrapper<UserInformation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId_zch_hwz_gjc", userId);
+        UserInformation userInformation = baseMapper.selectOne(queryWrapper);
+        System.out.println("userInformation:" + userInformation);
         if (userInformation != null) {
             if (userGender != null && !userGender.isEmpty()) {
                 userInformation.setUserGender_zch_hwz_gjc(userGender);
