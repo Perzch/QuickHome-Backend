@@ -75,26 +75,20 @@ public class IdCardRecordServiceImpl extends ServiceImpl<IdCardRecordMapper, IdC
     }
 
     @Override
-    public boolean updateIdCardInfo(Long recordId, String name, String number, String phoneNumber) {
-        // 首先根据recordId查询出当前记录
-        IdCardRecord currentRecord = getById(recordId);
-        if (currentRecord == null || currentRecord.getDeleted_zch_hwz_gjc() == 1) {
-            throw new IllegalArgumentException("记录不存在或已被删除");
-        }
-
-        // 获取当前记录的版本号
-        Integer currentVersion = currentRecord.getVersion_zch_hwz_gjc();
-
+    public boolean updateIdCardInfo(Long userId, String newName, String newNumber, String newPhoneNumber,
+                                    String oldName, String oldNumber, String oldPhoneNumber) {
         UpdateWrapper<IdCardRecord> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("IdCardRecordID_zch_hwz_gjc", recordId);
+        updateWrapper.eq("userId_zch_hwz_gjc", userId)
+                .eq(oldName != null, "IDCardName_zch_hwz_gjc", oldName)
+                .eq(oldNumber != null, "IDCardNumber_zch_hwz_gjc", oldNumber)
+                .eq(oldPhoneNumber != null, "IDCardPhoneNumber_zch_hwz_gjc", oldPhoneNumber);
 
-        IdCardRecord IdCardRecord = new IdCardRecord();
-        IdCardRecord.setIDCardName_zch_hwz_gjc(name);
-        IdCardRecord.setIDCardNumber_zch_hwz_gjc(number);
-        IdCardRecord.setIDCardPhoneNumber_zch_hwz_gjc(phoneNumber);
-        IdCardRecord.setVersion_zch_hwz_gjc(currentVersion);
+        IdCardRecord idCardRecord = new IdCardRecord();
+        if (newName != null) idCardRecord.setIDCardName_zch_hwz_gjc(newName);
+        if (newNumber != null) idCardRecord.setIDCardNumber_zch_hwz_gjc(newNumber);
+        if (newPhoneNumber != null) idCardRecord.setIDCardPhoneNumber_zch_hwz_gjc(newPhoneNumber);
 
-        int update = baseMapper.update(IdCardRecord, updateWrapper);
+        int update = baseMapper.update(idCardRecord, updateWrapper);
         return update > 0;
     }
 

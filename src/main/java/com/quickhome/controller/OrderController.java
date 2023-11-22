@@ -308,8 +308,11 @@ public class OrderController {
             return ResponseEntity.badRequest().body(ResponseResult.error("订单状态不允许支付"));
         }
 
-        // 计算实际付款金额
+        // 实际付款金额（已包含优惠券折扣）
         Double actualPayment = order.getOrderPayment_zch_hwz_gjc() - order.getOrderDeposit_zch_hwz_gjc();
+
+        // 还原优惠券应用前的原始订单金额
+        Double originalOrderAmount = actualPayment;
 
         // 如果提供了UACID
         if (UACID != null) {
@@ -318,21 +321,22 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(ResponseResult.error("用户优惠券关联不存在"));
             }
             Long couponId = userCoupon.getCouponId_zch_hwz_gjc();
-            ResponseEntity<ResponseResult<?>> couponResponse = couponController.getCouponInfo(couponId);
-            if (!couponResponse.getStatusCode().is2xxSuccessful()) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("获取优惠券信息失败"));
-            }
             Coupon coupon = couponMapper.selectById(couponId);
-            if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(), actualPayment, userCoupon.getUserId_zch_hwz_gjc())) {
+            if (coupon == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不存在"));
+            }
+
+            // 根据优惠券类型还原原始订单金额
+            if ("折扣".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
+                originalOrderAmount /= coupon.getDiscountIntensity_zch_hwz_gjc();
+            } else if ("满减".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
+                originalOrderAmount += coupon.getDiscountIntensity_zch_hwz_gjc();
+            }
+
+            // 检查优惠券是否有效
+            if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(), originalOrderAmount, userCoupon.getUserId_zch_hwz_gjc())) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不可使用"));
             }
-            // 根据coupon对象进行优惠券折扣逻辑
-            if ("折扣".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
-                actualPayment *= coupon.getDiscountIntensity_zch_hwz_gjc();
-            } else if ("满减".equals(coupon.getDiscountMethod_zch_hwz_gjc())) {
-                actualPayment -= coupon.getDiscountIntensity_zch_hwz_gjc();
-            }
-            // 注意：这里只是一个示例，您需要根据实际的优惠券逻辑来进行计算
         }
 
         // 调用AccountBalanceController的updateMoney方法进行支付
@@ -347,9 +351,7 @@ public class OrderController {
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
                 .eq("orderState_zch_hwz_gjc", "未支付")  // 加入当前订单状态的检查
-                .set("orderState_zch_hwz_gjc", "已支付")
-                .set("orderPayment_zch_hwz_gjc", (actualPayment + order.getOrderDeposit_zch_hwz_gjc()));
-        System.out.println((actualPayment + order.getOrderDeposit_zch_hwz_gjc()));
+                .set("orderState_zch_hwz_gjc", "已支付");
         boolean updateSuccess = orderMapper.update(order, updateWrapper) > 0;
 
         if (!updateSuccess) {

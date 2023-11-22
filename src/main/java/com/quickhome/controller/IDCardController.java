@@ -59,12 +59,16 @@ public class IDCardController {
 
     @PutMapping("/updateIdCardInfo")
     public ResponseEntity<ResponseResult> updateIdCardInfo(
-            @RequestParam("IDCardRecordID") Long IDCardRecordID,
-            @RequestParam("IDCardName") String IDCardName,
-            @RequestParam("IDCardNumber") String IDCardNumber,
-            @RequestParam("IDCardPhoneNumber") String IDCardPhoneNumber) {
+            @RequestParam("userId") Long userId,
+            @RequestParam(value = "newIDCardName", required = false) String newIDCardName,
+            @RequestParam(value = "newIDCardNumber", required = false) String newIDCardNumber,
+            @RequestParam(value = "newIDCardPhoneNumber", required = false) String newIDCardPhoneNumber,
+            @RequestParam(value = "oldIDCardName", required = false) String oldIDCardName,
+            @RequestParam(value = "oldIDCardNumber", required = false) String oldIDCardNumber,
+            @RequestParam(value = "oldIDCardPhoneNumber", required = false) String oldIDCardPhoneNumber) {
         try {
-            boolean result = idCardService.updateIdCardInfo(IDCardRecordID, IDCardName, IDCardNumber, IDCardPhoneNumber);
+            boolean result = idCardService.updateIdCardInfo(userId, newIDCardName, newIDCardNumber, newIDCardPhoneNumber,
+                    oldIDCardName, oldIDCardNumber, oldIDCardPhoneNumber);
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("更新成功"));
             } else {
@@ -74,6 +78,7 @@ public class IDCardController {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
         }
     }
+
 
     @PostMapping("/createIdentityChecklist")
     public ResponseEntity<ResponseResult<?>> createIdentityCheckList(@RequestParam Long IDCardRecordID, @RequestParam Long orderID) {

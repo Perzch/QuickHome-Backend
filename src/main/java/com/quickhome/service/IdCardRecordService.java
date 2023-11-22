@@ -19,7 +19,8 @@ public interface IdCardRecordService extends IService<IdCardRecord> {
 
     public IPage<IdCardRecord> getIdCardInfo(Long userId, int current, int size);
 
-    public boolean updateIdCardInfo(Long recordId, String name, String number, String phoneNumber);
+    public boolean updateIdCardInfo(Long userId, String newName, String newNumber, String newPhoneNumber,
+                                    String oldName, String oldNumber, String oldPhoneNumber);
     public boolean deleteIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber,Long userId);
     List<IdCardRecord> getOrderIdentityInfo(Long orderID);;
 }
