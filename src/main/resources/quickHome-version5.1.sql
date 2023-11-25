@@ -27,7 +27,7 @@ CREATE TABLE tab_userInformation_zch_hwz_gjc
     userId_zch_hwz_gjc               BIGINT comment "用户编号",
     userGender_zch_hwz_gjc           VARCHAR(50) comment "用户性别",
     userHeadId_zch_hwz_gjc           BIGINT comment "用户头像编号",
-    userBirthday_zch_hwz_gjc         DATE comment "用户生日",
+    userBirthday_zch_hwz_gjc         DATETIME comment "用户生日",
     userSignature_zch_hwz_gjc        VARCHAR(100) comment "个性签名",
     idCardType_zch_hwz_gjc           VARCHAR(10) comment "证件类型",
     idCardNumber_zch_hwz_gjc         VARCHAR(30) comment "证件号码",

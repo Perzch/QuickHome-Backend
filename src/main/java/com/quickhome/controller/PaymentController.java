@@ -53,7 +53,7 @@ public class PaymentController {
     public ResponseEntity<ResponseResult> getPaymentPasswordStatus(@RequestParam("userId") Long userId) {
         try {
             boolean result = paymentPasswordService.getPaymentPasswordStatus(userId);
-            if(result == true){
+            if(result){
                 return ResponseEntity.ok(ResponseResult.ok(true));
             }else {
                 return ResponseEntity.badRequest().body(ResponseResult.error(String.valueOf(false)));

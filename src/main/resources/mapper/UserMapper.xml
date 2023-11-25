@@ -36,9 +36,9 @@
         from tab_user_zch_hwz_gjc
         where
         userPwd_zch_hwz_gjc=#{userPwd_zch_hwz_gjc} and
-            userEmail_zch_hwz_gjc=#{userEmail_zch_hwz_gjc}
+        (userEmail_zch_hwz_gjc=#{userEmail_zch_hwz_gjc}
         or userAccount_zch_hwz_gjc=#{userAccount_zch_hwz_gjc}
-        or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc}
+        or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc})
         AND deleted_zch_hwz_gjc = 0
 
     </select>
@@ -51,18 +51,18 @@
     <select id="queryUser" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
         select *
         from tab_user_zch_hwz_gjc
-        where userEmail_zch_hwz_gjc = '${userEmail_zch_hwz_gjc}'
+        where (userEmail_zch_hwz_gjc = '${userEmail_zch_hwz_gjc}'
            or userAccount_zch_hwz_gjc = '${userAccount_zch_hwz_gjc}'
-           or userPhone_zch_hwz_gjc = '${userPhone_zch_hwz_gjc}'
+           or userPhone_zch_hwz_gjc = '${userPhone_zch_hwz_gjc}')
             AND deleted_zch_hwz_gjc = 0
     </select>
     <select id="queryUserForLogin" parameterType="com.quickhome.domain.User" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_user_zch_hwz_gjc
-        where userEmail_zch_hwz_gjc=#{userEmail_zch_hwz_gjc}
+        where (userEmail_zch_hwz_gjc=#{userEmail_zch_hwz_gjc}
         or userAccount_zch_hwz_gjc=#{userAccount_zch_hwz_gjc}
-        or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc}
+        or userPhone_zch_hwz_gjc=#{userPhone_zch_hwz_gjc})
         AND deleted_zch_hwz_gjc = 0
     </select>
 
