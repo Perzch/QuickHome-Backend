@@ -3,6 +3,7 @@ package com.quickhome.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.AttractionReview;
 import com.quickhome.domain.HousingReview;
+import com.quickhome.mapper.AttractionReviewMapper;
 import com.quickhome.mapper.HousingReviewMapper;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionReviewService;
@@ -29,22 +30,28 @@ public class ReviewController {
 
     @Autowired
     private HousingReviewMapper housingReviewMapper;
+    @Autowired
+    private AttractionReviewService attractionReviewService;
+    @Autowired
+    private AttractionReviewMapper attractionReviewMapper;
 
     @PostMapping("/insertHomeReview")
     public ResponseEntity<ResponseResult<?>> insertHomeReview(@RequestBody HousingReview housingReview) {
         housingReview.setReviewTime_zch_hwz_gjc(new Date());  // 设置当前时间为评论时间
         boolean result = housingReviewService.insertHomeReview(housingReview);
 
-        if (housingReviewMapper.selectById(housingReview.getSecondHousingReviewId_zch_hwz_gjc()) == null && housingReview.getSecondHousingReviewId_zch_hwz_gjc() != null){
-            return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+        if (housingReview.getSecondHousingReviewId_zch_hwz_gjc() != null) {
+            if (housingReviewMapper.selectById(housingReview.getSecondHousingReviewId_zch_hwz_gjc()) == null && housingReview.getSecondHousingReviewId_zch_hwz_gjc() != null) {
+                housingReviewMapper.deleteById(housingReview.getHousingReviewId_zch_hwz_gjc());
+                return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+            }
         }
-
         if (result && housingReview.getSecondHousingReviewId_zch_hwz_gjc() == null) {
             try {
                 housingReview.setSecondHousingReviewId_zch_hwz_gjc(housingReview.getHousingReviewId_zch_hwz_gjc());
                 housingReviewService.updateById(housingReview);  // 更新记录，将 secondHousingReviewId 设置为 housingReviewId_zch_hwz_gjc 的值
                 return ResponseEntity.ok(ResponseResult.ok());
-            }catch (Exception e){
+            } catch (Exception e) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("评论失败"));
             }
         } else if (result) {
@@ -82,16 +89,17 @@ public class ReviewController {
         return ResponseEntity.ok(ResponseResult.ok(comments));
     }
 
-    @Autowired
-    private AttractionReviewService attractionReviewService;
 
     @PostMapping("/insertAttractionReview")
     public ResponseEntity<ResponseResult<?>> insertAttractionReview(@RequestBody AttractionReview attractionReview) {
         attractionReview.setReviewTime_zch_hwz_gjc(new Date());  // 设置当前时间为评论时间
         boolean result = attractionReviewService.insertAttractionReview(attractionReview);
+        if (attractionReview.getSecondAttractionReviewId_zch_hwz_gjc() != null) {
+            if (attractionReviewMapper.selectById(attractionReview.getSecondAttractionReviewId_zch_hwz_gjc()) == null && attractionReview.getSecondAttractionReviewId_zch_hwz_gjc() != null) {
 
-        if (housingReviewMapper.selectById(attractionReview.getSecondAttractionReviewId_zch_hwz_gjc()) == null && attractionReview.getSecondAttractionReviewId_zch_hwz_gjc() != null){
-            return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+                attractionReviewMapper.deleteById(attractionReview.getAttractionReviewId_zch_hwz_gjc());
+                return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+            }
         }
 
         if (result && attractionReview.getSecondAttractionReviewId_zch_hwz_gjc() == null) {

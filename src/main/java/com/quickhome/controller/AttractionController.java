@@ -131,6 +131,24 @@ public class AttractionController {
         }
     }
 
+    @GetMapping("/checkAttractionCollectionStatus")
+    @ResponseBody
+    public ResponseEntity<ResponseResult<?>> checkAttractionCollectionStatus(
+            @RequestParam Long userId,
+            @RequestParam Long attractionId) {
+        try {
+            QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userId_zch_hwz_gjc", userId);
+            queryWrapper.eq("attractionsId_zch_hwz_gjc", attractionId);
+            Long count = attractionCollectionMapper.selectCount(queryWrapper);
+            boolean isCollected = count > 0;
+            return ResponseEntity.ok(ResponseResult.ok(isCollected));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("查询收藏状态出错"));
+        }
+    }
+
+
     @DeleteMapping("/deleteAttractionImg")
     public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
         try {
@@ -256,24 +274,6 @@ public class AttractionController {
             return ResponseEntity.badRequest().body(ResponseResult.error("Error fetching attraction details"));
         }
     }
-
-//    @GetMapping("/queryAttractions")
-//    public ResponseEntity<ResponseResult<?>> queryAttractions(
-//            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-//            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-//            @RequestParam(value = "attractionsName", required = false) String attractionsName) {
-//        try {
-//            Page<Attractions> page = new Page<>(pageNo, pageSize);
-//            QueryWrapper<Attractions> queryWrapper = new QueryWrapper<>();
-//            if (attractionsName != null && !attractionsName.trim().isEmpty()) {
-//                queryWrapper.like("attractionsName_zch_hwz_gjc", attractionsName);
-//            }
-//            IPage<Attractions> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
-//            return ResponseEntity.ok(ResponseResult.ok(attractionsPage));
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(ResponseResult.error("获取景点列表出错"));
-//        }
-//    }
 
     @GetMapping("/queryAttractions")
     public ResponseEntity<ResponseResult<?>> queryAttractions(

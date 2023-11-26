@@ -213,7 +213,7 @@ public class HomeInformationController {
     public ResponseEntity<?> deleteHomeImg(@RequestParam Long homeId, @RequestParam String timestamp) {
         try {
             // 拼接attractionId和时间戳
-            String combinedString = homeId.toString() +"-"+ timestamp;
+            String combinedString = homeId.toString() + "-" + timestamp;
 
             // 使用拼接后的字符串去数据库中查找
             QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
@@ -279,15 +279,16 @@ public class HomeInformationController {
 
     /**
      * 通过ID获取房屋信息
-     * @param homeType 房屋类型
+     *
+     * @param homeType  房屋类型
      * @param beginDate 入住日期
-     * @param endDate 退房日期
-     * @param minRent 最低租金
-     * @param maxRent 最高租金
-     * @param address 模糊地址关键字
+     * @param endDate   退房日期
+     * @param minRent   最低租金
+     * @param maxRent   最高租金
+     * @param address   模糊地址关键字
      * @param maxPeople 最大入住人数
-     * @param page 最大回传显示页数
-     * @param size 单页最大显示条数
+     * @param page      最大回传显示页数
+     * @param size      单页最大显示条数
      * @return 房屋信息
      */
 
@@ -305,7 +306,7 @@ public class HomeInformationController {
                                         @RequestParam(required = false, defaultValue = "10") int size,//单页最大显示条数
                                         HttpServletRequest req) {
         List<String> deviceNames = Arrays.asList(device.split(","));
-        List<PojoHome> pojoHomes = homeSer_zch_hwz_gjc.getHomesByCriteriaWithDevices(beginDate, endDate, address, minRent, maxRent,deviceNames ,maxPeople ,homeType ,page, size);
+        List<PojoHome> pojoHomes = homeSer_zch_hwz_gjc.getHomesByCriteriaWithDevices(beginDate, endDate, address, minRent, maxRent, deviceNames, maxPeople, homeType, page, size);
 
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : pojoHomes) {
@@ -336,16 +337,36 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
     }
 
+    @GetMapping("/checkHomeCollectionStatus")
+    @ResponseBody
+    public ResponseEntity<ResponseResult<?>> checkHomeCollectionStatus(
+            @RequestParam Long userId,
+            @RequestParam Long homeId) {
+        try {
+            QueryWrapper<HouseCollection> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userId_zch_hwz_gjc", userId);
+            queryWrapper.eq("homeId_zch_hwz_gjc", homeId);
+            queryWrapper.eq("deleted_zch_hwz_gjc", 0);
+            Long count = houseCollectionMapper.selectCount(queryWrapper);
+            boolean isCollected = count > 0;
+            return ResponseEntity.ok(ResponseResult.ok(isCollected));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("查询收藏状态出错"));
+        }
+    }
+
+
     /**
      * 通过ID获取房屋信息
-     * @param id 房屋ID
+     *
+     * @param id  房屋ID
      * @param req 请求
      * @return 房屋信息
      */
     @GetMapping("/getHomeInfById")//获取房屋信息通过id
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> getHomeInfById(@RequestParam Long id,
-                                            HttpServletRequest req) {
+                                                            HttpServletRequest req) {
         PojoHome pojoHome = new PojoHome();
         Home home = homeSer_zch_hwz_gjc.getById(id);
         pojoHome.setHome(home);
@@ -372,7 +393,6 @@ public class HomeInformationController {
         pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
         return ResponseEntity.ok(ResponseResult.ok(pojoHome));
     }
-
 
 
 //    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
@@ -495,6 +515,7 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
         }
     }
+
     @ResponseBody
     @PostMapping("/changeHomeInf")
     public ResponseEntity<ResponseResult<?>> changeHomeInf(
