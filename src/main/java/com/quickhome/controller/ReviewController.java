@@ -35,6 +35,26 @@ public class ReviewController {
     @Autowired
     private AttractionReviewMapper attractionReviewMapper;
 
+    @GetMapping("/getHousingReviewById")
+    public ResponseEntity<ResponseResult<?>> getCommentById(@RequestParam Long housingReviewId) {
+        HousingReview housingReview = housingReviewService.getById(housingReviewId);
+        if (housingReview != null) {
+            return ResponseEntity.ok(ResponseResult.ok(housingReview));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+        }
+    }
+
+    @GetMapping("/getAttractionReviewById")
+    public ResponseEntity<ResponseResult<?>> getAttractionReviewById(@RequestParam Long attractionReviewId) {
+        AttractionReview attractionReview = attractionReviewService.getById(attractionReviewId);
+        if (attractionReview != null) {
+            return ResponseEntity.ok(ResponseResult.ok(attractionReview));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+        }
+    }
+
     @PostMapping("/insertHomeReview")
     public ResponseEntity<ResponseResult<?>> insertHomeReview(@RequestBody HousingReview housingReview) {
         housingReview.setReviewTime_zch_hwz_gjc(new Date());  // 设置当前时间为评论时间

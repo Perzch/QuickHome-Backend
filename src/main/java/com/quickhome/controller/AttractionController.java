@@ -264,9 +264,36 @@ public class AttractionController {
     @GetMapping("/getAttractionById")
     public ResponseEntity<?> getAttractionById(@RequestParam Long attractionId) {
         try {
-            Attractions attractions = attractionMapper.selectById(attractionId);
-            if (attractions != null) {
-                return ResponseEntity.ok(ResponseResult.ok(attractions));
+            Attractions attraction = attractionMapper.selectById(attractionId);
+                PojoAttraction pojoAttraction = new PojoAttraction();
+                pojoAttraction.setAttractionsId_zch_hwz_gjc(attraction.getAttractionsId_zch_hwz_gjc());
+                pojoAttraction.setAttractions(attraction);
+
+                // 计算收藏数
+                QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
+                collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
+                Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
+                pojoAttraction.setCollectionCount(collectionCount);
+
+                // 获取图片
+                QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
+                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                imageWrapper.eq("deleted_zch_hwz_gjc", 0);
+                List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
+
+                List<AttractionImage> formattedImageList = new ArrayList<>();
+                for (AttractionImage image : images) {
+                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
+                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    image.setImagePath_zch_hwz_gjc(imageUrl);
+                    formattedImageList.add(image);
+                }
+                pojoAttraction.setAttractionImageList(formattedImageList);
+
+            if (pojoAttraction.getAttractionsId_zch_hwz_gjc() != null) {
+                return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
             }
