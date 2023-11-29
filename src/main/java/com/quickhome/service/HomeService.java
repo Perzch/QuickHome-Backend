@@ -14,6 +14,8 @@ import java.util.List;
 */
 @Transactional
 public interface HomeService extends IService<Home> {
+
+    public boolean checkHomeAvailability(Long homeId, String beginDate, String endDate);
     public List<Home> getHomesByPage(Long page, Long size);
     public List<PojoHome> getHomeListOrderByCollectionCount();
     public Double getHomeDayRentByHomeId(Long homeId_zch_hwz_gjc);

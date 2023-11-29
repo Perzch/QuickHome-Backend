@@ -1,23 +1,20 @@
 package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.quickhome.domain.AccountBalance;
 import com.quickhome.domain.Order;
-import com.quickhome.mapper.AccountBalanceMapper;
-import com.quickhome.pojo.OrderEndResult;
 import com.quickhome.service.OrderService;
 import com.quickhome.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tim-h
@@ -32,8 +29,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     @Autowired
     private OrderMapper orderMapper;
 
-    @Autowired
-    private AccountBalanceMapper accountBalanceMapper;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    public void scheduleOrderCancellation(Long orderId, int delayInMinutes) {
+        scheduler.schedule(() -> {
+            cancelOrderIfNotPaid(orderId);
+        }, delayInMinutes, TimeUnit.MINUTES);
+    }
+
+    private void cancelOrderIfNotPaid(Long orderId) {
+        Order order = orderMapper.selectById(orderId);
+        if (order != null && "未支付".equals(order.getOrderState_zch_hwz_gjc())) {
+            order.setOrderState_zch_hwz_gjc("已取消");
+            order.setEndTime_zch_hwz_gjc(new Date());
+            UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("orderId_zch_hwz_gjc", orderId);
+            orderMapper.update(order, updateWrapper);
+            // 这里可以添加其他逻辑，比如发送通知等
+        }
+    }
 
     @Override
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword) {

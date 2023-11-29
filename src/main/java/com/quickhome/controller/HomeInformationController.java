@@ -13,26 +13,21 @@ import com.quickhome.util.ImageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Transactional
 @Controller("HomeInfCon")
@@ -137,6 +132,17 @@ public class HomeInformationController {
         }
     }
 
+    @GetMapping("/checkHomeAvailability")
+    public ResponseEntity<?> checkHomeAvailability(@RequestParam Long homeId,
+                                                   @RequestParam String beginDate,
+                                                   @RequestParam String endDate) {
+        boolean isAvailable = homeSer_zch_hwz_gjc.checkHomeAvailability(homeId, beginDate, endDate);
+        if (isAvailable) {
+            return ResponseEntity.ok(ResponseResult.ok("房屋可用"));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("房屋不可用"));
+        }
+    }
 
 //    @SneakyThrows
 //    @ResponseBody
@@ -393,26 +399,6 @@ public class HomeInformationController {
         pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
         return ResponseEntity.ok(ResponseResult.ok(pojoHome));
     }
-
-
-//    @GetMapping("/getHomeListOrderByCollectionCount")//获取热门房屋信息
-//    @ResponseBody
-//    public ResponseEntity<?> getHomeListOrderByCollectionCount() {
-//        List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
-//        List<PojoHome> pojoHomeList = new ArrayList<>();
-//        for (PojoHome pojoHome : homeList) {
-//            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
-//            pojoHome.setHome(home);
-//            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
-//            pojoHome.setHomeInformation(homeInformation);
-//            List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-//            pojoHome.setHomeDeviceList(homeDevices);
-//            List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-//            pojoHome.setHomeImageList(homeImages);
-//            pojoHomeList.add(pojoHome);
-//        }
-//        return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
-//    }
 
     @GetMapping("/getHomeListOrderByCollectionCount") //获取热门房屋信息
     @ResponseBody

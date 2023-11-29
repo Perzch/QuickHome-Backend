@@ -101,4 +101,19 @@
             LIMIT #{page}
             , #{size}
     </select>
+
+    <select id="getHomeAvailability" parameterType="map" resultType="com.quickhome.domain.Home">
+        SELECT DISTINCT h.*
+        FROM tab_Home_zch_hwz_gjc h
+        LEFT JOIN tab_order_zch_hwz_gjc o ON h.homeId_zch_hwz_gjc = o.homeId_zch_hwz_gjc AND
+        (o.endTime_zch_hwz_gjc IS NULL
+        AND o.deleted_zch_hwz_gjc = 0
+        OR o.endTime_zch_hwz_gjc > #{endDate})
+        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+        WHERE h.homeId_zch_hwz_gjc = #{homeId}
+        and h.homeState_zch_hwz_gjc = '可入住'
+        AND h.deleted_zch_hwz_gjc = 0
+        AND (#{endDate} <![CDATA[ < ]]> o.creationTime_zch_hwz_gjc OR #{beginDate} <![CDATA[ > ]]> o.endTime_zch_hwz_gjc OR
+        o.creationTime_zch_hwz_gjc IS NULL)
+    </select>
 </mapper>

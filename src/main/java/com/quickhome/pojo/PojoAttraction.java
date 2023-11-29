@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PojoAttraction {
-    private Long attractionsId_zch_hwz_gjc;
+    private Long attractionsId;
     List<AttractionImage> attractionImageList;
     private Attractions attractions;
     private Integer collectionCount;

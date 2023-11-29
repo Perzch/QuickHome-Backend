@@ -13,7 +13,6 @@ import com.quickhome.mapper.AccountBalanceMapper;
 import com.quickhome.mapper.CouponMapper;
 import com.quickhome.mapper.OrderMapper;
 import com.quickhome.mapper.UsersAndCouponsMapper;
-import com.quickhome.pojo.OrderEndResult;
 import com.quickhome.pojo.PJOrder;
 import com.quickhome.pojo.PJUserTenant;
 import com.quickhome.request.ResponseResult;
@@ -29,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,7 +39,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
-import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 @Transactional
 @Controller("OrderCon")
@@ -71,8 +67,6 @@ public class OrderController {
 
     @Autowired
     private AccountBalanceController accountBalanceController;
-    @Autowired
-    private CouponController couponController;
 
     @Autowired
     private UsersAndCouponsMapper usersAndCouponsMapper;
@@ -396,6 +390,11 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    @PostMapping("/scheduleCancellation")
+    public ResponseEntity<ResponseResult<?>> scheduleOrderCancellation(@RequestParam Long orderId) {
+        orderService.scheduleOrderCancellation(orderId, 5); // 5分钟后检查
+        return ResponseEntity.ok(ResponseResult.ok("已接收订单"));
+    }
 
     @ResponseBody
     @PostMapping("/endOrder")

@@ -14,6 +14,8 @@ import java.util.List;
 */
 @Transactional
 public interface OrderService extends IService<Order> {
+
+    public void scheduleOrderCancellation(Long orderId, int delayInMinutes);
     public String getDynamicDoorPassword(Long OrderId);
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 

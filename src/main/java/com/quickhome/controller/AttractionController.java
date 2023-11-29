@@ -226,10 +226,10 @@ public class AttractionController {
     public ResponseEntity<ResponseResult<List<PojoAttraction>>> getAttractionListOrderByCollectionCount() {
         List<PojoAttraction> pojoAttractionList = attractionsService.getAttractionListOrderByCollectionCount();
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
-            Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId_zch_hwz_gjc());
+            Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId());
             pojoAttraction.setAttractions(attractions);
 
-            List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId_zch_hwz_gjc());
+            List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId());
             List<AttractionImage> formattedImageList = new ArrayList<>();
             for (AttractionImage image : attractionImageList) {
                 try {
@@ -262,11 +262,12 @@ public class AttractionController {
     }
 
     @GetMapping("/getAttractionById")
-    public ResponseEntity<?> getAttractionById(@RequestParam Long attractionId) {
+    public ResponseEntity<?> getAttractionById(@RequestParam Long attractionId,
+                                               HttpServletRequest req) {
         try {
             Attractions attraction = attractionMapper.selectById(attractionId);
                 PojoAttraction pojoAttraction = new PojoAttraction();
-                pojoAttraction.setAttractionsId_zch_hwz_gjc(attraction.getAttractionsId_zch_hwz_gjc());
+                pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
                 pojoAttraction.setAttractions(attraction);
 
                 // 计算收藏数
@@ -292,7 +293,7 @@ public class AttractionController {
                 }
                 pojoAttraction.setAttractionImageList(formattedImageList);
 
-            if (pojoAttraction.getAttractionsId_zch_hwz_gjc() != null) {
+            if (pojoAttraction.getAttractionsId() != null) {
                 return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
@@ -318,7 +319,7 @@ public class AttractionController {
             List<PojoAttraction> pojoAttractionList = new ArrayList<>();
             for (Attractions attraction : attractionsPage.getRecords()) {
                 PojoAttraction pojoAttraction = new PojoAttraction();
-                pojoAttraction.setAttractionsId_zch_hwz_gjc(attraction.getAttractionsId_zch_hwz_gjc());
+                pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
                 pojoAttraction.setAttractions(attraction);
 
                 // 计算收藏数

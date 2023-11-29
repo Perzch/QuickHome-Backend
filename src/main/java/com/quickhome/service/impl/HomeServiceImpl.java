@@ -28,6 +28,11 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
     @Autowired
     private HomeMapper homeMapper;
 
+    @Override
+    public boolean checkHomeAvailability(Long homeId, String beginDate, String endDate) {
+        Home home = homeMapper.getHomeAvailability(homeId, beginDate, endDate);
+        return home != null;
+    }
 
     @Override
     public List<PojoHome> getHomesByCriteriaWithDevices(String beginDateStr, String endDateStr, String address, double minRent, double maxRent, List<String> deviceNames, int maxPeople, String homeType, int page, int size) {
