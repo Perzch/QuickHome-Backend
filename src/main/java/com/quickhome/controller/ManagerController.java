@@ -407,7 +407,14 @@ public class ManagerController {
             @RequestParam(required = false, defaultValue = "1") long current,
             @RequestParam(required = false, defaultValue = "10") long size) {
         try {
-            IPage<UserNotification> page = userNotificationService.getAllNotifications(current, size);
+            // 创建一个 QueryWrapper 实例
+            QueryWrapper<UserNotification> queryWrapper = new QueryWrapper<>();
+            // 指定按创建时间降序排序
+            queryWrapper.orderByDesc("notificationReleaseTime_zch_hwz_gjc");
+
+            // 使用 MyBatis-Plus 的分页方法，传入当前页和每页大小以及排序规则
+            IPage<UserNotification> page = userNotificationService.page(new Page<>(current, size), queryWrapper);
+
             return ResponseEntity.ok(ResponseResult.ok(page));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));

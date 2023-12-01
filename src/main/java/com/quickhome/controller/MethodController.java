@@ -40,6 +40,7 @@ public class MethodController {
         }
 
         if (returnCode != null) {
+            System.out.println(returnCode);
             return ResponseEntity.ok(ResponseResult.ok(returnCode));
         } else {
             return ResponseEntity.ok(ResponseResult.of(100, "发送失败"));
@@ -66,6 +67,7 @@ public class MethodController {
             throw new RuntimeException(e);
         }
         if (returnCode != null) {
+            System.out.println(returnCode);
             return ResponseEntity.ok(ResponseResult.ok(returnCode));
         } else {
             return ResponseEntity.ok(ResponseResult.of(100, "发送失败"));
