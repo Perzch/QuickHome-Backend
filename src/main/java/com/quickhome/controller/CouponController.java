@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,13 +108,17 @@ public class CouponController {
             IPage<UsersAndCoupons> usersAndCouponsPage = usersAndCouponsMapper.selectPage(page, queryWrapper);
 
             List<PojoCoupon> pojoCoupons = new ArrayList<>();
+            LocalDateTime now = LocalDateTime.now();
             for (UsersAndCoupons usersAndCoupons : usersAndCouponsPage.getRecords()) {
                 Coupon coupon = couponMapper.selectById(usersAndCoupons.getCouponId_zch_hwz_gjc());
                 if (coupon != null) {
-                    PojoCoupon pojoCoupon = new PojoCoupon();
-                    pojoCoupon.setCoupon(coupon);
-                    pojoCoupon.setUsersAndCoupons(usersAndCoupons);
-                    pojoCoupons.add(pojoCoupon);
+                    LocalDateTime latestUseTime = LocalDateTime.ofInstant(coupon.getLatestUseTime_zch_hwz_gjc().toInstant(), ZoneId.systemDefault());
+                    if (!now.isAfter(latestUseTime)) {
+                        PojoCoupon pojoCoupon = new PojoCoupon();
+                        pojoCoupon.setCoupon(coupon);
+                        pojoCoupon.setUsersAndCoupons(usersAndCoupons);
+                        pojoCoupons.add(pojoCoupon);
+                    }
                 }
             }
 

@@ -267,8 +267,10 @@ public class OrderController {
         // 创建一个Page对象
         Page<Order> page = new Page<>(currentPage, pageSize);
 
-        // 使用OrderMapper的selectPage方法进行分页查询
-        IPage<Order> ordersPage = orderMapper.selectPage(page, new QueryWrapper<Order>().eq("userId_zch_hwz_gjc", userId).eq("deleted_zch_hwz_gjc", 0));
+        IPage<Order> ordersPage = orderMapper.selectPage(page,
+                new QueryWrapper<Order>()
+                        .eq("userId_zch_hwz_gjc", userId)
+                        .orderByDesc("creationTime_zch_hwz_gjc")); // 添加排序条件
 
         List<Order> orders = ordersPage.getRecords();
 

@@ -234,19 +234,19 @@ CREATE TABLE tab_housingReview_zch_hwz_gjc
 
 
 -- 表15 私信聊天记录
-DROP TABLE IF EXISTS tab_myChat_zch_hwz_gjc;
-CREATE TABLE tab_myChat_zch_hwz_gjc
-(
-    chatId_zch_hwz_gjc               BIGINT PRIMARY KEY auto_increment comment "私信编号",
-    messageReceive_zch_hwz_gjc       BIGINT comment "接收人编号",
-    messageContent_zch_hwz_gjc       VARCHAR(500) comment "私信内容",
-    messageSender_zch_hwz_gjc        BIGINT comment "发送人编号",
-    sendingTime_zch_hwz_gjc          DATETIME comment "发送时间",
-    standby1_zch_hwz_gjc             VARCHAR(50) comment "备用字段1",
-    standby2_zch_hwz_gjc             VARCHAR(50) comment "备用字段2",
-    version_zch_hwz_gjc             BIGINT default 0 comment "乐观锁",
-    deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
-);
+# DROP TABLE IF EXISTS tab_myChat_zch_hwz_gjc;
+# CREATE TABLE tab_myChat_zch_hwz_gjc
+# (
+#     chatId_zch_hwz_gjc               BIGINT PRIMARY KEY auto_increment comment "私信编号",
+#     messageReceive_zch_hwz_gjc       BIGINT comment "接收人编号",
+#     messageContent_zch_hwz_gjc       VARCHAR(500) comment "私信内容",
+#     messageSender_zch_hwz_gjc        BIGINT comment "发送人编号",
+#     sendingTime_zch_hwz_gjc          DATETIME comment "发送时间",
+#     standby1_zch_hwz_gjc             VARCHAR(50) comment "备用字段1",
+#     standby2_zch_hwz_gjc             VARCHAR(50) comment "备用字段2",
+#     version_zch_hwz_gjc             BIGINT default 0 comment "乐观锁",
+#     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
+# );
 
 -- 表16 景点表(tab_attractions_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_attractions_zch_hwz_gjc;
