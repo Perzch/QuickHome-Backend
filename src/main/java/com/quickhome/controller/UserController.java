@@ -133,7 +133,6 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,
                                                        HttpServletRequest req) {
-        userInformation.setAuthenticationTime_zch_hwz_gjc(DateTime.now());//当前时间
         userInformation.setUserHeadId_zch_hwz_gjc(
                 userHeadImageService.getHeadImgIdByUserId_zch_hwz_gjc(
                         userInformation.getUserId_zch_hwz_gjc()

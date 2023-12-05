@@ -11,10 +11,6 @@
             <result property="userHeadId_zch_hwz_gjc" column="userHeadId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="userBirthday_zch_hwz_gjc" column="userBirthday_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="userSignature_zch_hwz_gjc" column="userSignature_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="idCardType_zch_hwz_gjc" column="idCardType_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="idCardNumber_zch_hwz_gjc" column="idCardNumber_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="authenticationStatus_zch_hwz_gjc" column="authenticationStatus_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="authenticationTime_zch_hwz_gjc" column="authenticationTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
