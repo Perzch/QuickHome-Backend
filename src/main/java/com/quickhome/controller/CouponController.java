@@ -25,6 +25,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ButterflyX
@@ -104,31 +105,39 @@ public class CouponController {
                     .eq("condition_zch_hwz_gjc", "未使用")
                     .eq("deleted_zch_hwz_gjc", 0);
 
-            Page<UsersAndCoupons> page = new Page<>(pageNum, pageSize);
-            IPage<UsersAndCoupons> usersAndCouponsPage = usersAndCouponsMapper.selectPage(page, queryWrapper);
+            // 获取所有的优惠券记录
+            List<UsersAndCoupons> allUsersAndCoupons = usersAndCouponsMapper.selectList(queryWrapper);
 
-            List<PojoCoupon> pojoCoupons = new ArrayList<>();
+            // 筛选出未过期的优惠券
             LocalDateTime now = LocalDateTime.now();
-            for (UsersAndCoupons usersAndCoupons : usersAndCouponsPage.getRecords()) {
-                Coupon coupon = couponMapper.selectById(usersAndCoupons.getCouponId_zch_hwz_gjc());
-                if (coupon != null) {
-                    LocalDateTime latestUseTime = LocalDateTime.ofInstant(coupon.getLatestUseTime_zch_hwz_gjc().toInstant(), ZoneId.systemDefault());
-                    if (!now.isAfter(latestUseTime)) {
-                        PojoCoupon pojoCoupon = new PojoCoupon();
-                        pojoCoupon.setCoupon(coupon);
-                        pojoCoupon.setUsersAndCoupons(usersAndCoupons);
-                        pojoCoupons.add(pojoCoupon);
-                    }
-                }
-            }
+            List<PojoCoupon> validCoupons = allUsersAndCoupons.stream()
+                    .map(usersAndCoupons -> {
+                        Coupon coupon = couponMapper.selectById(usersAndCoupons.getCouponId_zch_hwz_gjc());
+                        if (coupon != null) {
+                            LocalDateTime latestUseTime = LocalDateTime.ofInstant(coupon.getLatestUseTime_zch_hwz_gjc().toInstant(), ZoneId.systemDefault());
+                            if (!now.isAfter(latestUseTime)) {
+                                PojoCoupon pojoCoupon = new PojoCoupon();
+                                pojoCoupon.setCoupon(coupon);
+                                pojoCoupon.setUsersAndCoupons(usersAndCoupons);
+                                return pojoCoupon;
+                            }
+                        }
+                        return null;
+                    })
+                    .filter(pojoCoupon -> pojoCoupon != null)
+                    .collect(Collectors.toList());
+
+            // 手动分页
+            int start = (pageNum - 1) * pageSize;
+            int end = Math.min((start + pageSize), validCoupons.size());
+            List<PojoCoupon> paginatedCoupons = validCoupons.subList(start, end);
 
             Page<PojoCoupon> pojoCouponPage = new Page<>(pageNum, pageSize);
-            pojoCouponPage.setTotal(usersAndCouponsPage.getTotal());
-            pojoCouponPage.setRecords(pojoCoupons);
+            pojoCouponPage.setTotal(validCoupons.size());
+            pojoCouponPage.setRecords(paginatedCoupons);
 
             return ResponseEntity.ok(ResponseResult.ok(pojoCouponPage));
         } catch (Exception e) {
-            // Handle exception...
             return ResponseEntity.status(500).body(ResponseResult.error("查询失败：" + e.getMessage()));
         }
     }
