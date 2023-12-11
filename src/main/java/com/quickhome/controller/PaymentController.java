@@ -22,6 +22,12 @@ public class PaymentController {
     @Autowired
     private PaymentPasswordService paymentPasswordService;
 
+    /**
+     * 设置支付密码
+     * @param request 支付密码对象
+     * @return
+     */
+
     @PostMapping("/setPaymentPwd")
     public ResponseEntity<ResponseResult<?>> setPaymentPassword(@RequestBody PaymentPassword request) {
         try {
@@ -36,6 +42,12 @@ public class PaymentController {
         }
     }
 
+    /**
+     * 验证支付密码
+     * @param request 支付密码对象
+     * @return
+     */
+
     @PostMapping("/verifyPaymentPwd")
     public ResponseEntity<ResponseResult<?>> verifyPaymentPassword(@RequestBody PojoPaymentPassword request) {
         try {
@@ -49,6 +61,13 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
         }
     }
+
+    /**
+     * 获取支付密码设置状态
+     * @param userId 用户ID
+     * @return
+     */
+
     @GetMapping("/getPaymentPwdStatus")
     public ResponseEntity<ResponseResult> getPaymentPasswordStatus(@RequestParam("userId") Long userId) {
         try {

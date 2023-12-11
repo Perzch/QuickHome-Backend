@@ -116,6 +116,13 @@ public class OrderController {
     }
 
 
+    /**
+     * 插入订单
+     * @param pjOrder 自定义订单类
+     * @param req
+     * @return
+     */
+
     @PostMapping("/insertOrder")
     public ResponseEntity<?> insertOrder(@RequestBody PJOrder pjOrder,
                                          HttpServletRequest req) {
@@ -197,6 +204,13 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    /**
+     * 获取动态房屋密码
+     * @param orderId 订单ID
+     * @param req
+     * @return
+     */
+
     @GetMapping("/getDynamicDoorPassword")
     public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long orderId,
                                                     HttpServletRequest req) {
@@ -233,6 +247,13 @@ public class OrderController {
         // 返回加密后的动态门密码
         return ResponseEntity.ok(ResponseResult.ok(Base64.encode(encrypt)));
     }
+
+    /**
+     * 生成动态房屋密码
+     * @param orderId 订单ID
+     * @param req
+     * @return
+     */
 
     @PostMapping("/creatDynamicDoorPassword")
     public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestParam Long orderId, HttpServletRequest req) {
@@ -285,8 +306,14 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(ordersPage));  // 返回整个IPage对象，它包含了当前页的数据、总记录数、总页数等信息
     }
 
-
-    // 根据优惠券的折扣方式和优惠力度计算实际支付金额
+    /**
+     * 支付订单
+     *
+     * @param orderId 订单ID
+     * @param UACID   用户优惠券关联ID，可选参数
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/payOrder")
@@ -361,6 +388,13 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    /**
+     * 退房
+     *
+     * @param orderId 订单ID
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/checkOut")
@@ -392,11 +426,27 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    /**
+     * 取消订单计划
+     *
+     * @param orderId 订单ID
+     * @return
+     */
+
     @PostMapping("/scheduleCancellation")
     public ResponseEntity<ResponseResult<?>> scheduleOrderCancellation(@RequestParam Long orderId) {
         orderService.scheduleOrderCancellation(orderId, 5); // 5分钟后检查
         return ResponseEntity.ok(ResponseResult.ok("已接收订单"));
     }
+
+    /**
+     * 结束订单
+     *
+     * @param orderId          订单ID
+     * @param maintenanceCost  维修费用
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/endOrder")
@@ -455,6 +505,14 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    /**
+     * 更新订单信息
+     *
+     * @param order
+     * @param req
+     * @return
+     */
+
     @ResponseBody
     @PostMapping("/updateOrder")
     public ResponseEntity<ResponseResult<?>> updateOrder(
@@ -510,6 +568,13 @@ public class OrderController {
         }
     }
 
+    /**
+     * 删除订单
+     *
+     * @param orderId
+     * @return
+     */
+
     @DeleteMapping("/delOrder")
     public ResponseEntity<ResponseResult<?>> deleteOrder(@RequestParam Long orderId) {
         try {
@@ -529,6 +594,13 @@ public class OrderController {
             return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
         }
     }
+
+    /**
+     * 退款或取消订单
+     *
+     * @param orderId
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/endOrderRefund")

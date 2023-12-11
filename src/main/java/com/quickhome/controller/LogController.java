@@ -25,6 +25,12 @@ public class LogController {
     @Autowired
     private LogService logService;
 
+    /**
+     * 日志记录
+     *
+     * @param log 日志信息
+     * @return
+     */
     @PostMapping("/insertLog")
     public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log) {
         try {

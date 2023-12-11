@@ -31,6 +31,13 @@ public class AccountBalanceController {
     @Autowired
     private AccountBalanceMapper accountBalanceMapper;
 
+    /**
+     * 新建用户钱包
+     * @param accountBalance 用户钱包类
+     * @param req
+     * @return
+     */
+
     @ResponseBody
     @PostMapping("/insertMoney")
     public ResponseEntity<ResponseResult<?>> insertMoney(
@@ -56,6 +63,15 @@ public class AccountBalanceController {
             return ResponseEntity.ok(ResponseResult.of(400,"该用户已存在"));
         }
     }
+
+    /**
+     * 充值/提现
+     * @param userId 用户id
+     * @param money  钱数
+     * @param req
+     * @return
+     */
+
 
     @ResponseBody
     @PostMapping("/updateMoney")
@@ -87,6 +103,12 @@ public class AccountBalanceController {
         return ResponseEntity.ok(ResponseResult.ok(accountBalance));
     }
 
+    /**
+     * 查询用户钱包
+     * @param userId 用户id
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @GetMapping("/selectAccountBalance")

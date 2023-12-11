@@ -35,6 +35,13 @@ public class ReviewController {
     @Autowired
     private AttractionReviewMapper attractionReviewMapper;
 
+    /**
+     * 查找房屋子评论
+     *
+     * @param housingReviewId 房屋评论ID
+     * @return
+     */
+
     @GetMapping("/getHousingReviewById")
     public ResponseEntity<ResponseResult<?>> getCommentById(@RequestParam Long housingReviewId) {
         HousingReview housingReview = housingReviewService.getById(housingReviewId);
@@ -45,6 +52,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 查找景点子评论
+     *
+     * @param attractionReviewId 景点评论ID
+     * @return
+     */
+
     @GetMapping("/getAttractionReviewById")
     public ResponseEntity<ResponseResult<?>> getAttractionReviewById(@RequestParam Long attractionReviewId) {
         AttractionReview attractionReview = attractionReviewService.getById(attractionReviewId);
@@ -54,6 +68,13 @@ public class ReviewController {
             return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
         }
     }
+
+    /**
+     * 新增房屋评论
+     *
+     * @param housingReview 房屋评论
+     * @return
+     */
 
     @PostMapping("/insertHomeReview")
     public ResponseEntity<ResponseResult<?>> insertHomeReview(@RequestBody HousingReview housingReview) {
@@ -81,6 +102,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 点赞房屋评论
+     *
+     * @param housingReviewId 房屋评论ID
+     * @return
+     */
+
     @PutMapping("/likeHomeComment")
     public ResponseEntity<ResponseResult<?>> likeComment(@RequestParam Long housingReviewId) {
         boolean result = housingReviewService.likeComment(housingReviewId);
@@ -90,6 +118,13 @@ public class ReviewController {
             return ResponseEntity.badRequest().body(ResponseResult.error("点赞失败"));
         }
     }
+
+    /**
+     * 删除房屋评论
+     *
+     * @param housingReviewId 房屋评论ID
+     * @return
+     */
 
     @DeleteMapping("/deleteHomeComment")
     public ResponseEntity<ResponseResult> deleteComment(@RequestParam Long housingReviewId) {
@@ -101,6 +136,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 根据房屋ID获取房屋评论
+     *
+     * @param homeId 房屋ID
+     * @return
+     */
+
     @GetMapping("/getHomeAllReview")
     public ResponseEntity<ResponseResult<IPage<HousingReview>>> getCommentsByHomeId(@RequestParam Long homeId,
                                                                                     @RequestParam(defaultValue = "1") int pageNum,
@@ -109,6 +151,13 @@ public class ReviewController {
         return ResponseEntity.ok(ResponseResult.ok(comments));
     }
 
+
+    /**
+     * 新增景点评论
+     *
+     * @param attractionReview 景点评论
+     * @return
+     */
 
     @PostMapping("/insertAttractionReview")
     public ResponseEntity<ResponseResult<?>> insertAttractionReview(@RequestBody AttractionReview attractionReview) {
@@ -136,6 +185,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 点赞景点评论
+     *
+     * @param attractionReviewId 景点评论ID
+     * @return
+     */
+
     @PutMapping("/likeAttractionComment")
     public ResponseEntity<ResponseResult<?>> likeAttractionComment(@RequestParam Long attractionReviewId) {
         boolean result = attractionReviewService.likeAttractionComment(attractionReviewId);
@@ -146,6 +202,13 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 删除景点评论
+     *
+     * @param attractionReviewId 景点评论ID
+     * @return
+     */
+
     @DeleteMapping("/deleteAttractionComment")
     public ResponseEntity<ResponseResult<?>> deleteAttractionComment(@RequestParam Long attractionReviewId) {
         boolean result = attractionReviewService.deleteCommentAndChildren(attractionReviewId);
@@ -155,6 +218,13 @@ public class ReviewController {
             return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
         }
     }
+
+    /**
+     * 根据景点ID获取景点评论
+     *
+     * @param attractionId 景点ID
+     * @return
+     */
 
     @GetMapping("/getAttractionAllReview")
     public ResponseEntity<ResponseResult<IPage<AttractionReview>>> getCommentsByAttractionId(@RequestParam Long attractionId,

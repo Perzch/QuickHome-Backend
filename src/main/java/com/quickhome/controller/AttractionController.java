@@ -60,6 +60,12 @@ public class AttractionController {
 
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
+    /**
+     * 下载景点图片
+     * @param attractionId
+     * @return
+     */
+
 //    @SneakyThrows
 //    @ResponseBody
 //    @GetMapping("/getAttractionImg")
@@ -102,6 +108,11 @@ public class AttractionController {
 //    }
 
 
+    /**
+     * 获取景点图片
+     * @param attractionId 景点id
+     * @return
+     */
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getAttractionImg")
@@ -131,6 +142,13 @@ public class AttractionController {
         }
     }
 
+    /**
+     * 检查用户是否收藏该景点
+     * @param userId 用户id
+     * @param attractionId 景点id
+     * @return
+     */
+
     @GetMapping("/checkAttractionCollectionStatus")
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> checkAttractionCollectionStatus(
@@ -148,6 +166,12 @@ public class AttractionController {
         }
     }
 
+    /**
+     * 删除景点图片
+     * @param attractionId 景点id
+     * @param timestamp 时间戳
+     * @return
+     */
 
     @DeleteMapping("/deleteAttractionImg")
     public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
@@ -181,6 +205,14 @@ public class AttractionController {
         }
     }
 
+    /**
+     * 上传景点图片
+     * @param attractionId 景点id
+     * @param file 上传的文件
+     * @param req 请求
+     * @return
+     * @throws IOException
+     */
 
     @ResponseBody
     @PostMapping("/insertAttractionImg")
@@ -247,6 +279,11 @@ public class AttractionController {
         return ResponseEntity.ok(ResponseResult.ok(pojoAttractionList));
     }
 
+    /**
+     * 插入景点
+     * @param attractions 景点信息
+     * @return
+     */
 
     @PostMapping("/insertAttraction")
     public ResponseEntity<?> insertAttraction(@RequestBody Attractions attractions) {
@@ -260,6 +297,13 @@ public class AttractionController {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
         }
     }
+
+    /**
+     * 根据景点id获取景点信息
+     * @param attractionId 景点id
+     * @param req 请求
+     * @return
+     */
 
     @GetMapping("/getAttractionById")
     public ResponseEntity<?> getAttractionById(@RequestParam Long attractionId,
@@ -302,6 +346,14 @@ public class AttractionController {
             return ResponseEntity.badRequest().body(ResponseResult.error("Error fetching attraction details"));
         }
     }
+
+    /**
+     * 根据景点名称模糊查询景点信息
+     * @param pageNo 页码
+     * @param pageSize 每页大小
+     * @param attractionsName 景点名称
+     * @return
+     */
 
     @GetMapping("/queryAttractions")
     public ResponseEntity<ResponseResult<?>> queryAttractions(
@@ -358,6 +410,11 @@ public class AttractionController {
         }
     }
 
+    /**
+     * 更新景点信息
+     * @param attractions 景点信息
+     * @return
+     */
 
     @PutMapping("/updateAttraction")
     public ResponseEntity<?> updateAttraction(@RequestBody Attractions attractions) {
@@ -398,7 +455,11 @@ public class AttractionController {
         }
     }
 
-
+    /**
+     * 删除景点信息
+     * @param attractionId 景点ID
+     * @return
+     */
 
     @DeleteMapping("/deleteAttraction")
     public ResponseEntity<?> deleteAttraction(@RequestParam("attractionId") Long attractionId) {
@@ -417,6 +478,13 @@ public class AttractionController {
             return ResponseEntity.badRequest().body(ResponseResult.error("删除景点信息出错"));
         }
     }
+
+    /**
+     * 添加景点收藏
+     * @param userId 用户ID
+     * @param attractionsId 景点ID
+     * @return
+     */
 
     @PostMapping("/addAttractionCollection")
     public ResponseEntity<?> addAttractionCollection(
@@ -446,6 +514,13 @@ public class AttractionController {
         }
     }
 
+    /**
+     * 取消景点收藏
+     * @param userId 用户ID
+     * @param attractionsId 景点ID
+     * @return
+     */
+
     @PutMapping("/cancelCollection")
     public ResponseEntity<?> cancelCollection(
             @RequestParam("userId") Long userId,
@@ -466,6 +541,14 @@ public class AttractionController {
             return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏出错"));
         }
     }
+
+    /**
+     * 获取用户收藏列表
+     * @param userId 用户ID
+     * @param pageNo 页码
+     * @param pageSize 每页大小
+     * @return
+     */
 
     @GetMapping("/getUserCollections")
     public ResponseEntity<?> getUserCollections(

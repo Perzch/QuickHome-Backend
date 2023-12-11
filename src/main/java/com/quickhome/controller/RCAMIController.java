@@ -44,6 +44,12 @@ public class RCAMIController {
         return ResponseEntity.ok(ResponseResult.ok(rcami));
     }
 
+    /**
+     * 完成维修信息
+     * @param rcami 维修信息
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/finishRCAMI")
@@ -74,7 +80,15 @@ public class RCAMIController {
         }
     }
 
-
+    /**
+     * 根据订单id或房屋id获取维修信息
+     * @param orderId 订单id
+     * @param homeId 房屋id
+     * @param current 当前页
+     * @param size 每页大小
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @GetMapping("/getRCAMIByOrderOrHome")

@@ -49,6 +49,13 @@ public class CouponController {
     @Autowired
     private UsersAndCouponsService usersAndCouponsService;
 
+
+    /**
+     * 添加优惠券
+     * @param coupon 优惠券
+     * @param req
+     * @return
+     */
     @ResponseBody
     @PostMapping("/addCoupon")
     public ResponseEntity<ResponseResult<?>> addCoupon(
@@ -63,6 +70,12 @@ public class CouponController {
         }
     }
 
+    /**
+     * 用户领取优惠券
+     * @param usersAndCoupons 用户优惠券ID
+     * @param req
+     * @return
+     */
     @ResponseBody
     @PostMapping("/userAddCoupons")
     public ResponseEntity<ResponseResult<?>> userAddCoupons(
@@ -77,6 +90,13 @@ public class CouponController {
         }
     }
 
+    /**
+     * 用户使用优惠券
+     * @param UACID 用户优惠券ID
+     * @param req
+     * @return
+     */
+
     @ResponseBody
     @PutMapping("/useCoupons")
     public ResponseEntity<ResponseResult<?>> useCoupons(
@@ -90,6 +110,15 @@ public class CouponController {
             return ResponseEntity.status(500).body(ResponseResult.error("使用优惠券失败"));
         }
     }
+
+    /**
+     * 获取用户所有优惠券
+     * @param userId 用户ID
+     * @param pageNum 页码
+     * @param pageSize 每页大小
+     * @param req
+     * @return
+     */
 
     @ResponseBody
     @GetMapping("/getAllCoupons")
@@ -147,6 +176,12 @@ public class CouponController {
         return ResponseEntity.status(500).body(ResponseResult.error(e.getMessage()));
     }
 
+    /**
+     * 删除优惠券
+     * @param couponId 优惠券ID
+     * @param req
+     * @return
+     */
     @ResponseBody
     @DeleteMapping("/delCoupon")
     public ResponseEntity<ResponseResult<?>> delCoupon(
@@ -177,6 +212,11 @@ public class CouponController {
         }
     }
 
+    /**
+     * 获取优惠券的最晚使用时间
+     * @param couponId 优惠券ID
+     * @return
+     */
     @ResponseBody
     @GetMapping("/getLatestUseTime")
     public ResponseEntity<ResponseResult<?>> getLatestUseTime(
@@ -196,6 +236,12 @@ public class CouponController {
             return ResponseEntity.status(500).body(ResponseResult.error("查询失败：" + e.getMessage()));
         }
     }
+
+    /**
+     * 获取优惠券的详细信息
+     * @param couponId 优惠券ID
+     * @return
+     */
 
     @ResponseBody
     @GetMapping("/getCouponInfo")

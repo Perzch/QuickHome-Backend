@@ -68,6 +68,12 @@ public class HomeInformationController {
     @Autowired
     private HomeDeviceMapper homeDeviceMapper;
 
+    /**
+     * 插入设备
+     * @param homeDevice 设备信息
+     * @return
+     */
+
     @ResponseBody
     @PostMapping("/insertHomeDevice")
     public ResponseEntity<ResponseResult<?>> insertHomeDevice(
@@ -80,6 +86,12 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
         }
     }
+
+    /**
+     * 更新设备
+     * @param homeDevice 设备信息
+     * @return
+     */
 
     @ResponseBody
     @PutMapping("/updateHomeDevice")
@@ -98,6 +110,13 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 获取设备列表
+     * @param homeId 房间ID
+     * @param current 当前页
+     * @param size 每页大小
+     * @return
+     */
     @GetMapping("/getHomeDevice")
     public ResponseEntity<ResponseResult<?>> getHomeDevice(
             @RequestParam Long homeId,
@@ -113,6 +132,11 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 删除设备
+     * @param deviceId 设备ID
+     * @return
+     */
     @DeleteMapping("/delHomeDev")
     public ResponseEntity<ResponseResult<?>> delHomeDev(@RequestParam Long deviceId) {
         try {
@@ -132,6 +156,13 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 检查房间是否可用
+     * @param homeId 房间ID
+     * @param beginDate 开始日期
+     * @param endDate 结束日期
+     * @return
+     */
     @GetMapping("/checkHomeAvailability")
     public ResponseEntity<?> checkHomeAvailability(@RequestParam Long homeId,
                                                    @RequestParam String beginDate,
@@ -143,6 +174,12 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("房屋不可用"));
         }
     }
+
+    /**
+     * 下载房间图片
+     * @param homeId 房间ID
+     * @return
+     */
 
 //    @SneakyThrows
 //    @ResponseBody
@@ -186,6 +223,11 @@ public class HomeInformationController {
 //    }
 
 
+    /**
+     * 获取房间图片
+     * @param homeId 房间ID
+     * @return
+     */
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getHomeImg")
@@ -214,6 +256,13 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+     * 删除房间图片
+     * @param homeId 房间ID
+     * @param timestamp 时间戳
+     * @return
+     */
 
     @DeleteMapping("/deleteHomeImg")
     public ResponseEntity<?> deleteHomeImg(@RequestParam Long homeId, @RequestParam String timestamp) {
@@ -247,6 +296,13 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 上传房间图片
+     * @param homeId 房间ID
+     * @param file 上传的文件
+     * @return
+     * @throws IOException
+     */
 
     @ResponseBody
     @PostMapping("/addHomeImg")
@@ -284,7 +340,7 @@ public class HomeInformationController {
 
 
     /**
-     * 通过ID获取房屋信息
+     * 获取房屋信息
      *
      * @param homeType  房屋类型
      * @param beginDate 入住日期
@@ -343,6 +399,14 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
     }
 
+    /**
+     * 检查房屋收藏状态
+     *
+     * @param userId 用户ID
+     * @param homeId 房屋ID
+     * @return 收藏状态
+     */
+
     @GetMapping("/checkHomeCollectionStatus")
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> checkHomeCollectionStatus(
@@ -400,6 +464,12 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(pojoHome));
     }
 
+    /**
+     * 获取热门房屋信息
+     *
+     * @return 热门房屋信息
+     */
+
     @GetMapping("/getHomeListOrderByCollectionCount") //获取热门房屋信息
     @ResponseBody
     public ResponseEntity<?> getHomeListOrderByCollectionCount() {
@@ -432,6 +502,12 @@ public class HomeInformationController {
     }
 
 
+    /**
+     * 插入房屋信息
+     * @param home 房屋信息
+     * @return
+     */
+
     @ResponseBody
     @PostMapping("/insertHome")
     public ResponseEntity<ResponseResult<?>> insertHome(
@@ -444,6 +520,12 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
         }
     }
+
+    /**
+     * 更新房屋信息
+     * @param home 房屋信息
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/updateHome")
@@ -485,6 +567,11 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 插入房屋信息
+     * @param homeInformation 房屋信息
+     * @return
+     */
 
     @ResponseBody
     @PostMapping("/insertHomeInf")
@@ -502,6 +589,12 @@ public class HomeInformationController {
         }
     }
 
+
+    /**
+     * 更新房屋信息
+     * @param homeInformation 房屋信息
+     * @return
+     */
     @ResponseBody
     @PostMapping("/changeHomeInf")
     public ResponseEntity<ResponseResult<?>> changeHomeInf(
@@ -548,6 +641,14 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 获取用户收藏房屋列表
+     * @param userId 用户ID
+     * @param pageNo 页码
+     * @param pageSize 每页大小
+     * @return
+     */
+
     @GetMapping("/getUserHomeList")
     public ResponseEntity<?> getUserHomeList(
             @RequestParam("userId") Long userId,
@@ -560,6 +661,13 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("获取房屋收藏列表出错"));
         }
     }
+
+    /**
+     * 取消收藏房屋
+     * @param userId 用户ID
+     * @param homeId 房屋ID
+     * @return
+     */
 
     @PutMapping("/cancelHome")
     public ResponseEntity<?> cancelHomeCollection(
@@ -581,6 +689,13 @@ public class HomeInformationController {
             return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏出错"));
         }
     }
+
+    /**
+     * 收藏房屋
+     * @param userId 用户ID
+     * @param homeId 房屋ID
+     * @return
+     */
 
     @PostMapping("/addHomeCollection")
     public ResponseEntity<?> addHomeCollection(

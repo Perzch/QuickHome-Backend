@@ -32,6 +32,12 @@ public class MyChatController {
     @Autowired
     private ManagerService managerService;
 
+    /**
+     * 发送消息
+     *
+     * @param myChat 消息对象
+     * @return
+     */
     @PostMapping("/send")
     public ResponseEntity<ResponseResult<?>> sendMessage(@RequestBody MyChat myChat) {
         try {
@@ -54,6 +60,15 @@ public class MyChatController {
     }
 
 
+    /**
+     * 获取聊天历史
+     *
+     * @param senderId    发送者ID
+     * @param receiverId  接收者ID
+     * @param pageIndex   页码
+     * @param pageSize    每页条数
+     * @return
+     */
     @GetMapping("/history")
     public ResponseEntity<ResponseResult<?>> getChatHistory(
             @RequestParam Long senderId,

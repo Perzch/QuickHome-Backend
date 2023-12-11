@@ -61,6 +61,12 @@ public class ManagerController {
     @Autowired
     private UserNotificationMapper userNotificationMapper;
 
+    /**
+     * 新增管理员
+     * @param manager 管理员对象
+     * @return
+     */
+
     @PostMapping("/insertManager")
     public ResponseEntity<ResponseResult<?>> insertManager(@RequestBody Manager manager) {
         // 生成唯一的 managerAccount
@@ -85,6 +91,12 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
         }
     }
+
+    /**
+     * 更新管理员密码
+     * @param request 包含 managerId 和 managerPwd 的请求体
+     * @return
+     */
 
     @PostMapping("/updatePassword")
     public ResponseEntity<ResponseResult<?>> updatePassword(
@@ -132,6 +144,12 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 获取管理员信息
+     * @param managerId 管理员ID
+     * @return
+     */
+
     @GetMapping("/getManager")
     public ResponseEntity<ResponseResult<?>> getManager(@RequestParam Long managerId) {
         QueryWrapper<Manager> queryWrapper = new QueryWrapper<>();
@@ -150,6 +168,13 @@ public class ManagerController {
 
         return ResponseEntity.ok(ResponseResult.ok(manager));
     }
+
+    /**
+     * 获取所有管理员信息
+     * @param pageNo 页码
+     * @param pageSize 每页大小
+     * @return
+     */
 
     @GetMapping("/getAllManager")
     public ResponseEntity<ResponseResult<?>> getAllManager(
@@ -176,6 +201,12 @@ public class ManagerController {
         return ResponseEntity.ok(ResponseResult.ok(managerPage));  // 返回分页结果
     }
 
+    /**
+     * 设置管理员在线状态
+     * @param managerId 管理员ID
+     * @return
+     */
+
     @PostMapping("/setOnline")
     public ResponseEntity<ResponseResult> setManagerOnline(@RequestParam Long managerId) {
         try {
@@ -186,6 +217,12 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 设置管理员离线状态
+     * @param managerId 管理员ID
+     * @return
+     */
+
     @PostMapping("/setOffline")
     public ResponseEntity<ResponseResult> setManagerOffline(@RequestParam Long managerId) {
         try {
@@ -195,6 +232,12 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
         }
     }
+
+    /**
+     * 删除管理员
+     * @param managerId 管理员ID
+     * @return
+     */
 
     @DeleteMapping("/deleteManager")
     public ResponseEntity<ResponseResult<?>> deleteManager(@RequestParam Long managerId) {
@@ -211,6 +254,12 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
         }
     }
+
+    /**
+     * 超级管理员登录
+     * @param loginRequest 登录请求
+     * @return
+     */
 
     @PostMapping("/loginForSupManager")
     public ResponseEntity<ResponseResult<?>> loginForSupManager(@RequestBody Map<String, String> loginRequest) {
@@ -244,6 +293,12 @@ public class ManagerController {
             return ResponseEntity.status(500).body(ResponseResult.error("解密失败: " + e.getMessage()));  // 解密错误，返回错误信息
         }
     }
+
+    /**
+     * 管理员登录
+     * @param loginRequest 登录请求
+     * @return
+     */
 
     @PostMapping("/loginForManager")
     public ResponseEntity<ResponseResult<?>> loginForManager(@RequestBody Map<String, String> loginRequest) {
@@ -288,6 +343,13 @@ public class ManagerController {
         return managerMapper.selectCount(queryWrapper) > 0;
     }
 
+    /**
+     * 解绑管理员与房屋
+     * @param managerId 管理员ID
+     * @param homeId 家庭ID
+     * @return
+     */
+
     @DeleteMapping("/unbindManagerFromHome")
     public ResponseEntity<ResponseResult<?>> unbindManagerFromHome(
             @RequestParam Long managerId,
@@ -307,6 +369,12 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error("Failed to unbind manager from home"));
         }
     }
+
+    /**
+     * 绑定管理员与房屋
+     * @param binding 绑定信息
+     * @return
+     */
 
     @PostMapping("/bindManagerToHome")
     public ResponseEntity<ResponseResult<?>> bindManagerToHome(@RequestBody ManagerHomeBinding binding) {
@@ -331,6 +399,14 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 获取管理员与房屋的绑定信息
+     * @param pageNo 页码
+     * @param pageSize 每页大小
+     * @param managerId 管理员ID
+     * @param homeId 家庭ID
+     * @return
+     */
     @GetMapping("/getBindingInfo")
     public ResponseEntity<ResponseResult<?>> getBindingInfo(
             @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
@@ -351,6 +427,11 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 创建用户通知
+     * @param userNotification 用户通知
+     * @return
+     */
 
     @PostMapping("/createUserNotification")
     public ResponseEntity<ResponseResult<?>> createUserNotification(@RequestBody UserNotification userNotification) {
@@ -362,6 +443,12 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 更新用户通知
+     * @param userNotificationId 用户通知ID
+     * @param notificationContent 通知内容
+     * @return
+     */
     @PutMapping("/updateUserNotification")
     public ResponseEntity<ResponseResult<?>> updateUserNotification(
             @RequestParam Long userNotificationId,
@@ -388,6 +475,12 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 删除用户通知
+     * @param userNotificationId 用户通知ID
+     * @return
+     */
+
     @DeleteMapping("/deleteNotification")
     public ResponseEntity<ResponseResult<?>> deleteNotification(@RequestParam Long userNotificationId) {
         try {
@@ -401,6 +494,13 @@ public class ManagerController {
             return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
         }
     }
+
+    /**
+     * 获取所有用户通知
+     * @param current 当前页
+     * @param size 每页大小
+     * @return
+     */
 
     @GetMapping("/getAllNotifications")
     public ResponseEntity<ResponseResult<?>> getAllNotifications(
