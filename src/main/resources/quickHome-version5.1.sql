@@ -19,7 +19,7 @@ CREATE TABLE tab_user_zch_hwz_gjc
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表2 用户信息表
+-- 表2 用户信息表(tab_userInformation_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_userInformation_zch_hwz_gjc;
 CREATE TABLE tab_userInformation_zch_hwz_gjc
 (
@@ -35,7 +35,7 @@ CREATE TABLE tab_userInformation_zch_hwz_gjc
     deleted_zch_hwz_gjc              int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表3 头像表
+-- 表3 头像表(tab_userHeadImage_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_userHeadImage_zch_hwz_gjc;
 CREATE TABLE tab_userHeadImage_zch_hwz_gjc
 (
@@ -48,7 +48,7 @@ CREATE TABLE tab_userHeadImage_zch_hwz_gjc
     version_zch_hwz_gjc    BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc     int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
--- 表4 超级管理员表
+-- 表4 超级管理员表(tab_superManager_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_superManager_zch_hwz_gjc;
 CREATE TABLE tab_superManager_zch_hwz_gjc
 (
@@ -61,7 +61,7 @@ CREATE TABLE tab_superManager_zch_hwz_gjc
     version_zch_hwz_gjc            BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc             int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
--- 表5 管理员表
+-- 表5 管理员表(tab_manager_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_manager_zch_hwz_gjc;
 CREATE TABLE tab_manager_zch_hwz_gjc
 (
@@ -73,13 +73,13 @@ CREATE TABLE tab_manager_zch_hwz_gjc
     managerPhone_zch_hwz_gjc    VARCHAR(50) comment "管理员电话",
     managerGender_zch_hwz_gjc   VARCHAR(10) comment "管理员性别",
     managerInDate_zch_hwz_gjc   DATETIME comment "创建时间",
-    online_status_zch_hwz_gjc   VARCHAR(50) comment "备用字段1",
+    online_status_zch_hwz_gjc   VARCHAR(50) comment "在线状态",
     standby2_zch_hwz_gjc        VARCHAR(50) comment "备用字段2",
     version_zch_hwz_gjc        BIGINT default 0 comment "乐观锁",
     deleted_zch_hwz_gjc         int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表6 金额表
+-- 表6 金额表(tab_accountBalance_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_accountBalance_zch_hwz_gjc;
 CREATE TABLE tab_accountBalance_zch_hwz_gjc
 (
@@ -94,7 +94,7 @@ CREATE TABLE tab_accountBalance_zch_hwz_gjc
     deleted_zch_hwz_gjc          int default 0 comment "逻辑删除（默认0，逻辑删除1）"
 );
 
--- 表7 房屋表
+-- 表7 房屋表(tab_Home_zch_hwz_gjc)
 DROP TABLE IF EXISTS tab_Home_zch_hwz_gjc;
 CREATE TABLE tab_Home_zch_hwz_gjc
 (

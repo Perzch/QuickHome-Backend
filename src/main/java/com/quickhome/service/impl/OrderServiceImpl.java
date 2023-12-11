@@ -49,6 +49,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         }
     }
 
+    /**
+     * @param OrderId
+     * @param dynamicDoorPassword
+     * @return
+     */
     @Override
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword) {
         return null;
