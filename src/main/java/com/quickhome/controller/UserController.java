@@ -79,7 +79,11 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @PostMapping("/insertUser")//创建用户
+    /**
+     * 创建用户
+     * @param user 用户类
+     */
+    @PostMapping("/insertUser")
     @ResponseBody
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user,
                                                     HttpServletRequest req) {
@@ -129,6 +133,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 创建用户信息
+     * @param userInformation 用户信息类
+     */
     @PostMapping("/insertUserInf")//用户信息插入
     @ResponseBody
     public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,
@@ -146,6 +154,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 通过用户账号判断账号是否可用
+     * @param userAccount 用户账号
+     */
     @GetMapping("/getUserAccountByAccount")//通过用户账号判断账号是否可用
     @ResponseBody
     public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount,
@@ -157,6 +169,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户登录
+     * @param user 用户类
+     */
     @SneakyThrows
     @ResponseBody
     @PostMapping("/userLogin")//用户登录
@@ -171,6 +187,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户登录通过手机号
+     * @param phone 手机号
+     */
     @SneakyThrows
     @ResponseBody
     @PostMapping("/userLoginByPhone")//用户登录通过手机
@@ -190,6 +210,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 获取用户信息
+     * @param token 令牌
+     * @param userId 用户ID
+     */
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getUserInformation")
@@ -216,6 +241,11 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.error("查询失败"));
     }
 
+    /**
+     * 用户忘记密码找回
+     * @param userEmail 用户邮箱
+     * @param userPhone 用户手机号
+     */
     @SneakyThrows
     @ResponseBody
     @PostMapping("/userForget")//忘记密码
@@ -234,6 +264,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 设置用户密码
+     * @param user 用户类
+     */
     @PostMapping("/setPassword")
     public ResponseEntity<ResponseResult<?>> setUserPassword(@RequestBody User user) {
         String password = user.getUserPwd_zch_hwz_gjc();
@@ -266,6 +300,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 上传用户头像
+     * @param userId 用户ID
+     * @param file 头像文件
+     */
     @PostMapping("/uploadUserHeadImage")
     public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(
             @RequestParam("userId") Long userId,
@@ -286,6 +325,11 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.ok(userHeadImage));
     }
 
+    /**
+     * 保存上传的文件
+     * @param userId 用户ID
+     * @param file 上传的文件
+     */
     private String saveUploadedFile(Long userId, MultipartFile file) throws IOException {
         String uploadDir = "E:/Spring boot/uploads/HeadImage/";
         File dir = new File(uploadDir);
@@ -299,10 +343,21 @@ public class UserController {
         return filePath;
     }
 
+    /**
+     * 获取文件后缀名
+     * @param fileName 文件名
+     */
     private String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
+    /**
+     * 更新用户信息
+     * @param userId 用户ID
+     * @param userGender 用户性别
+     * @param userBirthday 用户生日
+     * @param userSignature 用户签名
+     */
     @SneakyThrows
     @ResponseBody
     @PostMapping("/updateUserInf")
@@ -345,6 +400,10 @@ public class UserController {
 //        }
 //    }
 
+    /**
+     * 获取用户头像
+     * @param userId 用户ID
+     */
     @SneakyThrows
     @ResponseBody
     @GetMapping("/getHeadImg")
@@ -364,6 +423,11 @@ public class UserController {
     }
 
 
+    /**
+     * 查找用户头像
+     * @param userId 用户ID
+     * @param inDateTime 插入图片时的时间戳
+     */
     @SneakyThrows
     @ResponseBody
     @PostMapping("/findHeadImg")
@@ -395,6 +459,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 删除用户
+     * @param userId 用户ID
+     */
     @ResponseBody
     @PostMapping("/deleteUser")
     public ResponseEntity<ResponseResult<?>> deleteUser(
@@ -462,6 +530,10 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.ok("注销成功"));
     }
 
+    /**
+     * 刷新Token
+     * @param token 旧Token
+     */
     @PostMapping("/refreshToken")
     public ResponseEntity<ResponseResult<?>> refreshToken(@RequestParam String token) {
         // 验证旧的Token
@@ -478,6 +550,13 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.ok(newToken));
     }
 
+    /**
+     * 更新用户基本信息
+     * @param userId 用户ID
+     * @param userName 用户名
+     * @param userEmail 邮箱
+     * @param userPhone 手机号
+     */
     @ResponseBody
     @PostMapping("/updateUserBasicInf")
     public ResponseEntity<ResponseResult<?>> updateUserBasicInf(
