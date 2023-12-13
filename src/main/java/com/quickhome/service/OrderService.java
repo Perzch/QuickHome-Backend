@@ -1,5 +1,6 @@
 package com.quickhome.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.pojo.OrderEndResult;
@@ -20,6 +21,7 @@ public interface OrderService extends IService<Order> {
     public Boolean updateDynamicDoorPassword(Long OrderId, String dynamicDoorPassword);
 
     public List<Order> getAllUserOrders(Long userId);
+    public IPage<Order> getOrdersByHouseId(Long houseId, int currentPage, int pageSize);
 
 
 }

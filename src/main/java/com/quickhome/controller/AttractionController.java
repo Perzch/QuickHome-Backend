@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.AttractionCollection;
 import com.quickhome.domain.AttractionImage;
 import com.quickhome.domain.Attractions;
@@ -15,6 +16,7 @@ import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
 import com.quickhome.service.AttractionsService;
 import com.quickhome.util.ImageUtil;
+import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +60,9 @@ public class AttractionController {
     private AttractionsMapper attractionMapper;
     @Autowired
     private AttractionCollectionMapper attractionCollectionMapper;
+
+    @Autowired
+    private TencentCOSUtils tencentCOSUtils;
 
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
@@ -130,7 +136,7 @@ public class AttractionController {
             for (AttractionImage image : images) {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                 Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                String imageUrl = relativePath.toString().replace("\\", "/");
                 imageUrls.add(imageUrl);
             }
 
@@ -232,6 +238,9 @@ public class AttractionController {
     }
 
     private String saveUploadedFile(Long attractionId, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file.");
+        }
         String uploadDir = "E:/Spring boot/uploads/AttractionImg/";
         File dir = new File(uploadDir);
         if (!dir.exists()) {
@@ -240,7 +249,30 @@ public class AttractionController {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = attractionId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         String filePath = uploadDir + newFileName;
-        file.transferTo(new File(filePath));
+
+        File localFile = new File(filePath);
+
+        // 先保存文件到本地
+        try {
+            file.transferTo(localFile);
+        } catch (IOException e) {
+            throw new IOException("Failed to store file " + newFileName, e);
+        }
+
+        // 然后上传到腾讯云
+        try {
+            FileInputStream input = new FileInputStream(localFile);
+            MultipartFile multipartFile = new MockMultipartFile("file",
+                    localFile.getName(),
+                    "multipart/form-data",
+                    IOUtils.toByteArray(input));
+
+            // 然后使用这个新的 MultipartFile 对象
+            tencentCOSUtils.upload(multipartFile, newFileName,"AttractionImg");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to upload file to Tencent COS", e);
+        }
         return filePath;
     }
 
@@ -267,7 +299,7 @@ public class AttractionController {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                     Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
                 } catch (Exception e) {
@@ -331,7 +363,7 @@ public class AttractionController {
                 for (AttractionImage image : images) {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                     Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
                 }
@@ -391,7 +423,7 @@ public class AttractionController {
                 for (AttractionImage image : images) {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                     Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
                 }

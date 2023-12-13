@@ -9,6 +9,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+tencent:
+  cos:
+    SecretId: AKIDKUYghZQTSJ0cApNk6YvlSyIRNJA5ungb
+    SecretKey: AKVcaKzeBZoEf4WrJabQLDDCA0d2JRSH
+    bucketAddr: ap-chengdu
+    bucketName: quickhome-1315319695
+    rootSrc: https://quickhome-1315319695.cos.ap-chengdu.myqcloud.com
 
 #    mybatis
 mybatis:

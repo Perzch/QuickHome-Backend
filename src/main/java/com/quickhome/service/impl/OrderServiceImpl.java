@@ -2,6 +2,8 @@ package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.Order;
 import com.quickhome.service.OrderService;
@@ -35,6 +37,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         scheduler.schedule(() -> {
             cancelOrderIfNotPaid(orderId);
         }, delayInMinutes, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public IPage<Order> getOrdersByHouseId(Long houseId, int currentPage, int pageSize) {
+        Page<Order> page = new Page<>(currentPage, pageSize);
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("homeId_zch_hwz_gjc", houseId)
+                .orderByDesc("creationTime_zch_hwz_gjc");
+
+        return orderMapper.selectPage(page, queryWrapper);
     }
 
     private void cancelOrderIfNotPaid(Long orderId) {

@@ -5,6 +5,7 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
 import com.quickhome.pojo.PJUser;
@@ -13,18 +14,21 @@ import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
 import com.quickhome.util.CreatAccount;
 import com.quickhome.util.JwtUtil;
+import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,6 +82,9 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TencentCOSUtils tencentCOSUtils;
 
     /**
      * 创建用户
@@ -305,7 +312,7 @@ public class UserController {
      * @param userId 用户ID
      * @param file 头像文件
      */
-    @PostMapping("/uploadUserHeadImage")
+     @PostMapping("/uploadUserHeadImage")
     public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(
             @RequestParam("userId") Long userId,
             @RequestParam("file") MultipartFile file) throws IOException {
@@ -315,7 +322,6 @@ public class UserController {
         }
 
         String imagePath = saveUploadedFile(userId, file);
-
         UserHeadImage userHeadImage = userHeadImageService.saveOrUpdateUserHeadImage(userId, imagePath);
         QueryWrapper<UserInformation> queryWrapper =
                 new QueryWrapper<UserInformation>().eq("userId_zch_hwz_gjc", userId);
@@ -331,17 +337,46 @@ public class UserController {
      * @param file 上传的文件
      */
     private String saveUploadedFile(Long userId, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file.");
+        }
+
         String uploadDir = "E:/Spring boot/uploads/HeadImage/";
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
+
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = userId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         String filePath = uploadDir + newFileName;
-        file.transferTo(new File(filePath));
+
+        File localFile = new File(filePath);
+
+        // 先保存文件到本地
+        try {
+            file.transferTo(localFile);
+        } catch (IOException e) {
+            throw new IOException("Failed to store file " + newFileName, e);
+        }
+
+        // 然后上传到腾讯云
+        try {
+            FileInputStream input = new FileInputStream(localFile);
+            MultipartFile multipartFile = new MockMultipartFile("file",
+                    localFile.getName(),
+                    "multipart/form-data",
+                    IOUtils.toByteArray(input));
+
+            // 然后使用这个新的 MultipartFile 对象
+            tencentCOSUtils.upload(multipartFile, newFileName,"HeadImage");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to upload file to Tencent COS", e);
+        }
         return filePath;
     }
+
 
     /**
      * 获取文件后缀名

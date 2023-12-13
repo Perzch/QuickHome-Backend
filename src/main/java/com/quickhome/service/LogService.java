@@ -1,5 +1,6 @@
 package com.quickhome.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.Log;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,4 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface LogService extends IService<Log> {
     public boolean insertLog(Log log);
+
+    public IPage<Log> getLogsByUserId(Long userId, int page, int size);
 }

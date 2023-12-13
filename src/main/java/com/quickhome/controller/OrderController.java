@@ -653,5 +653,28 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(order));
     }
 
+    /**
+     * 根据房源ID查询订单
+     *
+     * @param homeId 房源ID
+     * @param currentPage 当前页
+     * @param pageSize 每页大小
+     * @return
+     */
+
+    @GetMapping("/getOrdersByHouseId")
+    public ResponseEntity<ResponseResult<?>> getOrdersByHouseId(
+            @RequestParam Long homeId,
+            @RequestParam(defaultValue = "1") int currentPage,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        try {
+            IPage<Order> ordersPage = orderService.getOrdersByHouseId(homeId, currentPage, pageSize);
+            return ResponseEntity.ok(ResponseResult.ok(ordersPage));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+        }
+    }
+
 
 }

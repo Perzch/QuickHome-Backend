@@ -1,5 +1,6 @@
 package com.quickhome.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.Log;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.LogService;
@@ -7,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -43,6 +42,19 @@ public class LogController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().body(ResponseResult.error("错误内容: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/getLogsByUserId")
+    public ResponseEntity<ResponseResult<?>> getLogsByUserId(
+            @RequestParam Long userId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            IPage<Log> logs = logService.getLogsByUserId(userId, page, size);
+            return ResponseEntity.ok(ResponseResult.ok(logs));
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("错误内容: " + e.getMessage()));
         }
     }

@@ -1,5 +1,8 @@
 package com.quickhome.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.Log;
 import com.quickhome.service.LogService;
@@ -19,6 +22,15 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
     @Override
     public boolean insertLog(Log log) {
         return baseMapper.insert(log) > 0;
+    }
+
+    @Override
+    public IPage<Log> getLogsByUserId(Long userId, int page, int size) {
+        Page<Log> pageParam = new Page<>(page, size);
+        QueryWrapper<Log> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userPerformingId_zch_hwz_gjc", userId)
+                .orderByDesc("executionTime_zch_hwz_gjc");
+        return baseMapper.selectPage(pageParam, queryWrapper);
     }
 }
 

@@ -4,22 +4,26 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
 import com.quickhome.util.ImageUtil;
+import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,6 +71,9 @@ public class HomeInformationController {
 
     @Autowired
     private HomeDeviceMapper homeDeviceMapper;
+
+    @Autowired
+    private TencentCOSUtils tencentCOSUtils;
 
     /**
      * 插入设备
@@ -245,7 +252,7 @@ public class HomeInformationController {
             for (HomeImage image : images) {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                 Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                String imageUrl = relativePath.toString().replace("\\", "/");
                 imageUrls.add(imageUrl);
             }
 
@@ -322,6 +329,9 @@ public class HomeInformationController {
     }
 
     private String saveUploadedFile(Long homeId, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file.");
+        }
         String uploadDir = "E:/Spring boot/uploads/HomeImg/";
         File dir = new File(uploadDir);
         if (!dir.exists()) {
@@ -330,7 +340,30 @@ public class HomeInformationController {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = homeId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         String filePath = uploadDir + newFileName;
-        file.transferTo(new File(filePath));
+
+        File localFile = new File(filePath);
+
+        // 先保存文件到本地
+        try {
+            file.transferTo(localFile);
+        } catch (IOException e) {
+            throw new IOException("Failed to store file " + newFileName, e);
+        }
+
+        // 然后上传到腾讯云
+        try {
+            FileInputStream input = new FileInputStream(localFile);
+            MultipartFile multipartFile = new MockMultipartFile("file",
+                    localFile.getName(),
+                    "multipart/form-data",
+                    IOUtils.toByteArray(input));
+
+            // 然后使用这个新的 MultipartFile 对象
+            tencentCOSUtils.upload(multipartFile, newFileName,"HomeImg");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to upload file to Tencent COS", e);
+        }
         return filePath;
     }
 
@@ -384,7 +417,7 @@ public class HomeInformationController {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                     Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
                 } catch (Exception e) {
@@ -450,7 +483,7 @@ public class HomeInformationController {
             try {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                 Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                String imageUrl = relativePath.toString().replace("\\", "/");
                 image.setImagePath_zch_hwz_gjc(imageUrl);
                 formattedImageList.add(image);
             } catch (Exception e) {
@@ -488,7 +521,7 @@ public class HomeInformationController {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
                     Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-                    String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
+                    String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
                 } catch (Exception e) {
@@ -713,5 +746,36 @@ public class HomeInformationController {
         }
     }
 
+    /**
+     * 删除房屋
+     * @param homeId 房屋ID
+     * @return
+     */
 
+    @DeleteMapping("/deleteHome")
+    public ResponseEntity<ResponseResult<?>> deleteHome(@RequestParam Long homeId) {
+        try {
+            Home home = homeMapper.selectById(homeId);
+            if (home == null) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("房屋不存在"));
+            }
+
+            // 逻辑删除Home信息
+            int result = homeMapper.deleteById(homeId);
+
+            // 逻辑删除相关的HomeInformation
+            UpdateWrapper<HomeInformation> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("homeId_zch_hwz_gjc", homeId).set("deleted_zch_hwz_gjc", 1);
+            homeInformationMapper.update(null, updateWrapper);
+
+            if (result > 0) {
+                return ResponseEntity.ok(ResponseResult.ok("删除成功"));
+            } else {
+                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+        }
+    }
 }
