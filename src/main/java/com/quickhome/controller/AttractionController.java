@@ -15,11 +15,13 @@ import com.quickhome.pojo.PojoAttraction;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
 import com.quickhome.service.AttractionsService;
+import com.quickhome.util.HandlePath;
 import com.quickhome.util.ImageUtil;
 import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -63,6 +65,12 @@ public class AttractionController {
 
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
+
+    @Value("${file.path}")
+    private String filePath;
+
+    @Value("${file.AttractionImgPath}")
+    private String AttractionImgPath;
 
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
@@ -135,7 +143,7 @@ public class AttractionController {
         try {
             for (AttractionImage image : images) {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                Path relativePath = Paths.get(filePath).relativize(fullPath);
                 String imageUrl = relativePath.toString().replace("\\", "/");
                 imageUrls.add(imageUrl);
             }
@@ -234,6 +242,10 @@ public class AttractionController {
 
         AttractionImage attractionImage = attractionImageService.saveAttractionImg(attractionId, imagePath);
 
+        if (attractionImage != null) {
+            attractionImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(attractionImage.getImagePath_zch_hwz_gjc(), "AttractionImg/"));
+        }
+
         return ResponseEntity.ok(ResponseResult.ok(attractionImage));
     }
 
@@ -241,7 +253,7 @@ public class AttractionController {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
-        String uploadDir = "E:/Spring boot/uploads/AttractionImg/";
+        String uploadDir = AttractionImgPath;
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -298,7 +310,7 @@ public class AttractionController {
             for (AttractionImage image : attractionImageList) {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    Path relativePath = Paths.get(filePath).relativize(fullPath);
                     String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
@@ -362,7 +374,7 @@ public class AttractionController {
                 List<AttractionImage> formattedImageList = new ArrayList<>();
                 for (AttractionImage image : images) {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    Path relativePath = Paths.get(filePath).relativize(fullPath);
                     String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
@@ -422,7 +434,7 @@ public class AttractionController {
                 List<AttractionImage> formattedImageList = new ArrayList<>();
                 for (AttractionImage image : images) {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    Path relativePath = Paths.get(filePath).relativize(fullPath);
                     String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);

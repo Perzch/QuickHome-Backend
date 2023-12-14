@@ -5,6 +5,9 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
@@ -13,10 +16,12 @@ import com.quickhome.pojo.PojoUser;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
 import com.quickhome.util.CreatAccount;
+import com.quickhome.util.HandlePath;
 import com.quickhome.util.JwtUtil;
 import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -37,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
@@ -55,6 +61,13 @@ public class UserController {
     private String privateKey;
     @Value("${rsa.public_key}")
     private String publicKey;
+
+    @Value("${file.path}")
+    private String filePath;
+
+    @Value("${file.UserImgPath}")
+    private String userImgPath;
+
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
     @Autowired
     private UserService userService;
@@ -87,7 +100,61 @@ public class UserController {
     private TencentCOSUtils tencentCOSUtils;
 
     /**
+     * 查询用户
+     *
+     * @param userEmail   用户邮箱
+     * @param userName    用户名
+     * @param userAccount 用户账号
+     * @param userPhone   用户手机
+     * @param page        页数
+     * @param size        页大小
+     * @return
+     */
+
+    @GetMapping("/searchUsers")
+    public ResponseEntity<ResponseResult<?>> searchUsers(
+            @RequestParam(required = false) String userEmail,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String userAccount,
+            @RequestParam(required = false) String userPhone,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<User> userPage = new Page<>(page, size);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(userEmail)) queryWrapper.like("userEmail_zch_hwz_gjc", userEmail);
+        if (StringUtils.isNotBlank(userName)) queryWrapper.like("userName_zch_hwz_gjc", userName);
+        if (StringUtils.isNotBlank(userAccount)) queryWrapper.eq("userAccount_zch_hwz_gjc", userAccount);
+        if (StringUtils.isNotBlank(userPhone)) queryWrapper.eq("userPhone_zch_hwz_gjc", userPhone);
+
+        IPage<User> resultPage = userService.page(userPage, queryWrapper);
+        List<PojoUser> pojoUsers = resultPage.getRecords().stream().map(user -> {
+            QueryWrapper<UserInformation> userInformationQuery = new QueryWrapper<>();
+            userInformationQuery.eq("userId_zch_hwz_gjc", user.getUserId_zch_hwz_gjc());
+            UserInformation userInformation = userInformationService.getOne(userInformationQuery);
+
+            UserHeadImage userHeadImage = null;
+            if (userInformation != null && userInformation.getUserHeadId_zch_hwz_gjc() != null) {
+                userHeadImage = userHeadImageService.getById(userInformation.getUserHeadId_zch_hwz_gjc());
+            }
+            if (userHeadImage != null && userHeadImage.getImagePath_zch_hwz_gjc() != null) {
+                String fullPath = userHeadImage.getImagePath_zch_hwz_gjc();
+                String relativePath = HandlePath.extractRelativePath(fullPath, "HeadImage/");
+                userHeadImage.setImagePath_zch_hwz_gjc(relativePath);
+            }
+            return new PojoUser(null, user.getUserId_zch_hwz_gjc().intValue(), user, userInformation, userHeadImage);
+        }).collect(Collectors.toList());
+
+        Page<PojoUser> pojoUserPage = new Page<>();
+        BeanUtils.copyProperties(resultPage, pojoUserPage);
+        pojoUserPage.setRecords(pojoUsers);
+
+        return ResponseEntity.ok(ResponseResult.ok(pojoUserPage));
+    }
+
+    /**
      * 创建用户
+     *
      * @param user 用户类
      */
     @PostMapping("/insertUser")
@@ -142,6 +209,7 @@ public class UserController {
 
     /**
      * 创建用户信息
+     *
      * @param userInformation 用户信息类
      */
     @PostMapping("/insertUserInf")//用户信息插入
@@ -163,6 +231,7 @@ public class UserController {
 
     /**
      * 通过用户账号判断账号是否可用
+     *
      * @param userAccount 用户账号
      */
     @GetMapping("/getUserAccountByAccount")//通过用户账号判断账号是否可用
@@ -178,6 +247,7 @@ public class UserController {
 
     /**
      * 用户登录
+     *
      * @param user 用户类
      */
     @SneakyThrows
@@ -196,6 +266,7 @@ public class UserController {
 
     /**
      * 用户登录通过手机号
+     *
      * @param phone 手机号
      */
     @SneakyThrows
@@ -219,7 +290,8 @@ public class UserController {
 
     /**
      * 获取用户信息
-     * @param token 令牌
+     *
+     * @param token  令牌
      * @param userId 用户ID
      */
     @SneakyThrows
@@ -241,7 +313,12 @@ public class UserController {
             pojoUser.setUserId(userId);
             pojoUser.setUser(userService.getById((long) userId));
             pojoUser.setUserInformation(userInformationService.getUserInformationByUserId((long) userId));
-            pojoUser.setUserHeadImage(userHeadImageService.getUserHeadImageByUserId((long) userId));
+            UserHeadImage userHeadImage = userHeadImageService.getUserHeadImageByUserId((long) userId);
+            if (userHeadImage!= null) {
+                String relativePath = HandlePath.extractRelativePath(userHeadImage.getImagePath_zch_hwz_gjc(), "HeadImage/");
+                userHeadImage.setImagePath_zch_hwz_gjc(relativePath);
+            }
+            pojoUser.setUserHeadImage(userHeadImage);
 
             return ResponseEntity.ok(ResponseResult.ok(pojoUser));
         }
@@ -250,6 +327,7 @@ public class UserController {
 
     /**
      * 用户忘记密码找回
+     *
      * @param userEmail 用户邮箱
      * @param userPhone 用户手机号
      */
@@ -273,6 +351,7 @@ public class UserController {
 
     /**
      * 设置用户密码
+     *
      * @param user 用户类
      */
     @PostMapping("/setPassword")
@@ -309,10 +388,11 @@ public class UserController {
 
     /**
      * 上传用户头像
+     *
      * @param userId 用户ID
-     * @param file 头像文件
+     * @param file   头像文件
      */
-     @PostMapping("/uploadUserHeadImage")
+    @PostMapping("/uploadUserHeadImage")
     public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(
             @RequestParam("userId") Long userId,
             @RequestParam("file") MultipartFile file) throws IOException {
@@ -328,20 +408,24 @@ public class UserController {
         UserInformation userInformation = userInformationService.getOne(queryWrapper);
         userInformation.setUserHeadId_zch_hwz_gjc(userHeadImage.getUserImageId_zch_hwz_gjc());
         userInformationMapper.updateById(userInformation);
+        if (userHeadImage != null) {
+            userHeadImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(userHeadImage.getImagePath_zch_hwz_gjc(), "HeadImage/"));
+        }
         return ResponseEntity.ok(ResponseResult.ok(userHeadImage));
     }
 
     /**
      * 保存上传的文件
+     *
      * @param userId 用户ID
-     * @param file 上传的文件
+     * @param file   上传的文件
      */
     private String saveUploadedFile(Long userId, MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
 
-        String uploadDir = "E:/Spring boot/uploads/HeadImage/";
+        String uploadDir = userImgPath;
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -369,7 +453,7 @@ public class UserController {
                     IOUtils.toByteArray(input));
 
             // 然后使用这个新的 MultipartFile 对象
-            tencentCOSUtils.upload(multipartFile, newFileName,"HeadImage");
+            tencentCOSUtils.upload(multipartFile, newFileName, "HeadImage");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);
@@ -380,6 +464,7 @@ public class UserController {
 
     /**
      * 获取文件后缀名
+     *
      * @param fileName 文件名
      */
     private String getFileExtension(String fileName) {
@@ -388,9 +473,10 @@ public class UserController {
 
     /**
      * 更新用户信息
-     * @param userId 用户ID
-     * @param userGender 用户性别
-     * @param userBirthday 用户生日
+     *
+     * @param userId        用户ID
+     * @param userGender    用户性别
+     * @param userBirthday  用户生日
      * @param userSignature 用户签名
      */
     @SneakyThrows
@@ -437,6 +523,7 @@ public class UserController {
 
     /**
      * 获取用户头像
+     *
      * @param userId 用户ID
      */
     @SneakyThrows
@@ -448,10 +535,8 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         try {
-            Path fullPath = Paths.get(imagePath);
-            Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
-            String imageUrl = "/image/" + relativePath.toString().replace("\\", "/");
-            return ResponseEntity.ok(ResponseResult.ok(imageUrl));
+            String relativePath = HandlePath.extractRelativePath(imagePath, "HeadImage/");
+            return ResponseEntity.ok(ResponseResult.ok(relativePath));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -459,8 +544,9 @@ public class UserController {
 
 
     /**
-     * 查找用户头像
-     * @param userId 用户ID
+     * 判断头像是否需要更新
+     *
+     * @param userId     用户ID
      * @param inDateTime 插入图片时的时间戳
      */
     @SneakyThrows
@@ -496,6 +582,7 @@ public class UserController {
 
     /**
      * 删除用户
+     *
      * @param userId 用户ID
      */
     @ResponseBody
@@ -567,6 +654,7 @@ public class UserController {
 
     /**
      * 刷新Token
+     *
      * @param token 旧Token
      */
     @PostMapping("/refreshToken")
@@ -587,8 +675,9 @@ public class UserController {
 
     /**
      * 更新用户基本信息
-     * @param userId 用户ID
-     * @param userName 用户名
+     *
+     * @param userId    用户ID
+     * @param userName  用户名
      * @param userEmail 邮箱
      * @param userPhone 手机号
      */

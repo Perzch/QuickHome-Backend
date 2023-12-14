@@ -43,6 +43,6 @@ rsa:
 
 file:
   HomeImgPath: "E:/Spring boot/uploads/HomeImg/"
-  AttractinonImgPath: "E:/Spring boot/uploads/AttractionImg/"
+  AttractionImgPath: "E:/Spring boot/uploads/AttractionImg/"
   UserImgPath: "E:/Spring boot/uploads/HeadImage/"
   path: "E:/Spring boot/uploads/"

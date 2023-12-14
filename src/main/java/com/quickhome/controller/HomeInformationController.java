@@ -10,11 +10,13 @@ import com.quickhome.mapper.*;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
+import com.quickhome.util.HandlePath;
 import com.quickhome.util.ImageUtil;
 import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
@@ -74,6 +76,12 @@ public class HomeInformationController {
 
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
+
+    @Value("${file.path}")
+    private String filePath;
+
+    @Value("${file.HomeImgPath}")
+    private String HomeImgPath;
 
     /**
      * 插入设备
@@ -251,7 +259,7 @@ public class HomeInformationController {
         try {
             for (HomeImage image : images) {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                Path relativePath = Paths.get(filePath).relativize(fullPath);
                 String imageUrl = relativePath.toString().replace("\\", "/");
                 imageUrls.add(imageUrl);
             }
@@ -325,6 +333,9 @@ public class HomeInformationController {
 
         HomeImage homeImage = homeImageService.saveHomeImg(homeId, imagePath);
 
+        if (homeImage != null) {
+            homeImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(homeImage.getImagePath_zch_hwz_gjc(), "HomeImg/"));
+        }
         return ResponseEntity.ok(ResponseResult.ok(homeImage));
     }
 
@@ -332,7 +343,7 @@ public class HomeInformationController {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
-        String uploadDir = "E:/Spring boot/uploads/HomeImg/";
+        String uploadDir = HomeImgPath;
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -416,7 +427,7 @@ public class HomeInformationController {
             for (HomeImage image : homeImages) {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    Path relativePath = Paths.get(filePath).relativize(fullPath);
                     String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
@@ -482,7 +493,7 @@ public class HomeInformationController {
         for (HomeImage image : homeImages) {
             try {
                 Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                Path relativePath = Paths.get(filePath).relativize(fullPath);
                 String imageUrl = relativePath.toString().replace("\\", "/");
                 image.setImagePath_zch_hwz_gjc(imageUrl);
                 formattedImageList.add(image);
@@ -520,7 +531,7 @@ public class HomeInformationController {
             for (HomeImage image : homeImages) {
                 try {
                     Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get("E:/Spring boot/uploads").relativize(fullPath);
+                    Path relativePath = Paths.get(filePath).relativize(fullPath);
                     String imageUrl = relativePath.toString().replace("\\", "/");
                     image.setImagePath_zch_hwz_gjc(imageUrl);
                     formattedImageList.add(image);
