@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
 import com.quickhome.pojo.PojoHome;
@@ -18,19 +17,14 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -77,14 +71,9 @@ public class HomeInformationController {
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
 
-    @Value("${file.path}")
-    private String filePath;
-
-    @Value("${file.HomeImgPath}")
-    private String HomeImgPath;
-
     /**
      * 插入设备
+     *
      * @param homeDevice 设备信息
      * @return
      */
@@ -104,6 +93,7 @@ public class HomeInformationController {
 
     /**
      * 更新设备
+     *
      * @param homeDevice 设备信息
      * @return
      */
@@ -127,9 +117,10 @@ public class HomeInformationController {
 
     /**
      * 获取设备列表
-     * @param homeId 房间ID
+     *
+     * @param homeId  房间ID
      * @param current 当前页
-     * @param size 每页大小
+     * @param size    每页大小
      * @return
      */
     @GetMapping("/getHomeDevice")
@@ -149,6 +140,7 @@ public class HomeInformationController {
 
     /**
      * 删除设备
+     *
      * @param deviceId 设备ID
      * @return
      */
@@ -173,9 +165,10 @@ public class HomeInformationController {
 
     /**
      * 检查房间是否可用
-     * @param homeId 房间ID
+     *
+     * @param homeId    房间ID
      * @param beginDate 开始日期
-     * @param endDate 结束日期
+     * @param endDate   结束日期
      * @return
      */
     @GetMapping("/checkHomeAvailability")
@@ -191,55 +184,8 @@ public class HomeInformationController {
     }
 
     /**
-     * 下载房间图片
-     * @param homeId 房间ID
-     * @return
-     */
-
-//    @SneakyThrows
-//    @ResponseBody
-//    @GetMapping("/getHomeImg")
-//    public ResponseEntity<Resource> getHomeImg(@RequestParam Long homeId) {
-//        QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
-//        wrapper.eq("homeId_zch_hwz_gjc", homeId);
-//        wrapper.eq("deleted_zch_hwz_gjc", 0);
-//        List<HomeImage> images = homeImageMapper.selectList(wrapper);
-//        if (images.size() == 0) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ZipOutputStream zos = new ZipOutputStream(baos);
-//
-//        try {
-//            for (HomeImage image : images) {
-//                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
-//                FileInputStream fis = new FileInputStream(path.toFile());
-//                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
-//                zos.putNextEntry(zipEntry);
-//
-//                byte[] buffer = new byte[1024];
-//                int len;
-//                while ((len = fis.read(buffer)) > 0) {
-//                    zos.write(buffer, 0, len);
-//                }
-//                zos.closeEntry();
-//                fis.close();
-//            }
-//            zos.close();
-//
-//            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=homeImages.zip")
-//                    .body(resource);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
-
-    /**
      * 获取房间图片
+     *
      * @param homeId 房间ID
      * @return
      */
@@ -254,27 +200,13 @@ public class HomeInformationController {
         if (images.size() == 0) {
             return ResponseEntity.notFound().build();
         }
-
-        List<String> imageUrls = new ArrayList<>();
-        try {
-            for (HomeImage image : images) {
-                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get(filePath).relativize(fullPath);
-                String imageUrl = relativePath.toString().replace("\\", "/");
-                imageUrls.add(imageUrl);
-            }
-
-            Map<String, List<String>> response = new HashMap<>();
-            response.put("imageUrls", imageUrls);
-            return ResponseEntity.ok(ResponseResult.ok(response));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(ResponseResult.ok(images));
     }
 
     /**
      * 删除房间图片
-     * @param homeId 房间ID
+     *
+     * @param homeId    房间ID
      * @param timestamp 时间戳
      * @return
      */
@@ -288,7 +220,6 @@ public class HomeInformationController {
             // 使用拼接后的字符串去数据库中查找
             QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
             wrapper.like("imagePath_zch_hwz_gjc", combinedString);
-            wrapper.eq("deleted_zch_hwz_gjc", 0);
 
             HomeImage image = homeImageMapper.selectOne(wrapper);
             if (image != null) {
@@ -313,8 +244,9 @@ public class HomeInformationController {
 
     /**
      * 上传房间图片
+     *
      * @param homeId 房间ID
-     * @param file 上传的文件
+     * @param file   上传的文件
      * @return
      * @throws IOException
      */
@@ -330,12 +262,12 @@ public class HomeInformationController {
         }
 
         String imagePath = saveUploadedFile(homeId, file);
+        if (imagePath != null) {
+            imagePath = HandlePath.extractRelativePath(imagePath, "image/HomeImg/");
+        }
 
         HomeImage homeImage = homeImageService.saveHomeImg(homeId, imagePath);
 
-        if (homeImage != null) {
-            homeImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(homeImage.getImagePath_zch_hwz_gjc(), "HomeImg/"));
-        }
         return ResponseEntity.ok(ResponseResult.ok(homeImage));
     }
 
@@ -343,39 +275,15 @@ public class HomeInformationController {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
-        String uploadDir = HomeImgPath;
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = homeId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
-        String filePath = uploadDir + newFileName;
-
-        File localFile = new File(filePath);
-
-        // 先保存文件到本地
         try {
-            file.transferTo(localFile);
-        } catch (IOException e) {
-            throw new IOException("Failed to store file " + newFileName, e);
-        }
 
-        // 然后上传到腾讯云
-        try {
-            FileInputStream input = new FileInputStream(localFile);
-            MultipartFile multipartFile = new MockMultipartFile("file",
-                    localFile.getName(),
-                    "multipart/form-data",
-                    IOUtils.toByteArray(input));
-
-            // 然后使用这个新的 MultipartFile 对象
-            tencentCOSUtils.upload(multipartFile, newFileName,"HomeImg");
+            return tencentCOSUtils.upload(file, newFileName, "HomeImg");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);
         }
-        return filePath;
     }
 
     private String getFileExtension(String fileName) {
@@ -423,19 +331,7 @@ public class HomeInformationController {
             List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeDeviceList(homeDevices);
             List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            List<HomeImage> formattedImageList = new ArrayList<>();
-            for (HomeImage image : homeImages) {
-                try {
-                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get(filePath).relativize(fullPath);
-                    String imageUrl = relativePath.toString().replace("\\", "/");
-                    image.setImagePath_zch_hwz_gjc(imageUrl);
-                    formattedImageList.add(image);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            pojoHome.setHomeImageList(formattedImageList);
+            pojoHome.setHomeImageList(homeImages);
             int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setCollectionCount(collectionNum);
             pojoHomeList.add(pojoHome);
@@ -489,19 +385,7 @@ public class HomeInformationController {
         List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
         pojoHome.setHomeDeviceList(homeDevices);
         List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-        List<HomeImage> formattedImageList = new ArrayList<>();
-        for (HomeImage image : homeImages) {
-            try {
-                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get(filePath).relativize(fullPath);
-                String imageUrl = relativePath.toString().replace("\\", "/");
-                image.setImagePath_zch_hwz_gjc(imageUrl);
-                formattedImageList.add(image);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        pojoHome.setHomeImageList(formattedImageList);
+        pojoHome.setHomeImageList(homeImages);
         int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
         pojoHome.setCollectionCount(collectionNum);
         pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
@@ -527,19 +411,7 @@ public class HomeInformationController {
             List<HomeDevice> homeDevices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeDeviceList(homeDevices);
             List<HomeImage> homeImages = homeImageSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            List<HomeImage> formattedImageList = new ArrayList<>();
-            for (HomeImage image : homeImages) {
-                try {
-                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get(filePath).relativize(fullPath);
-                    String imageUrl = relativePath.toString().replace("\\", "/");
-                    image.setImagePath_zch_hwz_gjc(imageUrl);
-                    formattedImageList.add(image);
-                } catch (Exception e) {
-                    // Handle exception if necessary
-                }
-            }
-            pojoHome.setHomeImageList(formattedImageList);
+            pojoHome.setHomeImageList(homeImages);
             pojoHomeList.add(pojoHome);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
@@ -548,6 +420,7 @@ public class HomeInformationController {
 
     /**
      * 插入房屋信息
+     *
      * @param home 房屋信息
      * @return
      */
@@ -567,6 +440,7 @@ public class HomeInformationController {
 
     /**
      * 更新房屋信息
+     *
      * @param home 房屋信息
      * @return
      */
@@ -613,6 +487,7 @@ public class HomeInformationController {
 
     /**
      * 插入房屋信息
+     *
      * @param homeInformation 房屋信息
      * @return
      */
@@ -636,6 +511,7 @@ public class HomeInformationController {
 
     /**
      * 更新房屋信息
+     *
      * @param homeInformation 房屋信息
      * @return
      */
@@ -687,8 +563,9 @@ public class HomeInformationController {
 
     /**
      * 获取用户收藏房屋列表
-     * @param userId 用户ID
-     * @param pageNo 页码
+     *
+     * @param userId   用户ID
+     * @param pageNo   页码
      * @param pageSize 每页大小
      * @return
      */
@@ -708,6 +585,7 @@ public class HomeInformationController {
 
     /**
      * 取消收藏房屋
+     *
      * @param userId 用户ID
      * @param homeId 房屋ID
      * @return
@@ -736,6 +614,7 @@ public class HomeInformationController {
 
     /**
      * 收藏房屋
+     *
      * @param userId 用户ID
      * @param homeId 房屋ID
      * @return
@@ -759,6 +638,7 @@ public class HomeInformationController {
 
     /**
      * 删除房屋
+     *
      * @param homeId 房屋ID
      * @return
      */

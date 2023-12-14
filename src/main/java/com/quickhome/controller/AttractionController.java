@@ -75,55 +75,8 @@ public class AttractionController {
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
     /**
-     * 下载景点图片
-     * @param attractionId
-     * @return
-     */
-
-//    @SneakyThrows
-//    @ResponseBody
-//    @GetMapping("/getAttractionImg")
-//    public ResponseEntity<Resource> getAttractionImg(@RequestParam Long attractionId) {
-//        QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
-//        wrapper.eq("attractionId_zch_hwz_gjc", attractionId);
-//        wrapper.eq("deleted_zch_hwz_gjc", 0);
-//        List<AttractionImage> images = attractionImageMapper.selectList(wrapper);
-//        if (images.size() == 0) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ZipOutputStream zos = new ZipOutputStream(baos);
-//
-//        try {
-//            for (AttractionImage image : images) {
-//                Path path = Paths.get(image.getImagePath_zch_hwz_gjc());
-//                FileInputStream fis = new FileInputStream(path.toFile());
-//                ZipEntry zipEntry = new ZipEntry(path.getFileName().toString());
-//                zos.putNextEntry(zipEntry);
-//
-//                byte[] buffer = new byte[1024];
-//                int len;
-//                while ((len = fis.read(buffer)) > 0) {
-//                    zos.write(buffer, 0, len);
-//                }
-//                zos.closeEntry();
-//                fis.close();
-//            }
-//            zos.close();
-//
-//            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attractionImages.zip")
-//                    .body(resource);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
-
-    /**
      * 获取景点图片
+     *
      * @param attractionId 景点id
      * @return
      */
@@ -138,27 +91,13 @@ public class AttractionController {
         if (images.size() == 0) {
             return ResponseEntity.notFound().build();
         }
-
-        List<String> imageUrls = new ArrayList<>();
-        try {
-            for (AttractionImage image : images) {
-                Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                Path relativePath = Paths.get(filePath).relativize(fullPath);
-                String imageUrl = relativePath.toString().replace("\\", "/");
-                imageUrls.add(imageUrl);
-            }
-
-            Map<String, List<String>> response = new HashMap<>();
-            response.put("imageUrls", imageUrls);
-            return ResponseEntity.ok(ResponseResult.ok(response));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(ResponseResult.ok(images));
     }
 
     /**
      * 检查用户是否收藏该景点
-     * @param userId 用户id
+     *
+     * @param userId       用户id
      * @param attractionId 景点id
      * @return
      */
@@ -182,8 +121,9 @@ public class AttractionController {
 
     /**
      * 删除景点图片
+     *
      * @param attractionId 景点id
-     * @param timestamp 时间戳
+     * @param timestamp    时间戳
      * @return
      */
 
@@ -191,7 +131,7 @@ public class AttractionController {
     public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
         try {
             // 拼接attractionId和时间戳
-            String combinedString = attractionId.toString() +"-"+ timestamp;
+            String combinedString = attractionId.toString() + "-" + timestamp;
 
             // 使用拼接后的字符串去数据库中查找
             QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
@@ -221,9 +161,10 @@ public class AttractionController {
 
     /**
      * 上传景点图片
+     *
      * @param attractionId 景点id
-     * @param file 上传的文件
-     * @param req 请求
+     * @param file         上传的文件
+     * @param req          请求
      * @return
      * @throws IOException
      */
@@ -233,18 +174,18 @@ public class AttractionController {
     public ResponseEntity<ResponseResult<?>> insertAttractionImg(
             @RequestParam("attractionId") Long attractionId,
             @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException{
+            HttpServletRequest req) throws IOException {
         if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
             return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
         }
 
         String imagePath = saveUploadedFile(attractionId, file);
 
-        AttractionImage attractionImage = attractionImageService.saveAttractionImg(attractionId, imagePath);
-
-        if (attractionImage != null) {
-            attractionImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(attractionImage.getImagePath_zch_hwz_gjc(), "AttractionImg/"));
+        if (imagePath != null) {
+            imagePath = HandlePath.extractRelativePath(imagePath, "image/AttractionImg/");
         }
+
+        AttractionImage attractionImage = attractionImageService.saveAttractionImg(attractionId, imagePath);
 
         return ResponseEntity.ok(ResponseResult.ok(attractionImage));
     }
@@ -253,39 +194,14 @@ public class AttractionController {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
-        String uploadDir = AttractionImgPath;
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = attractionId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
-        String filePath = uploadDir + newFileName;
-
-        File localFile = new File(filePath);
-
-        // 先保存文件到本地
         try {
-            file.transferTo(localFile);
-        } catch (IOException e) {
-            throw new IOException("Failed to store file " + newFileName, e);
-        }
-
-        // 然后上传到腾讯云
-        try {
-            FileInputStream input = new FileInputStream(localFile);
-            MultipartFile multipartFile = new MockMultipartFile("file",
-                    localFile.getName(),
-                    "multipart/form-data",
-                    IOUtils.toByteArray(input));
-
-            // 然后使用这个新的 MultipartFile 对象
-            tencentCOSUtils.upload(multipartFile, newFileName,"AttractionImg");
+            return tencentCOSUtils.upload(file, newFileName, "AttractionImg");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);
         }
-        return filePath;
     }
 
     private String getFileExtension(String fileName) {
@@ -304,27 +220,15 @@ public class AttractionController {
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
             Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId());
             pojoAttraction.setAttractions(attractions);
-
             List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId());
-            List<AttractionImage> formattedImageList = new ArrayList<>();
-            for (AttractionImage image : attractionImageList) {
-                try {
-                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get(filePath).relativize(fullPath);
-                    String imageUrl = relativePath.toString().replace("\\", "/");
-                    image.setImagePath_zch_hwz_gjc(imageUrl);
-                    formattedImageList.add(image);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            pojoAttraction.setAttractionImageList(formattedImageList);
+            pojoAttraction.setAttractionImageList(attractionImageList);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoAttractionList));
     }
 
     /**
      * 插入景点
+     *
      * @param attractions 景点信息
      * @return
      */
@@ -344,8 +248,9 @@ public class AttractionController {
 
     /**
      * 根据景点id获取景点信息
+     *
      * @param attractionId 景点id
-     * @param req 请求
+     * @param req          请求
      * @return
      */
 
@@ -354,32 +259,23 @@ public class AttractionController {
                                                HttpServletRequest req) {
         try {
             Attractions attraction = attractionMapper.selectById(attractionId);
-                PojoAttraction pojoAttraction = new PojoAttraction();
-                pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
-                pojoAttraction.setAttractions(attraction);
+            PojoAttraction pojoAttraction = new PojoAttraction();
+            pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
+            pojoAttraction.setAttractions(attraction);
 
-                // 计算收藏数
-                QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
-                collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
-                collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
-                Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
-                pojoAttraction.setCollectionCount(collectionCount);
+            // 计算收藏数
+            QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
+            collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+            collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
+            Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
+            pojoAttraction.setCollectionCount(collectionCount);
 
-                // 获取图片
-                QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
-                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
-                imageWrapper.eq("deleted_zch_hwz_gjc", 0);
-                List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
-
-                List<AttractionImage> formattedImageList = new ArrayList<>();
-                for (AttractionImage image : images) {
-                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get(filePath).relativize(fullPath);
-                    String imageUrl = relativePath.toString().replace("\\", "/");
-                    image.setImagePath_zch_hwz_gjc(imageUrl);
-                    formattedImageList.add(image);
-                }
-                pojoAttraction.setAttractionImageList(formattedImageList);
+            // 获取图片
+            QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
+            imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+            imageWrapper.eq("deleted_zch_hwz_gjc", 0);
+            List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
+            pojoAttraction.setAttractionImageList(images);
 
             if (pojoAttraction.getAttractionsId() != null) {
                 return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
@@ -393,8 +289,9 @@ public class AttractionController {
 
     /**
      * 根据景点名称模糊查询景点信息
-     * @param pageNo 页码
-     * @param pageSize 每页大小
+     *
+     * @param pageNo          页码
+     * @param pageSize        每页大小
      * @param attractionsName 景点名称
      * @return
      */
@@ -430,16 +327,7 @@ public class AttractionController {
                 imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
                 imageWrapper.eq("deleted_zch_hwz_gjc", 0);
                 List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
-
-                List<AttractionImage> formattedImageList = new ArrayList<>();
-                for (AttractionImage image : images) {
-                    Path fullPath = Paths.get(image.getImagePath_zch_hwz_gjc());
-                    Path relativePath = Paths.get(filePath).relativize(fullPath);
-                    String imageUrl = relativePath.toString().replace("\\", "/");
-                    image.setImagePath_zch_hwz_gjc(imageUrl);
-                    formattedImageList.add(image);
-                }
-                pojoAttraction.setAttractionImageList(formattedImageList);
+                pojoAttraction.setAttractionImageList(images);
 
                 pojoAttractionList.add(pojoAttraction);
             }
@@ -456,6 +344,7 @@ public class AttractionController {
 
     /**
      * 更新景点信息
+     *
      * @param attractions 景点信息
      * @return
      */
@@ -501,6 +390,7 @@ public class AttractionController {
 
     /**
      * 删除景点信息
+     *
      * @param attractionId 景点ID
      * @return
      */
@@ -525,7 +415,8 @@ public class AttractionController {
 
     /**
      * 添加景点收藏
-     * @param userId 用户ID
+     *
+     * @param userId        用户ID
      * @param attractionsId 景点ID
      * @return
      */
@@ -539,7 +430,7 @@ public class AttractionController {
             queryWrapper.eq("userId_zch_hwz_gjc", userId)
                     .eq("attractionsId_zch_hwz_gjc", attractionsId);
             Long flag = attractionCollectionMapper.selectCount(queryWrapper);
-            if (flag > 0){
+            if (flag > 0) {
                 return ResponseEntity.ok(ResponseResult.error("已收藏"));
             }
             AttractionCollection collection = new AttractionCollection();
@@ -560,7 +451,8 @@ public class AttractionController {
 
     /**
      * 取消景点收藏
-     * @param userId 用户ID
+     *
+     * @param userId        用户ID
      * @param attractionsId 景点ID
      * @return
      */
@@ -588,8 +480,9 @@ public class AttractionController {
 
     /**
      * 获取用户收藏列表
-     * @param userId 用户ID
-     * @param pageNo 页码
+     *
+     * @param userId   用户ID
+     * @param pageNo   页码
      * @param pageSize 每页大小
      * @return
      */

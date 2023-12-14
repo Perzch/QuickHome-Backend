@@ -46,8 +46,8 @@ public class LogController {
         }
     }
 
-    @GetMapping("/getLogsByUserId")
-    public ResponseEntity<ResponseResult<?>> getLogsByUserId(
+    @GetMapping("/getLogs")
+    public ResponseEntity<ResponseResult<?>> getLogs(
             @RequestParam Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {

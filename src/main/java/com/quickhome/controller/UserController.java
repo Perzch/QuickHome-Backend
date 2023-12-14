@@ -137,11 +137,6 @@ public class UserController {
             if (userInformation != null && userInformation.getUserHeadId_zch_hwz_gjc() != null) {
                 userHeadImage = userHeadImageService.getById(userInformation.getUserHeadId_zch_hwz_gjc());
             }
-            if (userHeadImage != null && userHeadImage.getImagePath_zch_hwz_gjc() != null) {
-                String fullPath = userHeadImage.getImagePath_zch_hwz_gjc();
-                String relativePath = HandlePath.extractRelativePath(fullPath, "HeadImage/");
-                userHeadImage.setImagePath_zch_hwz_gjc(relativePath);
-            }
             return new PojoUser(null, user.getUserId_zch_hwz_gjc().intValue(), user, userInformation, userHeadImage);
         }).collect(Collectors.toList());
 
@@ -314,10 +309,6 @@ public class UserController {
             pojoUser.setUser(userService.getById((long) userId));
             pojoUser.setUserInformation(userInformationService.getUserInformationByUserId((long) userId));
             UserHeadImage userHeadImage = userHeadImageService.getUserHeadImageByUserId((long) userId);
-            if (userHeadImage!= null) {
-                String relativePath = HandlePath.extractRelativePath(userHeadImage.getImagePath_zch_hwz_gjc(), "HeadImage/");
-                userHeadImage.setImagePath_zch_hwz_gjc(relativePath);
-            }
             pojoUser.setUserHeadImage(userHeadImage);
 
             return ResponseEntity.ok(ResponseResult.ok(pojoUser));
@@ -402,15 +393,15 @@ public class UserController {
         }
 
         String imagePath = saveUploadedFile(userId, file);
+        if (imagePath != null) {
+            imagePath = HandlePath.extractRelativePath(imagePath, "image/HeadImage/");
+        }
         UserHeadImage userHeadImage = userHeadImageService.saveOrUpdateUserHeadImage(userId, imagePath);
         QueryWrapper<UserInformation> queryWrapper =
                 new QueryWrapper<UserInformation>().eq("userId_zch_hwz_gjc", userId);
         UserInformation userInformation = userInformationService.getOne(queryWrapper);
         userInformation.setUserHeadId_zch_hwz_gjc(userHeadImage.getUserImageId_zch_hwz_gjc());
         userInformationMapper.updateById(userInformation);
-        if (userHeadImage != null) {
-            userHeadImage.setImagePath_zch_hwz_gjc(HandlePath.extractRelativePath(userHeadImage.getImagePath_zch_hwz_gjc(), "HeadImage/"));
-        }
         return ResponseEntity.ok(ResponseResult.ok(userHeadImage));
     }
 
@@ -425,40 +416,14 @@ public class UserController {
             throw new IOException("Failed to store empty file.");
         }
 
-        String uploadDir = userImgPath;
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = userId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
-        String filePath = uploadDir + newFileName;
-
-        File localFile = new File(filePath);
-
-        // 先保存文件到本地
         try {
-            file.transferTo(localFile);
-        } catch (IOException e) {
-            throw new IOException("Failed to store file " + newFileName, e);
-        }
-
-        // 然后上传到腾讯云
-        try {
-            FileInputStream input = new FileInputStream(localFile);
-            MultipartFile multipartFile = new MockMultipartFile("file",
-                    localFile.getName(),
-                    "multipart/form-data",
-                    IOUtils.toByteArray(input));
-
-            // 然后使用这个新的 MultipartFile 对象
-            tencentCOSUtils.upload(multipartFile, newFileName, "HeadImage");
+            return tencentCOSUtils.upload(file, newFileName, "HeadImage");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);
         }
-        return filePath;
     }
 
 
@@ -498,29 +463,6 @@ public class UserController {
         return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userId, userGender, dateBirthday, userSignature)));
     }
 
-//    @SneakyThrows
-//    @ResponseBody
-//    @GetMapping("/getHeadImg")
-//    public ResponseEntity<Resource> getHeadImg(@RequestParam Long userId) {
-//        String imagePath = userInformationService.getUserImagePath(userId);
-//        if (imagePath == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        try {
-//            Path path = Paths.get(imagePath);
-//            Resource resource = new UrlResource(path.toUri());
-//            if (resource.exists() || resource.isReadable()) {
-//                return ResponseEntity.ok()
-//                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
-//                        .body(resource);
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     /**
      * 获取用户头像
      *
@@ -535,8 +477,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         try {
-            String relativePath = HandlePath.extractRelativePath(imagePath, "HeadImage/");
-            return ResponseEntity.ok(ResponseResult.ok(relativePath));
+            return ResponseEntity.ok(ResponseResult.ok(imagePath));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
