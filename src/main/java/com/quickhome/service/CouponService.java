@@ -22,4 +22,6 @@ public interface CouponService extends IService<Coupon> {
     public Coupon getCoupon(Long couponId);
 
     public List<Coupon> getCouponsByCondition(String discountMethod);
+
+    public boolean releaseCouponsToUsers(Long couponId, List<Long> userIds);
 }

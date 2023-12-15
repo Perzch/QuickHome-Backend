@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,18 +72,28 @@ public class CouponController {
     }
 
     /**
-     * 用户领取优惠券
-     * @param usersAndCoupons 用户优惠券ID
+     *  发放优惠券
+     * @param couponId 优惠券ID
+     * @param userIds 用户ID字符串
      * @param req
      * @return
      */
     @ResponseBody
-    @PostMapping("/userAddCoupons")
-    public ResponseEntity<ResponseResult<?>> userAddCoupons(
-            @RequestBody UsersAndCoupons usersAndCoupons,
+    @PostMapping("/releaseCoupons")
+    public ResponseEntity<ResponseResult<?>> releaseCoupons(
+            @RequestParam Long couponId,
+            @RequestParam(required = false) String userIds, // 用户ID字符串
             HttpServletRequest req) {
 
-        boolean success = usersAndCouponsService.addUserCoupon(usersAndCoupons);
+        List<Long> userIdList = null;
+        if (userIds != null && !userIds.isEmpty()) {
+            userIdList = Arrays.stream(userIds.split(","))
+                    .map(String::trim)
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+        }
+
+        boolean success = couponService.releaseCouponsToUsers(couponId, userIdList);
         if (success) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
@@ -256,7 +267,7 @@ public class CouponController {
                 return ResponseEntity.status(404).body(ResponseResult.error("优惠券不存在"));
             }
         } catch (Exception e) {
-            // Handle exception...
+            e.printStackTrace();
             return ResponseEntity.status(500).body(ResponseResult.error("查询失败：" + e.getMessage()));
         }
     }
