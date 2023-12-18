@@ -424,7 +424,7 @@ public class UserController {
      */
     @SneakyThrows
     @ResponseBody
-    @PutMapping
+    @PutMapping("/info")
     public ResponseEntity<ResponseResult<?>> updateUserInf(
             @RequestBody UserInformation userInformation,
             HttpServletRequest req) {
@@ -587,7 +587,7 @@ public class UserController {
      *
      */
     @ResponseBody
-    @PutMapping("/basic")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updateUserBasicInf(@RequestBody User u,
             HttpServletRequest request) {
         try {
