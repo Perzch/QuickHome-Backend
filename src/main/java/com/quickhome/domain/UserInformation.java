@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_userinformation_zch_hwz_gjc
  */
 @TableName(value ="tab_userinformation_zch_hwz_gjc")

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
+import com.quickhome.pojo.PJFile;
+import com.quickhome.pojo.PJUserHome;
 import com.quickhome.pojo.PojoHome;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.*;
@@ -31,7 +33,7 @@ import java.util.*;
 
 @Transactional
 @Controller("HomeInfCon")
-@RequestMapping("/homeInf")
+@RequestMapping("/home")
 public class HomeInformationController {
 
     @Autowired
@@ -79,7 +81,7 @@ public class HomeInformationController {
      */
 
     @ResponseBody
-    @PostMapping("/insertHomeDevice")
+    @PostMapping("/device")
     public ResponseEntity<ResponseResult<?>> insertHomeDevice(
             @RequestBody HomeDevice homeDevice) {
         try {
@@ -99,7 +101,7 @@ public class HomeInformationController {
      */
 
     @ResponseBody
-    @PutMapping("/updateHomeDevice")
+    @PutMapping("/device")
     public ResponseEntity<ResponseResult<?>> updateHomeDevice(
             @RequestBody HomeDevice homeDevice) {
         try {
@@ -123,11 +125,11 @@ public class HomeInformationController {
      * @param size    每页大小
      * @return
      */
-    @GetMapping("/getHomeDevice")
-    public ResponseEntity<ResponseResult<?>> getHomeDevice(
+    @GetMapping("/device/list")
+    public ResponseEntity<ResponseResult<?>> ListHomeDevice(
             @RequestParam Long homeId,
-            @RequestParam(required = false, defaultValue = "1") Integer current,
-            @RequestParam(required = false, defaultValue = "10") Integer size) {
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer current,
+            @RequestParam(required = false, defaultValue = "10", name = "size") Integer size) {
         try {
             Page<HomeDevice> page = new Page<>(current, size);
             IPage<HomeDevice> devices = homeDeviceMapper.getDevicesByHomeId(page, homeId);
@@ -144,8 +146,8 @@ public class HomeInformationController {
      * @param deviceId 设备ID
      * @return
      */
-    @DeleteMapping("/delHomeDev")
-    public ResponseEntity<ResponseResult<?>> delHomeDev(@RequestParam Long deviceId) {
+    @DeleteMapping("/device/{deviceId}")
+    public ResponseEntity<ResponseResult<?>> delHomeDev(@PathVariable("deviceId") Long deviceId) {
         try {
             // 构建查询条件
             QueryWrapper<HomeDevice> queryWrapper = new QueryWrapper<>();
@@ -171,7 +173,7 @@ public class HomeInformationController {
      * @param endDate   结束日期
      * @return
      */
-    @GetMapping("/checkHomeAvailability")
+    @GetMapping("/check")
     public ResponseEntity<?> checkHomeAvailability(@RequestParam Long homeId,
                                                    @RequestParam String beginDate,
                                                    @RequestParam String endDate) {
@@ -191,8 +193,8 @@ public class HomeInformationController {
      */
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/getHomeImg")
-    public ResponseEntity<ResponseResult<?>> getHomeImg(@RequestParam Long homeId) {
+    @GetMapping("/img/{homeId}")
+    public ResponseEntity<ResponseResult<?>> getHomeImg(@PathVariable("homeId") Long homeId) {
         QueryWrapper<HomeImage> wrapper = new QueryWrapper<>();
         wrapper.eq("homeId_zch_hwz_gjc", homeId);
         wrapper.eq("deleted_zch_hwz_gjc", 0);
@@ -207,14 +209,14 @@ public class HomeInformationController {
      * 删除房间图片
      *
      * @param homeId    房间ID
-     * @param timestamp 时间戳
      * @return
      */
 
-    @DeleteMapping("/deleteHomeImg")
-    public ResponseEntity<?> deleteHomeImg(@RequestParam Long homeId, @RequestParam String timestamp) {
+    @DeleteMapping("/img/{homeId}")
+    public ResponseEntity<?> deleteHomeImg(@PathVariable("homeId") Long homeId) {
         try {
             // 拼接attractionId和时间戳
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             String combinedString = homeId.toString() + "-" + timestamp;
 
             // 使用拼接后的字符串去数据库中查找
@@ -245,28 +247,24 @@ public class HomeInformationController {
     /**
      * 上传房间图片
      *
-     * @param homeId 房间ID
-     * @param file   上传的文件
      * @return
      * @throws IOException
      */
 
     @ResponseBody
-    @PostMapping("/addHomeImg")
-    public ResponseEntity<ResponseResult<?>> addHomeImg(
-            @RequestParam("homeId") Long homeId,
-            @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException {
-        if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
+    @PostMapping("/img")
+    public ResponseEntity<ResponseResult<?>> addHomeImg(@RequestBody @ModelAttribute PJFile pjFile,
+                                                        HttpServletRequest req) throws IOException {
+        if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
             return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
         }
 
-        String imagePath = saveUploadedFile(homeId, file);
+        String imagePath = saveUploadedFile(pjFile.getHomeId(), pjFile.getFile());
         if (imagePath != null) {
             imagePath = HandlePath.extractRelativePath(imagePath, "image/HomeImg/");
         }
 
-        HomeImage homeImage = homeImageService.saveHomeImg(homeId, imagePath);
+        HomeImage homeImage = homeImageService.saveHomeImg(pjFile.getHomeId(), imagePath);
 
         return ResponseEntity.ok(ResponseResult.ok(homeImage));
     }
@@ -306,7 +304,7 @@ public class HomeInformationController {
      * @return 房屋信息
      */
 
-    @GetMapping("/")//获取房屋信息（复合模糊查询）
+    @GetMapping("/list")//获取房屋信息（复合模糊查询）
     @ResponseBody
     public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
                                         @RequestParam String beginDate,//入住日期
@@ -347,7 +345,7 @@ public class HomeInformationController {
      * @return 收藏状态
      */
 
-    @GetMapping("/checkHomeCollectionStatus")
+    @GetMapping("/collection/check")
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> checkHomeCollectionStatus(
             @RequestParam Long userId,
@@ -373,9 +371,9 @@ public class HomeInformationController {
      * @param req 请求
      * @return 房屋信息
      */
-    @GetMapping("/getHomeInfById")//获取房屋信息通过id
+    @GetMapping("/{id}")//获取房屋信息通过id
     @ResponseBody
-    public ResponseEntity<ResponseResult<?>> getHomeInfById(@RequestParam Long id,
+    public ResponseEntity<ResponseResult<?>> getHomeInfById(@PathVariable("id") Long id,
                                                             HttpServletRequest req) {
         PojoHome pojoHome = new PojoHome();
         Home home = homeSer_zch_hwz_gjc.getById(id);
@@ -398,7 +396,7 @@ public class HomeInformationController {
      * @return 热门房屋信息
      */
 
-    @GetMapping("/getHomeListOrderByCollectionCount") //获取热门房屋信息
+    @GetMapping("/byCollection") //获取热门房屋信息
     @ResponseBody
     public ResponseEntity<?> getHomeListOrderByCollectionCount() {
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
@@ -426,7 +424,7 @@ public class HomeInformationController {
      */
 
     @ResponseBody
-    @PostMapping("/insertHome")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> insertHome(
             @RequestBody Home home) {
         try {
@@ -446,7 +444,7 @@ public class HomeInformationController {
      */
 
     @ResponseBody
-    @PostMapping("/updateHome")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updateHome(
             @RequestBody Home home) {
         try {
@@ -493,7 +491,7 @@ public class HomeInformationController {
      */
 
     @ResponseBody
-    @PostMapping("/insertHomeInf")
+    @PostMapping("/info")
     public ResponseEntity<ResponseResult<?>> insertHomeInf(
             @RequestBody HomeInformation homeInformation) {
         try {
@@ -516,7 +514,7 @@ public class HomeInformationController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/changeHomeInf")
+    @PutMapping("/info")
     public ResponseEntity<ResponseResult<?>> changeHomeInf(
             @RequestBody HomeInformation homeInformation) {
         try {
@@ -570,11 +568,11 @@ public class HomeInformationController {
      * @return
      */
 
-    @GetMapping("/getUserHomeList")
+    @GetMapping("/collection/list")
     public ResponseEntity<?> getUserHomeList(
             @RequestParam("userId") Long userId,
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize) {
         try {
             Page<HouseCollection> resultPage = houseCollectionService.getUserHomeCollections(userId, pageNo, pageSize);
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
@@ -586,19 +584,15 @@ public class HomeInformationController {
     /**
      * 取消收藏房屋
      *
-     * @param userId 用户ID
-     * @param homeId 房屋ID
      * @return
      */
 
-    @PutMapping("/cancelHome")
-    public ResponseEntity<?> cancelHomeCollection(
-            @RequestParam("userId") Long userId,
-            @RequestParam("homeId") Long homeId) {
+    @DeleteMapping("/collection")
+    public ResponseEntity<?> cancelHomeCollection(@RequestBody PJUserHome userHome) {
         try {
             UpdateWrapper<HouseCollection> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("userId_zch_hwz_gjc", userId)
-                    .eq("homeId_zch_hwz_gjc", homeId)
+            updateWrapper.eq("userId_zch_hwz_gjc", userHome.getHomeId())
+                    .eq("homeId_zch_hwz_gjc", userHome.getHomeId())
                     .set("deleted_zch_hwz_gjc", 1);
 
             int result = houseCollectionMapper.update(null, updateWrapper);
@@ -615,17 +609,13 @@ public class HomeInformationController {
     /**
      * 收藏房屋
      *
-     * @param userId 用户ID
-     * @param homeId 房屋ID
      * @return
      */
 
-    @PostMapping("/addHomeCollection")
-    public ResponseEntity<?> addHomeCollection(
-            @RequestParam("userId") Long userId,
-            @RequestParam("homeId") Long homeId) {
+    @PostMapping("/collection")
+    public ResponseEntity<?> addHomeCollection(@RequestBody PJUserHome userHome) {
         try {
-            boolean result = houseCollectionService.addHouseCollection(userId, homeId);
+            boolean result = houseCollectionService.addHouseCollection(userHome);
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("收藏成功"));
             } else {
@@ -643,8 +633,8 @@ public class HomeInformationController {
      * @return
      */
 
-    @DeleteMapping("/deleteHome")
-    public ResponseEntity<ResponseResult<?>> deleteHome(@RequestParam Long homeId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteHome(@PathVariable("id") Long homeId) {
         try {
             Home home = homeMapper.selectById(homeId);
             if (home == null) {

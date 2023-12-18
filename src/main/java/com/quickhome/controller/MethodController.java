@@ -16,25 +16,25 @@ import org.springframework.web.bind.annotation.*;
 
 @Transactional
 @Controller("MethodCon")
-@RequestMapping("/Method")
+@RequestMapping("/method")
 @CrossOrigin(origins = "http://localhost:8081")
 public class MethodController {
     /**
      * 发送短信
-     * @param phoneNumber 手机号
+     * @param userPhone 手机号
      * @return 返回发送结果
      */
-    @PostMapping("/sendSMS")
+    @GetMapping("/phone")
     @ResponseBody
-    public ResponseEntity<?> sendSMS(@RequestParam String phoneNumber) {
+    public ResponseEntity<?> sendSMS(@RequestParam String userPhone) {
         String returnCode;
         String regex = "^1[3456789]\\d{9}$";
-        boolean isValid = phoneNumber.matches(regex);
+        boolean isValid = userPhone.matches(regex);
         if (!isValid) {
             return ResponseEntity.ok(ResponseResult.of(100, "手机号格式不正确"));
         }
         try {
-            returnCode = SendSMS.SendSMS(phoneNumber);
+            returnCode = SendSMS.SendSMS(userPhone);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class MethodController {
      * @param email 邮箱
      * @return 返回发送结果
      */
-    @PostMapping("/sendMail")
+    @GetMapping("/mail")
     @ResponseBody
     public ResponseEntity<?> sendMail(@RequestParam String email) {
         String returnCode;

@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Tim-h
- * @description 针对表【tab_coupon_zch_hwz_gjc】的数据库操作Service实现
- * @createDate 2023-06-21 09:46:26
- */
+* @author Tim-h
+* @description 针对表【tab_coupon_zch_hwz_gjc】的数据库操作Service实现
+* @createDate 2023-06-21 09:46:26
+*/
 @Transactional
 @Service
 public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
-        implements CouponService {
+    implements CouponService{
 
     @Autowired
     private CouponMapper couponMapper;
@@ -34,7 +34,6 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
 
     @Autowired
     private UsersAndCouponsMapper usersAndCouponsMapper;
-
     public boolean addCoupon(Coupon coupon) {
         return couponMapper.insert(coupon) > 0;
     }
@@ -81,6 +80,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
             return false;
         }
     }
+
 
 }
 

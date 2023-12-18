@@ -34,7 +34,7 @@ import java.util.Map;
  */
 @Transactional
 @Controller("ManagerCon")
-@RequestMapping("/Manager")
+@RequestMapping("/manager")
 public class ManagerController {
     //公钥与私钥
     @Value("${rsa.private_key}")
@@ -67,7 +67,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/insertManager")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> insertManager(@RequestBody Manager manager) {
         // 生成唯一的 managerAccount
         String managerAccount;
@@ -98,7 +98,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/updatePassword")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updatePassword(
             @RequestBody Map<String, String> request) {
 
@@ -150,8 +150,8 @@ public class ManagerController {
      * @return
      */
 
-    @GetMapping("/getManager")
-    public ResponseEntity<ResponseResult<?>> getManager(@RequestParam Long managerId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseResult<?>> getManager(@PathVariable("id") Long managerId) {
         QueryWrapper<Manager> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerId_zch_hwz_gjc", managerId);
         Manager manager = managerMapper.selectOne(queryWrapper);
@@ -176,10 +176,10 @@ public class ManagerController {
      * @return
      */
 
-    @GetMapping("/getAllManager")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> getAllManager(
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize) {
 
         // 创建 Page 对象
         Page<Manager> page = new Page<>(pageNo, pageSize);
@@ -207,7 +207,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/setOnline")
+    @PutMapping("/online")
     public ResponseEntity<ResponseResult> setManagerOnline(@RequestParam Long managerId) {
         try {
             managerService.setManagerOnline(managerId);
@@ -223,7 +223,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/setOffline")
+    @PutMapping("/offline")
     public ResponseEntity<ResponseResult> setManagerOffline(@RequestParam Long managerId) {
         try {
             managerService.setManagerOffline(managerId);
@@ -239,8 +239,8 @@ public class ManagerController {
      * @return
      */
 
-    @DeleteMapping("/deleteManager")
-    public ResponseEntity<ResponseResult<?>> deleteManager(@RequestParam Long managerId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteManager(@PathVariable("id") Long managerId) {
         // 创建一个 UpdateWrapper 对象来构建更新条件
         UpdateWrapper<Manager> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("managerId_zch_hwz_gjc", managerId)
@@ -261,7 +261,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/loginForSupManager")
+    @PostMapping("/super/login")
     public ResponseEntity<ResponseResult<?>> loginForSupManager(@RequestBody Map<String, String> loginRequest) {
         String superManagerAccount = loginRequest.get("superManagerAccount");
         String superManagerPwd = loginRequest.get("superManagerPwd");
@@ -300,7 +300,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/loginForManager")
+    @PostMapping("/login")
     public ResponseEntity<ResponseResult<?>> loginForManager(@RequestBody Map<String, String> loginRequest) {
         String managerAccountOrPhone = loginRequest.get("managerAccountOrPhone");
         String managerPwd = loginRequest.get("managerPwd");
@@ -322,11 +322,11 @@ public class ManagerController {
                     .eq("deleted_zch_hwz_gjc", 0);  // 确保账号未被逻辑删除
 
             Manager manager = managerMapper.selectOne(queryWrapper);
-            byte[] encryptedPasswordBytes2 = rsa.encrypt(manager.getManagerPwd_zch_hwz_gjc().getBytes(), KeyType.PublicKey);
-            String encryptedPassword = Base64.getEncoder().encodeToString(encryptedPasswordBytes2);
-            manager.setManagerPwd_zch_hwz_gjc(encryptedPassword);
 
             if (manager != null) {
+                byte[] encryptedPasswordBytes2 = rsa.encrypt(manager.getManagerPwd_zch_hwz_gjc().getBytes(), KeyType.PublicKey);
+                String encryptedPassword = Base64.getEncoder().encodeToString(encryptedPasswordBytes2);
+                manager.setManagerPwd_zch_hwz_gjc(encryptedPassword);
                 return ResponseEntity.ok(ResponseResult.ok(manager));  // 登录成功，返回管理员信息
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
@@ -345,19 +345,15 @@ public class ManagerController {
 
     /**
      * 解绑管理员与房屋
-     * @param managerId 管理员ID
-     * @param homeId 家庭ID
      * @return
      */
 
-    @DeleteMapping("/unbindManagerFromHome")
-    public ResponseEntity<ResponseResult<?>> unbindManagerFromHome(
-            @RequestParam Long managerId,
-            @RequestParam Long homeId) {
+    @DeleteMapping("/binding/unbind")
+    public ResponseEntity<ResponseResult<?>> unbindManagerFromHome(@RequestBody ManagerHomeBinding homeBinding) {
 
         UpdateWrapper<ManagerHomeBinding> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("managerID_zch_hwz_gjc", managerId)
-                .eq("homeID_zch_hwz_gjc", homeId)
+        updateWrapper.eq("managerID_zch_hwz_gjc", homeBinding.getManagerID_zch_hwz_gjc())
+                .eq("homeID_zch_hwz_gjc", homeBinding.getHomeID_zch_hwz_gjc())
                 .eq("deleted_zch_hwz_gjc", 0)
                 .set("bindingState_zch_hwz_gjc", "已解绑")
                 .set("deleted_zch_hwz_gjc", 1);
@@ -376,7 +372,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/bindManagerToHome")
+    @PostMapping("/binding/bind")
     public ResponseEntity<ResponseResult<?>> bindManagerToHome(@RequestBody ManagerHomeBinding binding) {
         QueryWrapper<ManagerHomeBinding> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("managerID_zch_hwz_gjc", binding.getManagerID_zch_hwz_gjc())
@@ -407,10 +403,10 @@ public class ManagerController {
      * @param homeId 家庭ID
      * @return
      */
-    @GetMapping("/getBindingInfo")
+    @GetMapping("/binding/list")
     public ResponseEntity<ResponseResult<?>> getBindingInfo(
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize,
             @RequestParam(value = "managerId", required = false) Long managerId,
             @RequestParam(value = "homeId", required = false) Long homeId) {
 
@@ -433,7 +429,7 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping("/createUserNotification")
+    @PostMapping("/notification")
     public ResponseEntity<ResponseResult<?>> createUserNotification(@RequestBody UserNotification userNotification) {
         boolean result = userNotificationService.createUserNotification(userNotification);
         if (result) {
@@ -445,23 +441,19 @@ public class ManagerController {
 
     /**
      * 更新用户通知
-     * @param userNotificationId 用户通知ID
-     * @param notificationContent 通知内容
      * @return
      */
-    @PutMapping("/updateUserNotification")
-    public ResponseEntity<ResponseResult<?>> updateUserNotification(
-            @RequestParam Long userNotificationId,
-            @RequestParam(required = false) String notificationContent) {
+    @PutMapping("/notification")
+    public ResponseEntity<ResponseResult<?>> updateUserNotification(@RequestBody UserNotification un) {
         try {
             // 首先通过ID查找通知
-            UserNotification userNotification = userNotificationMapper.selectById(userNotificationId);
+            UserNotification userNotification = userNotificationMapper.selectById(un.getUserNotificationId_zch_hwz_gjc());
             if (userNotification == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("通知不存在"));
             }
 
             // 更新通知内容
-            userNotification.setNotificationContent_zch_hwz_gjc(notificationContent);
+            userNotification.setNotificationContent_zch_hwz_gjc(userNotification.getNotificationContent_zch_hwz_gjc());
 
             // 使用MyBatis-Plus的方法更新通知
             int result = userNotificationMapper.updateById(userNotification);
@@ -481,8 +473,8 @@ public class ManagerController {
      * @return
      */
 
-    @DeleteMapping("/deleteNotification")
-    public ResponseEntity<ResponseResult<?>> deleteNotification(@RequestParam Long userNotificationId) {
+    @DeleteMapping("/notification/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteNotification(@PathVariable("id") Long userNotificationId) {
         try {
             boolean result = userNotificationService.deleteNotificationById(userNotificationId);
             if (result) {
@@ -502,10 +494,10 @@ public class ManagerController {
      * @return
      */
 
-    @GetMapping("/getAllNotifications")
+    @GetMapping("/notification/list")
     public ResponseEntity<ResponseResult<?>> getAllNotifications(
-            @RequestParam(required = false, defaultValue = "1") long current,
-            @RequestParam(required = false, defaultValue = "10") long size) {
+            @RequestParam(required = false, defaultValue = "1", name = "page") long current,
+            @RequestParam(required = false, defaultValue = "10", name = "size") long size) {
         try {
             // 创建一个 QueryWrapper 实例
             QueryWrapper<UserNotification> queryWrapper = new QueryWrapper<>();

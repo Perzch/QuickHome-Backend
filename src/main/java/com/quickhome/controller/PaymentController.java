@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Transactional
 @Controller("PaymentCon")
-@RequestMapping("/Payment")
+@RequestMapping("/payment")
 public class PaymentController {
     @Autowired
     private PaymentPasswordService paymentPasswordService;
@@ -28,7 +28,7 @@ public class PaymentController {
      * @return
      */
 
-    @PostMapping("/setPaymentPwd")
+    @PostMapping("/set")
     public ResponseEntity<ResponseResult<?>> setPaymentPassword(@RequestBody PaymentPassword request) {
         try {
             boolean result = paymentPasswordService.setPaymentPassword(request.getUserID_zch_hwz_gjc(), request.getPaymentPassword_zch_hwz_gjc());
@@ -48,7 +48,7 @@ public class PaymentController {
      * @return
      */
 
-    @PostMapping("/verifyPaymentPwd")
+    @PostMapping("/verify")
     public ResponseEntity<ResponseResult<?>> verifyPaymentPassword(@RequestBody PojoPaymentPassword request) {
         try {
             boolean result = paymentPasswordService.verifyPaymentPassword(request.getUserID(), request.getEncryptedPassword());
@@ -68,7 +68,7 @@ public class PaymentController {
      * @return
      */
 
-    @GetMapping("/getPaymentPwdStatus")
+    @GetMapping("/status")
     public ResponseEntity<ResponseResult> getPaymentPasswordStatus(@RequestParam("userId") Long userId) {
         try {
             boolean result = paymentPasswordService.getPaymentPasswordStatus(userId);

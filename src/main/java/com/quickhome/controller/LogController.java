@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Transactional
 @Controller("LogCon")
-@RequestMapping("/Log")
+@RequestMapping("/log")
 public class LogController {
     @Autowired
     private LogService logService;
@@ -30,7 +30,7 @@ public class LogController {
      * @param log 日志信息
      * @return
      */
-    @PostMapping("/insertLog")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log) {
         try {
             log.setExecutionTime_zch_hwz_gjc(new Date());
@@ -46,7 +46,7 @@ public class LogController {
         }
     }
 
-    @GetMapping("/getLogs")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> getLogs(
             @RequestParam Long userId,
             @RequestParam(defaultValue = "1") int page,

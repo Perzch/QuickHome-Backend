@@ -44,23 +44,12 @@ public class UserInformationServiceImpl extends ServiceImpl<UserInformationMappe
         return baseMapper.selectOne(queryWrapper);
     }
 
-    public Long updateUserInformation(Long userId, String userGender, Date userBirthday, String userSignature) {
+    public Long updateUserInformation(UserInformation user) {
         QueryWrapper<UserInformation> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userId_zch_hwz_gjc", userId);
+        queryWrapper.eq("userId_zch_hwz_gjc", user.getUserId_zch_hwz_gjc());
         UserInformation userInformation = baseMapper.selectOne(queryWrapper);
         System.out.println("userInformation:" + userInformation);
-        if (userInformation != null) {
-            if (userGender != null && !userGender.isEmpty()) {
-                userInformation.setUserGender_zch_hwz_gjc(userGender);
-            }
-            if (userBirthday != null) {
-                userInformation.setUserBirthday_zch_hwz_gjc(userBirthday);
-            }
-            if (userSignature != null && !userSignature.isEmpty()) {
-                userInformation.setUserSignature_zch_hwz_gjc(userSignature);
-            }
-            baseMapper.updateById(userInformation);
-        }
+        baseMapper.update(user, queryWrapper);
         return userInformation.getUserId_zch_hwz_gjc();
     }
 

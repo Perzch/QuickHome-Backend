@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
+import com.quickhome.pojo.PJFile;
 import com.quickhome.pojo.PJUser;
 import com.quickhome.pojo.PojoUser;
 import com.quickhome.request.ResponseResult;
@@ -54,20 +55,13 @@ import static com.quickhome.request.ResultCode.USER_NOT_EXIST;
 
 @Transactional
 @Controller("UserCon")
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
     //公钥与私钥
     @Value("${rsa.private_key}")
     private String privateKey;
     @Value("${rsa.public_key}")
     private String publicKey;
-
-    @Value("${file.path}")
-    private String filePath;
-
-    @Value("${file.UserImgPath}")
-    private String userImgPath;
-
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
     @Autowired
     private UserService userService;
@@ -111,7 +105,7 @@ public class UserController {
      * @return
      */
 
-    @GetMapping("/searchUsers")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> searchUsers(
             @RequestParam(required = false) String userEmail,
             @RequestParam(required = false) String userName,
@@ -152,7 +146,7 @@ public class UserController {
      *
      * @param user 用户类
      */
-    @PostMapping("/insertUser")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<?> insertUser_zch_hwz_gjc(@RequestBody User user,
                                                     HttpServletRequest req) {
@@ -207,10 +201,9 @@ public class UserController {
      *
      * @param userInformation 用户信息类
      */
-    @PostMapping("/insertUserInf")//用户信息插入
+    @PostMapping("/info")//用户信息插入
     @ResponseBody
-    public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,
-                                                       HttpServletRequest req) {
+    public ResponseEntity<?> insertUserInf_zch_hwz_gjc(@RequestBody UserInformation userInformation,HttpServletRequest req) {
         userInformation.setUserHeadId_zch_hwz_gjc(
                 userHeadImageService.getHeadImgIdByUserId_zch_hwz_gjc(
                         userInformation.getUserId_zch_hwz_gjc()
@@ -229,7 +222,7 @@ public class UserController {
      *
      * @param userAccount 用户账号
      */
-    @GetMapping("/getUserAccountByAccount")//通过用户账号判断账号是否可用
+    @GetMapping("/check")//通过用户账号判断账号是否可用
     @ResponseBody
     public ResponseEntity<?> getUserAccountByAccount_zch_hwz_gjc(@RequestParam String userAccount,
                                                                  HttpServletRequest req) {
@@ -247,7 +240,7 @@ public class UserController {
      */
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/userLogin")//用户登录
+    @PostMapping("/login")//用户登录
     public ResponseEntity<ResponseResult<?>> userLogin_zch_hwz_hwz(@RequestBody User user, HttpServletRequest req) {
         String token = userService.userLogin_zch_hwz_gjc(user);
         User user1 = userService.queryUserForLogin(user);
@@ -262,14 +255,14 @@ public class UserController {
     /**
      * 用户登录通过手机号
      *
-     * @param phone 手机号
+     * @param userPhone 手机号
      */
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/userLoginByPhone")//用户登录通过手机
-    public ResponseEntity<ResponseResult<?>> loginByPhone(@RequestParam String phone, HttpServletRequest req) {
+    @PostMapping("/login/phone")//用户登录通过手机
+    public ResponseEntity<ResponseResult<?>> loginByPhone(@RequestParam String userPhone, HttpServletRequest req) {
 
-        User user = userService.loginByPhone(phone);
+        User user = userService.loginByPhone(userPhone);
         if (user != null) {
             String accessToken = JwtUtil.createToken(user.getUserId_zch_hwz_gjc());
 
@@ -291,7 +284,7 @@ public class UserController {
      */
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/getUserInformation")
+    @GetMapping("/info")
     public ResponseEntity<ResponseResult<?>> getUserInformation(
             @RequestParam String token,
             @RequestParam int userId,
@@ -319,20 +312,13 @@ public class UserController {
     /**
      * 用户忘记密码找回
      *
-     * @param userEmail 用户邮箱
-     * @param userPhone 用户手机号
      */
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/userForget")//忘记密码
-    public ResponseEntity<ResponseResult<?>> userForget_zch_hwz_gjc(@RequestParam(defaultValue = "") String userEmail,
-                                                                    @RequestParam(defaultValue = "") String userPhone,
+    @PostMapping("/forget")//忘记密码
+    public ResponseEntity<ResponseResult<?>> userForget_zch_hwz_gjc(@RequestBody User user,
                                                                     HttpServletRequest req) {
-        User userForget = User.builder()
-                .userEmail_zch_hwz_gjc(userEmail)
-                .userPhone_zch_hwz_gjc(userPhone)
-                .build();
-        Boolean userFlag = userService.userForget_zch_hwz_gjc(userForget);
+        Boolean userFlag = userService.userForget_zch_hwz_gjc(user);
         if (userFlag) {
             return ResponseEntity.ok(ResponseResult.of(200, "用户存在!"));
         } else {
@@ -380,25 +366,21 @@ public class UserController {
     /**
      * 上传用户头像
      *
-     * @param userId 用户ID
-     * @param file   头像文件
      */
-    @PostMapping("/uploadUserHeadImage")
-    public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(
-            @RequestParam("userId") Long userId,
-            @RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/img")
+    public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(@RequestBody @ModelAttribute PJFile pjFile) throws IOException {
 
-        if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
+        if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
             return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
         }
 
-        String imagePath = saveUploadedFile(userId, file);
+        String imagePath = saveUploadedFile(pjFile.getUserId(), pjFile.getFile());
         if (imagePath != null) {
             imagePath = HandlePath.extractRelativePath(imagePath, "image/HeadImage/");
         }
-        UserHeadImage userHeadImage = userHeadImageService.saveOrUpdateUserHeadImage(userId, imagePath);
+        UserHeadImage userHeadImage = userHeadImageService.saveOrUpdateUserHeadImage(pjFile.getUserId(), imagePath);
         QueryWrapper<UserInformation> queryWrapper =
-                new QueryWrapper<UserInformation>().eq("userId_zch_hwz_gjc", userId);
+                new QueryWrapper<UserInformation>().eq("userId_zch_hwz_gjc", pjFile.getUserId());
         UserInformation userInformation = userInformationService.getOne(queryWrapper);
         userInformation.setUserHeadId_zch_hwz_gjc(userHeadImage.getUserImageId_zch_hwz_gjc());
         userInformationMapper.updateById(userInformation);
@@ -439,28 +421,14 @@ public class UserController {
     /**
      * 更新用户信息
      *
-     * @param userId        用户ID
-     * @param userGender    用户性别
-     * @param userBirthday  用户生日
-     * @param userSignature 用户签名
      */
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/updateUserInf")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updateUserInf(
-            @RequestParam Long userId,
-            @RequestParam(required = false) String userGender,
-            @RequestParam(required = false) String userBirthday,
-            @RequestParam(required = false) String userSignature,
+            @RequestBody UserInformation userInformation,
             HttpServletRequest req) {
-
-        Date dateBirthday = null;
-        if (userBirthday != null && !userBirthday.isEmpty()) {
-            LocalDate localDateBirthday = LocalDate.parse(userBirthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            dateBirthday = Date.from(localDateBirthday.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        }
-
-        return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userId, userGender, dateBirthday, userSignature)));
+        return ResponseEntity.ok(ResponseResult.ok(userInformationService.updateUserInformation(userInformation)));
     }
 
     /**
@@ -470,8 +438,8 @@ public class UserController {
      */
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/getHeadImg")
-    public ResponseEntity<ResponseResult<?>> getHeadImg(@RequestParam Long userId) {
+    @GetMapping("/img/{id}")
+    public ResponseEntity<ResponseResult<?>> getHeadImg(@PathVariable("id") Long userId) {
         String imagePath = userInformationService.getUserImagePath(userId);
         if (imagePath == null) {
             return ResponseEntity.notFound().build();
@@ -492,7 +460,7 @@ public class UserController {
      */
     @SneakyThrows
     @ResponseBody
-    @PostMapping("/findHeadImg")
+    @GetMapping("/img/check")
     public ResponseEntity<ResponseResult<?>> findHeadImg(
             @RequestParam Long userId,
             @RequestParam String inDateTime,
@@ -527,9 +495,9 @@ public class UserController {
      * @param userId 用户ID
      */
     @ResponseBody
-    @PostMapping("/deleteUser")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseResult<?>> deleteUser(
-            @RequestParam Long userId,
+            @PathVariable("id") Long userId,
             HttpServletRequest req) {
 
         QueryWrapper<AccountBalance> queryWrapper5 = new QueryWrapper<>();
@@ -617,40 +585,32 @@ public class UserController {
     /**
      * 更新用户基本信息
      *
-     * @param userId    用户ID
-     * @param userName  用户名
-     * @param userEmail 邮箱
-     * @param userPhone 手机号
      */
     @ResponseBody
-    @PostMapping("/updateUserBasicInf")
-    public ResponseEntity<ResponseResult<?>> updateUserBasicInf(
-            @RequestParam Long userId,
-            @RequestParam(required = false) String userName,
-            @RequestParam(required = false) String userEmail,
-            @RequestParam(required = false) String userPhone,
+    @PutMapping("/basic")
+    public ResponseEntity<ResponseResult<?>> updateUserBasicInf(@RequestBody User u,
             HttpServletRequest request) {
         try {
             // 检查userId是否存在
-            if (userId == null) {
+            if (u.getUserId_zch_hwz_gjc() == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不能为空"));
             }
 
             // 从数据库中查询当前用户记录
-            User currentUser = userMapper.selectById(userId);
+            User currentUser = userMapper.selectById(u.getUserId_zch_hwz_gjc());
             if (currentUser == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不存在"));
             }
 
             // 更新需要修改的字段
-            if (userName != null && !userName.isEmpty()) {
-                currentUser.setUserName_zch_hwz_gjc(userName);
+            if (u.getUserName_zch_hwz_gjc() != null && !u.getUserName_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserName_zch_hwz_gjc(u.getUserName_zch_hwz_gjc());
             }
-            if (userEmail != null && !userEmail.isEmpty()) {
-                currentUser.setUserEmail_zch_hwz_gjc(userEmail);
+            if (u.getUserEmail_zch_hwz_gjc() != null && !u.getUserEmail_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserEmail_zch_hwz_gjc(u.getUserEmail_zch_hwz_gjc());
             }
-            if (userPhone != null && !userPhone.isEmpty()) {
-                currentUser.setUserPhone_zch_hwz_gjc(userPhone);
+            if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
             }
 
             // 使用乐观锁更新方法
@@ -658,7 +618,7 @@ public class UserController {
 
             // 检查是否有数据被更新
             if (result > 0) {
-                return ResponseEntity.ok(ResponseResult.ok(userMapper.selectById(userId)));
+                return ResponseEntity.ok(ResponseResult.ok(userMapper.selectById(u.getUserId_zch_hwz_gjc())));
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
             }

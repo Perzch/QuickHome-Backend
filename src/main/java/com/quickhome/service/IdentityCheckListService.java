@@ -3,6 +3,7 @@ package com.quickhome.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.domain.IdentityCheckList;
+import com.quickhome.pojo.PJIdCard;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -12,6 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Transactional
 public interface IdentityCheckListService extends IService<IdentityCheckList> {
-    public IdentityCheckList createIdentityChecklist(Long IDCardRecordID, Long orderID);
+    public IdentityCheckList createIdentityChecklist(PJIdCard idCard);
 
 }

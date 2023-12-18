@@ -8,6 +8,7 @@ import com.quickhome.domain.Coupon;
 import com.quickhome.domain.UsersAndCoupons;
 import com.quickhome.mapper.CouponMapper;
 import com.quickhome.mapper.UsersAndCouponsMapper;
+import com.quickhome.pojo.PJReleaseCoupon;
 import com.quickhome.pojo.PojoCoupon;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.CouponService;
@@ -22,10 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Transactional
 @Controller("CouponCon")
-@RequestMapping("/Coupon")
+@RequestMapping("/coupon")
 public class CouponController {
 
     @Autowired
@@ -58,7 +56,7 @@ public class CouponController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/addCoupon")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> addCoupon(
             @RequestBody Coupon coupon,
             HttpServletRequest req) {
@@ -73,27 +71,23 @@ public class CouponController {
 
     /**
      *  发放优惠券
-     * @param couponId 优惠券ID
-     * @param userIds 用户ID字符串
      * @param req
      * @return
      */
     @ResponseBody
-    @PostMapping("/releaseCoupons")
-    public ResponseEntity<ResponseResult<?>> releaseCoupons(
-            @RequestParam Long couponId,
-            @RequestParam(required = false) String userIds, // 用户ID字符串
-            HttpServletRequest req) {
+    @PutMapping("/release")
+    public ResponseEntity<ResponseResult<?>> releaseCoupons(@RequestBody PJReleaseCoupon releaseCoupon, // 用户ID字符串
+                                                            HttpServletRequest req) {
 
         List<Long> userIdList = null;
-        if (userIds != null && !userIds.isEmpty()) {
-            userIdList = Arrays.stream(userIds.split(","))
+        if (releaseCoupon.getUserIds() != null && !releaseCoupon.getUserIds().isEmpty()) {
+            userIdList = Arrays.stream(releaseCoupon.getUserIds().split(","))
                     .map(String::trim)
                     .map(Long::parseLong)
                     .collect(Collectors.toList());
         }
 
-        boolean success = couponService.releaseCouponsToUsers(couponId, userIdList);
+        boolean success = couponService.releaseCouponsToUsers(releaseCoupon.getCouponId(), userIdList);
         if (success) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
@@ -109,7 +103,7 @@ public class CouponController {
      */
 
     @ResponseBody
-    @PutMapping("/useCoupons")
+    @PutMapping("/use")
     public ResponseEntity<ResponseResult<?>> useCoupons(
             @RequestParam Long UACID,
             HttpServletRequest req) {
@@ -125,18 +119,18 @@ public class CouponController {
     /**
      * 获取用户所有优惠券
      * @param userId 用户ID
-     * @param pageNum 页码
-     * @param pageSize 每页大小
+     * @param page 页码
+     * @param size 每页大小
      * @param req
      * @return
      */
 
     @ResponseBody
-    @GetMapping("/getAllCoupons")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> getAllCoupons(
             @RequestParam Long userId,
-            @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
             HttpServletRequest req) {
 
         try {
@@ -164,15 +158,15 @@ public class CouponController {
                         }
                         return null;
                     })
-                    .filter(pojoCoupon -> pojoCoupon != null)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
             // 手动分页
-            int start = (pageNum - 1) * pageSize;
-            int end = Math.min((start + pageSize), validCoupons.size());
+            int start = (page - 1) * size;
+            int end = Math.min((start + size), validCoupons.size());
             List<PojoCoupon> paginatedCoupons = validCoupons.subList(start, end);
 
-            Page<PojoCoupon> pojoCouponPage = new Page<>(pageNum, pageSize);
+            Page<PojoCoupon> pojoCouponPage = new Page<>(page, size);
             pojoCouponPage.setTotal(validCoupons.size());
             pojoCouponPage.setRecords(paginatedCoupons);
 
@@ -194,9 +188,9 @@ public class CouponController {
      * @return
      */
     @ResponseBody
-    @DeleteMapping("/delCoupon")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseResult<?>> delCoupon(
-            @RequestParam Long couponId,
+            @PathVariable("id") Long couponId,
             HttpServletRequest req) {
 
         try {
@@ -255,9 +249,9 @@ public class CouponController {
      */
 
     @ResponseBody
-    @GetMapping("/getCouponInfo")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseResult<?>> getCouponInfo(
-            @RequestParam Long couponId) {
+            @PathVariable("id") Long couponId) {
 
         try {
             Coupon coupon = couponMapper.selectById(couponId);

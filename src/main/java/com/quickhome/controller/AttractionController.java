@@ -11,6 +11,7 @@ import com.quickhome.domain.Attractions;
 import com.quickhome.mapper.AttractionCollectionMapper;
 import com.quickhome.mapper.AttractionImageMapper;
 import com.quickhome.mapper.AttractionsMapper;
+import com.quickhome.pojo.PJFile;
 import com.quickhome.pojo.PojoAttraction;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
@@ -47,7 +48,7 @@ import java.util.zip.ZipOutputStream;
 
 @Transactional
 @Controller("AttractionCon")
-@RequestMapping("/Attraction")
+@RequestMapping("/attraction")
 public class AttractionController {
     @Autowired
     private AttractionsService attractionsService;
@@ -65,13 +66,6 @@ public class AttractionController {
 
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
-
-    @Value("${file.path}")
-    private String filePath;
-
-    @Value("${file.AttractionImgPath}")
-    private String AttractionImgPath;
-
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/jpg");
 
     /**
@@ -82,8 +76,8 @@ public class AttractionController {
      */
     @SneakyThrows
     @ResponseBody
-    @GetMapping("/getAttractionImg")
-    public ResponseEntity<ResponseResult<?>> getAttractionImg(@RequestParam Long attractionId) {
+    @GetMapping("/img/{id}")
+    public ResponseEntity<ResponseResult<?>> getAttractionImg(@RequestParam("id") Long attractionId) {
         QueryWrapper<AttractionImage> wrapper = new QueryWrapper<>();
         wrapper.eq("attractionId_zch_hwz_gjc", attractionId);
         wrapper.eq("deleted_zch_hwz_gjc", 0);
@@ -102,7 +96,7 @@ public class AttractionController {
      * @return
      */
 
-    @GetMapping("/checkAttractionCollectionStatus")
+    @GetMapping("/collection/check")
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> checkAttractionCollectionStatus(
             @RequestParam Long userId,
@@ -123,14 +117,14 @@ public class AttractionController {
      * 删除景点图片
      *
      * @param attractionId 景点id
-     * @param timestamp    时间戳
      * @return
      */
 
-    @DeleteMapping("/deleteAttractionImg")
-    public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@RequestParam Long attractionId, @RequestParam String timestamp) {
+    @DeleteMapping("/img/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteAttractionByTimestamp(@PathVariable("id") Long attractionId) {
         try {
             // 拼接attractionId和时间戳
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             String combinedString = attractionId.toString() + "-" + timestamp;
 
             // 使用拼接后的字符串去数据库中查找
@@ -162,30 +156,26 @@ public class AttractionController {
     /**
      * 上传景点图片
      *
-     * @param attractionId 景点id
-     * @param file         上传的文件
      * @param req          请求
      * @return
      * @throws IOException
      */
 
     @ResponseBody
-    @PostMapping("/insertAttractionImg")
-    public ResponseEntity<ResponseResult<?>> insertAttractionImg(
-            @RequestParam("attractionId") Long attractionId,
-            @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException {
-        if (!ALLOWED_FILE_TYPES.contains(file.getContentType())) {
+    @PostMapping("/img")
+    public ResponseEntity<ResponseResult<?>> insertAttractionImg(@RequestBody @ModelAttribute PJFile pjFile,
+                                                                 HttpServletRequest req) throws IOException {
+        if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
             return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
         }
 
-        String imagePath = saveUploadedFile(attractionId, file);
+        String imagePath = saveUploadedFile(pjFile.getAttractionId(), pjFile.getFile());
 
         if (imagePath != null) {
             imagePath = HandlePath.extractRelativePath(imagePath, "image/AttractionImg/");
         }
 
-        AttractionImage attractionImage = attractionImageService.saveAttractionImg(attractionId, imagePath);
+        AttractionImage attractionImage = attractionImageService.saveAttractionImg(pjFile.getAttractionId(), imagePath);
 
         return ResponseEntity.ok(ResponseResult.ok(attractionImage));
     }
@@ -213,7 +203,7 @@ public class AttractionController {
      *
      * @return 景点信息列表
      */
-    @GetMapping("/getAttractionListByCollectionCount")
+    @GetMapping("/byCollection")
     @ResponseBody
     public ResponseEntity<ResponseResult<List<PojoAttraction>>> getAttractionListOrderByCollectionCount() {
         List<PojoAttraction> pojoAttractionList = attractionsService.getAttractionListOrderByCollectionCount();
@@ -233,7 +223,7 @@ public class AttractionController {
      * @return
      */
 
-    @PostMapping("/insertAttraction")
+    @PostMapping
     public ResponseEntity<?> insertAttraction(@RequestBody Attractions attractions) {
         try {
             LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
@@ -254,8 +244,8 @@ public class AttractionController {
      * @return
      */
 
-    @GetMapping("/getAttractionById")
-    public ResponseEntity<?> getAttractionById(@RequestParam Long attractionId,
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAttractionById(@PathVariable("id") Long attractionId,
                                                HttpServletRequest req) {
         try {
             Attractions attraction = attractionMapper.selectById(attractionId);
@@ -288,7 +278,7 @@ public class AttractionController {
     }
 
     /**
-     * 根据景点名称模糊查询景点信息
+     * 查询景点列表
      *
      * @param pageNo          页码
      * @param pageSize        每页大小
@@ -296,10 +286,10 @@ public class AttractionController {
      * @return
      */
 
-    @GetMapping("/queryAttractions")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> queryAttractions(
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize,
             @RequestParam(value = "attractionsName", required = false) String attractionsName) {
         try {
             Page<Attractions> page = new Page<>(pageNo, pageSize);
@@ -349,7 +339,7 @@ public class AttractionController {
      * @return
      */
 
-    @PutMapping("/updateAttraction")
+    @PutMapping
     public ResponseEntity<?> updateAttraction(@RequestBody Attractions attractions) {
         try {
             if (attractions.getAttractionsId_zch_hwz_gjc() == null) {
@@ -395,8 +385,8 @@ public class AttractionController {
      * @return
      */
 
-    @DeleteMapping("/deleteAttraction")
-    public ResponseEntity<?> deleteAttraction(@RequestParam("attractionId") Long attractionId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAttraction(@PathVariable("id") Long attractionId) {
         try {
             UpdateWrapper<Attractions> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("attractionsId_zch_hwz_gjc", attractionId)
@@ -416,26 +406,24 @@ public class AttractionController {
     /**
      * 添加景点收藏
      *
-     * @param userId        用户ID
-     * @param attractionsId 景点ID
+     * @param ac 收藏信息
      * @return
      */
 
-    @PostMapping("/addAttractionCollection")
+    @PostMapping("/collection")
     public ResponseEntity<?> addAttractionCollection(
-            @RequestParam("userId") Long userId,
-            @RequestParam("attractionsId") Long attractionsId) {
+            @RequestBody AttractionCollection ac) {
         try {
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userId_zch_hwz_gjc", userId)
-                    .eq("attractionsId_zch_hwz_gjc", attractionsId);
+            queryWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
+                    .eq("attractionsId_zch_hwz_gjc", ac.getAttractionsId_zch_hwz_gjc());
             Long flag = attractionCollectionMapper.selectCount(queryWrapper);
             if (flag > 0) {
                 return ResponseEntity.ok(ResponseResult.error("已收藏"));
             }
             AttractionCollection collection = new AttractionCollection();
-            collection.setUserId_zch_hwz_gjc(userId);
-            collection.setAttractionsId_zch_hwz_gjc(attractionsId);
+            collection.setUserId_zch_hwz_gjc(ac.getUserId_zch_hwz_gjc());
+            collection.setAttractionsId_zch_hwz_gjc(ac.getAttractionsId_zch_hwz_gjc());
             collection.setCollectionTime_zch_hwz_gjc(new Date());
 
             int result = attractionCollectionMapper.insert(collection);
@@ -452,19 +440,17 @@ public class AttractionController {
     /**
      * 取消景点收藏
      *
-     * @param userId        用户ID
-     * @param attractionsId 景点ID
      * @return
      */
 
-    @PutMapping("/cancelCollection")
+    @DeleteMapping("/collection")
     public ResponseEntity<?> cancelCollection(
-            @RequestParam("userId") Long userId,
-            @RequestParam("attractionsId") Long attractionsId) {
+           @RequestBody AttractionCollection ac
+    ) {
         try {
             UpdateWrapper<AttractionCollection> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("userId_zch_hwz_gjc", userId)
-                    .eq("attractionsId_zch_hwz_gjc", attractionsId)
+            updateWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
+                    .eq("attractionsId_zch_hwz_gjc", ac.getAttractionsId_zch_hwz_gjc())
                     .set("deleted_zch_hwz_gjc", 1);
 
             int result = attractionCollectionMapper.update(null, updateWrapper);
@@ -487,11 +473,11 @@ public class AttractionController {
      * @return
      */
 
-    @GetMapping("/getUserCollections")
+    @GetMapping("/collection/list")
     public ResponseEntity<?> getUserCollections(
             @RequestParam("userId") Long userId,
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize) {
         try {
             Page<AttractionCollection> page = new Page<>(pageNo, pageSize);
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
