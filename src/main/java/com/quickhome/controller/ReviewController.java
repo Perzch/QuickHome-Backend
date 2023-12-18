@@ -23,7 +23,7 @@ import java.util.Date;
  */
 @Transactional
 @Controller("ReviewCon")
-@RequestMapping("/Review")
+@RequestMapping("/review")
 public class ReviewController {
     @Autowired
     private HousingReviewService housingReviewService;
@@ -42,8 +42,8 @@ public class ReviewController {
      * @return
      */
 
-    @GetMapping("/getHousingReviewById")
-    public ResponseEntity<ResponseResult<?>> getCommentById(@RequestParam Long housingReviewId) {
+    @GetMapping("/home/{id}")
+    public ResponseEntity<ResponseResult<?>> getCommentById(@PathVariable("id") Long housingReviewId) {
         HousingReview housingReview = housingReviewService.getById(housingReviewId);
         if (housingReview != null) {
             return ResponseEntity.ok(ResponseResult.ok(housingReview));
@@ -59,8 +59,8 @@ public class ReviewController {
      * @return
      */
 
-    @GetMapping("/getAttractionReviewById")
-    public ResponseEntity<ResponseResult<?>> getAttractionReviewById(@RequestParam Long attractionReviewId) {
+    @GetMapping("/attraction/{id}")
+    public ResponseEntity<ResponseResult<?>> getAttractionReviewById(@PathVariable("id") Long attractionReviewId) {
         AttractionReview attractionReview = attractionReviewService.getById(attractionReviewId);
         if (attractionReview != null) {
             return ResponseEntity.ok(ResponseResult.ok(attractionReview));
@@ -76,7 +76,7 @@ public class ReviewController {
      * @return
      */
 
-    @PostMapping("/insertHomeReview")
+    @PostMapping("/home")
     public ResponseEntity<ResponseResult<?>> insertHomeReview(@RequestBody HousingReview housingReview) {
         housingReview.setReviewTime_zch_hwz_gjc(new Date());  // 设置当前时间为评论时间
         boolean result = housingReviewService.insertHomeReview(housingReview);
@@ -109,7 +109,7 @@ public class ReviewController {
      * @return
      */
 
-    @PutMapping("/likeHomeComment")
+    @PutMapping("/home/like")
     public ResponseEntity<ResponseResult<?>> likeComment(@RequestParam Long housingReviewId) {
         boolean result = housingReviewService.likeComment(housingReviewId);
         if (result) {
@@ -126,8 +126,8 @@ public class ReviewController {
      * @return
      */
 
-    @DeleteMapping("/deleteHomeComment")
-    public ResponseEntity<ResponseResult> deleteComment(@RequestParam Long housingReviewId) {
+    @DeleteMapping("/home/{id}")
+    public ResponseEntity<ResponseResult> deleteComment(@PathVariable("id") Long housingReviewId) {
         boolean result = housingReviewService.deleteCommentAndChildren(housingReviewId);
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok());
@@ -143,11 +143,11 @@ public class ReviewController {
      * @return
      */
 
-    @GetMapping("/getHomeAllReview")
+    @GetMapping("/home/list")
     public ResponseEntity<ResponseResult<IPage<HousingReview>>> getCommentsByHomeId(@RequestParam Long homeId,
-                                                                                    @RequestParam(defaultValue = "1") int pageNum,
-                                                                                    @RequestParam(defaultValue = "10") int pageSize) {
-        IPage<HousingReview> comments = housingReviewService.getCommentsByHomeId(homeId, pageNum, pageSize);
+                                                                                    @RequestParam(defaultValue = "1") int page,
+                                                                                    @RequestParam(defaultValue = "10") int size) {
+        IPage<HousingReview> comments = housingReviewService.getCommentsByHomeId(homeId, page, size);
         return ResponseEntity.ok(ResponseResult.ok(comments));
     }
 
@@ -159,7 +159,7 @@ public class ReviewController {
      * @return
      */
 
-    @PostMapping("/insertAttractionReview")
+    @PostMapping("/attraction")
     public ResponseEntity<ResponseResult<?>> insertAttractionReview(@RequestBody AttractionReview attractionReview) {
         attractionReview.setReviewTime_zch_hwz_gjc(new Date());  // 设置当前时间为评论时间
         boolean result = attractionReviewService.insertAttractionReview(attractionReview);
@@ -192,7 +192,7 @@ public class ReviewController {
      * @return
      */
 
-    @PutMapping("/likeAttractionComment")
+    @PutMapping("/attraction/like")
     public ResponseEntity<ResponseResult<?>> likeAttractionComment(@RequestParam Long attractionReviewId) {
         boolean result = attractionReviewService.likeAttractionComment(attractionReviewId);
         if (result) {
@@ -209,8 +209,8 @@ public class ReviewController {
      * @return
      */
 
-    @DeleteMapping("/deleteAttractionComment")
-    public ResponseEntity<ResponseResult<?>> deleteAttractionComment(@RequestParam Long attractionReviewId) {
+    @DeleteMapping("/attraction/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteAttractionComment(@PathVariable("id") Long attractionReviewId) {
         boolean result = attractionReviewService.deleteCommentAndChildren(attractionReviewId);
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok("删除成功"));
@@ -226,11 +226,9 @@ public class ReviewController {
      * @return
      */
 
-    @GetMapping("/getAttractionAllReview")
-    public ResponseEntity<ResponseResult<IPage<AttractionReview>>> getCommentsByAttractionId(@RequestParam Long attractionId,
-                                                                                             @RequestParam(defaultValue = "1") int pageNum,
-                                                                                             @RequestParam(defaultValue = "10") int pageSize) {
-        IPage<AttractionReview> comments = attractionReviewService.getCommentsByAttractionId(attractionId, pageNum, pageSize);
+    @GetMapping("/attraction/list")
+    public ResponseEntity<ResponseResult<IPage<AttractionReview>>> getCommentsByAttractionId(@RequestParam Long attractionId, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+        IPage<AttractionReview> comments = attractionReviewService.getCommentsByAttractionId(attractionId, page, size);
         return ResponseEntity.ok(ResponseResult.ok(comments));
     }
 

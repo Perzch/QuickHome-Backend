@@ -17,5 +17,5 @@ public interface UserInformationService extends IService<UserInformation> {
     public UserInformation getUserInformationByUserId(Long userId);
     public String getUserImagePath(Long userId);
 
-    public Long updateUserInformation(Long userId, String userGender, Date userBirthday, String userSignature);
+    public Long updateUserInformation(UserInformation userInformation);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.HouseCollection;
+import com.quickhome.pojo.PJUserHome;
 import com.quickhome.service.HouseCollectionService;
 import com.quickhome.mapper.HouseCollectionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +38,18 @@ public class HouseCollectionServiceImpl extends ServiceImpl<HouseCollectionMappe
         return houseCollectionMapper.selectPage(page, queryWrapper);
     }
 
-    public boolean addHouseCollection(Long userId, Long homeId) {
+    public boolean addHouseCollection(PJUserHome userHome) {
         QueryWrapper<HouseCollection> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userId_zch_hwz_gjc", userId)
-                .eq("homeId_zch_hwz_gjc", homeId);
+        queryWrapper.eq("userId_zch_hwz_gjc", userHome.getUserId())
+                .eq("homeId_zch_hwz_gjc", userHome.getHomeId());
         Long count = houseCollectionMapper.selectCount(queryWrapper);
         if (count > 0) {
             return false; // 已收藏
         }
 
         HouseCollection collection = new HouseCollection();
-        collection.setUserId_zch_hwz_gjc(userId);
-        collection.setHomeId_zch_hwz_gjc(homeId);
+        collection.setUserId_zch_hwz_gjc(userHome.getUserId());
+        collection.setHomeId_zch_hwz_gjc(userHome.getHomeId());
         collection.setCollectionTime_zch_hwz_gjc(new Date()); // 使用java.util.Date
 
         return houseCollectionMapper.insert(collection) > 0;

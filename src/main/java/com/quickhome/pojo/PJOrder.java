@@ -20,7 +20,10 @@ public class PJOrder {
     List<PJUserTenant> userTenantList;
     String checkInDate;
     String checkOutDate;
+    Long orderId;
     Long homeId;
     Long userId;
+    Long UACID;
+    Double maintenanceCost;
 
 }

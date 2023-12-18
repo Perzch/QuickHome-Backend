@@ -10,6 +10,7 @@ import com.quickhome.domain.IdCardRecord;
 import com.quickhome.domain.IdentityCheckList;
 import com.quickhome.mapper.IdCardRecordMapper;
 import com.quickhome.mapper.IdentityCheckListMapper;
+import com.quickhome.pojo.PJIdCard;
 import com.quickhome.service.IdCardRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +35,11 @@ public class IdCardRecordServiceImpl extends ServiceImpl<IdCardRecordMapper, IdC
     private IdentityCheckListMapper identityCheckListMapper;
 
     @Override
-    public IdCardRecord uploadIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber, Long userId) {
+    public IdCardRecord uploadIdCardInfo(IdCardRecord cardRecord) {
         // 假设你已经创建了一个IdCardRecord对象并保存到了数据库
-        IdCardRecord IdCardRecord = new IdCardRecord();
-        IdCardRecord.setIDCardName_zch_hwz_gjc(IDCardName);
-        IdCardRecord.setIDCardNumber_zch_hwz_gjc(IDCardNumber);
-        IdCardRecord.setIDCardPhoneNumber_zch_hwz_gjc(IDCardPhoneNumber);
-        IdCardRecord.setUserId_zch_hwz_gjc(userId);
-        IdCardRecord.setInDateTime_zch_hwz_gjc(new Date());
-        baseMapper.insert(IdCardRecord);
-
-        return IdCardRecord;
+        cardRecord.setInDateTime_zch_hwz_gjc(new Date());
+        baseMapper.insert(cardRecord);
+        return cardRecord;
     }
 
     @Override
@@ -65,28 +60,27 @@ public class IdCardRecordServiceImpl extends ServiceImpl<IdCardRecordMapper, IdC
     }
 
     @Override
-    public boolean deleteIdCardInfo(String IDCardName, String IDCardNumber, String IDCardPhoneNumber, Long userId) {
+    public boolean deleteIdCardInfo(PJIdCard idCard) {
         QueryWrapper<IdCardRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("IDCardName_zch_hwz_gjc", IDCardName)
-                .eq("IDCardNumber_zch_hwz_gjc", IDCardNumber)
-                .eq("IDCardPhoneNumber_zch_hwz_gjc", IDCardPhoneNumber)
-                .eq("userId_zch_hwz_gjc", userId);
+        queryWrapper.eq("IDCardName_zch_hwz_gjc", idCard.getIDCardName())
+                .eq("IDCardNumber_zch_hwz_gjc", idCard.getIDCardNumber())
+                .eq("IDCardPhoneNumber_zch_hwz_gjc", idCard.getIDCardPhoneNumber())
+                .eq("userId_zch_hwz_gjc", idCard.getUserId());
         return remove(queryWrapper);
     }
 
     @Override
-    public boolean updateIdCardInfo(Long userId, String newName, String newNumber, String newPhoneNumber,
-                                    String oldName, String oldNumber, String oldPhoneNumber) {
+    public boolean updateIdCardInfo(PJIdCard idCard) {
         UpdateWrapper<IdCardRecord> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("userId_zch_hwz_gjc", userId)
-                .eq(oldName != null, "IDCardName_zch_hwz_gjc", oldName)
-                .eq(oldNumber != null, "IDCardNumber_zch_hwz_gjc", oldNumber)
-                .eq(oldPhoneNumber != null, "IDCardPhoneNumber_zch_hwz_gjc", oldPhoneNumber);
+        updateWrapper.eq("userId_zch_hwz_gjc", idCard.getUserId())
+                .eq(idCard.getOldIDCardName() != null, "IDCardName_zch_hwz_gjc", idCard.getOldIDCardName())
+                .eq(idCard.getOldIDCardNumber() != null, "IDCardNumber_zch_hwz_gjc", idCard.getOldIDCardNumber())
+                .eq(idCard.getOldIDCardPhoneNumber() != null, "IDCardPhoneNumber_zch_hwz_gjc", idCard.getOldIDCardPhoneNumber());
 
         IdCardRecord idCardRecord = new IdCardRecord();
-        if (newName != null) idCardRecord.setIDCardName_zch_hwz_gjc(newName);
-        if (newNumber != null) idCardRecord.setIDCardNumber_zch_hwz_gjc(newNumber);
-        if (newPhoneNumber != null) idCardRecord.setIDCardPhoneNumber_zch_hwz_gjc(newPhoneNumber);
+        if (idCard.getNewIDCardName() != null) idCardRecord.setIDCardName_zch_hwz_gjc(idCard.getNewIDCardName());
+        if (idCard.getNewIDCardNumber() != null) idCardRecord.setIDCardNumber_zch_hwz_gjc(idCard.getNewIDCardNumber());
+        if (idCard.getNewIDCardPhoneNumber() != null) idCardRecord.setIDCardPhoneNumber_zch_hwz_gjc(idCard.getNewIDCardPhoneNumber());
 
         int update = baseMapper.update(idCardRecord, updateWrapper);
         return update > 0;

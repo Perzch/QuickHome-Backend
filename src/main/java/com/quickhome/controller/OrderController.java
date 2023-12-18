@@ -42,7 +42,7 @@ import static com.quickhome.request.ResultCode.NOT_UPDATE;
 
 @Transactional
 @Controller("OrderCon")
-@RequestMapping("/Order")
+@RequestMapping("/order")
 public class OrderController {
     //公钥与私钥
     @Value("${rsa.private_key}")
@@ -123,7 +123,7 @@ public class OrderController {
      * @return
      */
 
-    @PostMapping("/insertOrder")
+    @PostMapping
     public ResponseEntity<?> insertOrder(@RequestBody PJOrder pjOrder,
                                          HttpServletRequest req) {
         //对请求的体进行解析
@@ -211,8 +211,8 @@ public class OrderController {
      * @return
      */
 
-    @GetMapping("/getDynamicDoorPassword")
-    public ResponseEntity<?> getDynamicDoorPassword(@RequestParam Long orderId,
+    @GetMapping("/password/{id}")
+    public ResponseEntity<?> getDynamicDoorPassword(@PathVariable("id") Long orderId,
                                                     HttpServletRequest req) {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
@@ -255,7 +255,7 @@ public class OrderController {
      * @return
      */
 
-    @PostMapping("/creatDynamicDoorPassword")
+    @PostMapping("/password")
     public ResponseEntity<ResponseResult<?>> creatDynamicDoorPassword(@RequestParam Long orderId, HttpServletRequest req) {
         RSA rsa = new RSA(privateKey, publicKey);
         String dateTime = String.valueOf(DateTime.now());
@@ -281,10 +281,8 @@ public class OrderController {
      * @return 用户全部订单
      */
 
-    @GetMapping("/getAllUserOrder")
-    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId,
-                                                              @RequestParam(defaultValue = "1") int currentPage,
-                                                              @RequestParam(defaultValue = "10") int pageSize) {
+    @GetMapping("/list")
+    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId,@RequestParam(defaultValue = "1",name = "page") int currentPage,@RequestParam(defaultValue = "10",name = "size") int pageSize) {
         // 创建一个Page对象
         Page<Order> page = new Page<>(currentPage, pageSize);
 
@@ -309,20 +307,16 @@ public class OrderController {
     /**
      * 支付订单
      *
-     * @param orderId 订单ID
-     * @param UACID   用户优惠券关联ID，可选参数
      * @param req
      * @return
      */
 
     @ResponseBody
-    @PostMapping("/payOrder")
-    public ResponseEntity<ResponseResult<?>> payOrder(
-            @RequestParam Long orderId,
-            @RequestParam(required = false) Long UACID,  // 用户优惠券关联ID，可选参数
+    @PostMapping("/pay")
+    public ResponseEntity<ResponseResult<?>> payOrder(@RequestBody PJOrder pjOrder,  // 用户优惠券关联ID，可选参数
             HttpServletRequest req) {
 
-        Order order = orderMapper.selectById(orderId);
+        Order order = orderMapper.selectById(pjOrder.getOrderId());
         if (order == null) {
             return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
         }
@@ -338,8 +332,8 @@ public class OrderController {
         Double originalOrderAmount = actualPayment;
 
         // 如果提供了UACID
-        if (UACID != null) {
-            UsersAndCoupons userCoupon = usersAndCouponsMapper.selectById(UACID);
+        if (pjOrder.getUACID() != null) {
+            UsersAndCoupons userCoupon = usersAndCouponsMapper.selectById(pjOrder.getUACID());
             if (userCoupon == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("用户优惠券关联不存在"));
             }
@@ -363,7 +357,11 @@ public class OrderController {
         }
 
         // 调用AccountBalanceController的updateMoney方法进行支付
-        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(order.getUserId_zch_hwz_gjc(), -(actualPayment + order.getOrderDeposit_zch_hwz_gjc()), req);
+        AccountBalance accountBalance = AccountBalance.builder()
+                .userId_zch_hwz_gjc(order.getUserId_zch_hwz_gjc())
+                .userBalance_zch_hwz_gjc(-(actualPayment + order.getOrderDeposit_zch_hwz_gjc()))
+                .build();
+        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(accountBalance, req);
 
         // 检查支付结果
         if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
@@ -372,7 +370,7 @@ public class OrderController {
 
         // 使用UpdateWrapper更新订单状态为“已支付”
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("orderId_zch_hwz_gjc", orderId)
+        updateWrapper.eq("orderId_zch_hwz_gjc", pjOrder.getOrderId())
                 .eq("orderState_zch_hwz_gjc", "未支付")  // 加入当前订单状态的检查
                 .set("orderState_zch_hwz_gjc", "已支付");
         boolean updateSuccess = orderMapper.update(order, updateWrapper) > 0;
@@ -381,7 +379,7 @@ public class OrderController {
             return ResponseEntity.badRequest().body(ResponseResult.error("订单状态更新失败，可能已经被其他用户修改"));
         }
 
-        order = orderMapper.selectById(orderId);
+        order = orderMapper.selectById(pjOrder.getOrderId());
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
@@ -442,21 +440,17 @@ public class OrderController {
     /**
      * 结束订单
      *
-     * @param orderId          订单ID
-     * @param maintenanceCost  维修费用
      * @param req
      * @return
      */
 
     @ResponseBody
     @PostMapping("/endOrder")
-    public ResponseEntity<ResponseResult<?>> endOrder(
-            @RequestParam Long orderId,
-            @RequestParam Double maintenanceCost,
+    public ResponseEntity<ResponseResult<?>> endOrder(@RequestBody PJOrder pjOrder,
             HttpServletRequest req) {
 
         // 1. 根据orderId查询订单
-        Order order = orderMapper.selectById(orderId);
+        Order order = orderMapper.selectById(pjOrder.getOrderId());
         if (order == null) {
             return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
         }
@@ -465,14 +459,14 @@ public class OrderController {
         Double refundAmount = 0.0;
 
         // 2. 检查维修金额
-        if (maintenanceCost <= 0) {
+        if (pjOrder.getMaintenanceCost() <= 0) {
             // 全额退回押金
             refundAmount = deposit;
             order.setOrderDeposit_zch_hwz_gjc(0.0);
         } else {
             // 扣除维修费用
-            refundAmount = deposit - maintenanceCost;
-            order.setOrderDeposit_zch_hwz_gjc(maintenanceCost);
+            refundAmount = deposit - pjOrder.getMaintenanceCost();
+            order.setOrderDeposit_zch_hwz_gjc(pjOrder.getMaintenanceCost());
         }
 
         // 3. 更新用户账户余额
@@ -514,7 +508,7 @@ public class OrderController {
      */
 
     @ResponseBody
-    @PostMapping("/updateOrder")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updateOrder(
             @RequestBody Order order,
             HttpServletRequest req) {
@@ -575,8 +569,8 @@ public class OrderController {
      * @return
      */
 
-    @DeleteMapping("/delOrder")
-    public ResponseEntity<ResponseResult<?>> deleteOrder(@RequestParam Long orderId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseResult<?>> deleteOrder(@PathVariable("id") Long orderId) {
         try {
             // 构建更新条件
             UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
@@ -657,19 +651,19 @@ public class OrderController {
      * 根据房源ID查询订单
      *
      * @param homeId 房源ID
-     * @param currentPage 当前页
-     * @param pageSize 每页大小
+     * @param page 当前页
+     * @param size 每页大小
      * @return
      */
 
-    @GetMapping("/getOrdersByHouseId")
+    @GetMapping("/home/list")
     public ResponseEntity<ResponseResult<?>> getOrdersByHouseId(
             @RequestParam Long homeId,
-            @RequestParam(defaultValue = "1") int currentPage,
-            @RequestParam(defaultValue = "10") int pageSize) {
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         try {
-            IPage<Order> ordersPage = orderService.getOrdersByHouseId(homeId, currentPage, pageSize);
+            IPage<Order> ordersPage = orderService.getOrdersByHouseId(homeId, page, size);
             return ResponseEntity.ok(ResponseResult.ok(ordersPage));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("查询订单失败: " + e.getMessage()));

@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Transactional
 @Controller("ChatCon")
-@RequestMapping("/Chat")
+@RequestMapping("/chat")
 public class MyChatController {
     @Autowired
     private MyChatService chatService;
@@ -38,7 +38,7 @@ public class MyChatController {
      * @param myChat 消息对象
      * @return
      */
-    @PostMapping("/send")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> sendMessage(@RequestBody MyChat myChat) {
         try {
             if (myChat.getMessageReceive_zch_hwz_gjc() == null || myChat.getMessageReceive_zch_hwz_gjc() == 0) {
@@ -65,18 +65,18 @@ public class MyChatController {
      *
      * @param senderId    发送者ID
      * @param receiverId  接收者ID
-     * @param pageIndex   页码
-     * @param pageSize    每页条数
+     * @param page   页码
+     * @param size    每页条数
      * @return
      */
     @GetMapping("/history")
     public ResponseEntity<ResponseResult<?>> getChatHistory(
             @RequestParam Long senderId,
             @RequestParam Long receiverId,
-            @RequestParam(defaultValue = "1") Integer pageIndex,
-            @RequestParam(defaultValue = "10") Integer pageSize) {
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
         try {
-            List<MyChat> chatHistory = chatService.getChatHistory(senderId, receiverId, pageIndex, pageSize);
+            List<MyChat> chatHistory = chatService.getChatHistory(senderId, receiverId, page, size);
             return ResponseEntity.ok(ResponseResult.ok(chatHistory));
         } catch (Exception e) {
             e.printStackTrace();

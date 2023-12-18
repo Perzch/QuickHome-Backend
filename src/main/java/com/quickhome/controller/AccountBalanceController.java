@@ -21,12 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Transactional
 @Controller("BalanceCon")
-@RequestMapping("/Balance")
+@RequestMapping("/balance")
 public class AccountBalanceController {
-    @Value("${rsa.private_key}")
-    private String privateKey;
-    @Value("${rsa.public_key}")
-    private String publicKey;
 
     @Autowired
     private AccountBalanceMapper accountBalanceMapper;
@@ -39,7 +35,7 @@ public class AccountBalanceController {
      */
 
     @ResponseBody
-    @PostMapping("/insertMoney")
+    @PostMapping
     public ResponseEntity<ResponseResult<?>> insertMoney(
             @RequestBody AccountBalance accountBalance,
             HttpServletRequest req) {
@@ -66,34 +62,31 @@ public class AccountBalanceController {
 
     /**
      * 充值/提现
-     * @param userId 用户id
-     * @param money  钱数
      * @param req
      * @return
      */
 
 
     @ResponseBody
-    @PostMapping("/updateMoney")
+    @PutMapping
     public ResponseEntity<ResponseResult<?>> updateMoney(
-            @RequestParam Long userId,
-            @RequestParam Double money,
+            @RequestBody AccountBalance accountBalanceParams,
             HttpServletRequest req) {
 
         QueryWrapper<AccountBalance> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userId_zch_hwz_gjc", userId);
+        queryWrapper.eq("userId_zch_hwz_gjc", accountBalanceParams.getUserId_zch_hwz_gjc());
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
         if (accountBalance == null) {
             return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
         }
 
         // 检查提现金额是否超过余额
-        if (money < 0 && Math.abs(money) > accountBalance.getUserBalance_zch_hwz_gjc()) {
+        if (accountBalanceParams.getUserBalance_zch_hwz_gjc() < 0 && Math.abs(accountBalanceParams.getUserBalance_zch_hwz_gjc()) > accountBalance.getUserBalance_zch_hwz_gjc()) {
             return ResponseEntity.badRequest().body(ResponseResult.error("余额不足"));
         }
 
         // 更新余额
-        accountBalance.setUserBalance_zch_hwz_gjc(accountBalance.getUserBalance_zch_hwz_gjc() + money);
+        accountBalance.setUserBalance_zch_hwz_gjc(accountBalance.getUserBalance_zch_hwz_gjc() + accountBalanceParams.getUserBalance_zch_hwz_gjc());
         // 设置最后修改时间为当前时间
         accountBalance.setLastModifiedDate_zch_hwz_gjc(DateTime.now());
 
@@ -111,9 +104,9 @@ public class AccountBalanceController {
      */
 
     @ResponseBody
-    @GetMapping("/selectAccountBalance")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseResult<?>> selectAccountBalance(
-            @RequestParam Long userId,
+            @PathVariable("id") Long userId,
             HttpServletRequest req) {
         QueryWrapper<AccountBalance> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userId_zch_hwz_gjc", userId);

@@ -37,7 +37,7 @@ public class RCAMIController {
      * @param rcami 维修信息
      * @return 维修信息
      */
-    @PostMapping("/addRCAMI")
+    @PostMapping
     public ResponseEntity<?> addRCAMI(@RequestBody RCAMI rcami, HttpServletRequest req) {
         rcami.setInformationCreatTime_zch_hwz_gjc(DateTime.now());
         boolean flag = rcamiService.save(rcami);
@@ -52,7 +52,7 @@ public class RCAMIController {
      */
 
     @ResponseBody
-    @PostMapping("/finishRCAMI")
+    @PutMapping("/finish")
     public ResponseEntity<ResponseResult<?>> finishRCAMI(
             @RequestBody RCAMI rcami,
             HttpServletRequest req) {
@@ -91,12 +91,12 @@ public class RCAMIController {
      */
 
     @ResponseBody
-    @GetMapping("/getRCAMIByOrderOrHome")
+    @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> getRCAMIByOrderOrHome(
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) Long homeId,
-            @RequestParam(defaultValue = "1") int current,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1",name = "page") int current,
+            @RequestParam(defaultValue = "10",name = "size") int size,
             HttpServletRequest req) {
 
         if (orderId == null && homeId == null) {
