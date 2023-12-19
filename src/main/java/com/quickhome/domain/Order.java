@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_order_zch_hwz_gjc
  */
 @TableName(value ="tab_order_zch_hwz_gjc")
@@ -41,7 +41,7 @@ public class Order implements Serializable {
      * 动态门卡密码
      */
     @TableField(value = "DynamicDoorPassword_zch_hwz_gjc")
-    @JsonProperty("DynamicDoorPassword")
+    @JsonProperty("dynamicDoorPassword")
     private String dynamicDoorPassword_zch_hwz_gjc;
 
     /**

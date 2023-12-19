@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_manager_zch_hwz_gjc
  */
 @TableName(value ="tab_manager_zch_hwz_gjc")
@@ -83,6 +83,7 @@ public class Manager implements Serializable {
      * 在线状态
      */
     @TableField(value = "online_status_zch_hwz_gjc")
+    @JsonProperty("onlineStatus")
     private String onlineStatus_zch_hwz_gjc;
 
     /**
