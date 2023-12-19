@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.quickhome.mapper.AttractionsMapper">
+<mapper namespace="com.quickhome.mapper.AttractionMapper">
 
-    <resultMap id="BaseResultMap" type="com.quickhome.domain.Attractions">
-            <id property="attractionsId_zch_hwz_gjc" column="attractionsId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="attractionsName_zch_hwz_gjc" column="attractionsName_zch_hwz_gjc" jdbcType="VARCHAR"/>
+    <resultMap id="BaseResultMap" type="com.quickhome.domain.Attraction">
+            <id property="attractionId_zch_hwz_gjc" column="attractionId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="attractionName_zch_hwz_gjc" column="attractionName_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="attractionInformation_zch_hwz_gjc" column="attractionInformation_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="openingTime_zch_hwz_gjc" column="openingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="closingTime_zch_hwz_gjc" column="closingTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
@@ -18,21 +18,21 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        attractionsId_zch_hwz_gjc,attractionsName_zch_hwz_gjc,attractionInformation_zch_hwz_gjc,
+        attractionId_zch_hwz_gjc,attractionName_zch_hwz_gjc,attractionInformation_zch_hwz_gjc,
         openingTime_zch_hwz_gjc,closingTime_zch_hwz_gjc,attractionInDate_zch_hwz_gjc,
         standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
 
     <select id="getAttractionListOrderByCollectionCount" resultType="com.quickhome.pojo.PojoAttraction">
-        SELECT a.attractionsId_zch_hwz_gjc as attractionsId,
+        SELECT a.attractionId_zch_hwz_gjc as attractionId,
                COUNT(c.aFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
-        FROM tab_attractions_zch_hwz_gjc a
+        FROM tab_attraction_zch_hwz_gjc a
                  LEFT JOIN tab_attractioncollection_zch_hwz_gjc c
-                           ON a.attractionsId_zch_hwz_gjc = c.attractionsId_zch_hwz_gjc
+                           ON a.attractionId_zch_hwz_gjc = c.attractionId_zch_hwz_gjc
         where a.deleted_zch_hwz_gjc = 0
-        GROUP BY a.attractionsId_zch_hwz_gjc,
-                 a.attractionsName_zch_hwz_gjc
+        GROUP BY a.attractionId_zch_hwz_gjc,
+                 a.attractionName_zch_hwz_gjc
         ORDER BY collectionCount DESC
         limit 10
     </select>

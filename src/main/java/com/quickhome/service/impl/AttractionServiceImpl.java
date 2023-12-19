@@ -1,10 +1,10 @@
 package com.quickhome.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.quickhome.domain.Attractions;
+import com.quickhome.domain.Attraction;
 import com.quickhome.pojo.PojoAttraction;
-import com.quickhome.service.AttractionsService;
-import com.quickhome.mapper.AttractionsMapper;
+import com.quickhome.service.AttractionService;
+import com.quickhome.mapper.AttractionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +17,8 @@ import java.util.List;
 */
 @Transactional
 @Service
-public class AttractionsServiceImpl extends ServiceImpl<AttractionsMapper, Attractions>
-    implements AttractionsService{
+public class AttractionServiceImpl extends ServiceImpl<AttractionMapper, Attraction>
+    implements AttractionService {
 
     @Override
     public List<PojoAttraction> getAttractionListOrderByCollectionCount() {

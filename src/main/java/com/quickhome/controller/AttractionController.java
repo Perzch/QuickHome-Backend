@@ -4,54 +4,41 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.qcloud.cos.utils.IOUtils;
 import com.quickhome.domain.AttractionCollection;
 import com.quickhome.domain.AttractionImage;
-import com.quickhome.domain.Attractions;
+import com.quickhome.domain.Attraction;
 import com.quickhome.mapper.AttractionCollectionMapper;
 import com.quickhome.mapper.AttractionImageMapper;
-import com.quickhome.mapper.AttractionsMapper;
+import com.quickhome.mapper.AttractionMapper;
 import com.quickhome.pojo.PJFile;
 import com.quickhome.pojo.PojoAttraction;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.AttractionImageService;
-import com.quickhome.service.AttractionsService;
+import com.quickhome.service.AttractionService;
 import com.quickhome.util.HandlePath;
 import com.quickhome.util.ImageUtil;
 import com.quickhome.util.TencentCOSUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Transactional
 @Controller("AttractionCon")
 @RequestMapping("/attraction")
 public class AttractionController {
     @Autowired
-    private AttractionsService attractionsService;
+    private AttractionService attractionService;
 
     @Autowired
     private AttractionImageService attractionImageService;
@@ -60,7 +47,7 @@ public class AttractionController {
     private AttractionImageMapper attractionImageMapper;
 
     @Autowired
-    private AttractionsMapper attractionMapper;
+    private AttractionMapper attractionMapper;
     @Autowired
     private AttractionCollectionMapper attractionCollectionMapper;
 
@@ -104,7 +91,7 @@ public class AttractionController {
         try {
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("userId_zch_hwz_gjc", userId);
-            queryWrapper.eq("attractionsId_zch_hwz_gjc", attractionId);
+            queryWrapper.eq("attractionId_zch_hwz_gjc", attractionId);
             Long count = attractionCollectionMapper.selectCount(queryWrapper);
             boolean isCollected = count > 0;
             return ResponseEntity.ok(ResponseResult.ok(isCollected));
@@ -206,11 +193,11 @@ public class AttractionController {
     @GetMapping("/byCollection")
     @ResponseBody
     public ResponseEntity<ResponseResult<List<PojoAttraction>>> getAttractionListOrderByCollectionCount() {
-        List<PojoAttraction> pojoAttractionList = attractionsService.getAttractionListOrderByCollectionCount();
+        List<PojoAttraction> pojoAttractionList = attractionService.getAttractionListOrderByCollectionCount();
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
-            Attractions attractions = attractionsService.getById(pojoAttraction.getAttractionsId());
-            pojoAttraction.setAttractions(attractions);
-            List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionsId());
+            Attraction attraction = attractionService.getById(pojoAttraction.getAttractionId());
+            pojoAttraction.setAttraction(attraction);
+            List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionId());
             pojoAttraction.setAttractionImageList(attractionImageList);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoAttractionList));
@@ -219,17 +206,17 @@ public class AttractionController {
     /**
      * 插入景点
      *
-     * @param attractions 景点信息
+     * @param attraction 景点信息
      * @return
      */
 
     @PostMapping
-    public ResponseEntity<?> insertAttraction(@RequestBody Attractions attractions) {
+    public ResponseEntity<?> insertAttraction(@RequestBody Attraction attraction) {
         try {
             LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
             Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            attractions.setAttractionInDate_zch_hwz_gjc(date);
-            attractionMapper.insert(attractions);
+            attraction.setAttractionInDate_zch_hwz_gjc(date);
+            attractionMapper.insert(attraction);
             return ResponseEntity.ok(ResponseResult.ok("插入成功"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
@@ -248,26 +235,29 @@ public class AttractionController {
     public ResponseEntity<?> getAttractionById(@PathVariable("id") Long attractionId,
                                                HttpServletRequest req) {
         try {
-            Attractions attraction = attractionMapper.selectById(attractionId);
+            Attraction attraction = attractionService.getById(attractionId);
+            if(Objects.isNull(attraction)) {
+                return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+            }
             PojoAttraction pojoAttraction = new PojoAttraction();
-            pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
-            pojoAttraction.setAttractions(attraction);
+            pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
+            pojoAttraction.setAttraction(attraction);
 
             // 计算收藏数
             QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
-            collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+            collectionWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
             collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
             Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
             pojoAttraction.setCollectionCount(collectionCount);
 
             // 获取图片
             QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
-            imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+            imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
             imageWrapper.eq("deleted_zch_hwz_gjc", 0);
             List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
             pojoAttraction.setAttractionImageList(images);
 
-            if (pojoAttraction.getAttractionsId() != null) {
+            if (pojoAttraction.getAttractionId() != null) {
                 return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
@@ -282,7 +272,7 @@ public class AttractionController {
      *
      * @param pageNo          页码
      * @param pageSize        每页大小
-     * @param attractionsName 景点名称
+     * @param attractionName 景点名称
      * @return
      */
 
@@ -290,31 +280,31 @@ public class AttractionController {
     public ResponseEntity<ResponseResult<?>> queryAttractions(
             @RequestParam(value = "page", defaultValue = "1") int pageNo,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
-            @RequestParam(value = "attractionsName", required = false) String attractionsName) {
+            @RequestParam(value = "attractionName", required = false) String attractionName) {
         try {
-            Page<Attractions> page = new Page<>(pageNo, pageSize);
-            QueryWrapper<Attractions> queryWrapper = new QueryWrapper<>();
-            if (attractionsName != null && !attractionsName.trim().isEmpty()) {
-                queryWrapper.like("attractionsName_zch_hwz_gjc", attractionsName);
+            Page<Attraction> page = new Page<>(pageNo, pageSize);
+            QueryWrapper<Attraction> queryWrapper = new QueryWrapper<>();
+            if (attractionName != null && !attractionName.trim().isEmpty()) {
+                queryWrapper.like("attractionName_zch_hwz_gjc", attractionName);
             }
-            IPage<Attractions> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
+            IPage<Attraction> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
 
             List<PojoAttraction> pojoAttractionList = new ArrayList<>();
-            for (Attractions attraction : attractionsPage.getRecords()) {
+            for (Attraction attraction : attractionsPage.getRecords()) {
                 PojoAttraction pojoAttraction = new PojoAttraction();
-                pojoAttraction.setAttractionsId(attraction.getAttractionsId_zch_hwz_gjc());
-                pojoAttraction.setAttractions(attraction);
+                pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
+                pojoAttraction.setAttraction(attraction);
 
                 // 计算收藏数
                 QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
-                collectionWrapper.eq("attractionsId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                collectionWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
                 collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
                 Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
                 pojoAttraction.setCollectionCount(collectionCount);
 
                 // 获取图片
                 QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
-                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionsId_zch_hwz_gjc());
+                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
                 imageWrapper.eq("deleted_zch_hwz_gjc", 0);
                 List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
                 pojoAttraction.setAttractionImageList(images);
@@ -335,39 +325,39 @@ public class AttractionController {
     /**
      * 更新景点信息
      *
-     * @param attractions 景点信息
+     * @param attraction 景点信息
      * @return
      */
 
     @PutMapping
-    public ResponseEntity<?> updateAttraction(@RequestBody Attractions attractions) {
+    public ResponseEntity<?> updateAttraction(@RequestBody Attraction attraction) {
         try {
-            if (attractions.getAttractionsId_zch_hwz_gjc() == null) {
+            if (attraction.getAttractionId_zch_hwz_gjc() == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不能为空"));
             }
 
             // 从数据库中查询当前记录
-            Attractions currentAttractions = attractionMapper.selectById(attractions.getAttractionsId_zch_hwz_gjc());
-            if (currentAttractions == null) {
+            Attraction currentAttraction = attractionMapper.selectById(attraction.getAttractionId_zch_hwz_gjc());
+            if (currentAttraction == null) {
                 return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不存在"));
             }
 
             // 更新需要修改的字段
-            if (attractions.getAttractionsName_zch_hwz_gjc() != null) {
-                currentAttractions.setAttractionsName_zch_hwz_gjc(attractions.getAttractionsName_zch_hwz_gjc());
+            if (attraction.getAttractionName_zch_hwz_gjc() != null) {
+                currentAttraction.setAttractionName_zch_hwz_gjc(attraction.getAttractionName_zch_hwz_gjc());
             }
-            if (attractions.getAttractionInformation_zch_hwz_gjc() != null) {
-                currentAttractions.setAttractionInformation_zch_hwz_gjc(attractions.getAttractionInformation_zch_hwz_gjc());
+            if (attraction.getAttractionInformation_zch_hwz_gjc() != null) {
+                currentAttraction.setAttractionInformation_zch_hwz_gjc(attraction.getAttractionInformation_zch_hwz_gjc());
             }
-            if (attractions.getOpeningTime_zch_hwz_gjc() != null) {
-                currentAttractions.setOpeningTime_zch_hwz_gjc(attractions.getOpeningTime_zch_hwz_gjc());
+            if (attraction.getOpeningTime_zch_hwz_gjc() != null) {
+                currentAttraction.setOpeningTime_zch_hwz_gjc(attraction.getOpeningTime_zch_hwz_gjc());
             }
-            if (attractions.getClosingTime_zch_hwz_gjc() != null) {
-                currentAttractions.setClosingTime_zch_hwz_gjc(attractions.getClosingTime_zch_hwz_gjc());
+            if (attraction.getClosingTime_zch_hwz_gjc() != null) {
+                currentAttraction.setClosingTime_zch_hwz_gjc(attraction.getClosingTime_zch_hwz_gjc());
             }
 
             // 使用乐观锁更新方法
-            int result = attractionMapper.updateById(currentAttractions);
+            int result = attractionMapper.updateById(currentAttraction);
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
@@ -388,8 +378,8 @@ public class AttractionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAttraction(@PathVariable("id") Long attractionId) {
         try {
-            UpdateWrapper<Attractions> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("attractionsId_zch_hwz_gjc", attractionId)
+            UpdateWrapper<Attraction> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("attractionId_zch_hwz_gjc", attractionId)
                     .set("deleted_zch_hwz_gjc", 1);
 
             int result = attractionMapper.update(null, updateWrapper);
@@ -416,14 +406,14 @@ public class AttractionController {
         try {
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
-                    .eq("attractionsId_zch_hwz_gjc", ac.getAttractionsId_zch_hwz_gjc());
+                    .eq("attractionId_zch_hwz_gjc", ac.getAttractionId_zch_hwz_gjc());
             Long flag = attractionCollectionMapper.selectCount(queryWrapper);
             if (flag > 0) {
                 return ResponseEntity.ok(ResponseResult.error("已收藏"));
             }
             AttractionCollection collection = new AttractionCollection();
             collection.setUserId_zch_hwz_gjc(ac.getUserId_zch_hwz_gjc());
-            collection.setAttractionsId_zch_hwz_gjc(ac.getAttractionsId_zch_hwz_gjc());
+            collection.setAttractionId_zch_hwz_gjc(ac.getAttractionId_zch_hwz_gjc());
             collection.setCollectionTime_zch_hwz_gjc(new Date());
 
             int result = attractionCollectionMapper.insert(collection);
@@ -450,7 +440,7 @@ public class AttractionController {
         try {
             UpdateWrapper<AttractionCollection> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
-                    .eq("attractionsId_zch_hwz_gjc", ac.getAttractionsId_zch_hwz_gjc())
+                    .eq("attractionId_zch_hwz_gjc", ac.getAttractionId_zch_hwz_gjc())
                     .set("deleted_zch_hwz_gjc", 1);
 
             int result = attractionCollectionMapper.update(null, updateWrapper);

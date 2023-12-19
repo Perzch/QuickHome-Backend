@@ -1,6 +1,6 @@
 package com.quickhome.mapper;
 
-import com.quickhome.domain.Attractions;
+import com.quickhome.domain.Attraction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.pojo.PojoAttraction;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +14,7 @@ import java.util.List;
 * @Entity .domain.Attractions
 */
 @Mapper
-public interface AttractionsMapper extends BaseMapper<Attractions> {
+public interface AttractionMapper extends BaseMapper<Attraction> {
     List<PojoAttraction> getAttractionListOrderByCollectionCount();
 }
 

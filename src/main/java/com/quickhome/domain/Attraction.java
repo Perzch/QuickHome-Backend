@@ -14,29 +14,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @TableName tab_attractions_zch_hwz_gjc
+ *
+ * @TableName tab_attraction_zch_hwz_gjc
  */
-@TableName(value ="tab_attractions_zch_hwz_gjc")
+@TableName(value ="tab_attraction_zch_hwz_gjc")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","deleted_zch_hwz_gjc" })
-public class Attractions implements Serializable {
+public class Attraction implements Serializable {
     /**
      * 景点编号
      */
-    @TableId(value = "attractionsId_zch_hwz_gjc", type = IdType.AUTO)
-    @JsonProperty("attractionsId")
-    private Long attractionsId_zch_hwz_gjc;
+    @TableId(value = "attractionId_zch_hwz_gjc", type = IdType.AUTO)
+    @JsonProperty("attractionId")
+    private Long attractionId_zch_hwz_gjc;
 
     /**
      * 景点名称
      */
-    @TableField(value = "attractionsName_zch_hwz_gjc")
-    @JsonProperty("attractionsName")
-    private String attractionsName_zch_hwz_gjc;
+    @TableField(value = "attractionName_zch_hwz_gjc")
+    @JsonProperty("attractionName")
+    private String attractionName_zch_hwz_gjc;
 
     /**
      * 景点介绍
@@ -107,9 +107,9 @@ public class Attractions implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Attractions other = (Attractions) that;
-        return (this.getAttractionsId_zch_hwz_gjc() == null ? other.getAttractionsId_zch_hwz_gjc() == null : this.getAttractionsId_zch_hwz_gjc().equals(other.getAttractionsId_zch_hwz_gjc()))
-            && (this.getAttractionsName_zch_hwz_gjc() == null ? other.getAttractionsName_zch_hwz_gjc() == null : this.getAttractionsName_zch_hwz_gjc().equals(other.getAttractionsName_zch_hwz_gjc()))
+        Attraction other = (Attraction) that;
+        return (this.getAttractionId_zch_hwz_gjc() == null ? other.getAttractionId_zch_hwz_gjc() == null : this.getAttractionId_zch_hwz_gjc().equals(other.getAttractionId_zch_hwz_gjc()))
+            && (this.getAttractionName_zch_hwz_gjc() == null ? other.getAttractionName_zch_hwz_gjc() == null : this.getAttractionName_zch_hwz_gjc().equals(other.getAttractionName_zch_hwz_gjc()))
             && (this.getAttractionInformation_zch_hwz_gjc() == null ? other.getAttractionInformation_zch_hwz_gjc() == null : this.getAttractionInformation_zch_hwz_gjc().equals(other.getAttractionInformation_zch_hwz_gjc()))
             && (this.getOpeningTime_zch_hwz_gjc() == null ? other.getOpeningTime_zch_hwz_gjc() == null : this.getOpeningTime_zch_hwz_gjc().equals(other.getOpeningTime_zch_hwz_gjc()))
             && (this.getClosingTime_zch_hwz_gjc() == null ? other.getClosingTime_zch_hwz_gjc() == null : this.getClosingTime_zch_hwz_gjc().equals(other.getClosingTime_zch_hwz_gjc()))
@@ -124,8 +124,8 @@ public class Attractions implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getAttractionsId_zch_hwz_gjc() == null) ? 0 : getAttractionsId_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getAttractionsName_zch_hwz_gjc() == null) ? 0 : getAttractionsName_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getAttractionId_zch_hwz_gjc() == null) ? 0 : getAttractionId_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getAttractionName_zch_hwz_gjc() == null) ? 0 : getAttractionName_zch_hwz_gjc().hashCode());
         result = prime * result + ((getAttractionInformation_zch_hwz_gjc() == null) ? 0 : getAttractionInformation_zch_hwz_gjc().hashCode());
         result = prime * result + ((getOpeningTime_zch_hwz_gjc() == null) ? 0 : getOpeningTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getClosingTime_zch_hwz_gjc() == null) ? 0 : getClosingTime_zch_hwz_gjc().hashCode());
@@ -143,8 +143,8 @@ public class Attractions implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", attractionsId_zch_hwz_gjc=").append(attractionsId_zch_hwz_gjc);
-        sb.append(", attractionsName_zch_hwz_gjc=").append(attractionsName_zch_hwz_gjc);
+        sb.append(", attractionId_zch_hwz_gjc=").append(attractionId_zch_hwz_gjc);
+        sb.append(", attractionName_zch_hwz_gjc=").append(attractionName_zch_hwz_gjc);
         sb.append(", attractionInformation_zch_hwz_gjc=").append(attractionInformation_zch_hwz_gjc);
         sb.append(", openingTime_zch_hwz_gjc=").append(openingTime_zch_hwz_gjc);
         sb.append(", closingTime_zch_hwz_gjc=").append(closingTime_zch_hwz_gjc);

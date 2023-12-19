@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_attractioncollection_zch_hwz_gjc
  */
 @TableName(value ="tab_attractioncollection_zch_hwz_gjc")
@@ -40,9 +40,9 @@ public class AttractionCollection implements Serializable {
     /**
      * 景点编号
      */
-    @TableField(value = "attractionsId_zch_hwz_gjc")
-    @JsonProperty("attractionsId")
-    private Long attractionsId_zch_hwz_gjc;
+    @TableField(value = "attractionId_zch_hwz_gjc")
+    @JsonProperty("attractionId")
+    private Long attractionId_zch_hwz_gjc;
 
     /**
      * 收藏时间
@@ -95,7 +95,7 @@ public class AttractionCollection implements Serializable {
         AttractionCollection other = (AttractionCollection) that;
         return (this.getAFavoriteRecordsId_zch_hwz_gjc() == null ? other.getAFavoriteRecordsId_zch_hwz_gjc() == null : this.getAFavoriteRecordsId_zch_hwz_gjc().equals(other.getAFavoriteRecordsId_zch_hwz_gjc()))
             && (this.getUserId_zch_hwz_gjc() == null ? other.getUserId_zch_hwz_gjc() == null : this.getUserId_zch_hwz_gjc().equals(other.getUserId_zch_hwz_gjc()))
-            && (this.getAttractionsId_zch_hwz_gjc() == null ? other.getAttractionsId_zch_hwz_gjc() == null : this.getAttractionsId_zch_hwz_gjc().equals(other.getAttractionsId_zch_hwz_gjc()))
+            && (this.getAttractionId_zch_hwz_gjc() == null ? other.getAttractionId_zch_hwz_gjc() == null : this.getAttractionId_zch_hwz_gjc().equals(other.getAttractionId_zch_hwz_gjc()))
             && (this.getCollectionTime_zch_hwz_gjc() == null ? other.getCollectionTime_zch_hwz_gjc() == null : this.getCollectionTime_zch_hwz_gjc().equals(other.getCollectionTime_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
@@ -109,7 +109,7 @@ public class AttractionCollection implements Serializable {
         int result = 1;
         result = prime * result + ((getAFavoriteRecordsId_zch_hwz_gjc() == null) ? 0 : getAFavoriteRecordsId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserId_zch_hwz_gjc() == null) ? 0 : getUserId_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getAttractionsId_zch_hwz_gjc() == null) ? 0 : getAttractionsId_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getAttractionId_zch_hwz_gjc() == null) ? 0 : getAttractionId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getCollectionTime_zch_hwz_gjc() == null) ? 0 : getCollectionTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
@@ -126,7 +126,7 @@ public class AttractionCollection implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", aFavoriteRecordsId_zch_hwz_gjc=").append(aFavoriteRecordsId_zch_hwz_gjc);
         sb.append(", userId_zch_hwz_gjc=").append(userId_zch_hwz_gjc);
-        sb.append(", attractionsId_zch_hwz_gjc=").append(attractionsId_zch_hwz_gjc);
+        sb.append(", attractionsId_zch_hwz_gjc=").append(attractionId_zch_hwz_gjc);
         sb.append(", collectionTime_zch_hwz_gjc=").append(collectionTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);

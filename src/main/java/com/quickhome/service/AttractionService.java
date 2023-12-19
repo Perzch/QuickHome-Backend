@@ -1,6 +1,6 @@
 package com.quickhome.service;
 
-import com.quickhome.domain.Attractions;
+import com.quickhome.domain.Attraction;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.quickhome.pojo.PojoAttraction;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +13,6 @@ import java.util.List;
 * @createDate 2023-06-21 09:45:15
 */
 @Transactional
-public interface AttractionsService extends IService<Attractions> {
+public interface AttractionService extends IService<Attraction> {
     List<PojoAttraction> getAttractionListOrderByCollectionCount();
 }
