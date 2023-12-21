@@ -591,7 +591,7 @@ public class HomeInformationController {
     public ResponseEntity<?> cancelHomeCollection(@RequestBody PJUserHome userHome) {
         try {
             UpdateWrapper<HouseCollection> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("userId_zch_hwz_gjc", userHome.getHomeId())
+            updateWrapper.eq("userId_zch_hwz_gjc", userHome.getUserId())
                     .eq("homeId_zch_hwz_gjc", userHome.getHomeId())
                     .set("deleted_zch_hwz_gjc", 1);
 
