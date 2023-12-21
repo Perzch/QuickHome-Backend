@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_attractionreview_zch_hwz_gjc
  */
 @TableName(value ="tab_attractionreview_zch_hwz_gjc")
@@ -47,9 +47,9 @@ public class AttractionReview implements Serializable {
     /**
      * 景点编号
      */
-    @TableField(value = "attractionsId_zch_hwz_gjc")
-    @JsonProperty("attractionsId")
-    private Long attractionsId_zch_hwz_gjc;
+    @TableField(value = "attractionId_zch_hwz_gjc")
+    @JsonProperty("attractionId")
+    private Long attractionId_zch_hwz_gjc;
 
     /**
      * 评论时间
@@ -124,7 +124,7 @@ public class AttractionReview implements Serializable {
         return (this.getAttractionReviewId_zch_hwz_gjc() == null ? other.getAttractionReviewId_zch_hwz_gjc() == null : this.getAttractionReviewId_zch_hwz_gjc().equals(other.getAttractionReviewId_zch_hwz_gjc()))
             && (this.getComments_zch_hwz_gjc() == null ? other.getComments_zch_hwz_gjc() == null : this.getComments_zch_hwz_gjc().equals(other.getComments_zch_hwz_gjc()))
             && (this.getUserId_zch_hwz_gjc() == null ? other.getUserId_zch_hwz_gjc() == null : this.getUserId_zch_hwz_gjc().equals(other.getUserId_zch_hwz_gjc()))
-            && (this.getAttractionsId_zch_hwz_gjc() == null ? other.getAttractionsId_zch_hwz_gjc() == null : this.getAttractionsId_zch_hwz_gjc().equals(other.getAttractionsId_zch_hwz_gjc()))
+            && (this.getAttractionId_zch_hwz_gjc() == null ? other.getAttractionId_zch_hwz_gjc() == null : this.getAttractionId_zch_hwz_gjc().equals(other.getAttractionId_zch_hwz_gjc()))
             && (this.getReviewTime_zch_hwz_gjc() == null ? other.getReviewTime_zch_hwz_gjc() == null : this.getReviewTime_zch_hwz_gjc().equals(other.getReviewTime_zch_hwz_gjc()))
             && (this.getAttractionLikeCount_zch_hwz_gjc() == null ? other.getAttractionLikeCount_zch_hwz_gjc() == null : this.getAttractionLikeCount_zch_hwz_gjc().equals(other.getAttractionLikeCount_zch_hwz_gjc()))
             && (this.getAttractionReviewRating_zch_hwz_gjc() == null ? other.getAttractionReviewRating_zch_hwz_gjc() == null : this.getAttractionReviewRating_zch_hwz_gjc().equals(other.getAttractionReviewRating_zch_hwz_gjc()))
@@ -142,7 +142,7 @@ public class AttractionReview implements Serializable {
         result = prime * result + ((getAttractionReviewId_zch_hwz_gjc() == null) ? 0 : getAttractionReviewId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getComments_zch_hwz_gjc() == null) ? 0 : getComments_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserId_zch_hwz_gjc() == null) ? 0 : getUserId_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getAttractionsId_zch_hwz_gjc() == null) ? 0 : getAttractionsId_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getAttractionId_zch_hwz_gjc() == null) ? 0 : getAttractionId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getReviewTime_zch_hwz_gjc() == null) ? 0 : getReviewTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getAttractionLikeCount_zch_hwz_gjc() == null) ? 0 : getAttractionLikeCount_zch_hwz_gjc().hashCode());
         result = prime * result + ((getAttractionReviewRating_zch_hwz_gjc() == null) ? 0 : getAttractionReviewRating_zch_hwz_gjc().hashCode());
@@ -163,7 +163,7 @@ public class AttractionReview implements Serializable {
         sb.append(", attractionReviewId_zch_hwz_gjc=").append(attractionReviewId_zch_hwz_gjc);
         sb.append(", comments_zch_hwz_gjc=").append(comments_zch_hwz_gjc);
         sb.append(", userId_zch_hwz_gjc=").append(userId_zch_hwz_gjc);
-        sb.append(", attractionsId_zch_hwz_gjc=").append(attractionsId_zch_hwz_gjc);
+        sb.append(", attractionId_zch_hwz_gjc=").append(attractionId_zch_hwz_gjc);
         sb.append(", reviewTime_zch_hwz_gjc=").append(reviewTime_zch_hwz_gjc);
         sb.append(", attractionLikeCount_zch_hwz_gjc=").append(attractionLikeCount_zch_hwz_gjc);
         sb.append(", attractionReviewRating_zch_hwz_gjc=").append(attractionReviewRating_zch_hwz_gjc);

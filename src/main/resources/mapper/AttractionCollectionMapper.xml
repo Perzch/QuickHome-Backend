@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="com.quickhome.domain.AttractionCollection">
             <id property="aFavoriteRecordsId_zch_hwz_gjc" column="aFavoriteRecordsId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="attractionsId_zch_hwz_gjc" column="attractionsId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="attractionId_zch_hwz_gjc" column="attractionId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="collectionTime_zch_hwz_gjc" column="collectionTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        aFavoriteRecordsId_zch_hwz_gjc,userId_zch_hwz_gjc,attractionsId_zch_hwz_gjc,
+        aFavoriteRecordsId_zch_hwz_gjc,userId_zch_hwz_gjc,attractionId_zch_hwz_gjc,
         collectionTime_zch_hwz_gjc,standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,
         version_zch_hwz_gjc,deleted_zch_hwz_gjc
     </sql>

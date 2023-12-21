@@ -73,7 +73,7 @@ public class AttractionReviewServiceImpl extends ServiceImpl<AttractionReviewMap
     public IPage<AttractionReview> getCommentsByAttractionId(Long attractionId, int pageNum, int pageSize) {
         Page<AttractionReview> page = new Page<>(pageNum, pageSize);
         QueryWrapper<AttractionReview> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("attractionsId_zch_hwz_gjc", attractionId);
+        queryWrapper.eq("attractionId_zch_hwz_gjc", attractionId);
         return page(page, queryWrapper);
     }
 

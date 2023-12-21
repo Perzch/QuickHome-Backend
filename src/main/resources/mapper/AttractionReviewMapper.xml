@@ -8,7 +8,7 @@
             <id property="attractionReviewId_zch_hwz_gjc" column="attractionReviewId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="comments_zch_hwz_gjc" column="comments_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="userId_zch_hwz_gjc" column="userId_zch_hwz_gjc" jdbcType="BIGINT"/>
-            <result property="attractionsId_zch_hwz_gjc" column="attractionsId_zch_hwz_gjc" jdbcType="BIGINT"/>
+            <result property="attractionId_zch_hwz_gjc" column="attractionId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="reviewTime_zch_hwz_gjc" column="reviewTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="attractionLikeCount_zch_hwz_gjc" column="attractionLikeCount_zch_hwz_gjc" jdbcType="INTEGER"/>
             <result property="attractionReviewRating_zch_hwz_gjc" column="attractionReviewRating_zch_hwz_gjc" jdbcType="INTEGER"/>

@@ -126,7 +126,7 @@ public class AttractionCollection implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", aFavoriteRecordsId_zch_hwz_gjc=").append(aFavoriteRecordsId_zch_hwz_gjc);
         sb.append(", userId_zch_hwz_gjc=").append(userId_zch_hwz_gjc);
-        sb.append(", attractionsId_zch_hwz_gjc=").append(attractionId_zch_hwz_gjc);
+        sb.append(", attractionId_zch_hwz_gjc=").append(attractionId_zch_hwz_gjc);
         sb.append(", collectionTime_zch_hwz_gjc=").append(collectionTime_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
