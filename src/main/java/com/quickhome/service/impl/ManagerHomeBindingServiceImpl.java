@@ -70,6 +70,17 @@ public class ManagerHomeBindingServiceImpl extends ServiceImpl<ManagerHomeBindin
         return homeMapper.selectPage(page, homeQueryWrapper);
     }
 
+    @Override
+    public IPage<ManagerHomeBinding> getAllBindingInfo(Page<?> page) {
+        // 示例：假设有一个 BindingInfoMapper 用于操作数据库
+        IPage<ManagerHomeBinding> bindingInfoPage = new Page<>(page.getCurrent(), page.getSize());
+
+        // 查询所有绑定信息并填充分页对象
+        baseMapper.selectPage(bindingInfoPage, null);
+
+        return bindingInfoPage;
+    }
+
 }
 
 

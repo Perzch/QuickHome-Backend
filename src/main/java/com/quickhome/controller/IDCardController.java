@@ -78,6 +78,7 @@ public class IDCardController {
     @PutMapping
     public ResponseEntity<ResponseResult> updateIdCardInfo(@RequestBody PJIdCard idCard) {
         try {
+            System.out.println(idCard);
             boolean result = idCardService.updateIdCardInfo(idCard);
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("更新成功"));
@@ -118,6 +119,7 @@ public class IDCardController {
     @DeleteMapping
     public ResponseEntity<ResponseResult> deleteIdCardInfo(@RequestBody PJIdCard idCard) {
         try {
+            System.out.println(idCard);
             boolean result = idCardService.deleteIdCardInfo(idCard);
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));

@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Transactional
 public interface LogService extends IService<Log> {
+
+    public IPage<Log> getAllLogs(int page, int size);
     public boolean insertLog(Log log);
 
     public IPage<Log> getLogsByUserId(Long userId, int page, int size);

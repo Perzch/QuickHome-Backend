@@ -32,6 +32,14 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
                 .orderByDesc("executionTime_zch_hwz_gjc");
         return baseMapper.selectPage(pageParam, queryWrapper);
     }
+
+    @Override
+    public IPage<Log> getAllLogs(int page, int size) {
+        Page<Log> pageParam = new Page<>(page, size);
+        QueryWrapper<Log> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("executionTime_zch_hwz_gjc");
+        return baseMapper.selectPage(pageParam, queryWrapper);
+    }
 }
 
 

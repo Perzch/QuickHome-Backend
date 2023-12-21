@@ -398,7 +398,7 @@ public class HomeInformationController {
 
     @GetMapping("/byCollection") //获取热门房屋信息
     @ResponseBody
-    public ResponseEntity<?> getHomeListOrderByCollectionCount() {
+    public ResponseEntity<ResponseResult<?>> getHomeListOrderByCollectionCount() {
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : homeList) {

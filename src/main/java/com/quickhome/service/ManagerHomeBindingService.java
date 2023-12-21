@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ManagerHomeBindingService extends IService<ManagerHomeBinding> {
 
+    public IPage<ManagerHomeBinding> getAllBindingInfo(Page<?> page);
+
     public IPage<Home> getHomesByManagerId(Long managerId, Page<Home> page);
     public IPage<Manager> getManagersByHomeId(Long homeId, Page<Manager> page);
 

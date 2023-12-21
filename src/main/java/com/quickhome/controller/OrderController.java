@@ -305,6 +305,34 @@ public class OrderController {
     }
 
     /**
+     * 获取全部订单
+     *
+     * @return 全部订单
+     */
+
+    @GetMapping("/list/all")
+    public ResponseEntity<ResponseResult<?>> getAllOrders(@RequestParam(defaultValue = "1",name = "page") int currentPage,@RequestParam(defaultValue = "10",name = "size") int pageSize) {
+        // 创建一个Page对象
+        Page<Order> page = new Page<>(currentPage, pageSize);
+
+        IPage<Order> ordersPage = orderMapper.selectPage(page,
+                new QueryWrapper<Order>()
+                        .orderByDesc("creationTime_zch_hwz_gjc")); // 添加排序条件
+
+        List<Order> orders = ordersPage.getRecords();
+
+        for (Order order : orders) {
+            if (order.getDynamicDoorPassword_zch_hwz_gjc() != null) {
+                RSA rsa = new RSA(privateKey, publicKey);
+                byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+                order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+            }
+        }
+
+        return ResponseEntity.ok(ResponseResult.ok(ordersPage));  // 返回整个IPage对象，它包含了当前页的数据、总记录数、总页数等信息
+    }
+
+    /**
      * 支付订单
      *
      * @param req

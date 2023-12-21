@@ -438,12 +438,13 @@ public class AttractionController {
            @RequestBody AttractionCollection ac
     ) {
         try {
-            UpdateWrapper<AttractionCollection> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
-                    .eq("attractionId_zch_hwz_gjc", ac.getAttractionId_zch_hwz_gjc())
-                    .set("deleted_zch_hwz_gjc", 1);
+            QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
+                    .eq("attractionId_zch_hwz_gjc", ac.getAttractionId_zch_hwz_gjc());
 
-            int result = attractionCollectionMapper.update(null, updateWrapper);
+            AttractionCollection collection = attractionCollectionMapper.selectOne(queryWrapper);
+
+            int result = attractionCollectionMapper.deleteById(collection);
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {

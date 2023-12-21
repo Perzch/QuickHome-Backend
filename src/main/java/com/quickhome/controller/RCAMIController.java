@@ -95,20 +95,19 @@ public class RCAMIController {
     public ResponseEntity<ResponseResult<?>> getRCAMIByOrderOrHome(
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) Long homeId,
-            @RequestParam(defaultValue = "1",name = "page") int current,
-            @RequestParam(defaultValue = "10",name = "size") int size,
+            @RequestParam(defaultValue = "1", name = "page") int current,
+            @RequestParam(defaultValue = "10", name = "size") int size,
             HttpServletRequest req) {
 
-        if (orderId == null && homeId == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.of(500,"请提供订单id或房屋id"));
-        }
-
         LambdaQueryWrapper<RCAMI> queryWrapper = new LambdaQueryWrapper<>();
+
         if (orderId != null) {
             queryWrapper.eq(RCAMI::getOrderId_zch_hwz_gjc, orderId);
-        } else {
+        } else if (homeId != null) {
             queryWrapper.eq(RCAMI::getHomeId_zch_hwz_gjc, homeId);
         }
+
+        queryWrapper.orderByDesc(RCAMI::getInformationCreatTime_zch_hwz_gjc);
 
         IPage<RCAMI> page = new Page<>(current, size);
         IPage<RCAMI> resultPage = rcamiService.page(page, queryWrapper);

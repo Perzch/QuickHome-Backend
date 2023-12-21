@@ -400,7 +400,7 @@ public class ManagerController {
      * @param pageNo 页码
      * @param pageSize 每页大小
      * @param managerId 管理员ID
-     * @param homeId 家庭ID
+     * @param homeId 房屋ID
      * @return
      */
     @GetMapping("/binding/list")
@@ -413,13 +413,15 @@ public class ManagerController {
         Page<?> page = new Page<>(pageNo, pageSize);
 
         if (managerId != null) {
-            IPage<Home> homePage = managerHomeBindingService.getHomesByManagerId(managerId, (Page<Home>) page);  // 修改了这里
+            IPage<Home> homePage = managerHomeBindingService.getHomesByManagerId(managerId, (Page<Home>) page);
             return ResponseEntity.ok(ResponseResult.ok(homePage));
         } else if (homeId != null) {
-            IPage<Manager> managerPage = managerHomeBindingService.getManagersByHomeId(homeId, (Page<Manager>) page);  // 修改了这里
+            IPage<Manager> managerPage = managerHomeBindingService.getManagersByHomeId(homeId, (Page<Manager>) page);
             return ResponseEntity.ok(ResponseResult.ok(managerPage));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("需要提供管理员ID或房屋ID"));
+            // 如果没有提供管理员ID或房屋ID，返回该表中所有数据
+            IPage<ManagerHomeBinding> bindingInfoPage = managerHomeBindingService.getAllBindingInfo(page);
+            return ResponseEntity.ok(ResponseResult.ok(bindingInfoPage));
         }
     }
 

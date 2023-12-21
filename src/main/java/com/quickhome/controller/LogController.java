@@ -48,11 +48,16 @@ public class LogController {
 
     @GetMapping("/list")
     public ResponseEntity<ResponseResult<?>> getLogs(
-            @RequestParam Long userId,
+            @RequestParam(required = false) Long userId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
-            IPage<Log> logs = logService.getLogsByUserId(userId, page, size);
+            IPage<Log> logs;
+            if (userId != null){
+                logs = logService.getLogsByUserId(userId, page, size);
+            }else {
+                logs = logService.getAllLogs(page, size);
+            }
             return ResponseEntity.ok(ResponseResult.ok(logs));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseResult.error("错误内容: " + e.getMessage()));
