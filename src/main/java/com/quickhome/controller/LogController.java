@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.quickhome.domain.Log;
 import com.quickhome.request.ResponseResult;
 import com.quickhome.service.LogService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,10 @@ public class LogController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log) {
+    public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log, HttpServletRequest req) {
         try {
             log.setExecutionTime_zch_hwz_gjc(new Date());
+            log.setDevice_zch_hwz_gjc(req.getHeader("Sec-Ch-Ua-Platform"));
             boolean isSuccess = logService.insertLog(log);
             if (isSuccess) {
                 return ResponseEntity.ok(ResponseResult.ok(log));

@@ -6,6 +6,7 @@ import com.quickhome.domain.AccountBalance;
 import com.quickhome.mapper.AccountBalanceMapper;
 import com.quickhome.request.ResponseResult;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -107,7 +108,8 @@ public class AccountBalanceController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseResult<?>> selectAccountBalance(
             @PathVariable("id") Long userId,
-            HttpServletRequest req) {
+            HttpServletRequest req,
+            HttpServletResponse res) {
         QueryWrapper<AccountBalance> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userId_zch_hwz_gjc", userId);
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);

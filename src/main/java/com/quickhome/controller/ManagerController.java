@@ -13,6 +13,7 @@ import com.quickhome.service.ManagerHomeBindingService;
 import com.quickhome.service.ManagerService;
 import com.quickhome.service.UserNotificationService;
 import com.quickhome.util.CreatAccount;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -499,7 +500,8 @@ public class ManagerController {
     @GetMapping("/notification/list")
     public ResponseEntity<ResponseResult<?>> getAllNotifications(
             @RequestParam(required = false, defaultValue = "1", name = "page") long current,
-            @RequestParam(required = false, defaultValue = "10", name = "size") long size) {
+            @RequestParam(required = false, defaultValue = "10", name = "size") long size,
+            HttpServletRequest req) {
         try {
             // 创建一个 QueryWrapper 实例
             QueryWrapper<UserNotification> queryWrapper = new QueryWrapper<>();

@@ -9,7 +9,7 @@
             <result property="userPerformingId_zch_hwz_gjc" column="userPerformingId_zch_hwz_gjc" jdbcType="BIGINT"/>
             <result property="executionTime_zch_hwz_gjc" column="executionTime_zch_hwz_gjc" jdbcType="TIMESTAMP"/>
             <result property="executionContent_zch_hwz_gjc" column="executionContent_zch_hwz_gjc" jdbcType="VARCHAR"/>
-            <result property="deviceId_zch_hwz_gjc" column="deviceId_zch_hwz_gjc" jdbcType="VARCHAR"/>
+            <result property="device_zch_hwz_gjc" column="device_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="executionPlace_zch_hwz_gjc" column="executionPlace_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
             <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
@@ -19,7 +19,7 @@
 
     <sql id="Base_Column_List">
         logId_zch_hwz_gjc,userPerformingId_zch_hwz_gjc,executionTime_zch_hwz_gjc,
-        executionContent_zch_hwz_gjc,deviceId_zch_hwz_gjc,executionPlace_zch_hwz_gjc,
+        executionContent_zch_hwz_gjc,device_zch_hwz_gjc,executionPlace_zch_hwz_gjc,
         standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>

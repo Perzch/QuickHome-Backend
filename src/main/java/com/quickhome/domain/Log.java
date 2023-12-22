@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_log_zch_hwz_gjc
  */
 @TableName(value ="tab_log_zch_hwz_gjc")
@@ -54,9 +54,9 @@ public class Log implements Serializable {
     /**
      * 设备编号
      */
-    @TableField(value = "deviceId_zch_hwz_gjc")
-    @JsonProperty("deviceId")
-    private String deviceId_zch_hwz_gjc;
+    @TableField(value = "device_zch_hwz_gjc")
+    @JsonProperty("device")
+    private String device_zch_hwz_gjc;
 
     /**
      * 执行地点
@@ -111,7 +111,7 @@ public class Log implements Serializable {
             && (this.getUserPerformingId_zch_hwz_gjc() == null ? other.getUserPerformingId_zch_hwz_gjc() == null : this.getUserPerformingId_zch_hwz_gjc().equals(other.getUserPerformingId_zch_hwz_gjc()))
             && (this.getExecutionTime_zch_hwz_gjc() == null ? other.getExecutionTime_zch_hwz_gjc() == null : this.getExecutionTime_zch_hwz_gjc().equals(other.getExecutionTime_zch_hwz_gjc()))
             && (this.getExecutionContent_zch_hwz_gjc() == null ? other.getExecutionContent_zch_hwz_gjc() == null : this.getExecutionContent_zch_hwz_gjc().equals(other.getExecutionContent_zch_hwz_gjc()))
-            && (this.getDeviceId_zch_hwz_gjc() == null ? other.getDeviceId_zch_hwz_gjc() == null : this.getDeviceId_zch_hwz_gjc().equals(other.getDeviceId_zch_hwz_gjc()))
+            && (this.getDevice_zch_hwz_gjc() == null ? other.getDevice_zch_hwz_gjc() == null : this.getDevice_zch_hwz_gjc().equals(other.getDevice_zch_hwz_gjc()))
             && (this.getExecutionPlace_zch_hwz_gjc() == null ? other.getExecutionPlace_zch_hwz_gjc() == null : this.getExecutionPlace_zch_hwz_gjc().equals(other.getExecutionPlace_zch_hwz_gjc()))
             && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
@@ -127,7 +127,7 @@ public class Log implements Serializable {
         result = prime * result + ((getUserPerformingId_zch_hwz_gjc() == null) ? 0 : getUserPerformingId_zch_hwz_gjc().hashCode());
         result = prime * result + ((getExecutionTime_zch_hwz_gjc() == null) ? 0 : getExecutionTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getExecutionContent_zch_hwz_gjc() == null) ? 0 : getExecutionContent_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getDeviceId_zch_hwz_gjc() == null) ? 0 : getDeviceId_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getDevice_zch_hwz_gjc() == null) ? 0 : getDevice_zch_hwz_gjc().hashCode());
         result = prime * result + ((getExecutionPlace_zch_hwz_gjc() == null) ? 0 : getExecutionPlace_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
@@ -146,7 +146,7 @@ public class Log implements Serializable {
         sb.append(", userPerformingId_zch_hwz_gjc=").append(userPerformingId_zch_hwz_gjc);
         sb.append(", executionTime_zch_hwz_gjc=").append(executionTime_zch_hwz_gjc);
         sb.append(", executionContent_zch_hwz_gjc=").append(executionContent_zch_hwz_gjc);
-        sb.append(", deviceId_zch_hwz_gjc=").append(deviceId_zch_hwz_gjc);
+        sb.append(", device_zch_hwz_gjc=").append(device_zch_hwz_gjc);
         sb.append(", executionPlace_zch_hwz_gjc=").append(executionPlace_zch_hwz_gjc);
         sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
