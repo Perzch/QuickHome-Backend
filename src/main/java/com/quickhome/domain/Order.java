@@ -128,6 +128,14 @@ public class Order implements Serializable {
     @TableField(value = "deleted_zch_hwz_gjc")
     private Integer deleted_zch_hwz_gjc;
 
+    @JsonProperty("home")
+    @TableField(exist = false)
+    private Home home;
+
+    @JsonProperty("user")
+    @TableField(exist = false)
+    private User user;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

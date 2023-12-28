@@ -286,18 +286,18 @@ public class UserController {
     @ResponseBody
     @GetMapping("/info")
     public ResponseEntity<ResponseResult<?>> getUserInformation(
-            @RequestParam String token,
+//            @RequestParam String token,
             @RequestParam int userId,
             HttpServletRequest req) {
-        boolean flag = JwtUtil.verifyToken(token);
-        Long verifyUserId = JwtUtil.getUserIdFromToken(token);
-        if (verifyUserId != userId) {
-            return ResponseEntity.ok(ResponseResult.of(500, "用户信息错误"));
-        }
+//        boolean flag = JwtUtil.verifyToken(token);
+//        Long verifyUserId = JwtUtil.getUserIdFromToken(token);
+//        if (verifyUserId != userId) {
+//            return ResponseEntity.ok(ResponseResult.of(500, "用户信息错误"));
+//        }
         User user = userMapper.selectById(userId);
-        if (flag && user != null) {
+        if (user != null) {
             PojoUser pojoUser = new PojoUser();
-            pojoUser.setToken(token);
+//            pojoUser.setToken(token);
             pojoUser.setUserId(userId);
             pojoUser.setUser(userService.getById((long) userId));
             pojoUser.setUserInformation(userInformationService.getUserInformationByUserId((long) userId));

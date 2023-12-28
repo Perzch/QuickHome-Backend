@@ -37,6 +37,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.quickhome.request.ResultCode.NOT_UPDATE;
 
@@ -54,6 +55,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private AccountBalanceMapper accountBalanceMapper;
+    @Autowired
+    private UserService userService;
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -282,14 +285,15 @@ public class OrderController {
      */
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam Long userId,@RequestParam(defaultValue = "1",name = "page") int currentPage,@RequestParam(defaultValue = "10",name = "size") int pageSize) {
+    public ResponseEntity<ResponseResult<?>> getAllUserOrders(@RequestParam(required = false) Long userId,@RequestParam(defaultValue = "1",name = "page") int currentPage,@RequestParam(defaultValue = "10",name = "size") int pageSize) {
         // 创建一个Page对象
         Page<Order> page = new Page<>(currentPage, pageSize);
-
-        IPage<Order> ordersPage = orderMapper.selectPage(page,
-                new QueryWrapper<Order>()
-                        .eq("userId_zch_hwz_gjc", userId)
-                        .orderByDesc("creationTime_zch_hwz_gjc")); // 添加排序条件
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        if(Objects.nonNull(userId)) {
+            queryWrapper.eq("userId_zch_hwz_gjc", userId);
+        }
+        queryWrapper.orderByDesc("creationTime_zch_hwz_gjc");
+        IPage<Order> ordersPage = orderMapper.selectPage(page, queryWrapper); // 添加排序条件
 
         List<Order> orders = ordersPage.getRecords();
 
@@ -299,8 +303,11 @@ public class OrderController {
                 byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
                 order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
             }
+            User user = userService.getById(order.getUserId_zch_hwz_gjc());
+            order.setUser(user);
+            Home home = homeService.getById(order.getHomeId_zch_hwz_gjc());
+            order.setHome(home);
         }
-
         return ResponseEntity.ok(ResponseResult.ok(ordersPage));  // 返回整个IPage对象，它包含了当前页的数据、总记录数、总页数等信息
     }
 

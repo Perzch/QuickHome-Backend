@@ -13,20 +13,19 @@ import com.quickhome.service.ManagerHomeBindingService;
 import com.quickhome.service.ManagerService;
 import com.quickhome.service.UserNotificationService;
 import com.quickhome.util.CreatAccount;
+import com.quickhome.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ButterflyX
@@ -94,54 +93,31 @@ public class ManagerController {
     }
 
     /**
-     * 更新管理员密码
-     * @param request 包含 managerId 和 managerPwd 的请求体
+     * 更新管理员
      * @return
      */
 
     @PutMapping
     public ResponseEntity<ResponseResult<?>> updatePassword(
-            @RequestBody Map<String, String> request) {
-
-        String managerIdStr = request.get("managerId");
-        String encryptedPassword = request.get("managerPwd");
-
-        if (managerIdStr == null || encryptedPassword == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("缺少必要的请求参数"));
+            @RequestBody Manager manager) {
+        if (manager.getManagerId_zch_hwz_gjc() == null) {
+            return ResponseEntity.badRequest().body(ResponseResult.error("管理员Id不能为空"));
         }
-
-        Long managerId;
-        try {
-            managerId = Long.parseLong(managerIdStr);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("无效的managerId"));
-        }
-
-        // 解密密码
-        RSA rsa = new RSA(privateKey, publicKey);
-        try {
-            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedPassword);  // 假设密文是Base64编码的
-            byte[] decrypt = rsa.decrypt(encryptedBytes, KeyType.PrivateKey);
-            String newPassword = new String(decrypt);
-
-            // 从数据库中查询当前记录
-            Manager currentManager = managerMapper.selectById(managerId);
-            if (currentManager == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("managerId不存在"));
+        Manager currentManager = managerMapper.selectById(manager.getManagerId_zch_hwz_gjc());
+        if(Objects.nonNull(currentManager)) {
+            if(!StringUtils.isEmpty(manager.getManagerPwd_zch_hwz_gjc())) {
+                RSA rsa = new RSA(privateKey, publicKey);
+                byte[] decrypt = rsa.decrypt(manager.getManagerPwd_zch_hwz_gjc(), KeyType.PrivateKey);
+                manager.setManagerPwd_zch_hwz_gjc(new String(decrypt));
             }
-
-            // 更新密码
-            currentManager.setManagerPwd_zch_hwz_gjc(newPassword);
-
-            // 使用乐观锁更新方法
-            boolean success = managerMapper.updateById(currentManager) > 0;
-            if (success) {
+            boolean result = managerService.updateById(manager);
+            if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("密码更新失败，请重试"));
+                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
             }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(ResponseResult.error("解密失败: " + e.getMessage()));
+        } else {
+            return ResponseEntity.badRequest().body(ResponseResult.error("管理员不存在"));
         }
     }
 
@@ -241,14 +217,8 @@ public class ManagerController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseResult<?>> deleteManager(@PathVariable("id") Long managerId) {
-        // 创建一个 UpdateWrapper 对象来构建更新条件
-        UpdateWrapper<Manager> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("managerId_zch_hwz_gjc", managerId)
-                .set("deleted_zch_hwz_gjc", 1);  // 设置 deleted_zch_hwz_gjc 字段为 1 表示该记录已被逻辑删除
-
-        // 调用 update 方法执行更新操作
-        boolean success = managerMapper.update(null, updateWrapper) > 0;
+    public ResponseEntity<ResponseResult<?>> deleteManager(@PathVariable("id") Long[] managerId) {
+        boolean success = managerService.removeBatchByIds(Arrays.asList(managerId));
         if (success) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
@@ -264,8 +234,8 @@ public class ManagerController {
 
     @PostMapping("/super/login")
     public ResponseEntity<ResponseResult<?>> loginForSupManager(@RequestBody Map<String, String> loginRequest) {
-        String superManagerAccount = loginRequest.get("superManagerAccount");
-        String superManagerPwd = loginRequest.get("superManagerPwd");
+        String superManagerAccount = loginRequest.get("username");
+        String superManagerPwd = loginRequest.get("password");
 
         // 解密密码
         RSA rsa = new RSA(privateKey, publicKey);
@@ -281,11 +251,9 @@ public class ManagerController {
                     .eq("deleted_zch_hwz_gjc", 0);  // 确保账号未被逻辑删除
 
             SuperManager superManager = superManagerMapper.selectOne(queryWrapper);
-            byte[] encryptedPasswordBytes2 = rsa.encrypt(superManager.getSuperManagerPwd_zch_hwz_gjc().getBytes(), KeyType.PublicKey);
-            String encryptedPassword = Base64.getEncoder().encodeToString(encryptedPasswordBytes2);
-            superManager.setSuperManagerPwd_zch_hwz_gjc(encryptedPassword);
 
             if (superManager != null) {
+                superManager.setToken(JwtUtil.createToken(superManager.getSuperManagerId_zch_hwz_gjc()));
                 return ResponseEntity.ok(ResponseResult.ok(superManager));  // 登录成功，返回超级管理员信息
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
@@ -303,8 +271,8 @@ public class ManagerController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseResult<?>> loginForManager(@RequestBody Map<String, String> loginRequest) {
-        String managerAccountOrPhone = loginRequest.get("managerAccountOrPhone");
-        String managerPwd = loginRequest.get("managerPwd");
+        String managerAccountOrPhone = loginRequest.get("username");
+        String managerPwd = loginRequest.get("password");
 
         // 解密密码
         RSA rsa = new RSA(privateKey, publicKey);
@@ -325,9 +293,7 @@ public class ManagerController {
             Manager manager = managerMapper.selectOne(queryWrapper);
 
             if (manager != null) {
-                byte[] encryptedPasswordBytes2 = rsa.encrypt(manager.getManagerPwd_zch_hwz_gjc().getBytes(), KeyType.PublicKey);
-                String encryptedPassword = Base64.getEncoder().encodeToString(encryptedPasswordBytes2);
-                manager.setManagerPwd_zch_hwz_gjc(encryptedPassword);
+                manager.setToken(JwtUtil.createToken(manager.getManagerId_zch_hwz_gjc()));
                 return ResponseEntity.ok(ResponseResult.ok(manager));  // 登录成功，返回管理员信息
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
@@ -456,7 +422,7 @@ public class ManagerController {
             }
 
             // 更新通知内容
-            userNotification.setNotificationContent_zch_hwz_gjc(userNotification.getNotificationContent_zch_hwz_gjc());
+            userNotification.setNotificationContent_zch_hwz_gjc(un.getNotificationContent_zch_hwz_gjc());
 
             // 使用MyBatis-Plus的方法更新通知
             int result = userNotificationMapper.updateById(userNotification);
@@ -472,15 +438,15 @@ public class ManagerController {
 
     /**
      * 删除用户通知
-     * @param userNotificationId 用户通知ID
+     * @param userNotificationIds 用户通知ID
      * @return
      */
 
     @DeleteMapping("/notification/{id}")
-    public ResponseEntity<ResponseResult<?>> deleteNotification(@PathVariable("id") Long userNotificationId) {
+    public ResponseEntity<ResponseResult<?>> deleteNotification(@PathVariable("id") Long[] userNotificationIds) {
         try {
-            boolean result = userNotificationService.deleteNotificationById(userNotificationId);
-            if (result) {
+            int result = userNotificationMapper.deleteBatchIds(Arrays.asList(userNotificationIds));
+            if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("删除失败或通知不存在"));
@@ -499,10 +465,12 @@ public class ManagerController {
 
     @GetMapping("/notification/list")
     public ResponseEntity<ResponseResult<?>> getAllNotifications(
+            @RequestParam(required = false,name = "after") Boolean after,
             @RequestParam(required = false, defaultValue = "1", name = "page") long current,
             @RequestParam(required = false, defaultValue = "10", name = "size") long size,
             HttpServletRequest req) {
         try {
+//            如果传了after就查询出所有通知，否则就只查询出当前时间之前的通知
             // 创建一个 QueryWrapper 实例
             QueryWrapper<UserNotification> queryWrapper = new QueryWrapper<>();
             // 指定按创建时间降序排序

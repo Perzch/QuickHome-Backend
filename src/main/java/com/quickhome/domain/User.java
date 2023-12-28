@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_user_zch_hwz_gjc
  */
 @TableName(value ="tab_user_zch_hwz_gjc")
@@ -48,7 +48,7 @@ public class User implements Serializable {
      * 用户密码
      */
     @TableField(value = "userPwd_zch_hwz_gjc")
-    @JsonProperty("userPwd")
+    @JsonProperty(value = "userPwd", access = JsonProperty.Access.WRITE_ONLY)
     private String userPwd_zch_hwz_gjc;
 
     /**

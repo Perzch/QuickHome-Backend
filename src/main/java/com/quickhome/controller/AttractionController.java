@@ -376,14 +376,10 @@ public class AttractionController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAttraction(@PathVariable("id") Long attractionId) {
+    public ResponseEntity<?> deleteAttraction(@PathVariable("id") Long[] attractionId) {
         try {
-            UpdateWrapper<Attraction> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("attractionId_zch_hwz_gjc", attractionId)
-                    .set("deleted_zch_hwz_gjc", 1);
-
-            int result = attractionMapper.update(null, updateWrapper);
-            if (result > 0) {
+            boolean result = attractionService.removeBatchByIds(Arrays.asList(attractionId));
+            if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
                 return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));

@@ -11,9 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.Ignore;
 
 /**
- * 
+ *
  * @TableName tab_supermanager_zch_hwz_gjc
  */
 @TableName(value ="tab_supermanager_zch_hwz_gjc")
@@ -41,7 +42,7 @@ public class SuperManager implements Serializable {
      * 超级管理员密码
      */
     @TableField(value = "superManagerPwd_zch_hwz_gjc")
-    @JsonProperty("superManagerPwd")
+    @JsonProperty(value = "superManagerPwd", access = JsonProperty.Access.WRITE_ONLY)
     private String superManagerPwd_zch_hwz_gjc;
 
     /**
@@ -50,6 +51,9 @@ public class SuperManager implements Serializable {
     @TableField(value = "createTime_zch_hwz_gjc")
     @JsonProperty("createTime")
     private Date createTime_zch_hwz_gjc;
+
+    @TableField(exist = false)
+    private String token;
 
     /**
      * 备用字段1

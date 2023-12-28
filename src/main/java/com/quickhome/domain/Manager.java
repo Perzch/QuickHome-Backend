@@ -48,7 +48,7 @@ public class Manager implements Serializable {
      * 管理员密码
      */
     @TableField(value = "managerPwd_zch_hwz_gjc")
-    @JsonProperty("managerPwd")
+    @JsonProperty( value = "managerPwd", access = JsonProperty.Access.WRITE_ONLY)
     private String managerPwd_zch_hwz_gjc;
 
     /**
@@ -85,6 +85,9 @@ public class Manager implements Serializable {
     @TableField(value = "online_status_zch_hwz_gjc")
     @JsonProperty("onlineStatus")
     private String onlineStatus_zch_hwz_gjc;
+
+    @TableField(exist = false)
+    private String token;
 
     /**
      * 备用字段2
