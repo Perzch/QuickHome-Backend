@@ -153,13 +153,13 @@ public class UserController {
         //RSA方式生成公钥和私钥
         RSA rsa = new RSA(privateKey, publicKey);
         //插入标记
-        boolean flag_user = false, flag_img = false;
-        List<User> flag_queryUser = null;
+        boolean flag_user;
+        List<User> flag_queryUser;
         //缺少数据判定
-        if (user.getUserPwd_zch_hwz_gjc().equals("") || user.getUserPwd_zch_hwz_gjc() == null) {
+        if (user.getUserPwd_zch_hwz_gjc().isEmpty()) {
             return ResponseEntity.ok(ResponseResult.of(100, "请输入用户密码!"));
         }
-        if (user.getUserPhone_zch_hwz_gjc().equals("") || user.getUserPhone_zch_hwz_gjc() == null) {
+        if (user.getUserPhone_zch_hwz_gjc().isEmpty()) {
             //用正则表达式判断手机号是否符合规范
             if (!user.getUserPhone_zch_hwz_gjc().matches("^1[3456789]\\d{9}$")) {
                 return ResponseEntity.ok(ResponseResult.of(100, "请输入正确的手机号!"));
@@ -174,7 +174,7 @@ public class UserController {
         //查询用户信息
         flag_queryUser = userService.queryUser(user);
         //判断是否重复
-        if (flag_queryUser == null || flag_queryUser.size() == 0) {
+        if (flag_queryUser == null || flag_queryUser.isEmpty()) {
             //创建用户Account
             String account = String.valueOf(CreatAccount.creatAccount());
             while (userService.getUserAccountByAccount_zch_hwz_gjc(account) != null
@@ -184,6 +184,10 @@ public class UserController {
             //写入唯一的用户账号
             user.setUserAccount_zch_hwz_gjc(account);
             user.setUserName_zch_hwz_gjc(account);
+//            如果用户头像为空，设置默认头像
+            if(user.getUserHeadImage_zch_hwz_gjc().isBlank()) {
+                user.setUserHeadImage_zch_hwz_gjc("/image/默认头像.png");
+            }
             //写入用户表
             flag_user = userService.save(user);
             if (flag_user) {
@@ -279,7 +283,6 @@ public class UserController {
     /**
      * 获取用户信息
      *
-     * @param token  令牌
      * @param userId 用户ID
      */
     @SneakyThrows
@@ -322,7 +325,7 @@ public class UserController {
         if (userFlag) {
             return ResponseEntity.ok(ResponseResult.of(200, "用户存在!"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在!"));
+            return ResponseEntity.ok().body(ResponseResult.error("用户不存在!"));
         }
     }
 
@@ -348,7 +351,7 @@ public class UserController {
         // 从数据库中加载用户信息
         User existingUser = userService.getOne(queryWrapper);
         if (existingUser == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("用户不存在"));
         }
 
         // 设置新密码
@@ -359,7 +362,7 @@ public class UserController {
         if (updateSuccess) {
             return ResponseEntity.ok(ResponseResult.ok(existingUser.getUserId_zch_hwz_gjc()));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("设置密码失败，数据可能已被其他用户修改"));
+            return ResponseEntity.ok().body(ResponseResult.error("设置密码失败，数据可能已被其他用户修改"));
         }
     }
 
@@ -371,7 +374,7 @@ public class UserController {
     public ResponseEntity<ResponseResult<?>> uploadUserHeadImage(@RequestBody @ModelAttribute PJFile pjFile) throws IOException {
 
         if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
+            return ResponseEntity.ok().body(ResponseResult.error("文件类型错误"));
         }
 
         String imagePath = saveUploadedFile(pjFile.getUserId(), pjFile.getFile());
@@ -447,7 +450,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(ResponseResult.ok(imagePath));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -593,38 +596,38 @@ public class UserController {
         try {
             // 检查userId是否存在
             if (u.getUserId_zch_hwz_gjc() == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不能为空"));
+                return ResponseEntity.ok().body(ResponseResult.error("用户编号不能为空"));
             }
-
+            boolean result = userService.updateById(u);
             // 从数据库中查询当前用户记录
-            User currentUser = userMapper.selectById(u.getUserId_zch_hwz_gjc());
-            if (currentUser == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("用户编号不存在"));
-            }
-
-            // 更新需要修改的字段
-            if (u.getUserName_zch_hwz_gjc() != null && !u.getUserName_zch_hwz_gjc().isEmpty()) {
-                currentUser.setUserName_zch_hwz_gjc(u.getUserName_zch_hwz_gjc());
-            }
-            if (u.getUserEmail_zch_hwz_gjc() != null && !u.getUserEmail_zch_hwz_gjc().isEmpty()) {
-                currentUser.setUserEmail_zch_hwz_gjc(u.getUserEmail_zch_hwz_gjc());
-            }
-            if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
-                currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
-            }
-
-            // 使用乐观锁更新方法
-            int result = userMapper.updateById(currentUser);
+//            User currentUser = userMapper.selectById(u.getUserId_zch_hwz_gjc());
+//            if (currentUser == null) {
+//                return ResponseEntity.ok().body(ResponseResult.error("用户编号不存在"));
+//            }
+//
+//            // 更新需要修改的字段
+//            if (u.getUserName_zch_hwz_gjc() != null && !u.getUserName_zch_hwz_gjc().isEmpty()) {
+//                currentUser.setUserName_zch_hwz_gjc(u.getUserName_zch_hwz_gjc());
+//            }
+//            if (u.getUserEmail_zch_hwz_gjc() != null && !u.getUserEmail_zch_hwz_gjc().isEmpty()) {
+//                currentUser.setUserEmail_zch_hwz_gjc(u.getUserEmail_zch_hwz_gjc());
+//            }
+//            if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
+//                currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
+//            }
+//
+//            // 使用乐观锁更新方法
+//            int result = userMapper.updateById(currentUser);
 
             // 检查是否有数据被更新
-            if (result > 0) {
+            if (result) {
                 return ResponseEntity.ok(ResponseResult.ok(userMapper.selectById(u.getUserId_zch_hwz_gjc())));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新失败，发生异常"));
         }
     }
 }

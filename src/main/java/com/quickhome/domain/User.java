@@ -74,8 +74,8 @@ public class User implements Serializable {
     /**
      * 备用字段1
      */
-    @TableField(value = "standby1_zch_hwz_gjc")
-    private String standby1_zch_hwz_gjc;
+    @TableField(value = "userHeadImage_zch_hwz_gjc")
+    private String userHeadImage_zch_hwz_gjc;
 
     /**
      * 备用字段2
@@ -121,7 +121,7 @@ public class User implements Serializable {
             && (this.getUserEmail_zch_hwz_gjc() == null ? other.getUserEmail_zch_hwz_gjc() == null : this.getUserEmail_zch_hwz_gjc().equals(other.getUserEmail_zch_hwz_gjc()))
             && (this.getUserPhone_zch_hwz_gjc() == null ? other.getUserPhone_zch_hwz_gjc() == null : this.getUserPhone_zch_hwz_gjc().equals(other.getUserPhone_zch_hwz_gjc()))
             && (this.getUserInDate_zch_hwz_gjc() == null ? other.getUserInDate_zch_hwz_gjc() == null : this.getUserInDate_zch_hwz_gjc().equals(other.getUserInDate_zch_hwz_gjc()))
-            && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
+            && (this.getUserHeadImage_zch_hwz_gjc() == null ? other.getUserHeadImage_zch_hwz_gjc() == null : this.getUserHeadImage_zch_hwz_gjc().equals(other.getUserHeadImage_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getVersion_zch_hwz_gjc() == null ? other.getVersion_zch_hwz_gjc() == null : this.getVersion_zch_hwz_gjc().equals(other.getVersion_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
@@ -138,7 +138,7 @@ public class User implements Serializable {
         result = prime * result + ((getUserEmail_zch_hwz_gjc() == null) ? 0 : getUserEmail_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserPhone_zch_hwz_gjc() == null) ? 0 : getUserPhone_zch_hwz_gjc().hashCode());
         result = prime * result + ((getUserInDate_zch_hwz_gjc() == null) ? 0 : getUserInDate_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getUserHeadImage_zch_hwz_gjc() == null) ? 0 : getUserHeadImage_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getVersion_zch_hwz_gjc() == null) ? 0 : getVersion_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
@@ -158,7 +158,7 @@ public class User implements Serializable {
         sb.append(", userEmail_zch_hwz_gjc=").append(userEmail_zch_hwz_gjc);
         sb.append(", userPhone_zch_hwz_gjc=").append(userPhone_zch_hwz_gjc);
         sb.append(", userInDate_zch_hwz_gjc=").append(userInDate_zch_hwz_gjc);
-        sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
+        sb.append(", userHeadImage_zch_hwz_gjc=").append(userHeadImage_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", version_zch_hwz_gjc=").append(version_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
