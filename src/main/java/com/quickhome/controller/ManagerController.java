@@ -88,7 +88,7 @@ public class ManagerController {
         if (success) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -101,7 +101,7 @@ public class ManagerController {
     public ResponseEntity<ResponseResult<?>> updatePassword(
             @RequestBody Manager manager) {
         if (manager.getManagerId_zch_hwz_gjc() == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("管理员Id不能为空"));
+            return ResponseEntity.ok().body(ResponseResult.error("管理员Id不能为空"));
         }
         Manager currentManager = managerMapper.selectById(manager.getManagerId_zch_hwz_gjc());
         if(Objects.nonNull(currentManager)) {
@@ -114,10 +114,10 @@ public class ManagerController {
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("管理员不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("管理员不存在"));
         }
     }
 
@@ -134,7 +134,7 @@ public class ManagerController {
         Manager manager = managerMapper.selectOne(queryWrapper);
 
         if (manager == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("没有找到指定的管理员"));
+            return ResponseEntity.ok().body(ResponseResult.error("没有找到指定的管理员"));
         }
 
         // 加密密码
@@ -190,7 +190,7 @@ public class ManagerController {
             managerService.setManagerOnline(managerId);
             return ResponseEntity.ok(ResponseResult.ok());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -206,7 +206,7 @@ public class ManagerController {
             managerService.setManagerOffline(managerId);
             return ResponseEntity.ok(ResponseResult.ok());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -222,7 +222,7 @@ public class ManagerController {
         if (success) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
         }
     }
 
@@ -256,7 +256,7 @@ public class ManagerController {
                 superManager.setToken(JwtUtil.createToken(superManager.getSuperManagerId_zch_hwz_gjc()));
                 return ResponseEntity.ok(ResponseResult.ok(superManager));  // 登录成功，返回超级管理员信息
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
+                return ResponseEntity.ok().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body(ResponseResult.error("解密失败: " + e.getMessage()));  // 解密错误，返回错误信息
@@ -296,7 +296,7 @@ public class ManagerController {
                 manager.setToken(JwtUtil.createToken(manager.getManagerId_zch_hwz_gjc()));
                 return ResponseEntity.ok(ResponseResult.ok(manager));  // 登录成功，返回管理员信息
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
+                return ResponseEntity.ok().body(ResponseResult.error("账号或密码错误"));  // 登录失败，返回错误信息
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -329,7 +329,7 @@ public class ManagerController {
         if (rows > 0) {
             return ResponseEntity.ok(ResponseResult.ok());  // 返回成功响应
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("Failed to unbind manager from home"));
+            return ResponseEntity.ok().body(ResponseResult.error("Failed to unbind manager from home"));
         }
     }
 
@@ -348,7 +348,7 @@ public class ManagerController {
 
         Long count = bindingMapper.selectCount(queryWrapper);  // 查询匹配条件的记录数
         if (count > 0) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("已经存在绑定记录"));
+            return ResponseEntity.ok().body(ResponseResult.error("已经存在绑定记录"));
         }
 
         binding.setBindingTime_zch_hwz_gjc(new Date());  // 获取当前时间作为绑定时间
@@ -358,7 +358,7 @@ public class ManagerController {
         if (rows > 0) {
             return ResponseEntity.ok(ResponseResult.ok());  // 返回成功响应
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("绑定失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("绑定失败"));
         }
     }
 
@@ -404,7 +404,7 @@ public class ManagerController {
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok(userNotification));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("错误"));
+            return ResponseEntity.ok().body(ResponseResult.error("错误"));
         }
     }
 
@@ -418,7 +418,7 @@ public class ManagerController {
             // 首先通过ID查找通知
             UserNotification userNotification = userNotificationMapper.selectById(un.getUserNotificationId_zch_hwz_gjc());
             if (userNotification == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("通知不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("通知不存在"));
             }
 
             // 更新通知内容
@@ -429,10 +429,10 @@ public class ManagerController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(userNotification));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新通知失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新通知失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -449,10 +449,10 @@ public class ManagerController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败或通知不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败或通知不存在"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -481,7 +481,7 @@ public class ManagerController {
 
             return ResponseEntity.ok(ResponseResult.ok(page));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 }

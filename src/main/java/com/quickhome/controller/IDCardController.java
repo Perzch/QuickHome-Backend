@@ -42,7 +42,7 @@ public class IDCardController {
             IdCardRecord idCardRecord = idCardService.uploadIdCardInfo(cardRecord);
             return ResponseEntity.ok(ResponseResult.ok(idCardRecord));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -64,7 +64,7 @@ public class IDCardController {
             IPage<IdCardRecord> idCardInfo = idCardService.getIdCardInfo(userId, current, size);
             return ResponseEntity.ok(ResponseResult.ok(idCardInfo));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -83,10 +83,10 @@ public class IDCardController {
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("更新成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -103,10 +103,10 @@ public class IDCardController {
             if (IdentityCheckList != null) {
                 return ResponseEntity.ok(ResponseResult.ok(IdentityCheckList));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("创建失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("创建失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("错误: " + e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error("错误: " + e.getMessage()));
         }
     }
 
@@ -124,10 +124,10 @@ public class IDCardController {
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -145,7 +145,7 @@ public class IDCardController {
             List<IdCardRecord> identityInfoList = idCardService.getOrderIdentityInfo(orderID);
             return ResponseEntity.ok(ResponseResult.ok(identityInfoList));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 }

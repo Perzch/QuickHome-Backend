@@ -96,7 +96,7 @@ public class AttractionController {
             boolean isCollected = count > 0;
             return ResponseEntity.ok(ResponseResult.ok(isCollected));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("查询收藏状态出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("查询收藏状态出错"));
         }
     }
 
@@ -130,13 +130,13 @@ public class AttractionController {
                 if (result > 0) {
                     return ResponseEntity.ok(ResponseResult.ok());
                 } else {
-                    return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                    return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
                 }
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("图片不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("图片不存在"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除图片出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除图片出错"));
         }
     }
 
@@ -153,7 +153,7 @@ public class AttractionController {
     public ResponseEntity<ResponseResult<?>> insertAttractionImg(@RequestBody @ModelAttribute PJFile pjFile,
                                                                  HttpServletRequest req) throws IOException {
         if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
+            return ResponseEntity.ok().body(ResponseResult.error("文件类型错误"));
         }
 
         String imagePath = saveUploadedFile(pjFile.getAttractionId(), pjFile.getFile());
@@ -219,7 +219,7 @@ public class AttractionController {
             attractionMapper.insert(attraction);
             return ResponseEntity.ok(ResponseResult.ok("插入成功"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -237,7 +237,7 @@ public class AttractionController {
         try {
             Attraction attraction = attractionService.getById(attractionId);
             if(Objects.isNull(attraction)) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+                return ResponseEntity.ok().body(ResponseResult.error("未找到"));
             }
             PojoAttraction pojoAttraction = new PojoAttraction();
             pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
@@ -260,10 +260,10 @@ public class AttractionController {
             if (pojoAttraction.getAttractionId() != null) {
                 return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+                return ResponseEntity.ok().body(ResponseResult.error("未找到"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("Error fetching attraction details"));
+            return ResponseEntity.ok().body(ResponseResult.error("Error fetching attraction details"));
         }
     }
 
@@ -318,7 +318,7 @@ public class AttractionController {
 
             return ResponseEntity.ok(ResponseResult.ok(pojoAttractionPage));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("获取景点列表出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("获取景点列表出错"));
         }
     }
 
@@ -333,13 +333,13 @@ public class AttractionController {
     public ResponseEntity<?> updateAttraction(@RequestBody Attraction attraction) {
         try {
             if (attraction.getAttractionId_zch_hwz_gjc() == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不能为空"));
+                return ResponseEntity.ok().body(ResponseResult.error("景点ID不能为空"));
             }
 
             // 从数据库中查询当前记录
             Attraction currentAttraction = attractionMapper.selectById(attraction.getAttractionId_zch_hwz_gjc());
             if (currentAttraction == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("景点ID不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("景点ID不存在"));
             }
 
             // 更新需要修改的字段
@@ -361,10 +361,10 @@ public class AttractionController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新景点信息出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新景点信息出错"));
         }
     }
 
@@ -382,10 +382,10 @@ public class AttractionController {
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除景点信息出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除景点信息出错"));
         }
     }
 
@@ -416,10 +416,10 @@ public class AttractionController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("收藏失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("收藏失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("收藏景点出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("收藏景点出错"));
         }
     }
 
@@ -444,10 +444,10 @@ public class AttractionController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("取消收藏失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("取消收藏出错"));
         }
     }
 
@@ -474,7 +474,7 @@ public class AttractionController {
             Page<AttractionCollection> resultPage = attractionCollectionMapper.selectPage(page, queryWrapper);
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("获取收藏列表出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("获取收藏列表出错"));
         }
     }
 }

@@ -89,7 +89,7 @@ public class HomeInformationController {
             return ResponseEntity.ok(ResponseResult.ok());
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -109,11 +109,11 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，设备可能不存在或版本号不匹配"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，设备可能不存在或版本号不匹配"));
             }
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新失败"));
         }
     }
 
@@ -136,7 +136,7 @@ public class HomeInformationController {
             return ResponseEntity.ok(ResponseResult.ok(devices));
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("获取设备列表失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("获取设备列表失败"));
         }
     }
 
@@ -157,11 +157,11 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败，设备可能不存在或已被删除"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败，设备可能不存在或已被删除"));
             }
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
         }
     }
 
@@ -181,7 +181,7 @@ public class HomeInformationController {
         if (isAvailable) {
             return ResponseEntity.ok(ResponseResult.ok("房屋可用"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("房屋不可用"));
+            return ResponseEntity.ok().body(ResponseResult.error("房屋不可用"));
         }
     }
 
@@ -234,13 +234,13 @@ public class HomeInformationController {
                 if (result > 0) {
                     return ResponseEntity.ok(ResponseResult.ok());
                 } else {
-                    return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                    return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
                 }
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("图片不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("图片不存在"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除图片出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除图片出错"));
         }
     }
 
@@ -256,7 +256,7 @@ public class HomeInformationController {
     public ResponseEntity<ResponseResult<?>> addHomeImg(@RequestBody @ModelAttribute PJFile pjFile,
                                                         HttpServletRequest req) throws IOException {
         if (!ALLOWED_FILE_TYPES.contains(pjFile.getFile().getContentType())) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("文件类型错误"));
+            return ResponseEntity.ok().body(ResponseResult.error("文件类型错误"));
         }
 
         String imagePath = saveUploadedFile(pjFile.getHomeId(), pjFile.getFile());
@@ -359,7 +359,7 @@ public class HomeInformationController {
             boolean isCollected = count > 0;
             return ResponseEntity.ok(ResponseResult.ok(isCollected));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("查询收藏状态出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("查询收藏状态出错"));
         }
     }
 
@@ -432,7 +432,7 @@ public class HomeInformationController {
             return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -450,13 +450,13 @@ public class HomeInformationController {
         try {
             // 检查homeId是否存在，因为我们需要根据ID更新
             if (home.getHomeId_zch_hwz_gjc() == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("房屋编号不能为空"));
+                return ResponseEntity.ok().body(ResponseResult.error("房屋编号不能为空"));
             }
 
             // 从数据库中查询当前记录
             Home currentHome = homeMapper.selectById(home.getHomeId_zch_hwz_gjc());
             if (currentHome == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("房屋编号不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("房屋编号不存在"));
             }
 
             // 更新需要修改的字段
@@ -475,11 +475,11 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新失败，发生异常"));
         }
     }
 
@@ -502,7 +502,7 @@ public class HomeInformationController {
             return ResponseEntity.ok(ResponseResult.ok(homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc())));
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -520,13 +520,13 @@ public class HomeInformationController {
         try {
             // 检查homeInfId是否存在，因为我们需要根据ID更新
             if (homeInformation.getHomeInfId_zch_hwz_gjc() == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("房屋信息编号不能为空"));
+                return ResponseEntity.ok().body(ResponseResult.error("房屋信息编号不能为空"));
             }
 
             // 从数据库中查询当前记录
             HomeInformation currentHomeInf = homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc());
             if (currentHomeInf == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("房屋信息编号不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("房屋信息编号不存在"));
             }
 
             // 更新需要修改的字段
@@ -551,11 +551,11 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(homeInformationMapper.selectById(homeInformation.getHomeInfId_zch_hwz_gjc())));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，发生异常"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新失败，发生异常"));
         }
     }
 
@@ -577,7 +577,7 @@ public class HomeInformationController {
             Page<HouseCollection> resultPage = houseCollectionService.getUserHomeCollections(userId, pageNo, pageSize);
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("获取房屋收藏列表出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("获取房屋收藏列表出错"));
         }
     }
 
@@ -599,10 +599,10 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok("取消收藏成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("取消收藏失败"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("取消收藏出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("取消收藏出错"));
         }
     }
 
@@ -622,7 +622,7 @@ public class HomeInformationController {
                 return ResponseEntity.ok(ResponseResult.error("已收藏"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("收藏房屋出错"));
+            return ResponseEntity.ok().body(ResponseResult.error("收藏房屋出错"));
         }
     }
 
@@ -638,7 +638,7 @@ public class HomeInformationController {
         try {
             Home home = homeMapper.selectById(homeId);
             if (home == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("房屋不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("房屋不存在"));
             }
 
             // 逻辑删除Home信息
@@ -652,11 +652,11 @@ public class HomeInformationController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
             }
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
         }
     }
 }

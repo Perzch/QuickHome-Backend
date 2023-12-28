@@ -78,12 +78,12 @@ public class AccountBalanceController {
         queryWrapper.eq("userId_zch_hwz_gjc", accountBalanceParams.getUserId_zch_hwz_gjc());
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
         if (accountBalance == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("用户不存在"));
         }
 
         // 检查提现金额是否超过余额
         if (accountBalanceParams.getUserBalance_zch_hwz_gjc() < 0 && Math.abs(accountBalanceParams.getUserBalance_zch_hwz_gjc()) > accountBalance.getUserBalance_zch_hwz_gjc()) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("余额不足"));
+            return ResponseEntity.ok().body(ResponseResult.error("余额不足"));
         }
 
         // 更新余额

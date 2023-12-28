@@ -219,7 +219,7 @@ public class OrderController {
                                                     HttpServletRequest req) {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
 
         // 获取当前时间
@@ -233,7 +233,7 @@ public class OrderController {
 
         // 检查当前时间是否已经过了入住时间当天的12点
         if (now.isBefore(checkInDateAtNoon)) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("还未到生成房屋密码的时间"));
+            return ResponseEntity.ok().body(ResponseResult.error("还未到生成房屋密码的时间"));
         }
 
         // 如果已经过了12点，则生成动态门密码
@@ -353,11 +353,11 @@ public class OrderController {
 
         Order order = orderMapper.selectById(pjOrder.getOrderId());
         if (order == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
 
         if (!"未支付".equals(order.getOrderState_zch_hwz_gjc())) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单状态不允许支付"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单状态不允许支付"));
         }
 
         // 实际付款金额（已包含优惠券折扣）
@@ -370,12 +370,12 @@ public class OrderController {
         if (pjOrder.getUACID() != null) {
             UsersAndCoupons userCoupon = usersAndCouponsMapper.selectById(pjOrder.getUACID());
             if (userCoupon == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("用户优惠券关联不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("用户优惠券关联不存在"));
             }
             Long couponId = userCoupon.getCouponId_zch_hwz_gjc();
             Coupon coupon = couponMapper.selectById(couponId);
             if (coupon == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("优惠券不存在"));
             }
 
             // 根据优惠券类型还原原始订单金额
@@ -387,7 +387,7 @@ public class OrderController {
 
             // 检查优惠券是否有效
             if (!isCouponValid(coupon.getCouponId_zch_hwz_gjc(), originalOrderAmount, userCoupon.getUserId_zch_hwz_gjc())) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("优惠券不可使用"));
+                return ResponseEntity.ok().body(ResponseResult.error("优惠券不可使用"));
             }
         }
 
@@ -400,7 +400,7 @@ public class OrderController {
 
         // 检查支付结果
         if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("支付失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("支付失败"));
         }
 
         // 使用UpdateWrapper更新订单状态为“已支付”
@@ -411,7 +411,7 @@ public class OrderController {
         boolean updateSuccess = orderMapper.update(order, updateWrapper) > 0;
 
         if (!updateSuccess) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单状态更新失败，可能已经被其他用户修改"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单状态更新失败，可能已经被其他用户修改"));
         }
 
         order = orderMapper.selectById(pjOrder.getOrderId());
@@ -438,7 +438,7 @@ public class OrderController {
         // 1. 根据orderId查询订单
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
 
         // 2. 更改订单状态为“已退房”
@@ -487,7 +487,7 @@ public class OrderController {
         // 1. 根据orderId查询订单
         Order order = orderMapper.selectById(pjOrder.getOrderId());
         if (order == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
 
         Double deposit = order.getOrderDeposit_zch_hwz_gjc();
@@ -509,7 +509,7 @@ public class OrderController {
         queryWrapper.eq("userId_zch_hwz_gjc", order.getUserId_zch_hwz_gjc());
         AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
         if (accountBalance == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("用户不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("用户不存在"));
         }
 
         Double currentBalance = accountBalance.getUserBalance_zch_hwz_gjc();
@@ -549,13 +549,13 @@ public class OrderController {
             HttpServletRequest req) {
         try {
             if (order.getOrderId_zch_hwz_gjc() == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("订单ID不能为空"));
+                return ResponseEntity.ok().body(ResponseResult.error("订单ID不能为空"));
             }
 
             // 从数据库中查询当前记录
             Order currentOrder = orderMapper.selectById(order.getOrderId_zch_hwz_gjc());
             if (currentOrder == null) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("订单ID不存在"));
+                return ResponseEntity.ok().body(ResponseResult.error("订单ID不存在"));
             }
 
             // 更新需要修改的字段
@@ -589,7 +589,7 @@ public class OrderController {
 
                 return ResponseEntity.ok(ResponseResult.ok(updatedOrder));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("更新失败，请重试"));
+                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -616,11 +616,11 @@ public class OrderController {
             if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok("订单删除成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("删除失败，订单可能不存在或已被删除"));
+                return ResponseEntity.ok().body(ResponseResult.error("删除失败，订单可能不存在或已被删除"));
             }
         } catch (Exception e) {
             // Log the exception or handle it as needed
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
         }
     }
 
@@ -637,7 +637,7 @@ public class OrderController {
         // 1. 根据orderId查询订单
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("订单不存在"));
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
 
         // 2. 检查订单是否已经获取了动态门密码
@@ -655,7 +655,7 @@ public class OrderController {
             // 假设有一个方法来更新用户余额
             boolean refundSuccess = accountBalanceService.refundUserBalance(order.getUserId_zch_hwz_gjc(), order.getOrderPayment_zch_hwz_gjc());
             if (!refundSuccess) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("退款失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("退款失败"));
             }
             // 将订单的押金清零
             order.setOrderState_zch_hwz_gjc("已退款");
@@ -673,7 +673,7 @@ public class OrderController {
         // 5. 更新订单状态和相关信息
         int updated = orderMapper.updateById(order);
         if (updated <= 0) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("更新订单失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("更新订单失败"));
         }
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
@@ -701,7 +701,7 @@ public class OrderController {
             IPage<Order> ordersPage = orderService.getOrdersByHouseId(homeId, page, size);
             return ResponseEntity.ok(ResponseResult.ok(ordersPage));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
         }
     }
 

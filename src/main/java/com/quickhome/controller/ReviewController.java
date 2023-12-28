@@ -48,7 +48,7 @@ public class ReviewController {
         if (housingReview != null) {
             return ResponseEntity.ok(ResponseResult.ok(housingReview));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+            return ResponseEntity.ok().body(ResponseResult.error("未找到"));
         }
     }
 
@@ -65,7 +65,7 @@ public class ReviewController {
         if (attractionReview != null) {
             return ResponseEntity.ok(ResponseResult.ok(attractionReview));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("未找到"));
+            return ResponseEntity.ok().body(ResponseResult.error("未找到"));
         }
     }
 
@@ -84,7 +84,7 @@ public class ReviewController {
         if (housingReview.getSecondHousingReviewId_zch_hwz_gjc() != null) {
             if (housingReviewMapper.selectById(housingReview.getSecondHousingReviewId_zch_hwz_gjc()) == null && housingReview.getSecondHousingReviewId_zch_hwz_gjc() != null) {
                 housingReviewMapper.deleteById(housingReview.getHousingReviewId_zch_hwz_gjc());
-                return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+                return ResponseEntity.ok().body(ResponseResult.error("该条评论已被删除"));
             }
         }
         if (result && housingReview.getSecondHousingReviewId_zch_hwz_gjc() == null) {
@@ -93,12 +93,12 @@ public class ReviewController {
                 housingReviewService.updateById(housingReview);  // 更新记录，将 secondHousingReviewId 设置为 housingReviewId_zch_hwz_gjc 的值
                 return ResponseEntity.ok(ResponseResult.ok());
             } catch (Exception e) {
-                return ResponseEntity.badRequest().body(ResponseResult.error("评论失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("评论失败"));
             }
         } else if (result) {
             return ResponseEntity.ok(ResponseResult.ok("插入成功"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入评论失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入评论失败"));
         }
     }
 
@@ -115,7 +115,7 @@ public class ReviewController {
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("点赞失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("点赞失败"));
         }
     }
 
@@ -132,7 +132,7 @@ public class ReviewController {
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除评论失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除评论失败"));
         }
     }
 
@@ -167,7 +167,7 @@ public class ReviewController {
             if (attractionReviewMapper.selectById(attractionReview.getSecondAttractionReviewId_zch_hwz_gjc()) == null && attractionReview.getSecondAttractionReviewId_zch_hwz_gjc() != null) {
 
                 attractionReviewMapper.deleteById(attractionReview.getAttractionReviewId_zch_hwz_gjc());
-                return ResponseEntity.badRequest().body(ResponseResult.error("该条评论已被删除"));
+                return ResponseEntity.ok().body(ResponseResult.error("该条评论已被删除"));
             }
         }
 
@@ -176,12 +176,12 @@ public class ReviewController {
             if (attractionReviewService.updateById(attractionReview)) {
                 return ResponseEntity.ok(ResponseResult.ok("插入成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
             }
         } else if (result) {
             return ResponseEntity.ok(ResponseResult.ok("插入成功"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("插入失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
         }
     }
 
@@ -198,7 +198,7 @@ public class ReviewController {
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok("点赞成功"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("点赞失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("点赞失败"));
         }
     }
 
@@ -215,7 +215,7 @@ public class ReviewController {
         if (result) {
             return ResponseEntity.ok(ResponseResult.ok("删除成功"));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.error("删除失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
         }
     }
 

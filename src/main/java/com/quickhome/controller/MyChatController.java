@@ -44,7 +44,7 @@ public class MyChatController {
             if (myChat.getMessageReceive_zch_hwz_gjc() == null || myChat.getMessageReceive_zch_hwz_gjc() == 0) {
                 Manager onlineManager = managerService.getRandomOnlineManager();
                 if (onlineManager == null) {
-                    return ResponseEntity.badRequest().body(ResponseResult.error("没有客服在线"));
+                    return ResponseEntity.ok().body(ResponseResult.error("没有客服在线"));
                 }
                 myChat.setMessageReceive_zch_hwz_gjc(onlineManager.getManagerId_zch_hwz_gjc());
             }
@@ -55,7 +55,7 @@ public class MyChatController {
             return ResponseEntity.ok(ResponseResult.ok());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(ResponseResult.error("发送错误"));
+            return ResponseEntity.ok().body(ResponseResult.error("发送错误"));
         }
     }
 
@@ -80,7 +80,7 @@ public class MyChatController {
             return ResponseEntity.ok(ResponseResult.ok(chatHistory));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(ResponseResult.error("获取聊天历史失败"));
+            return ResponseEntity.ok().body(ResponseResult.error("获取聊天历史失败"));
         }
     }
 }

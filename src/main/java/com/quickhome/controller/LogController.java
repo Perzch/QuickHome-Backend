@@ -39,11 +39,11 @@ public class LogController {
             if (isSuccess) {
                 return ResponseEntity.ok(ResponseResult.ok(log));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("插入日志失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("插入日志失败"));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(ResponseResult.error("错误内容: " + e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error("错误内容: " + e.getMessage()));
         }
     }
 
@@ -61,7 +61,7 @@ public class LogController {
             }
             return ResponseEntity.ok(ResponseResult.ok(logs));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error("错误内容: " + e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error("错误内容: " + e.getMessage()));
         }
     }
 }

@@ -35,10 +35,10 @@ public class PaymentController {
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("支付密码设置成功"));
             } else {
-                return ResponseEntity.badRequest().body(ResponseResult.error("支付密码设置失败"));
+                return ResponseEntity.ok().body(ResponseResult.error("支付密码设置失败"));
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -58,7 +58,7 @@ public class PaymentController {
                 return ResponseEntity.ok(ResponseResult.error("支付密码验证失败"));
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 
@@ -75,10 +75,10 @@ public class PaymentController {
             if(result){
                 return ResponseEntity.ok(ResponseResult.ok(true));
             }else {
-                return ResponseEntity.badRequest().body(ResponseResult.error(String.valueOf(false)));
+                return ResponseEntity.ok().body(ResponseResult.error(String.valueOf(false)));
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(ResponseResult.error(e.getMessage()));
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
 

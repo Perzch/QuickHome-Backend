@@ -60,7 +60,7 @@ public class RCAMIController {
         // 检查维修信息是否存在
         RCAMI existingRCAMI = rcamiService.getById(rcami.getWorkItemId_zch_hwz_gjc());
         if (existingRCAMI == null) {
-            return ResponseEntity.badRequest().body(ResponseResult.of(500,"维修信息不存在"));
+            return ResponseEntity.ok().body(ResponseResult.of(500,"维修信息不存在"));
         }
 
         // 设置完成处理时间、工作人员编号和完成情况
@@ -76,7 +76,7 @@ public class RCAMIController {
         if (flag) {
             return ResponseEntity.ok(ResponseResult.ok(rcamiMapper.selectById(rcami.getWorkItemId_zch_hwz_gjc())));
         } else {
-            return ResponseEntity.badRequest().body(ResponseResult.of(500,"更新失败，数据可能已被其他用户修改"));
+            return ResponseEntity.ok().body(ResponseResult.of(500,"更新失败，数据可能已被其他用户修改"));
         }
     }
 
