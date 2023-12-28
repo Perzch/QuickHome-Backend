@@ -35,7 +35,6 @@ public class LogController {
     public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log, HttpServletRequest req) {
         try {
             log.setExecutionTime_zch_hwz_gjc(new Date());
-            log.setDevice_zch_hwz_gjc(req.getHeader("Sec-Ch-Ua-Platform"));
             boolean isSuccess = logService.insertLog(log);
             if (isSuccess) {
                 return ResponseEntity.ok(ResponseResult.ok(log));
