@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * @param <T> T 返回的数据类型泛型
- * @JsonInclude(JsonInclude.Include.NON_NULL) 对象返回的字段中为null(空)的字段不进行序列化，也就是不会显示到响应体中
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data

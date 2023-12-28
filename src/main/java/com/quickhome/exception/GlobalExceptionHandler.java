@@ -21,6 +21,7 @@ import java.util.List;
 public final class GlobalExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<?> exceptionHandler(Exception e) {
+        e.printStackTrace();
         log.error(e.getMessage());
         return ResponseEntity.ok(ResponseResult.error(e.getMessage()));
     }
@@ -40,7 +41,7 @@ public final class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> parameterMissingExceptionHandler(MissingServletRequestParameterException e) {
         log.error(e.getMessage());
-        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(400, e.getMessage()));
     }
 
     /**
@@ -52,7 +53,7 @@ public final class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
-        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(400, e.getMessage()));
     }
 
     /**
@@ -72,9 +73,9 @@ public final class GlobalExceptionHandler {
             if (!errors.isEmpty()) {
                 List<String> errorsMessage = new ArrayList<>();
                 errors.forEach(err -> errorsMessage.add(err.getDefaultMessage()));
-                return ResponseEntity.ok(ResponseResult.of(403, (StringUtils.join(errorsMessage, ','))));
+                return ResponseEntity.ok(ResponseResult.of(400, (StringUtils.join(errorsMessage, ','))));
             }
         }
-        return ResponseEntity.ok(ResponseResult.of(403, e.getMessage()));
+        return ResponseEntity.ok(ResponseResult.of(400, e.getMessage()));
     }
 }

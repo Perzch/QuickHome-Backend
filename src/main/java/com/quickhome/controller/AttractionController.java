@@ -13,6 +13,7 @@ import com.quickhome.mapper.AttractionMapper;
 import com.quickhome.pojo.PJFile;
 import com.quickhome.pojo.PojoAttraction;
 import com.quickhome.request.ResponseResult;
+import com.quickhome.service.AttractionCollectionService;
 import com.quickhome.service.AttractionImageService;
 import com.quickhome.service.AttractionService;
 import com.quickhome.util.HandlePath;
@@ -50,6 +51,8 @@ public class AttractionController {
     private AttractionMapper attractionMapper;
     @Autowired
     private AttractionCollectionMapper attractionCollectionMapper;
+    @Autowired
+    private AttractionCollectionService attractionCollectionService;
 
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
@@ -239,29 +242,15 @@ public class AttractionController {
             if(Objects.isNull(attraction)) {
                 return ResponseEntity.ok().body(ResponseResult.error("未找到"));
             }
-            PojoAttraction pojoAttraction = new PojoAttraction();
-            pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
-            pojoAttraction.setAttraction(attraction);
-
-            // 计算收藏数
-            QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
-            collectionWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
-            collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
-            Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
-            pojoAttraction.setCollectionCount(collectionCount);
-
-            // 获取图片
-            QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
-            imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
-            imageWrapper.eq("deleted_zch_hwz_gjc", 0);
-            List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
-            pojoAttraction.setAttractionImageList(images);
-
-            if (pojoAttraction.getAttractionId() != null) {
-                return ResponseEntity.ok(ResponseResult.ok(pojoAttraction));
-            } else {
-                return ResponseEntity.ok().body(ResponseResult.error("未找到"));
-            }
+//            获取景区收藏数
+            attraction.setCollectionCount((int) attractionCollectionService.count(
+                    new QueryWrapper<>(
+                            AttractionCollection.builder()
+                                    .attractionId_zch_hwz_gjc(attraction.getAttractionId_zch_hwz_gjc()).build()
+                    )
+            ));
+            attraction.setAttractionImageList(attraction.getAttractionImages_zch_hwz_gjc().split(","));
+            return ResponseEntity.ok(ResponseResult.ok(attraction));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error("Error fetching attraction details"));
         }
@@ -289,34 +278,46 @@ public class AttractionController {
             }
             IPage<Attraction> attractionsPage = attractionMapper.selectPage(page, queryWrapper);
 
-            List<PojoAttraction> pojoAttractionList = new ArrayList<>();
-            for (Attraction attraction : attractionsPage.getRecords()) {
-                PojoAttraction pojoAttraction = new PojoAttraction();
-                pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
-                pojoAttraction.setAttraction(attraction);
-
-                // 计算收藏数
-                QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
-                collectionWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
-                collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
-                Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
-                pojoAttraction.setCollectionCount(collectionCount);
-
-                // 获取图片
-                QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
-                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
-                imageWrapper.eq("deleted_zch_hwz_gjc", 0);
-                List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
-                pojoAttraction.setAttractionImageList(images);
-
-                pojoAttractionList.add(pojoAttraction);
+            for (Attraction record : attractionsPage.getRecords()) {
+//                计算收藏数
+                record.setCollectionCount((int) attractionCollectionService.count(
+                        new QueryWrapper<>(
+                                AttractionCollection.builder()
+                                        .attractionId_zch_hwz_gjc(record.getAttractionId_zch_hwz_gjc()).build()
+                        )
+                ));
+//                将图片路径转换为数组
+                record.setAttractionImageList(record.getAttractionImages_zch_hwz_gjc().split(","));
             }
+//
+//            List<PojoAttraction> pojoAttractionList = new ArrayList<>();
+//            for (Attraction attraction : attractionsPage.getRecords()) {
+//                PojoAttraction pojoAttraction = new PojoAttraction();
+//                pojoAttraction.setAttractionId(attraction.getAttractionId_zch_hwz_gjc());
+//                pojoAttraction.setAttraction(attraction);
+//
+//                // 计算收藏数
+//                QueryWrapper<AttractionCollection> collectionWrapper = new QueryWrapper<>();
+//                collectionWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
+//                collectionWrapper.eq("deleted_zch_hwz_gjc", 0);
+//                Integer collectionCount = Math.toIntExact(attractionCollectionMapper.selectCount(collectionWrapper));
+//                pojoAttraction.setCollectionCount(collectionCount);
+//
+//                // 获取图片
+//                QueryWrapper<AttractionImage> imageWrapper = new QueryWrapper<>();
+//                imageWrapper.eq("attractionId_zch_hwz_gjc", attraction.getAttractionId_zch_hwz_gjc());
+//                imageWrapper.eq("deleted_zch_hwz_gjc", 0);
+//                List<AttractionImage> images = attractionImageMapper.selectList(imageWrapper);
+//                pojoAttraction.setAttractionImageList(images);
+//
+//                pojoAttractionList.add(pojoAttraction);
+//            }
+//
+//            Page<PojoAttraction> pojoAttractionPage = new Page<>(pageNo, pageSize);
+//            pojoAttractionPage.setRecords(pojoAttractionList);
+//            pojoAttractionPage.setTotal(attractionsPage.getTotal());
 
-            Page<PojoAttraction> pojoAttractionPage = new Page<>(pageNo, pageSize);
-            pojoAttractionPage.setRecords(pojoAttractionList);
-            pojoAttractionPage.setTotal(attractionsPage.getTotal());
-
-            return ResponseEntity.ok(ResponseResult.ok(pojoAttractionPage));
+            return ResponseEntity.ok(ResponseResult.ok(attractionsPage));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error("获取景点列表出错"));
         }
@@ -335,31 +336,9 @@ public class AttractionController {
             if (attraction.getAttractionId_zch_hwz_gjc() == null) {
                 return ResponseEntity.ok().body(ResponseResult.error("景点ID不能为空"));
             }
-
-            // 从数据库中查询当前记录
-            Attraction currentAttraction = attractionMapper.selectById(attraction.getAttractionId_zch_hwz_gjc());
-            if (currentAttraction == null) {
-                return ResponseEntity.ok().body(ResponseResult.error("景点ID不存在"));
-            }
-
-            // 更新需要修改的字段
-            if (attraction.getAttractionName_zch_hwz_gjc() != null) {
-                currentAttraction.setAttractionName_zch_hwz_gjc(attraction.getAttractionName_zch_hwz_gjc());
-            }
-            if (attraction.getAttractionInformation_zch_hwz_gjc() != null) {
-                currentAttraction.setAttractionInformation_zch_hwz_gjc(attraction.getAttractionInformation_zch_hwz_gjc());
-            }
-            if (attraction.getOpeningTime_zch_hwz_gjc() != null) {
-                currentAttraction.setOpeningTime_zch_hwz_gjc(attraction.getOpeningTime_zch_hwz_gjc());
-            }
-            if (attraction.getClosingTime_zch_hwz_gjc() != null) {
-                currentAttraction.setClosingTime_zch_hwz_gjc(attraction.getClosingTime_zch_hwz_gjc());
-            }
-
-            // 使用乐观锁更新方法
-            int result = attractionMapper.updateById(currentAttraction);
-            if (result > 0) {
-                return ResponseEntity.ok(ResponseResult.ok());
+            boolean result = attractionService.updateById(attraction);
+            if (result) {
+                return ResponseEntity.ok(ResponseResult.ok(attraction));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }

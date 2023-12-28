@@ -69,8 +69,9 @@ public class Attraction implements Serializable {
     /**
      * 备用字段1
      */
-    @TableField(value = "standby1_zch_hwz_gjc")
-    private String standby1_zch_hwz_gjc;
+    @TableField(value = "attractionImages_zch_hwz_gjc")
+    @JsonProperty("attractionImages")
+    private String attractionImages_zch_hwz_gjc;
 
     /**
      * 备用字段2
@@ -94,6 +95,12 @@ public class Attraction implements Serializable {
     private Integer deleted_zch_hwz_gjc;
 
     @TableField(exist = false)
+    private Integer collectionCount;
+
+    @TableField(exist = false)
+    private String[] attractionImageList;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -114,7 +121,7 @@ public class Attraction implements Serializable {
             && (this.getOpeningTime_zch_hwz_gjc() == null ? other.getOpeningTime_zch_hwz_gjc() == null : this.getOpeningTime_zch_hwz_gjc().equals(other.getOpeningTime_zch_hwz_gjc()))
             && (this.getClosingTime_zch_hwz_gjc() == null ? other.getClosingTime_zch_hwz_gjc() == null : this.getClosingTime_zch_hwz_gjc().equals(other.getClosingTime_zch_hwz_gjc()))
             && (this.getAttractionInDate_zch_hwz_gjc() == null ? other.getAttractionInDate_zch_hwz_gjc() == null : this.getAttractionInDate_zch_hwz_gjc().equals(other.getAttractionInDate_zch_hwz_gjc()))
-            && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
+            && (this.getAttractionImages_zch_hwz_gjc() == null ? other.getAttractionImages_zch_hwz_gjc() == null : this.getAttractionImages_zch_hwz_gjc().equals(other.getAttractionImages_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getVersion_zch_hwz_gjc() == null ? other.getVersion_zch_hwz_gjc() == null : this.getVersion_zch_hwz_gjc().equals(other.getVersion_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
@@ -130,7 +137,7 @@ public class Attraction implements Serializable {
         result = prime * result + ((getOpeningTime_zch_hwz_gjc() == null) ? 0 : getOpeningTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getClosingTime_zch_hwz_gjc() == null) ? 0 : getClosingTime_zch_hwz_gjc().hashCode());
         result = prime * result + ((getAttractionInDate_zch_hwz_gjc() == null) ? 0 : getAttractionInDate_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getAttractionImages_zch_hwz_gjc() == null) ? 0 : getAttractionImages_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getVersion_zch_hwz_gjc() == null) ? 0 : getVersion_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
@@ -149,7 +156,7 @@ public class Attraction implements Serializable {
         sb.append(", openingTime_zch_hwz_gjc=").append(openingTime_zch_hwz_gjc);
         sb.append(", closingTime_zch_hwz_gjc=").append(closingTime_zch_hwz_gjc);
         sb.append(", attractionInDate_zch_hwz_gjc=").append(attractionInDate_zch_hwz_gjc);
-        sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
+        sb.append(", attractionImages_zch_hwz_gjc=").append(attractionImages_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", version_zch_hwz_gjc=").append(version_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);
