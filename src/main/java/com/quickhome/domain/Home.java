@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_home_zch_hwz_gjc
  */
 @TableName(value ="tab_home_zch_hwz_gjc")
@@ -67,8 +67,12 @@ public class Home implements Serializable {
     /**
      * 备用字段1
      */
-    @TableField(value = "standby1_zch_hwz_gjc")
-    private String standby1_zch_hwz_gjc;
+    @TableField(value = "homeImages_zch_hwz_gjc")
+    @JsonProperty("homeImages")
+    private String homeImages_zch_hwz_gjc;
+
+    @TableField(exist = false)
+    private String[] homeImageList;
 
     /**
      * 备用字段2
@@ -112,7 +116,7 @@ public class Home implements Serializable {
             && (this.getHomeDayRent_zch_hwz_gjc() == null ? other.getHomeDayRent_zch_hwz_gjc() == null : this.getHomeDayRent_zch_hwz_gjc().equals(other.getHomeDayRent_zch_hwz_gjc()))
             && (this.getHomeState_zch_hwz_gjc() == null ? other.getHomeState_zch_hwz_gjc() == null : this.getHomeState_zch_hwz_gjc().equals(other.getHomeState_zch_hwz_gjc()))
             && (this.getHomeAddress_zch_hwz_gjc() == null ? other.getHomeAddress_zch_hwz_gjc() == null : this.getHomeAddress_zch_hwz_gjc().equals(other.getHomeAddress_zch_hwz_gjc()))
-            && (this.getStandby1_zch_hwz_gjc() == null ? other.getStandby1_zch_hwz_gjc() == null : this.getStandby1_zch_hwz_gjc().equals(other.getStandby1_zch_hwz_gjc()))
+            && (this.getHomeImages_zch_hwz_gjc() == null ? other.getHomeImages_zch_hwz_gjc() == null : this.getHomeImages_zch_hwz_gjc().equals(other.getHomeImages_zch_hwz_gjc()))
             && (this.getStandby2_zch_hwz_gjc() == null ? other.getStandby2_zch_hwz_gjc() == null : this.getStandby2_zch_hwz_gjc().equals(other.getStandby2_zch_hwz_gjc()))
             && (this.getVersion_zch_hwz_gjc() == null ? other.getVersion_zch_hwz_gjc() == null : this.getVersion_zch_hwz_gjc().equals(other.getVersion_zch_hwz_gjc()))
             && (this.getDeleted_zch_hwz_gjc() == null ? other.getDeleted_zch_hwz_gjc() == null : this.getDeleted_zch_hwz_gjc().equals(other.getDeleted_zch_hwz_gjc()));
@@ -128,7 +132,7 @@ public class Home implements Serializable {
         result = prime * result + ((getHomeDayRent_zch_hwz_gjc() == null) ? 0 : getHomeDayRent_zch_hwz_gjc().hashCode());
         result = prime * result + ((getHomeState_zch_hwz_gjc() == null) ? 0 : getHomeState_zch_hwz_gjc().hashCode());
         result = prime * result + ((getHomeAddress_zch_hwz_gjc() == null) ? 0 : getHomeAddress_zch_hwz_gjc().hashCode());
-        result = prime * result + ((getStandby1_zch_hwz_gjc() == null) ? 0 : getStandby1_zch_hwz_gjc().hashCode());
+        result = prime * result + ((getHomeImages_zch_hwz_gjc() == null) ? 0 : getHomeImages_zch_hwz_gjc().hashCode());
         result = prime * result + ((getStandby2_zch_hwz_gjc() == null) ? 0 : getStandby2_zch_hwz_gjc().hashCode());
         result = prime * result + ((getVersion_zch_hwz_gjc() == null) ? 0 : getVersion_zch_hwz_gjc().hashCode());
         result = prime * result + ((getDeleted_zch_hwz_gjc() == null) ? 0 : getDeleted_zch_hwz_gjc().hashCode());
@@ -147,7 +151,7 @@ public class Home implements Serializable {
         sb.append(", homeDayRent_zch_hwz_gjc=").append(homeDayRent_zch_hwz_gjc);
         sb.append(", homeState_zch_hwz_gjc=").append(homeState_zch_hwz_gjc);
         sb.append(", homeAddress_zch_hwz_gjc=").append(homeAddress_zch_hwz_gjc);
-        sb.append(", standby1_zch_hwz_gjc=").append(standby1_zch_hwz_gjc);
+        sb.append(", homeImages_zch_hwz_gjc=").append(homeImages_zch_hwz_gjc);
         sb.append(", standby2_zch_hwz_gjc=").append(standby2_zch_hwz_gjc);
         sb.append(", version_zch_hwz_gjc=").append(version_zch_hwz_gjc);
         sb.append(", deleted_zch_hwz_gjc=").append(deleted_zch_hwz_gjc);

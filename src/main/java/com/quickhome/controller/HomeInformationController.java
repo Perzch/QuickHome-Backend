@@ -1,9 +1,11 @@
 package com.quickhome.controller;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.quickhome.domain.*;
 import com.quickhome.mapper.*;
 import com.quickhome.pojo.PJFile;
@@ -199,7 +201,7 @@ public class HomeInformationController {
         wrapper.eq("homeId_zch_hwz_gjc", homeId);
         wrapper.eq("deleted_zch_hwz_gjc", 0);
         List<HomeImage> images = homeImageMapper.selectList(wrapper);
-        if (images.size() == 0) {
+        if (images.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ResponseResult.ok(images));
@@ -307,8 +309,8 @@ public class HomeInformationController {
     @GetMapping("/list")//获取房屋信息（复合模糊查询）
     @ResponseBody
     public ResponseEntity<?> getHomeInf(@RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
-                                        @RequestParam String beginDate,//入住日期
-                                        @RequestParam String endDate,//退房日期
+                                        @RequestParam(required = false) String beginDate,//入住日期
+                                        @RequestParam(required = false) String endDate,//退房日期
                                         @RequestParam(required = false, defaultValue = "") String device,//房屋设备
                                         @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
                                         @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
@@ -323,6 +325,7 @@ public class HomeInformationController {
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : pojoHomes) {
             Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+            home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));//将房屋图片路径分割成数组
             pojoHome.setHome(home);
             HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeInformation(homeInformation);
@@ -335,6 +338,43 @@ public class HomeInformationController {
             pojoHomeList.add(pojoHome);
         }
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
+    }
+
+    @GetMapping("/list/back")
+    @ResponseBody
+    private ResponseEntity<ResponseResult<?>> listAdmin(
+            @RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
+            @RequestParam(required = false) String beginDate,//入住日期
+            @RequestParam(required = false) String endDate,//退房日期
+            @RequestParam(required = false, defaultValue = "") String device,//房屋设备
+            @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
+            @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
+            @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
+            @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
+            @RequestParam(defaultValue = "1") int page,//最大回传显示页数
+            @RequestParam(required = false, defaultValue = "10") int size//单页最大显示条数
+    ) {
+        Page<Home> homePage = homeSer_zch_hwz_gjc.page(new Page<>(page, size));
+        List<PojoHome> pojoHomes = new ArrayList<>();
+        homePage.getRecords().forEach(home -> {
+            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
+            List<HomeDevice> devices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+            PojoHome pojoHome = new PojoHome();
+            pojoHome.setHomeInformation(homeInformation);
+            pojoHome.setHome(home);
+            pojoHome.setHomeDeviceList(devices);
+            pojoHome.setCollectionCount(houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc()));
+            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+            pojoHomes.add(pojoHome);
+        });
+        Page<PojoHome> pojoHomePage = new Page<>(page,size);
+        pojoHomePage.setRecords(pojoHomes);
+        pojoHomePage.setTotal(homePage.getTotal());
+        pojoHomePage.setCurrent(homePage.getCurrent());
+        pojoHomePage.setSize(homePage.getSize());
+        pojoHomePage.setPages(homePage.getPages());
+        pojoHomePage.setOptimizeCountSql(homePage.optimizeCountSql());
+        return ResponseEntity.ok(ResponseResult.ok(pojoHomePage));
     }
 
     /**
@@ -377,6 +417,7 @@ public class HomeInformationController {
                                                             HttpServletRequest req) {
         PojoHome pojoHome = new PojoHome();
         Home home = homeSer_zch_hwz_gjc.getById(id);
+        home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));
         pojoHome.setHome(home);
         HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
         pojoHome.setHomeInformation(homeInformation);
@@ -403,6 +444,7 @@ public class HomeInformationController {
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : homeList) {
             Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+            home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));
             pojoHome.setHome(home);
             HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHomeInformation(homeInformation);
@@ -419,17 +461,19 @@ public class HomeInformationController {
     /**
      * 插入房屋信息
      *
-     * @param home 房屋信息
+     * @param pojoHome 房屋信息
      * @return
      */
 
     @ResponseBody
     @PostMapping
     public ResponseEntity<ResponseResult<?>> insertHome(
-            @RequestBody Home home) {
+            @RequestBody PojoHome pojoHome) {
         try {
-            homeMapper.insert(home);
-            return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
+            homeSer_zch_hwz_gjc.save(pojoHome.getHome());
+            homeInfSer_zch_hwz_gjc.save(pojoHome.getHomeInformation());
+            homeDeviceSer_zch_hwz_gjc.saveBatch(pojoHome.getHomeDeviceList());
+            return ResponseEntity.ok(ResponseResult.ok());
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
             return ResponseEntity.ok().body(ResponseResult.error("插入失败"));
@@ -439,47 +483,22 @@ public class HomeInformationController {
     /**
      * 更新房屋信息
      *
-     * @param home 房屋信息
+     * @param pojoHome 房屋信息
      * @return
      */
 
     @ResponseBody
     @PutMapping
     public ResponseEntity<ResponseResult<?>> updateHome(
-            @RequestBody Home home) {
-        try {
-            // 检查homeId是否存在，因为我们需要根据ID更新
-            if (home.getHomeId_zch_hwz_gjc() == null) {
-                return ResponseEntity.ok().body(ResponseResult.error("房屋编号不能为空"));
-            }
-
-            // 从数据库中查询当前记录
-            Home currentHome = homeMapper.selectById(home.getHomeId_zch_hwz_gjc());
-            if (currentHome == null) {
-                return ResponseEntity.ok().body(ResponseResult.error("房屋编号不存在"));
-            }
-
-            // 更新需要修改的字段
-            if (home.getHomeDayRent_zch_hwz_gjc() != null) {
-                currentHome.setHomeDayRent_zch_hwz_gjc(home.getHomeDayRent_zch_hwz_gjc());
-            }
-
-            if (home.getHomeState_zch_hwz_gjc() != null && !home.getHomeState_zch_hwz_gjc().isEmpty()) {
-                currentHome.setHomeState_zch_hwz_gjc(home.getHomeState_zch_hwz_gjc());
-            }
-
-            // 使用乐观锁更新方法
-            int result = homeMapper.updateById(currentHome);
-
-            // 检查是否有数据被更新
-            if (result > 0) {
-                return ResponseEntity.ok(ResponseResult.ok(homeMapper.selectById(home.getHomeId_zch_hwz_gjc())));
-            } else {
-                return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
-            }
-        } catch (Exception e) {
-            // 这里可以记录日志或者返回具体的错误信息
-            return ResponseEntity.ok().body(ResponseResult.error("更新失败，发生异常"));
+            @RequestBody PojoHome pojoHome) {
+        boolean homeResult = homeSer_zch_hwz_gjc.updateById(pojoHome.getHome());
+        boolean infoResult = homeInfSer_zch_hwz_gjc.updateById(pojoHome.getHomeInformation());
+//        调用saveOrUpdateBatch方法，如果数据库中没有该条数据则插入，有则更新
+        boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveOrUpdateBatch(pojoHome.getHomeDeviceList());
+        if (homeResult && infoResult && deviceResult) {
+            return ResponseEntity.ok(ResponseResult.ok());
+        } else {
+            return ResponseEntity.ok().body(ResponseResult.error("更新失败"));
         }
     }
 
@@ -640,16 +659,9 @@ public class HomeInformationController {
             if (home == null) {
                 return ResponseEntity.ok().body(ResponseResult.error("房屋不存在"));
             }
-
-            // 逻辑删除Home信息
-            int result = homeMapper.deleteById(homeId);
-
-            // 逻辑删除相关的HomeInformation
-            UpdateWrapper<HomeInformation> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("homeId_zch_hwz_gjc", homeId).set("deleted_zch_hwz_gjc", 1);
-            homeInformationMapper.update(null, updateWrapper);
-
-            if (result > 0) {
+            boolean homeResult = homeSer_zch_hwz_gjc.removeById(homeId);
+            boolean infoResult = homeInfSer_zch_hwz_gjc.removeById(homeId);
+            if (homeResult && infoResult){
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("删除失败"));

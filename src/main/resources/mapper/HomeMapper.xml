@@ -11,7 +11,7 @@
         <result property="homeDayRent_zch_hwz_gjc" column="homeDayRent_zch_hwz_gjc" jdbcType="DOUBLE"/>
         <result property="homeState_zch_hwz_gjc" column="homeState_zch_hwz_gjc" jdbcType="VARCHAR"/>
         <result property="homeAddress_zch_hwz_gjc" column="homeAddress_zch_hwz_gjc" jdbcType="VARCHAR"/>
-        <result property="standby1_zch_hwz_gjc" column="standby1_zch_hwz_gjc" jdbcType="VARCHAR"/>
+        <result property="homeImages_zch_hwz_gjc" column="homeImages_zch_hwz_gjc" jdbcType="VARCHAR"/>
         <result property="standby2_zch_hwz_gjc" column="standby2_zch_hwz_gjc" jdbcType="VARCHAR"/>
         <result property="version_zch_hwz_gjc" column="version_zch_hwz_gjc" jdbcType="BIGINT"/>
         <result property="deleted_zch_hwz_gjc" column="deleted_zch_hwz_gjc" jdbcType="INTEGER"/>
@@ -21,7 +21,7 @@
         homeId_zch_hwz_gjc
         ,homeName_zch_hwz_gjc,homeType_zch_hwz_gjc,
         homeDayRent_zch_hwz_gjc,homeState_zch_hwz_gjc,homeAddress_zch_hwz_gjc,
-        standby1_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
+        homeImages_zch_hwz_gjc,standby2_zch_hwz_gjc,version_zch_hwz_gjc,
         deleted_zch_hwz_gjc
     </sql>
     <select id="selectHomeByPage" resultType="com.quickhome.domain.Home">
