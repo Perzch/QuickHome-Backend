@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -465,16 +466,22 @@ public class ManagerController {
 
     @GetMapping("/notification/list")
     public ResponseEntity<ResponseResult<?>> getAllNotifications(
-            @RequestParam(required = false,name = "after") Boolean after,
+            @RequestParam(required = false, name = "after") Boolean after,
             @RequestParam(required = false, defaultValue = "1", name = "page") long current,
             @RequestParam(required = false, defaultValue = "10", name = "size") long size,
             HttpServletRequest req) {
         try {
-//            如果传了after就查询出所有通知，否则就只查询出当前时间之前的通知
             // 创建一个 QueryWrapper 实例
             QueryWrapper<UserNotification> queryWrapper = new QueryWrapper<>();
-            // 指定按创建时间降序排序
-            queryWrapper.orderByDesc("notificationReleaseTime_zch_hwz_gjc");
+
+            // 如果传入了 after 参数且为真，则不设置时间条件，查询所有通知
+            if (after != null && after) {
+                queryWrapper.orderByDesc("notificationReleaseTime_zch_hwz_gjc");
+            } else {
+                // 否则，指定按创建时间降序排序，并且查询当前时间之前的通知
+                queryWrapper.orderByDesc("notificationReleaseTime_zch_hwz_gjc")
+                        .le("notificationReleaseTime_zch_hwz_gjc", LocalDateTime.now());
+            }
 
             // 使用 MyBatis-Plus 的分页方法，传入当前页和每页大小以及排序规则
             IPage<UserNotification> page = userNotificationService.page(new Page<>(current, size), queryWrapper);
@@ -484,4 +491,5 @@ public class ManagerController {
             return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
     }
+
 }

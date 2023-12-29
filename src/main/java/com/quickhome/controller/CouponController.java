@@ -117,6 +117,27 @@ public class CouponController {
     }
 
     /**
+     * 获取所有优惠券
+     * @param current 页码
+     * @param size 每页大小
+     */
+    @GetMapping("/coupon/list")
+    public ResponseEntity<ResponseResult<?>> getAllCoupons(
+            @RequestParam(required = false, defaultValue = "1", name = "page") long current,
+            @RequestParam(required = false, defaultValue = "10", name = "size") long size) {
+        try {
+            QueryWrapper<Coupon> queryWrapper = new QueryWrapper<>();
+            queryWrapper.orderByDesc("earliestUseTime_zch_hwz_gjc");
+
+            IPage<Coupon> page = couponService.page(new Page<>(current, size), queryWrapper);
+
+            return ResponseEntity.ok(ResponseResult.ok(page));
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
+        }
+    }
+
+    /**
      * 获取用户所有优惠券
      * @param userId 用户ID
      * @param page 页码
