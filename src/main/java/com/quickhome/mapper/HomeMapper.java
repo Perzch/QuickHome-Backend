@@ -31,7 +31,3 @@ public interface HomeMapper extends BaseMapper<Home> {
 
     List<Home> selectHomesWithoutDevicesCriteria(Date beginDate, Date endDate, String address, double minRent, double maxRent,int maxPeople ,String homeType, int page, int size);
 }
-
-
-
-

@@ -340,41 +340,57 @@ public class HomeInformationController {
         return ResponseEntity.ok(ResponseResult.ok(pojoHomeList));
     }
 
+//    @GetMapping("/list/back")
+//    @ResponseBody
+//    private ResponseEntity<ResponseResult<?>> listAdmin(
+//            @RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
+//            @RequestParam(required = false) String beginDate,//入住日期
+//            @RequestParam(required = false) String endDate,//退房日期
+//            @RequestParam(required = false, defaultValue = "") String device,//房屋设备
+//            @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
+//            @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
+//            @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
+//            @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
+//            @RequestParam(defaultValue = "1") int page,//最大回传显示页数
+//            @RequestParam(required = false, defaultValue = "10") int size//单页最大显示条数
+//    ) {
+//        Page<Home> homePage = homeSer_zch_hwz_gjc.page(new Page<>(page, size));
+//        List<PojoHome> pojoHomes = new ArrayList<>();
+//        homePage.getRecords().forEach(home -> {
+//            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
+//            List<HomeDevice> devices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
+//            PojoHome pojoHome = new PojoHome();
+//            pojoHome.setHomeInformation(homeInformation);
+//            pojoHome.setHome(home);
+//            pojoHome.setHomeDeviceList(devices);
+//            pojoHome.setCollectionCount(houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc()));
+//            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+//            pojoHomes.add(pojoHome);
+//        });
+//        Page<PojoHome> pojoHomePage = new Page<>(page,size);
+//        pojoHomePage.setRecords(pojoHomes);
+//        pojoHomePage.setTotal(homePage.getTotal());
+//        pojoHomePage.setCurrent(homePage.getCurrent());
+//        pojoHomePage.setSize(homePage.getSize());
+//        pojoHomePage.setPages(homePage.getPages());
+//        pojoHomePage.setOptimizeCountSql(homePage.optimizeCountSql());
+//        return ResponseEntity.ok(ResponseResult.ok(pojoHomePage));
+//    }
+
     @GetMapping("/list/back")
     @ResponseBody
-    private ResponseEntity<ResponseResult<?>> listAdmin(
-            @RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
-            @RequestParam(required = false) String beginDate,//入住日期
-            @RequestParam(required = false) String endDate,//退房日期
-            @RequestParam(required = false, defaultValue = "") String device,//房屋设备
-            @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
-            @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
-            @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
-            @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
-            @RequestParam(defaultValue = "1") int page,//最大回传显示页数
-            @RequestParam(required = false, defaultValue = "10") int size//单页最大显示条数
-    ) {
-        Page<Home> homePage = homeSer_zch_hwz_gjc.page(new Page<>(page, size));
-        List<PojoHome> pojoHomes = new ArrayList<>();
-        homePage.getRecords().forEach(home -> {
-            HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
-            List<HomeDevice> devices = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(home.getHomeId_zch_hwz_gjc());
-            PojoHome pojoHome = new PojoHome();
-            pojoHome.setHomeInformation(homeInformation);
-            pojoHome.setHome(home);
-            pojoHome.setHomeDeviceList(devices);
-            pojoHome.setCollectionCount(houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc()));
-            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
-            pojoHomes.add(pojoHome);
-        });
-        Page<PojoHome> pojoHomePage = new Page<>(page,size);
-        pojoHomePage.setRecords(pojoHomes);
-        pojoHomePage.setTotal(homePage.getTotal());
-        pojoHomePage.setCurrent(homePage.getCurrent());
-        pojoHomePage.setSize(homePage.getSize());
-        pojoHomePage.setPages(homePage.getPages());
-        pojoHomePage.setOptimizeCountSql(homePage.optimizeCountSql());
-        return ResponseEntity.ok(ResponseResult.ok(pojoHomePage));
+    public ResponseEntity<?> adminGetHome(@RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
+                                        @RequestParam(required = false, defaultValue = "") String device,//房屋设备
+                                        @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
+                                        @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
+                                        @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
+                                        @RequestParam(required = false, defaultValue = "1") int maxPeople,//最大入住人数
+                                        @RequestParam(defaultValue = "1") int page,//最大回传显示页数
+                                        @RequestParam(required = false, defaultValue = "10") int size,//单页最大显示条数
+                                        HttpServletRequest req) {
+        List<String> deviceNames = Arrays.asList(device.split(","));
+
+        return ResponseEntity.ok(ResponseResult.ok());
     }
 
     /**
