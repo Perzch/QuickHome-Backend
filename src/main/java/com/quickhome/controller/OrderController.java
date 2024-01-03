@@ -473,7 +473,7 @@ public class OrderController {
     }
 
     /**
-     * 结束订单
+     * 结束订单(管理员)
      *
      * @param req
      * @return

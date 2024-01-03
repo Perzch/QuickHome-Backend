@@ -69,13 +69,27 @@ public class CouponController {
         }
     }
 
+    @ResponseBody
+    @PutMapping
+    public ResponseEntity<ResponseResult<?>> updateCoupon(@RequestBody Coupon coupon) {
+        if(Objects.isNull(coupon.getCouponId_zch_hwz_gjc())) {
+            return ResponseEntity.ok(ResponseResult.error("优惠券ID不能为空"));
+        }
+        boolean result = couponService.updateCoupon(coupon);
+        if(result) {
+            return ResponseEntity.ok(ResponseResult.ok(coupon));
+        } else {
+            return ResponseEntity.ok(ResponseResult.error("更新失败"));
+        }
+    }
+
     /**
      *  发放优惠券
      * @param req
      * @return
      */
     @ResponseBody
-    @PutMapping("/release")
+    @PostMapping("/release")
     public ResponseEntity<ResponseResult<?>> releaseCoupons(@RequestBody PJReleaseCoupon releaseCoupon, // 用户ID字符串
                                                             HttpServletRequest req) {
 

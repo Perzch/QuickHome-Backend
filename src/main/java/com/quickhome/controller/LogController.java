@@ -35,8 +35,8 @@ public class LogController {
     public ResponseEntity<ResponseResult<?>> insertLog(@RequestBody Log log, HttpServletRequest req) {
         try {
             log.setExecutionTime_zch_hwz_gjc(new Date());
-            boolean isSuccess = logService.insertLog(log);
-            if (isSuccess) {
+            boolean result = logService.save(log);
+            if (result) {
                 return ResponseEntity.ok(ResponseResult.ok(log));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("插入日志失败"));
