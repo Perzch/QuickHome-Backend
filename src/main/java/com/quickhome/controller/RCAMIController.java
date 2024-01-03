@@ -97,6 +97,7 @@ public class RCAMIController {
             @RequestParam(required = false) Long homeId,
             @RequestParam(defaultValue = "1", name = "page") int current,
             @RequestParam(defaultValue = "10", name = "size") int size,
+            @RequestParam(required = false, name = "incomplete") Boolean incomplete,
             HttpServletRequest req) {
 
         LambdaQueryWrapper<RCAMI> queryWrapper = new LambdaQueryWrapper<>();
@@ -105,6 +106,10 @@ public class RCAMIController {
             queryWrapper.eq(RCAMI::getOrderId_zch_hwz_gjc, orderId);
         } else if (homeId != null) {
             queryWrapper.eq(RCAMI::getHomeId_zch_hwz_gjc, homeId);
+        }
+        if (incomplete != null && incomplete) {
+            //筛选getCompletion_zch_hwz_gjc为空的信息
+            queryWrapper.isNull(RCAMI::getCompletion_zch_hwz_gjc);
         }
 
         queryWrapper.orderByDesc(RCAMI::getInformationCreatTime_zch_hwz_gjc);
