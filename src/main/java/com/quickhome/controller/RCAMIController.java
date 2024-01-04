@@ -6,8 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.RCAMI;
 import com.quickhome.mapper.RCAMIMapper;
+import com.quickhome.pojo.PJRCAMI;
 import com.quickhome.request.ResponseResult;
+import com.quickhome.service.HomeService;
+import com.quickhome.service.OrderService;
 import com.quickhome.service.RCAMIService;
+import com.quickhome.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +37,15 @@ public class RCAMIController {
 
     @Autowired
     private RCAMIMapper rcamiMapper;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private HomeService homeService;
+
+    @Autowired
+    private UserService userService;
     /**
      * 上传房屋维修信息
      * @param rcami 维修信息
@@ -41,7 +55,11 @@ public class RCAMIController {
     public ResponseEntity<?> addRCAMI(@RequestBody RCAMI rcami, HttpServletRequest req) {
         rcami.setInformationCreatTime_zch_hwz_gjc(DateTime.now());
         boolean flag = rcamiService.save(rcami);
-        return ResponseEntity.ok(ResponseResult.ok(rcami));
+        if(flag) {
+            return ResponseEntity.ok(ResponseResult.ok(rcami));
+        } else {
+            return ResponseEntity.ok().body(ResponseResult.error("插入维修信息失败"));
+        }
     }
 
     /**
@@ -117,7 +135,21 @@ public class RCAMIController {
         IPage<RCAMI> page = new Page<>(current, size);
         IPage<RCAMI> resultPage = rcamiService.page(page, queryWrapper);
 
-        return ResponseEntity.ok(ResponseResult.ok(resultPage));
+        IPage<PJRCAMI> result = new Page<>(current, size);
+        List<PJRCAMI> list = new ArrayList<>();
+        resultPage.getRecords().forEach(r -> {
+            PJRCAMI pj = new PJRCAMI();
+            pj.setOrder(orderService.getById(r.getOrderId_zch_hwz_gjc()));
+            pj.setHome(homeService.getById(r.getHomeId_zch_hwz_gjc()));
+            pj.setUser(userService.getById(r.getPublisherId_zch_hwz_gjc()));
+            pj.setRcami(r);
+            list.add(pj);
+        });
+        result.setRecords(list);
+        result.setTotal(resultPage.getTotal());
+        result.setPages(resultPage.getPages());
+
+        return ResponseEntity.ok(ResponseResult.ok(result));
     }
 
 }

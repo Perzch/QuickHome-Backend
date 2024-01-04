@@ -69,12 +69,14 @@ public class User implements Serializable {
      * 用户注册日期
      */
     @TableField(value = "userInDate_zch_hwz_gjc")
+    @JsonProperty("userInDate")
     private Date userInDate_zch_hwz_gjc;
 
     /**
      * 备用字段1
      */
     @TableField(value = "userHeadImage_zch_hwz_gjc")
+    @JsonProperty("userHeadImage")
     private String userHeadImage_zch_hwz_gjc;
 
     /**
