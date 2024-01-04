@@ -1,10 +1,13 @@
 package com.quickhome.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.Home;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.quickhome.pojo.PojoHome;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -29,5 +32,8 @@ public interface HomeMapper extends BaseMapper<Home> {
 
     List<Home> selectHomesByCriteriaWithDevices(Date beginDate, Date endDate, String address, double minRent, double maxRent, List<String> deviceNames, int deviceCount,int maxPeople ,String homeType, int page, int size);
 
+    Page<Home> selectBackHomesByCriteriaWithDevices(IPage<Home> homePage,String address, double minRent, double maxRent, List<String> deviceNames, int deviceCount, int maxPeople , String homeType);
+
     List<Home> selectHomesWithoutDevicesCriteria(Date beginDate, Date endDate, String address, double minRent, double maxRent,int maxPeople ,String homeType, int page, int size);
+    IPage<Home> selectBackHomesWithoutDevicesCriteria(IPage<Home> homePage,@Param("address") String address,@Param("minRent") double minRent,@Param("maxRent") double maxRent,@Param("maxPeople") int maxPeople ,@Param("homeType") String homeType);
 }

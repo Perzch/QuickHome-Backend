@@ -55,6 +55,7 @@
         where homeId_zch_hwz_gjc = #{homeId_zch_hwz_gjc}
           AND deleted_zch_hwz_gjc = 0
     </select>
+
     <select id="selectHomesByCriteriaWithDevices" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT
         h.*
@@ -82,6 +83,26 @@
         LIMIT #{page}, #{size}
     </select>
 
+    <select id="selectBackHomesByCriteriaWithDevices" parameterType="com.baomidou.mybatisplus.core.metadata.IPage" resultType="com.quickhome.domain.Home">
+        SELECT DISTINCT
+        h.*
+        FROM
+        tab_Home_zch_hwz_gjc h
+        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+        AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
+        AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+        AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+        AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+        AND h.homeState_zch_hwz_gjc = '可入住'
+        <foreach collection="deviceNames" item="deviceName">
+            AND h.homeId_zch_hwz_gjc IN (
+            SELECT homeId_zch_hwz_gjc
+            FROM tab_homeDevice_zch_hwz_gjc
+            WHERE deviceType_zch_hwz_gjc = #{deviceName}
+            )
+        </foreach>
+    </select>
+
 
     <select id="selectHomesWithoutDevicesCriteria" resultType="com.quickhome.domain.Home">
         SELECT DISTINCT h.*
@@ -100,6 +121,18 @@
           and h.homeState_zch_hwz_gjc = '可入住'
           AND h.deleted_zch_hwz_gjc = 0
             LIMIT #{page}, #{size}
+    </select>
+
+    <select id="selectBackHomesWithoutDevicesCriteria" parameterType="com.baomidou.mybatisplus.core.metadata.IPage" resultType="com.quickhome.domain.Home">
+        SELECT DISTINCT h.*
+        FROM tab_Home_zch_hwz_gjc h
+        JOIN tab_homeInformation_zch_hwz_gjc i ON h.homeId_zch_hwz_gjc = i.homeId_zch_hwz_gjc
+          AND h.homeAddress_zch_hwz_gjc LIKE CONCAT('%', #{address}, '%')
+          AND h.homeDayRent_zch_hwz_gjc BETWEEN #{minRent} AND #{maxRent}
+          AND i.maxPerson_zch_hwz_gjc <![CDATA[ >= ]]> #{maxPeople}
+          AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
+          and h.homeState_zch_hwz_gjc = '可入住'
+          AND h.deleted_zch_hwz_gjc = 0
     </select>
 
     <select id="getHomeAvailability" parameterType="map" resultType="com.quickhome.domain.Home">

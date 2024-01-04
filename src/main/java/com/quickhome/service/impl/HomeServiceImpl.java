@@ -1,5 +1,7 @@
 package com.quickhome.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quickhome.domain.*;
 import com.quickhome.pojo.PojoHome;
@@ -67,6 +69,29 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
         }
 
         return pojoHomes;
+    }
+    @Override
+    public IPage<Home> getHomesByCriteriaWithDevices(String address, double minRent, double maxRent, List<String> deviceNames, int maxPeople, String homeType, int page, int size) {
+        IPage<Home> homePage = new Page<>(page, size);
+        System.out.println("deviceNames: " + deviceNames);
+        if (deviceNames == null || deviceNames.isEmpty() || deviceNames.get(0).isEmpty()) {
+            // 如果没有指定设备，查询所有房屋
+            homePage = homeMapper.selectBackHomesWithoutDevicesCriteria(homePage,address, minRent, maxRent, maxPeople , homeType);
+        } else {
+            // 查询拥有指定设备的房屋
+            homePage = homeMapper.selectBackHomesByCriteriaWithDevices(homePage,address, minRent, maxRent, deviceNames, deviceNames.size(), maxPeople , homeType);
+        }
+
+//        List<PojoHome> pojoHomes = new ArrayList<>();
+//
+//        for (Home home : homes) {
+//            PojoHome pojoHome = new PojoHome();
+//            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+//            pojoHome.setHome(home);
+//            pojoHomes.add(pojoHome);
+//        }
+
+        return homePage;
     }
 
     @Override
