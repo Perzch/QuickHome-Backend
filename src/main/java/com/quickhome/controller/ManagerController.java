@@ -426,9 +426,9 @@ public class ManagerController {
             userNotification.setNotificationContent_zch_hwz_gjc(un.getNotificationContent_zch_hwz_gjc());
 
             // 使用MyBatis-Plus的方法更新通知
-            int result = userNotificationMapper.updateById(userNotification);
+            int result = userNotificationMapper.updateById(un);
             if (result > 0) {
-                return ResponseEntity.ok(ResponseResult.ok(userNotification));
+                return ResponseEntity.ok(ResponseResult.ok(un));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("更新通知失败"));
             }

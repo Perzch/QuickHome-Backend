@@ -199,6 +199,7 @@ public class AttractionController {
         List<PojoAttraction> pojoAttractionList = attractionService.getAttractionListOrderByCollectionCount();
         for (PojoAttraction pojoAttraction : pojoAttractionList) {
             Attraction attraction = attractionService.getById(pojoAttraction.getAttractionId());
+            attraction.setAttractionImageList(attraction.getAttractionImages_zch_hwz_gjc().split(","));
             pojoAttraction.setAttraction(attraction);
             List<AttractionImage> attractionImageList = attractionImageService.getAttractionImageListById(pojoAttraction.getAttractionId());
             pojoAttraction.setAttractionImageList(attractionImageList);

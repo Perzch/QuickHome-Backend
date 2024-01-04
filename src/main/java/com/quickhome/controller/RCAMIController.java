@@ -84,6 +84,7 @@ public class RCAMIController {
         // 设置完成处理时间、工作人员编号和完成情况
         if (rcami.getCompletion_zch_hwz_gjc() == null || rcami.getCompletion_zch_hwz_gjc().isEmpty()) {
             rcami.setCompletion_zch_hwz_gjc("已完成");
+            rcami.setCompletionProcessTime_zch_hwz_gjc(new Date());
         }
 
         // 设置版本号

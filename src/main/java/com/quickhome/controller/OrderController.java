@@ -339,6 +339,22 @@ public class OrderController {
         return ResponseEntity.ok(ResponseResult.ok(ordersPage));  // 返回整个IPage对象，它包含了当前页的数据、总记录数、总页数等信息
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseResult<?>> getOrder(@PathVariable("id") Long orderId) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
+        }
+        order.setHome(homeService.getById(order.getHomeId_zch_hwz_gjc()));
+        order.setUser(userService.getById(order.getUserId_zch_hwz_gjc()));
+        RSA rsa = new RSA(privateKey, publicKey);
+        byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
+        order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
+
+        return ResponseEntity.ok(ResponseResult.ok(order));
+    }
+
     /**
      * 支付订单
      *
@@ -494,7 +510,7 @@ public class OrderController {
         Double refundAmount = 0.0;
 
         // 2. 检查维修金额
-        if (pjOrder.getMaintenanceCost() <= 0) {
+        if (Objects.isNull(pjOrder.getMaintenanceCost()) || pjOrder.getMaintenanceCost() <= 0) {
             // 全额退回押金
             refundAmount = deposit;
             order.setOrderDeposit_zch_hwz_gjc(0.0);
