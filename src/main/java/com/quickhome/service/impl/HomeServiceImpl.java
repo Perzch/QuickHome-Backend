@@ -81,16 +81,6 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
             // 查询拥有指定设备的房屋
             homePage = homeMapper.selectBackHomesByCriteriaWithDevices(homePage,address, minRent, maxRent, deviceNames, deviceNames.size(), maxPeople , homeType);
         }
-
-//        List<PojoHome> pojoHomes = new ArrayList<>();
-//
-//        for (Home home : homes) {
-//            PojoHome pojoHome = new PojoHome();
-//            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
-//            pojoHome.setHome(home);
-//            pojoHomes.add(pojoHome);
-//        }
-
         return homePage;
     }
 
