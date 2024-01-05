@@ -63,7 +63,7 @@ public class HomeServiceImpl extends ServiceImpl<HomeMapper, Home>
 
         for (Home home : homes) {
             PojoHome pojoHome = new PojoHome();
-            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHome.setHome(home);
             pojoHomes.add(pojoHome);
         }

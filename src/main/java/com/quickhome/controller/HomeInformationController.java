@@ -324,7 +324,7 @@ public class HomeInformationController {
 
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : pojoHomes) {
-            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId());
             home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));//将房屋图片路径分割成数组
             pojoHome.setHome(home);
             HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
@@ -363,7 +363,7 @@ public class HomeInformationController {
             pojoHome.setHome(home);
             pojoHome.setHomeDeviceList(devices);
             pojoHome.setCollectionCount(houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc()));
-            pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+            pojoHome.setHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHomes.add(pojoHome);
         });
         Page<PojoHome> pojoHomePage = new Page<>(page,size);
@@ -426,7 +426,7 @@ public class HomeInformationController {
         pojoHome.setHomeImageList(homeImages);
         int collectionNum = houseCollectionService.getCollectionCountByHomeId(home.getHomeId_zch_hwz_gjc());
         pojoHome.setCollectionCount(collectionNum);
-        pojoHome.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+        pojoHome.setHomeId(home.getHomeId_zch_hwz_gjc());
         return ResponseEntity.ok(ResponseResult.ok(pojoHome));
     }
 
@@ -442,7 +442,7 @@ public class HomeInformationController {
         List<PojoHome> homeList = homeSer_zch_hwz_gjc.getHomeListOrderByCollectionCount();
         List<PojoHome> pojoHomeList = new ArrayList<>();
         for (PojoHome pojoHome : homeList) {
-            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId_zch_hwz_gjc());
+            Home home = homeSer_zch_hwz_gjc.getById(pojoHome.getHomeId());
             home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));
             pojoHome.setHome(home);
             HomeInformation homeInformation = homeInfSer_zch_hwz_gjc.getByHomeId(home.getHomeId_zch_hwz_gjc());
@@ -469,7 +469,16 @@ public class HomeInformationController {
     public ResponseEntity<ResponseResult<?>> insertHome(
             @RequestBody PojoHome pojoHome) {
         try {
-            homeSer_zch_hwz_gjc.save(pojoHome.getHome());
+            try{
+                homeSer_zch_hwz_gjc.save(pojoHome.getHome());
+            } catch(Exception e) {
+                return ResponseEntity.ok().body(ResponseResult.error("名称重复"));
+            }
+            Home home = homeSer_zch_hwz_gjc.getOne(new QueryWrapper<Home>().eq("homeName_zch_hwz_gjc", pojoHome.getHome().getHomeName_zch_hwz_gjc()));
+            pojoHome.getHomeInformation().setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+            for (HomeDevice device : pojoHome.getHomeDeviceList()) {
+                device.setHomeId_zch_hwz_gjc(home.getHomeId_zch_hwz_gjc());
+            }
             homeInfSer_zch_hwz_gjc.save(pojoHome.getHomeInformation());
             homeDeviceSer_zch_hwz_gjc.saveBatch(pojoHome.getHomeDeviceList());
             return ResponseEntity.ok(ResponseResult.ok());
@@ -493,6 +502,14 @@ public class HomeInformationController {
         boolean homeResult = homeSer_zch_hwz_gjc.updateById(pojoHome.getHome());
         boolean infoResult = homeInfSer_zch_hwz_gjc.updateById(pojoHome.getHomeInformation());
 //        调用saveOrUpdateBatch方法，如果数据库中没有该条数据则插入，有则更新
+        List<HomeDevice> deviceList = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(pojoHome.getHome().getHomeId_zch_hwz_gjc());
+        List<HomeDevice> removeList = new ArrayList<>();
+        deviceList.forEach(item -> {
+            if (!pojoHome.getHomeDeviceList().contains(item)) {
+                removeList.add(item);
+            }
+        });
+        homeDeviceSer_zch_hwz_gjc.removeBatchByIds(removeList);
         boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveOrUpdateBatch(pojoHome.getHomeDeviceList());
         if (homeResult && infoResult && deviceResult) {
             return ResponseEntity.ok(ResponseResult.ok());
@@ -659,8 +676,8 @@ public class HomeInformationController {
                 return ResponseEntity.ok().body(ResponseResult.error("房屋不存在"));
             }
             boolean homeResult = homeSer_zch_hwz_gjc.removeById(homeId);
-            boolean infoResult = homeInfSer_zch_hwz_gjc.removeById(homeId);
-            if (homeResult && infoResult){
+            boolean homeInfoResult = homeInfSer_zch_hwz_gjc.remove(new QueryWrapper<HomeInformation>().eq("homeId_zch_hwz_gjc", homeId));
+            if (homeResult && homeInfoResult){
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("删除失败"));

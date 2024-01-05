@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PojoHome {
-    private Long homeId_zch_hwz_gjc;
+    private Long homeId;
     private Home home;
     private HomeInformation homeInformation;
     private List<HomeDevice> homeDeviceList;

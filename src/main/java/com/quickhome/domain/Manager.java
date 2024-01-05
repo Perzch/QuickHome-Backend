@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "standby2_zch_hwz_gjc","deleted_zch_hwz_gjc" })
+@JsonIgnoreProperties(value = { "standby2_zch_hwz_gjc","deleted_zch_hwz_gjc","managerPwd_zch_hwz_gjc" })
 public class Manager implements Serializable {
     /**
      * 管理员编号
@@ -48,7 +48,7 @@ public class Manager implements Serializable {
      * 管理员密码
      */
     @TableField(value = "managerPwd_zch_hwz_gjc")
-    @JsonProperty( value = "managerPwd", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty( value = "managerPwd")
     private String managerPwd_zch_hwz_gjc;
 
     /**
@@ -88,6 +88,12 @@ public class Manager implements Serializable {
 
     @TableField(exist = false)
     private String token;
+
+    @TableField(exist = false)
+    private Boolean manager;
+
+    @TableField(exist = false)
+    private String newPassword;
 
     /**
      * 备用字段2

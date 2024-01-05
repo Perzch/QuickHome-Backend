@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","deleted_zch_hwz_gjc" })
+@JsonIgnoreProperties(value = { "standby1_zch_hwz_gjc","standby2_zch_hwz_gjc","deleted_zch_hwz_gjc","userPwd_zch_hwz_gjc" })
 public class User implements Serializable {
     /**
      * 用户编号
@@ -48,7 +48,7 @@ public class User implements Serializable {
      * 用户密码
      */
     @TableField(value = "userPwd_zch_hwz_gjc")
-    @JsonProperty(value = "userPwd", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "userPwd")
     private String userPwd_zch_hwz_gjc;
 
     /**

@@ -101,17 +101,36 @@ public class ManagerController {
     @PutMapping
     public ResponseEntity<ResponseResult<?>> updatePassword(
             @RequestBody Manager manager) {
+        RSA rsa = new RSA(privateKey, publicKey);
         if (manager.getManagerId_zch_hwz_gjc() == null) {
             return ResponseEntity.ok().body(ResponseResult.error("管理员Id不能为空"));
         }
         Manager currentManager = managerMapper.selectById(manager.getManagerId_zch_hwz_gjc());
         if(Objects.nonNull(currentManager)) {
-            if(!StringUtils.isEmpty(manager.getManagerPwd_zch_hwz_gjc())) {
-                RSA rsa = new RSA(privateKey, publicKey);
-                byte[] decrypt = rsa.decrypt(manager.getManagerPwd_zch_hwz_gjc(), KeyType.PrivateKey);
-                manager.setManagerPwd_zch_hwz_gjc(new String(decrypt));
+            boolean result = false;
+//            如果manager存在并且manager为true 则代表是管理员操作
+            if(Objects.nonNull(manager.getManager()) && manager.getManager()) {
+                if(!StringUtils.isEmpty(manager.getManagerPwd_zch_hwz_gjc())) {
+                    byte[] decrypt = rsa.decrypt(manager.getManagerPwd_zch_hwz_gjc(), KeyType.PrivateKey);
+                    manager.setManagerPwd_zch_hwz_gjc(new String(decrypt));
+                } else {
+                    return ResponseEntity.ok().body(ResponseResult.error("密码不能为空"));
+                }
+                result = managerService.updateById(manager);
+            } else {
+                if(!StringUtils.isEmpty(manager.getManagerPwd_zch_hwz_gjc())) {
+                    String decrypt = new String(rsa.decrypt(manager.getManagerPwd_zch_hwz_gjc(), KeyType.PrivateKey));
+                    String newPassword = new String(rsa.decrypt(manager.getNewPassword(), KeyType.PrivateKey));
+                    if(decrypt.equals(currentManager.getManagerPwd_zch_hwz_gjc())) {
+                        manager.setManagerPwd_zch_hwz_gjc(newPassword);
+                        result = managerService.updateById(manager);
+                    } else {
+                        return ResponseEntity.ok().body(ResponseResult.error("密码错误"));
+                    }
+                } else {
+                    return ResponseEntity.ok().body(ResponseResult.error("密码不能为空"));
+                }
             }
-            boolean result = managerService.updateById(manager);
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
