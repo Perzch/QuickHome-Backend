@@ -502,15 +502,32 @@ public class HomeInformationController {
         boolean homeResult = homeSer_zch_hwz_gjc.updateById(pojoHome.getHome());
         boolean infoResult = homeInfSer_zch_hwz_gjc.updateById(pojoHome.getHomeInformation());
         //    调用saveOrUpdateBatch方法，如果数据库中没有该条数据则插入，有则更新
+//        List<HomeDevice> deviceList = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(pojoHome.getHome().getHomeId_zch_hwz_gjc());
+//        List<HomeDevice> removeList = new ArrayList<>();
+//        deviceList.forEach(item -> {
+//            if (!pojoHome.getHomeDeviceList().contains(item)) {
+//                removeList.add(item);
+//            }
+//        });
+//        homeDeviceSer_zch_hwz_gjc.removeBatchByIds(removeList);
+//        boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveOrUpdateBatch(pojoHome.getHomeDeviceList());
+//        if (homeResult && infoResult && deviceResult) {
+//            return ResponseEntity.ok(ResponseResult.ok());
+//        } else {
+//            return ResponseEntity.ok().body(ResponseResult.error("更新失败"));
+//        }
         List<HomeDevice> deviceList = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(pojoHome.getHome().getHomeId_zch_hwz_gjc());
-        List<HomeDevice> removeList = new ArrayList<>();
-        deviceList.forEach(item -> {
-            if (!pojoHome.getHomeDeviceList().contains(item)) {
-                removeList.add(item);
-            }
-        });
-        homeDeviceSer_zch_hwz_gjc.removeBatchByIds(removeList);
-        boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveOrUpdateBatch(pojoHome.getHomeDeviceList());
+//        List<HomeDevice> removeList = new ArrayList<>();
+//        deviceList.forEach(item -> {
+//            if (!pojoHome.getHomeDeviceList().contains(item)) {
+//                removeList.add(item);
+//            }
+//        });
+        boolean a = homeDeviceSer_zch_hwz_gjc.removeBatchByIds(deviceList);
+        for(int i=0;i<pojoHome.getHomeDeviceList().size();i++){
+            pojoHome.getHomeDeviceList().get(i).setDeviceID_zch_hwz_gjc(null);
+        }
+        boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveBatch(pojoHome.getHomeDeviceList());
         if (homeResult && infoResult && deviceResult) {
             return ResponseEntity.ok(ResponseResult.ok());
         } else {
