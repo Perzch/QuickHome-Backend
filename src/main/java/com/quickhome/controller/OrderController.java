@@ -407,17 +407,25 @@ public class OrderController {
             }
         }
 
-        // 调用AccountBalanceController的updateMoney方法进行支付
-        AccountBalance accountBalance = AccountBalance.builder()
-                .userId_zch_hwz_gjc(order.getUserId_zch_hwz_gjc())
-                .userBalance_zch_hwz_gjc(-(actualPayment + order.getOrderDeposit_zch_hwz_gjc()))
-                .build();
-        ResponseEntity<ResponseResult<?>> paymentResponse = accountBalanceController.updateMoney(accountBalance, req);
-
-        // 检查支付结果
-        if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.ok().body(ResponseResult.error("支付失败"));
+        QueryWrapper<AccountBalance> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId_zch_hwz_gjc", order.getUserId_zch_hwz_gjc());
+        AccountBalance accountBalance = accountBalanceMapper.selectOne(queryWrapper);
+        if (accountBalance == null) {
+            return ResponseEntity.ok().body(ResponseResult.error("用户不存在"));
         }
+
+        // 检查提现金额是否超过余额
+        if (-(actualPayment + order.getOrderDeposit_zch_hwz_gjc()) < 0 && Math.abs(-(actualPayment + order.getOrderDeposit_zch_hwz_gjc())) > accountBalance.getUserBalance_zch_hwz_gjc()) {
+            return ResponseEntity.ok().body(ResponseResult.error("余额不足"));
+        }
+
+        // 更新余额
+        accountBalance.setUserBalance_zch_hwz_gjc(accountBalance.getUserBalance_zch_hwz_gjc() - (actualPayment + order.getOrderDeposit_zch_hwz_gjc()));
+        // 设置最后修改时间为当前时间
+        accountBalance.setLastModifiedDate_zch_hwz_gjc(DateTime.now());
+
+        // 使用MyBatisPlus的更新方法
+        accountBalanceMapper.update(accountBalance, queryWrapper);
 
         // 使用UpdateWrapper更新订单状态为“已支付”
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
