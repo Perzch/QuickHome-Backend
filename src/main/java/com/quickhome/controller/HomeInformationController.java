@@ -505,11 +505,14 @@ public class HomeInformationController {
         List<HomeDevice> deviceList = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(pojoHome.getHome().getHomeId_zch_hwz_gjc());
         List<HomeDevice> removeList = new ArrayList<>();
         deviceList.forEach(item -> {
-            if (!pojoHome.getHomeDeviceList().contains(item)) {
+            if (pojoHome.getHomeDeviceList().contains(item)) {
                 removeList.add(item);
             }
         });
-        homeDeviceSer_zch_hwz_gjc.removeBatchByIds(removeList);
+        boolean b = homeDeviceSer_zch_hwz_gjc.removeBatchByIds(removeList);
+        deviceList.forEach(item -> {
+            item.setDeviceID_zch_hwz_gjc(null);
+        });
         boolean deviceResult = homeDeviceSer_zch_hwz_gjc.saveOrUpdateBatch(pojoHome.getHomeDeviceList());
         if (homeResult && infoResult && deviceResult) {
             return ResponseEntity.ok(ResponseResult.ok());
