@@ -33,7 +33,7 @@
     </select>
 
     <select id="getHomeListOrderByCollectionCount" resultType="com.quickhome.pojo.PojoHome">
-        SELECT a.homeId_zch_hwz_gjc,
+        SELECT a.homeId_zch_hwz_gjc as homeId,
                COUNT(c.hFavoriteRecordsId_zch_hwz_gjc) AS collectionCount
         FROM tab_home_zch_hwz_gjc a
                  LEFT JOIN tab_housecollection_zch_hwz_gjc c ON a.homeId_zch_hwz_gjc = c.homeId_zch_hwz_gjc

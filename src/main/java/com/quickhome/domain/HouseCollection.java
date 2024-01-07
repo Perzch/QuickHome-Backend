@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
+ *
  * @TableName tab_housecollection_zch_hwz_gjc
  */
 @TableName(value ="tab_housecollection_zch_hwz_gjc")
@@ -43,6 +43,9 @@ public class HouseCollection implements Serializable {
     @TableField(value = "homeId_zch_hwz_gjc")
     @JsonProperty("homeId")
     private Long homeId_zch_hwz_gjc;
+
+    @TableField(exist = false)
+    private Home home;
 
     /**
      * 收藏时间

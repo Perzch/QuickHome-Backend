@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -56,6 +57,7 @@ public class UserInformation implements Serializable {
      */
     @TableField(value = "userBirthday_zch_hwz_gjc")
     @JsonProperty("userBirthday")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date userBirthday_zch_hwz_gjc;
 
     /**

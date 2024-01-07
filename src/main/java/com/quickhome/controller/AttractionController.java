@@ -413,7 +413,6 @@ public class AttractionController {
     public ResponseEntity<?> cancelCollection(
            @RequestBody AttractionCollection ac
     ) {
-        try {
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("userId_zch_hwz_gjc", ac.getUserId_zch_hwz_gjc())
                     .eq("attractionId_zch_hwz_gjc", ac.getAttractionId_zch_hwz_gjc());
@@ -426,9 +425,6 @@ public class AttractionController {
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("取消收藏失败"));
             }
-        } catch (Exception e) {
-            return ResponseEntity.ok().body(ResponseResult.error("取消收藏出错"));
-        }
     }
 
     /**
@@ -452,6 +448,11 @@ public class AttractionController {
                     .eq("deleted_zch_hwz_gjc", 0);  // 只查询未被删除的收藏
 
             Page<AttractionCollection> resultPage = attractionCollectionMapper.selectPage(page, queryWrapper);
+            for (AttractionCollection record : resultPage.getRecords()) {
+                Attraction attraction = attractionService.getById(record.getAttractionId_zch_hwz_gjc());
+                attraction.setAttractionImageList(attraction.getAttractionImages_zch_hwz_gjc().split(","));
+                record.setAttraction(attraction);
+            }
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error("获取收藏列表出错"));

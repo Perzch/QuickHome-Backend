@@ -610,6 +610,11 @@ public class HomeInformationController {
             @RequestParam(value = "size", defaultValue = "10") int pageSize) {
         try {
             Page<HouseCollection> resultPage = houseCollectionService.getUserHomeCollections(userId, pageNo, pageSize);
+            for (HouseCollection record : resultPage.getRecords()) {
+                Home home = homeSer_zch_hwz_gjc.getById(record.getHomeId_zch_hwz_gjc());
+                home.setHomeImageList(home.getHomeImages_zch_hwz_gjc().split(","));
+                record.setHome(home);
+            }
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error("获取房屋收藏列表出错"));
@@ -627,11 +632,9 @@ public class HomeInformationController {
         try {
             UpdateWrapper<HouseCollection> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("userId_zch_hwz_gjc", userHome.getUserId())
-                    .eq("homeId_zch_hwz_gjc", userHome.getHomeId())
-                    .set("deleted_zch_hwz_gjc", 1);
-
-            int result = houseCollectionMapper.update(null, updateWrapper);
-            if (result > 0) {
+                    .eq("homeId_zch_hwz_gjc", userHome.getHomeId());
+            boolean result = houseCollectionService.remove(updateWrapper);
+            if (result) {
                 return ResponseEntity.ok(ResponseResult.ok("取消收藏成功"));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("取消收藏失败"));

@@ -44,6 +44,9 @@ public class AttractionCollection implements Serializable {
     @JsonProperty("attractionId")
     private Long attractionId_zch_hwz_gjc;
 
+    @TableField(exist = false)
+    private Attraction attraction;
+
     /**
      * 收藏时间
      */

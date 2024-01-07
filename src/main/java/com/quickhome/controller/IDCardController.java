@@ -1,6 +1,8 @@
 package com.quickhome.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.quickhome.domain.IdCardRecord;
 import com.quickhome.domain.IdentityCheckList;
 import com.quickhome.pojo.PJIdCard;
@@ -61,8 +63,11 @@ public class IDCardController {
             @RequestParam(value = "page", defaultValue = "1") int current,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         try {
-            IPage<IdCardRecord> idCardInfo = idCardService.getIdCardInfo(userId, current, size);
-            return ResponseEntity.ok(ResponseResult.ok(idCardInfo));
+            Page<IdCardRecord> page = new Page<>(current, size);
+            QueryWrapper<IdCardRecord> wrapper = new QueryWrapper<>();
+            wrapper.eq("userId_zch_hwz_gjc", userId);
+            Page<IdCardRecord> recordPage = idCardService.page(page, wrapper);
+            return ResponseEntity.ok(ResponseResult.ok(recordPage));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }
