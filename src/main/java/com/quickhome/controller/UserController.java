@@ -597,35 +597,35 @@ public class UserController {
             if (u.getUserId_zch_hwz_gjc() == null) {
                 return ResponseEntity.ok().body(ResponseResult.error("用户编号不能为空"));
             }
-            boolean result = userService.updateById(u);
             // 从数据库中查询当前用户记录
-//            User currentUser = userMapper.selectById(u.getUserId_zch_hwz_gjc());
-//            if (currentUser == null) {
-//                return ResponseEntity.ok().body(ResponseResult.error("用户编号不存在"));
-//            }
-//
-//            // 更新需要修改的字段
-//            if (u.getUserName_zch_hwz_gjc() != null && !u.getUserName_zch_hwz_gjc().isEmpty()) {
-//                currentUser.setUserName_zch_hwz_gjc(u.getUserName_zch_hwz_gjc());
-//            }
-//            if (u.getUserEmail_zch_hwz_gjc() != null && !u.getUserEmail_zch_hwz_gjc().isEmpty()) {
-//                currentUser.setUserEmail_zch_hwz_gjc(u.getUserEmail_zch_hwz_gjc());
-//            }
-//            if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
-//                currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
-//            }
-//
-//            // 使用乐观锁更新方法
-//            int result = userMapper.updateById(currentUser);
+            User currentUser = userMapper.selectById(u.getUserId_zch_hwz_gjc());
+            if (currentUser == null) {
+                return ResponseEntity.ok().body(ResponseResult.error("用户编号不存在"));
+            }
+
+            // 更新需要修改的字段
+            if (u.getUserName_zch_hwz_gjc() != null && !u.getUserName_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserName_zch_hwz_gjc(u.getUserName_zch_hwz_gjc());
+            }
+            if (u.getUserEmail_zch_hwz_gjc() != null && !u.getUserEmail_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserEmail_zch_hwz_gjc(u.getUserEmail_zch_hwz_gjc());
+            }
+            if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
+            }
+
+            // 使用乐观锁更新方法
+            int result = userMapper.updateById(currentUser);
 
             // 检查是否有数据被更新
-            if (result) {
+            if (result > 0) {
                 return ResponseEntity.ok(ResponseResult.ok(userMapper.selectById(u.getUserId_zch_hwz_gjc())));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("更新失败，请重试"));
             }
         } catch (Exception e) {
             // 这里可以记录日志或者返回具体的错误信息
+            e.printStackTrace();
             return ResponseEntity.ok().body(ResponseResult.error("更新失败，发生异常"));
         }
     }
