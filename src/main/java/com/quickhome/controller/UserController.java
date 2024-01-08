@@ -184,10 +184,6 @@ public class UserController {
             //写入唯一的用户账号
             user.setUserAccount_zch_hwz_gjc(account);
             user.setUserName_zch_hwz_gjc(account);
-//            如果用户头像为空，设置默认头像
-            if(user.getUserHeadImage_zch_hwz_gjc().isBlank()) {
-                user.setUserHeadImage_zch_hwz_gjc("/image/默认头像.png");
-            }
             //写入用户表
             flag_user = userService.save(user);
             if (flag_user) {
