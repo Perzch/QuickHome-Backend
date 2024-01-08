@@ -387,6 +387,9 @@ public class UserController {
         UserInformation userInformation = userInformationService.getOne(queryWrapper);
         userInformation.setUserHeadId_zch_hwz_gjc(userHeadImage.getUserImageId_zch_hwz_gjc());
         userInformationMapper.updateById(userInformation);
+        User user = userMapper.selectById(pjFile.getUserId());
+        user.setUserHeadImage_zch_hwz_gjc(imagePath);
+        userMapper.updateById(user);
         return ResponseEntity.ok(ResponseResult.ok(userHeadImage));
     }
 

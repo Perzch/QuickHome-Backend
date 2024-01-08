@@ -66,7 +66,7 @@ public class TencentCOSUtils {
         PutObjectResult putResult = cosClient.putObject
                 (tencentCOSproperties.getBucketName(), key, inputStream, objectMetadata);
         // 创建文件的网络访问路径
-        String url = tencentCOSproperties.getRootSrc() + "/" + key;
+        String url = "/" + key;
         //关闭 cosClient，并释放 HTTP 连接的后台管理线程
         cosClient.shutdown();
         return url;
