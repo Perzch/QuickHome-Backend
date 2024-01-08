@@ -404,7 +404,7 @@ public class UserController {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = userId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         try {
-            return tencentCOSUtils.upload(file, newFileName, "HeadImage");
+            return tencentCOSUtils.upload(file, newFileName, "HeadImage/");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);

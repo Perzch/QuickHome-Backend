@@ -43,6 +43,6 @@ public class CommonController {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
 //        获取文件的后缀名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        return tencentCOSUtils.upload(file, timestamp + suffix, "quickhome");
+        return tencentCOSUtils.upload(file, timestamp + suffix, "");
     }
 }

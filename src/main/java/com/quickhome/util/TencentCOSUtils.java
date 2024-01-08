@@ -53,7 +53,7 @@ public class TencentCOSUtils {
         // 使用UUID工具  创建唯一名称，放置文件重名被覆盖，在拼接上上命令获取的文件类型
 //        String fileName = UUID.randomUUID().toString() + fileType;
         // 指定文件上传到 COS 上的路径，即对象键。最终文件会传到存储桶名字中的images文件夹下的fileName名字
-        String key = "image/" + fileName;
+        String key = "image/" + path + fileName;
         // 创建上传Object的Metadata
         ObjectMetadata objectMetadata = new ObjectMetadata();
         // - 使用输入流存储，需要设置请求长度
@@ -69,6 +69,6 @@ public class TencentCOSUtils {
         String url = tencentCOSproperties.getRootSrc() + "/" + key;
         //关闭 cosClient，并释放 HTTP 连接的后台管理线程
         cosClient.shutdown();
-        return key;
+        return url;
     }
 }

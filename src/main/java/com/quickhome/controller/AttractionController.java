@@ -177,7 +177,7 @@ public class AttractionController {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String newFileName = attractionId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         try {
-            return tencentCOSUtils.upload(file, newFileName, "AttractionImg");
+            return tencentCOSUtils.upload(file, newFileName, "AttractionImg/");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);

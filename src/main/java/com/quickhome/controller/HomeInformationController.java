@@ -279,7 +279,7 @@ public class HomeInformationController {
         String newFileName = homeId + "-" + timestamp + "." + getFileExtension(file.getOriginalFilename());
         try {
 
-            return tencentCOSUtils.upload(file, newFileName, "HomeImg");
+            return tencentCOSUtils.upload(file, newFileName, "HomeImg/");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to upload file to Tencent COS", e);
