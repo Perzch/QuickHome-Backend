@@ -63,11 +63,8 @@ public class IDCardController {
             @RequestParam(value = "page", defaultValue = "1") int current,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         try {
-            Page<IdCardRecord> page = new Page<>(current, size);
-            QueryWrapper<IdCardRecord> wrapper = new QueryWrapper<>();
-            wrapper.eq("userId_zch_hwz_gjc", userId);
-            Page<IdCardRecord> recordPage = idCardService.page(page, wrapper);
-            return ResponseEntity.ok(ResponseResult.ok(recordPage));
+            IPage<IdCardRecord> idCardInfo = idCardService.getIdCardInfo(userId, current, size);
+            return ResponseEntity.ok(ResponseResult.ok(idCardInfo));
         } catch (Exception e) {
             return ResponseEntity.ok().body(ResponseResult.error(e.getMessage()));
         }

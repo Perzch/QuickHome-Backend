@@ -303,8 +303,6 @@ public class OrderController {
                 byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
                 order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
             }
-            User user = userService.getById(order.getUserId_zch_hwz_gjc());
-            order.setUser(user);
             Home home = homeService.getById(order.getHomeId_zch_hwz_gjc());
             order.setHome(home);
         }
@@ -347,7 +345,6 @@ public class OrderController {
             return ResponseEntity.ok().body(ResponseResult.error("订单不存在"));
         }
         order.setHome(homeService.getById(order.getHomeId_zch_hwz_gjc()));
-        order.setUser(userService.getById(order.getUserId_zch_hwz_gjc()));
         RSA rsa = new RSA(privateKey, publicKey);
         byte[] encrypt = rsa.encrypt(order.getDynamicDoorPassword_zch_hwz_gjc(), KeyType.PublicKey);
         order.setDynamicDoorPassword_zch_hwz_gjc(Base64.encode(encrypt));
