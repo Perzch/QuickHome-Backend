@@ -73,11 +73,13 @@
         AND i.maxPerson_zch_hwz_gjc <![CDATA[ = ]]> #{maxPeople}
         AND h.homeType_zch_hwz_gjc LIKE CONCAT('%', #{homeType}, '%')
         AND h.homeState_zch_hwz_gjc = '可入住'
+        AND h.deleted_zch_hwz_gjc = 0
         <foreach collection="deviceNames" item="deviceName">
             AND h.homeId_zch_hwz_gjc IN (
             SELECT homeId_zch_hwz_gjc
             FROM tab_homeDevice_zch_hwz_gjc
             WHERE deviceType_zch_hwz_gjc = #{deviceName}
+            AND deleted_zch_hwz_gjc = 0
             )
         </foreach>
         LIMIT #{page}, #{size}
@@ -98,8 +100,10 @@
             SELECT homeId_zch_hwz_gjc
             FROM tab_homeDevice_zch_hwz_gjc
             WHERE deviceType_zch_hwz_gjc = #{deviceName}
+            AND deleted_zch_hwz_gjc = 0
             )
         </foreach>
+        AND h.deleted_zch_hwz_gjc = 0
     </select>
 
 
