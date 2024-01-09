@@ -18,7 +18,7 @@ public enum ResultCode {
     PARAM_IS_BLANK(101,"参数为空"),
     /* 用户错误  201 - 299  */
     USER_NOT_LOGIN(201,"未登录"),
-    USER_NOT_EXIST(202,",密码错误"),
+    USER_NOT_EXIST(202,"密码错误"),
     USER_LOGIN_ERROR(203,"登陆失败，账号或者密码有误"),
     NOT_PERMISSION(204,"无权限访问"),
     NOT_UPDATE(205,"更新失败"),

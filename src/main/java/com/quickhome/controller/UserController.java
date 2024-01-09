@@ -613,6 +613,9 @@ public class UserController {
             if (u.getUserPhone_zch_hwz_gjc() != null && !u.getUserPhone_zch_hwz_gjc().isEmpty()) {
                 currentUser.setUserPhone_zch_hwz_gjc(u.getUserPhone_zch_hwz_gjc());
             }
+            if(Objects.nonNull(u.getUserHeadImage_zch_hwz_gjc()) && !u.getUserHeadImage_zch_hwz_gjc().isEmpty()) {
+                currentUser.setUserHeadImage_zch_hwz_gjc(u.getUserHeadImage_zch_hwz_gjc());
+            }
 
             // 使用乐观锁更新方法
             int result = userMapper.updateById(currentUser);

@@ -69,6 +69,6 @@ public class TencentCOSUtils {
         String url = "/" + key;
         //关闭 cosClient，并释放 HTTP 连接的后台管理线程
         cosClient.shutdown();
-        return url;
+        return key;
     }
 }
