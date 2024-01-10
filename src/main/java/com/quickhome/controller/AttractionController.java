@@ -365,8 +365,7 @@ public class AttractionController {
                 queryWrapper.eq("attractionId_zch_hwz_gjc", id);
                 List<AttractionCollection> attractionCollections = attractionCollectionMapper.selectList(queryWrapper);
                 for (AttractionCollection attractionCollection : attractionCollections) {
-                    attractionCollection.setDeleted_zch_hwz_gjc(1);
-                    attractionCollectionService.updateById(attractionCollection);
+                    attractionCollectionMapper.deleteById(attractionCollection.getAFavoriteRecordsId_zch_hwz_gjc());
                 }
             }
             if (result) {
@@ -458,6 +457,7 @@ public class AttractionController {
 
             Page<AttractionCollection> resultPage = attractionCollectionMapper.selectPage(page, queryWrapper);
             for (AttractionCollection record : resultPage.getRecords()) {
+                System.out.println(record.getAttractionId_zch_hwz_gjc());
                 Attraction attraction = attractionService.getById(record.getAttractionId_zch_hwz_gjc());
                 attraction.setAttractionImageList(attraction.getAttractionImages_zch_hwz_gjc().split(","));
                 record.setAttraction(attraction);
