@@ -359,6 +359,16 @@ public class AttractionController {
     public ResponseEntity<?> deleteAttraction(@PathVariable("id") Long[] attractionId) {
         try {
             boolean result = attractionService.removeBatchByIds(Arrays.asList(attractionId));
+            //删除用户收藏的景点
+            for (Long id : attractionId) {
+                QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("attractionId_zch_hwz_gjc", id);
+                List<AttractionCollection> attractionCollections = attractionCollectionMapper.selectList(queryWrapper);
+                for (AttractionCollection attractionCollection : attractionCollections) {
+                    attractionCollection.setDeleted_zch_hwz_gjc(1);
+                    attractionCollectionService.updateById(attractionCollection);
+                }
+            }
             if (result) {
                 return ResponseEntity.ok(ResponseResult.ok());
             } else {
@@ -444,8 +454,7 @@ public class AttractionController {
         try {
             Page<AttractionCollection> page = new Page<>(pageNo, pageSize);
             QueryWrapper<AttractionCollection> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userId_zch_hwz_gjc", userId)
-                    .eq("deleted_zch_hwz_gjc", 0);  // 只查询未被删除的收藏
+            queryWrapper.eq("userId_zch_hwz_gjc", userId);
 
             Page<AttractionCollection> resultPage = attractionCollectionMapper.selectPage(page, queryWrapper);
             for (AttractionCollection record : resultPage.getRecords()) {
@@ -455,6 +464,7 @@ public class AttractionController {
             }
             return ResponseEntity.ok(ResponseResult.ok(resultPage));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.ok().body(ResponseResult.error("获取收藏列表出错"));
         }
     }
