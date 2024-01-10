@@ -510,6 +510,10 @@ public class UserController {
             return ResponseEntity.ok(ResponseResult.error("用户余额大于0，不能注销"));
         }
 
+        if (accountBalance.getUserBalance_zch_hwz_gjc() < 0) {
+            return ResponseEntity.ok(ResponseResult.error("用户欠款未偿还，不能注销"));
+        }
+
         QueryWrapper<Order> queryWrapper6 = new QueryWrapper<>();
         queryWrapper6.eq("userId_zch_hwz_gjc", userId);
         List<Order> orders = orderMapper.selectList(queryWrapper6);
@@ -518,7 +522,7 @@ public class UserController {
 
         for (Order order : orders) {
             String state = order.getOrderState_zch_hwz_gjc();
-            if (!state.equals("已完成") && !state.equals("已取消") && !state.equals("已退款")) {
+            if (!state.equals("已结束") && !state.equals("已取消") && !state.equals("已退款")) {
                 hasUnfinishedOrder = true;
                 break;
             }
