@@ -210,7 +210,7 @@ public class HomeInformationController {
     /**
      * 删除房间图片
      *
-     * @param homeId    房间ID
+     * @param homeId 房间ID
      * @return
      */
 
@@ -343,14 +343,14 @@ public class HomeInformationController {
     @GetMapping("/list/back")
     @ResponseBody
     public ResponseEntity<?> adminGetHome(@RequestParam(required = false, defaultValue = "") String homeType,//房屋类型
-                                        @RequestParam(required = false, defaultValue = "") String device,//房屋设备
-                                        @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
-                                        @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
-                                        @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
-                                        @RequestParam(required = false, defaultValue = "0") int maxPeople,//最大入住人数
-                                        @RequestParam(defaultValue = "1") int page,//最大回传显示页数
-                                        @RequestParam(required = false, defaultValue = "10") int size,//单页最大显示条数
-                                        HttpServletRequest req) {
+                                          @RequestParam(required = false, defaultValue = "") String device,//房屋设备
+                                          @RequestParam(required = false, defaultValue = "0.0") double minRent,//最低租金
+                                          @RequestParam(required = false, defaultValue = "10000.0") double maxRent,//最高租金
+                                          @RequestParam(required = false, defaultValue = "") String address,//模糊地址关键字
+                                          @RequestParam(required = false, defaultValue = "0") int maxPeople,//最大入住人数
+                                          @RequestParam(defaultValue = "1") int page,//最大回传显示页数
+                                          @RequestParam(required = false, defaultValue = "10") int size,//单页最大显示条数
+                                          HttpServletRequest req) {
         List<String> deviceNames = Arrays.asList(device.split(","));
 
         IPage<Home> homePage = homeSer_zch_hwz_gjc.getHomesByCriteriaWithDevices(address, minRent, maxRent, deviceNames, maxPeople, homeType, page, size);
@@ -366,7 +366,7 @@ public class HomeInformationController {
             pojoHome.setHomeId(home.getHomeId_zch_hwz_gjc());
             pojoHomes.add(pojoHome);
         });
-        Page<PojoHome> pojoHomePage = new Page<>(page,size);
+        Page<PojoHome> pojoHomePage = new Page<>(page, size);
         pojoHomePage.setRecords(pojoHomes);
         pojoHomePage.setTotal(homePage.getTotal());
         pojoHomePage.setCurrent(homePage.getCurrent());
@@ -469,9 +469,9 @@ public class HomeInformationController {
     public ResponseEntity<ResponseResult<?>> insertHome(
             @RequestBody PojoHome pojoHome) {
         try {
-            try{
+            try {
                 homeSer_zch_hwz_gjc.save(pojoHome.getHome());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return ResponseEntity.ok().body(ResponseResult.error("名称重复"));
             }
             Home home = homeSer_zch_hwz_gjc.getOne(new QueryWrapper<Home>().eq("homeName_zch_hwz_gjc", pojoHome.getHome().getHomeName_zch_hwz_gjc()));
@@ -500,15 +500,15 @@ public class HomeInformationController {
     public ResponseEntity<ResponseResult<?>> updateHome(
             @RequestBody PojoHome pojoHome) {
         Boolean homeResult = null, infoResult = null, deviceResult = null;
-        if(Objects.nonNull(pojoHome.getHome())) {
+        if (Objects.nonNull(pojoHome.getHome())) {
             homeResult = homeSer_zch_hwz_gjc.updateById(pojoHome.getHome());
         }
-        if(Objects.nonNull(pojoHome.getHomeInformation())) {
+        if (Objects.nonNull(pojoHome.getHomeInformation())) {
             infoResult = homeInfSer_zch_hwz_gjc.updateById(pojoHome.getHomeInformation());
-            if(Objects.nonNull(pojoHome.getHome())) {
+            if (Objects.nonNull(pojoHome.getHome())) {
                 List<HomeDevice> deviceList = homeDeviceSer_zch_hwz_gjc.getAllByHomeId(pojoHome.getHome().getHomeId_zch_hwz_gjc());
                 boolean a = homeDeviceSer_zch_hwz_gjc.removeBatchByIds(deviceList);
-                for(int i=0;i<pojoHome.getHomeDeviceList().size();i++){
+                for (int i = 0; i < pojoHome.getHomeDeviceList().size(); i++) {
                     pojoHome.getHomeDeviceList().get(i).setDeviceID_zch_hwz_gjc(null);
                 }
                 deviceResult = homeDeviceSer_zch_hwz_gjc.saveBatch(pojoHome.getHomeDeviceList());
@@ -679,7 +679,14 @@ public class HomeInformationController {
             }
             boolean homeResult = homeSer_zch_hwz_gjc.removeById(homeId);
             boolean homeInfoResult = homeInfSer_zch_hwz_gjc.remove(new QueryWrapper<HomeInformation>().eq("homeId_zch_hwz_gjc", homeId));
-            if (homeResult && homeInfoResult){
+
+            //删除用户收藏的房屋
+
+            QueryWrapper<HouseCollection> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("homeId_zch_hwz_gjc", homeId);
+            houseCollectionService.remove(queryWrapper);
+
+            if (homeResult && homeInfoResult) {
                 return ResponseEntity.ok(ResponseResult.ok("删除成功"));
             } else {
                 return ResponseEntity.ok().body(ResponseResult.error("删除失败"));
