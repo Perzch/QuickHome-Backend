@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: default
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql.sqlpub.com:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
