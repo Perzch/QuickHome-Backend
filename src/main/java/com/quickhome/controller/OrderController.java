@@ -726,5 +726,39 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/day/count")
+    public ResponseEntity<ResponseResult<?>> getDayCount() {
+        try {
+            return ResponseEntity.ok(ResponseResult.ok(orderService.getDayCount()));
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+        }
+    }
 
+    @GetMapping("/day/statistics")
+    public ResponseEntity<ResponseResult<?>> getDayStatistics() {
+        try {
+            return ResponseEntity.ok(ResponseResult.ok(orderService.getDayStatistics()));
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/total/count")
+    public ResponseEntity<ResponseResult<?>> getTotalCount() {
+        try {
+            return ResponseEntity.ok(ResponseResult.ok(orderService.getTotalCount()));
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/total/statistics")
+    public ResponseEntity<ResponseResult<?>> getTotalStatistics() {
+        try {
+            return ResponseEntity.ok(ResponseResult.ok(orderService.getTotalStatistics()));
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(ResponseResult.error("查询订单失败: " + e.getMessage()));
+        }
+    }
 }

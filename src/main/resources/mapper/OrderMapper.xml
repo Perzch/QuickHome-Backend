@@ -39,4 +39,16 @@
           and deleated_zch_hwz_gjc = 0
     </select>
     <select id="getAllUserOrders" resultType="com.quickhome.domain.Order"></select>
+    <select id="getDayStatistics" resultType="java.lang.Double">
+        SELECT SUM(orderPayment_zch_hwz_gjc - orderDeposit_zch_hwz_gjc) FROM tab_order_zch_hwz_gjc WHERE DATE(checkInTime_zch_hwz_gjc) = DATE(NOW()) AND orderState_zch_hwz_gjc in ("已结束","已支付","已入住","已退房");
+    </select>
+    <select id="getTotalStatistics" resultType="java.lang.Double">
+        SELECT SUM(orderPayment_zch_hwz_gjc - orderDeposit_zch_hwz_gjc) FROM tab_order_zch_hwz_gjc WHERE orderState_zch_hwz_gjc in ("已结束","已支付","已入住","已退房");
+    </select>
+    <select id="getDayCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM tab_order_zch_hwz_gjc WHERE DATE(checkInTime_zch_hwz_gjc) = DATE(NOW()) AND orderState_zch_hwz_gjc != "已取消";
+    </select>
+    <select id="getTotalCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM tab_order_zch_hwz_gjc WHERE orderState_zch_hwz_gjc != "已取消";
+    </select>
 </mapper>

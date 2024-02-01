@@ -83,6 +83,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         queryWrapper.eq("userId_zch_hwz_gjc", userId); // 根据用户ID查询订单信息
         return orderMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public Double getDayStatistics() {
+        return orderMapper.getDayStatistics();
+    }
+
+    @Override
+    public Long getDayCount() {
+        return orderMapper.getDayCount();
+    }
+
+    @Override
+    public Double getTotalStatistics() {
+        return orderMapper.getTotalStatistics();
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return orderMapper.getTotalCount();
+    }
 }
 
 
