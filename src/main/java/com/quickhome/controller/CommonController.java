@@ -1,6 +1,7 @@
 package com.quickhome.controller;
 
 import com.quickhome.request.ResponseResult;
+import com.quickhome.util.MinioUtil;
 import com.quickhome.util.TencentCOSUtils;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,18 @@ public class CommonController {
     @Autowired
     private TencentCOSUtils tencentCOSUtils;
 
+    @Autowired
+    private MinioUtil minioUtil;
+
     @SneakyThrows
     @PostMapping("/upload")
     @ResponseBody
     public ResponseEntity<ResponseResult<?>> upload(MultipartFile file) {
-        if(Objects.isNull(file))
-            return ResponseEntity.ok(ResponseResult.error("上传文件为空"));
-        return ResponseEntity.ok(ResponseResult.ok(saveUploadedFile(file)));
+        String fileName = file.getOriginalFilename();
+        String newFileName = System.currentTimeMillis() + '.' + fileName.substring(fileName.lastIndexOf("."));
+        String contentType = file.getContentType();
+        minioUtil.uploadFile(file, newFileName, contentType);
+        return ResponseEntity.ok(ResponseResult.ok(minioUtil.getBucketName() + "/" + newFileName));
     }
 
     /**

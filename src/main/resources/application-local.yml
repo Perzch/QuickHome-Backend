@@ -1,11 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/quickhome_web?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: 123456
+
 minio:
-  endpoint: http://minio:9000
+  endpoint: http://localhost:9000
   accessKey: eJH4UoqcqxAoilkLOLHc
   secretKey: xBTXox1l9GGGVVo8ACF48gGAzC3P3PAWGmC2Pn7t
   bucketName: quickhome
